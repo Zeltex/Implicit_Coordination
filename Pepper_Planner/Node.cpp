@@ -1,10 +1,11 @@
 #include "Node.hpp"
 
 namespace del {
-	void Node::add_child(Node node) {
-		throw;
-	}
 	State Node::get_state() {
 		throw;
+	}
+
+	Node_Id Node::get_id() {
+		return id;
 	}
 }

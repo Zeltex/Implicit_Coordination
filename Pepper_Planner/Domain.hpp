@@ -8,6 +8,7 @@
 #include "DEL.hpp"
 #include "Agent.hpp"
 #include "Graph.hpp"
+#include "Types.hpp"
 
 namespace del {
 

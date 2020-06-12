@@ -8,7 +8,7 @@ namespace del {
 				return false;
 			}
 
-			Node current_node = graph.get_next_from_frontier();
+			Node& current_node = graph.get_next_from_frontier();
 			if (is_goal_node(current_node)) {
 				if (is_root_node(current_node)) {
 					extract_policy();
@@ -28,17 +28,17 @@ namespace del {
 				else {
 					found_applicable_action = true;
 				}
-				Node action_node(temp);
-				current_node.add_child(action_node);
+				Node action_node = graph.create_node(temp);
+				graph.add_parent_child_relation(current_node.get_id(), action_node.get_id());
 
 				for (Agent agent : get_all_agents()) {
 					State perspective_shifted = perform_perspective_shift(action_node.get_state(), agent);
 					std::vector<State> global_states = split_into_global_states(perspective_shifted);
 
 					for (State state : global_states) {
-						Node global_agent_node(state);
-						action_node.add_child(global_agent_node);
-						graph.add_to_frontier(action_node);
+						Node global_agent_node = graph.create_node(state);
+						graph.add_to_frontier(global_agent_node.get_id());
+						graph.add_parent_child_relation(action_node.get_id(), global_agent_node.get_id());
 					}
 				}
 			}
@@ -49,9 +49,6 @@ namespace del {
 		return false;
 	}
 
-	Node Domain::get_next_from_frontier(std::vector<Node> frontier) {
-		throw;
-	}
 
 	void Domain::extract_policy() {
 		throw;
