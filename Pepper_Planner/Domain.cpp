@@ -8,9 +8,9 @@ namespace del {
 				return false;
 			}
 
-			Node& current_node = graph.get_next_from_frontier();
-			if (is_goal_node(current_node)) {
-				if (is_root_node(current_node)) {
+			Node_Id current_node = graph.get_next_from_frontier();
+			if (is_goal_node(graph.get_node(current_node))) {
+				if (is_root_node(graph.get_node(current_node))) {
 					extract_policy();
 					return true;
 				}
@@ -21,29 +21,27 @@ namespace del {
 
 			bool found_applicable_action = false;
 			for (Action action : get_all_actions()) {
-				State temp = perform_product_update(current_node.get_state(), action);
+				State temp = perform_product_update(graph.get_node(current_node).get_state(), action);
 				if (!is_valid_state(temp)) {
 					continue;
 				}
 				else {
 					found_applicable_action = true;
 				}
-				Node action_node = graph.create_node(temp);
-				graph.add_parent_child_relation(current_node.get_id(), action_node.get_id());
+				Node_Id action_node = graph.create_node(temp, current_node);
 
 				for (Agent agent : get_all_agents()) {
-					State perspective_shifted = perform_perspective_shift(action_node.get_state(), agent);
+					State perspective_shifted = perform_perspective_shift(graph.get_node(action_node).get_state(), agent);
 					std::vector<State> global_states = split_into_global_states(perspective_shifted);
 
 					for (State state : global_states) {
-						Node global_agent_node = graph.create_node(state);
-						graph.add_to_frontier(global_agent_node.get_id());
-						graph.add_parent_child_relation(action_node.get_id(), global_agent_node.get_id());
+						Node_Id global_agent_node = graph.create_node(state, action_node);
+						graph.add_to_frontier(global_agent_node);
 					}
 				}
 			}
 			if (!found_applicable_action) {
-				propogate_dead_end_node(current_node);
+				propogate_dead_end_node(graph.get_node(current_node));
 			}
 		}
 		return false;
