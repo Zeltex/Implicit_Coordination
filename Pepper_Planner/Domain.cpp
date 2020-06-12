@@ -1,14 +1,18 @@
 #include "Domain.hpp"
 
 namespace del {
-	void Domain::find_policy() {
-		std::vector<Node> frontier;
+	bool Domain::find_policy() {
+		Graph graph;
 		while (true) {
-			Node current_node = get_next_from_frontier(frontier);
+			if (graph.is_frontier_empty()) {
+				return false;
+			}
+
+			Node current_node = graph.get_next_from_frontier();
 			if (is_goal_node(current_node)) {
 				if (is_root_node(current_node)) {
 					extract_policy();
-					return;
+					return true;
 				}
 				else {
 					continue;
@@ -34,7 +38,7 @@ namespace del {
 					for (State state : global_states) {
 						Node global_agent_node(state);
 						action_node.add_child(global_agent_node);
-						frontier.push_back(action_node);
+						graph.add_to_frontier(action_node);
 					}
 				}
 			}
@@ -42,6 +46,7 @@ namespace del {
 				propogate_dead_end_node(current_node);
 			}
 		}
+		return false;
 	}
 
 	Node Domain::get_next_from_frontier(std::vector<Node> frontier) {

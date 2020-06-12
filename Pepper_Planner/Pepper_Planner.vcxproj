@@ -143,6 +143,7 @@
     <ClCompile Include="Agent.cpp" />
     <ClCompile Include="DEL.cpp" />
     <ClCompile Include="Domain.cpp" />
+    <ClCompile Include="Graph.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Node.cpp" />
   </ItemGroup>
@@ -151,6 +152,7 @@
     <ClInclude Include="Agent.hpp" />
     <ClInclude Include="DEL.hpp" />
     <ClInclude Include="Domain.hpp" />
+    <ClInclude Include="Graph.hpp" />
     <ClInclude Include="Node.hpp" />
     <ClInclude Include="State.hpp" />
   </ItemGroup>

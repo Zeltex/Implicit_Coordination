@@ -7,12 +7,13 @@
 #include "State.hpp"
 #include "DEL.hpp"
 #include "Agent.hpp"
+#include "Graph.hpp"
 
 namespace del {
 
 	class Domain {
 	public:
-		void find_policy();
+		bool find_policy();
 	private:
 		Node get_next_from_frontier(std::vector<Node> frontier);
 		void extract_policy();
