@@ -31,11 +31,14 @@
     <Filter Include="Source Files\Planner">
       <UniqueIdentifier>{c1e86abe-6009-473c-ae20-951a966592b3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\DEL\Action">
+      <UniqueIdentifier>{b02bbb3b-df39-46c5-8677-200bed511f4c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\DEL\Action">
+      <UniqueIdentifier>{2cad09cd-b22e-47e7-8c84-78bf8783520e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Action.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Agent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -43,9 +46,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Formula.cpp">
-      <Filter>Source Files\Formula</Filter>
-    </ClCompile>
-    <ClCompile Include="Formula_Creator.cpp">
       <Filter>Source Files\Formula</Filter>
     </ClCompile>
     <ClCompile Include="Formula_Component.cpp">
@@ -60,20 +60,26 @@
     <ClCompile Include="World.cpp">
       <Filter>Source Files\DEL</Filter>
     </ClCompile>
-    <ClCompile Include="Domain.cpp">
-      <Filter>Source Files\Planner</Filter>
-    </ClCompile>
     <ClCompile Include="Graph.cpp">
       <Filter>Source Files\Planner</Filter>
     </ClCompile>
     <ClCompile Include="Node.cpp">
       <Filter>Source Files\Planner</Filter>
     </ClCompile>
+    <ClCompile Include="Action_Library.cpp">
+      <Filter>Source Files\DEL\Action</Filter>
+    </ClCompile>
+    <ClCompile Include="Action.cpp">
+      <Filter>Source Files\DEL\Action</Filter>
+    </ClCompile>
+    <ClCompile Include="Action_Event.cpp">
+      <Filter>Source Files\DEL\Action</Filter>
+    </ClCompile>
+    <ClCompile Include="Planner.cpp">
+      <Filter>Source Files\Planner</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Action.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Agent.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -81,9 +87,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Formula.hpp">
-      <Filter>Header Files\Formula</Filter>
-    </ClInclude>
-    <ClInclude Include="Formula_Creator.hpp">
       <Filter>Header Files\Formula</Filter>
     </ClInclude>
     <ClInclude Include="Formula_Component.hpp">
@@ -101,10 +104,19 @@
     <ClInclude Include="Graph.hpp">
       <Filter>Header Files\Planner</Filter>
     </ClInclude>
-    <ClInclude Include="Domain.hpp">
+    <ClInclude Include="Node.hpp">
       <Filter>Header Files\Planner</Filter>
     </ClInclude>
-    <ClInclude Include="Node.hpp">
+    <ClInclude Include="Action_Library.hpp">
+      <Filter>Header Files\DEL\Action</Filter>
+    </ClInclude>
+    <ClInclude Include="Action.hpp">
+      <Filter>Header Files\DEL\Action</Filter>
+    </ClInclude>
+    <ClInclude Include="Action_Event.hpp">
+      <Filter>Header Files\DEL\Action</Filter>
+    </ClInclude>
+    <ClInclude Include="Planner.hpp">
       <Filter>Header Files\Planner</Filter>
     </ClInclude>
   </ItemGroup>

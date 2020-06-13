@@ -5,7 +5,6 @@
 
 #include "../Pepper_Planner/Formula.hpp"
 #include "../Pepper_Planner/Formula_Component.hpp"
-#include "../Pepper_Planner/Formula_Creator.hpp"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -17,57 +16,57 @@ namespace PepperPlannerTests
 	public:
 
 		TEST_METHOD(Top_String) {
-			Formula_Creator fc;
-			auto formula = Formula(fc.f_top());
-			Assert::AreEqual(formula.to_string(), std::string("TOP"));
+			Formula f;
+			f.f_top();
+			Assert::AreEqual(f.to_string(), std::string("TOP"));
 		}
 
 		TEST_METHOD(Bot_String) {
-			Formula_Creator fc;
-			auto formula = Formula(fc.f_bot());
-			Assert::AreEqual(formula.to_string(), std::string("BOT"));
+			Formula f;
+			f.f_bot();
+			Assert::AreEqual(f.to_string(), std::string("BOT"));
 		}
 
 		TEST_METHOD(Prop_String) {
-			Formula_Creator fc;
-			auto formula = Formula(fc.f_prop("Inner"));
-			Assert::AreEqual(formula.to_string(), std::string("Inner"));
+			Formula f;
+			f.f_prop("Inner");
+			Assert::AreEqual(f.to_string(), std::string("Inner"));
 		}
 
 		TEST_METHOD(Not_String) {
-			Formula_Creator fc;
-			auto formula = Formula(fc.f_not(fc.f_prop("Inner")));
-			Assert::AreEqual(formula.to_string(), std::string("Not(Inner)"));
+			Formula f;
+			f.f_not(f.f_prop("Inner"));
+			Assert::AreEqual(f.to_string(), std::string("Not(Inner)"));
 		}
 
 		TEST_METHOD(And_String) {
-			Formula_Creator fc;
-			auto formula = Formula(fc.f_and({ fc.f_not(fc.f_prop("Inner")), fc.f_prop("Second Inner") }));
-			Assert::AreEqual(formula.to_string(), std::string("And(Not(Inner);Second Inner)"));
+			Formula f;
+			f.f_and({ f.f_not(f.f_prop("Inner")), f.f_prop("Second Inner") });
+			Assert::AreEqual(f.to_string(), std::string("And(Not(Inner);Second Inner)"));
 		}
 
 		TEST_METHOD(Or_String) {
-			Formula_Creator fc;
-			auto formula = Formula(fc.f_or({ fc.f_and({fc.f_prop("first"), fc.f_prop("second")}), fc.f_prop("third") }));
-			Assert::AreEqual(formula.to_string(), std::string("Or(And(first;second);third)"));
+			Formula f;
+			f.f_or({ f.f_and({f.f_prop("first"), f.f_prop("second")}), f.f_prop("third") });
+			Assert::AreEqual(f.to_string(), std::string("Or(And(first;second);third)"));
 		}
 
 		TEST_METHOD(Believes_String) {
-			Formula_Creator fc;
-			auto formula = Formula(fc.f_believes(Agent_Id{ 9 }, fc.f_and({ fc.f_prop("first"), fc.f_prop("second")})));
-			Assert::AreEqual(formula.to_string(), std::string("Believes_9(And(first;second))"));
+			Formula f;
+			f.f_believes(Agent_Id{ 9 }, f.f_and({ f.f_prop("first"), f.f_prop("second")}));
+			Assert::AreEqual(f.to_string(), std::string("Believes_9(And(first;second))"));
 		}
 
 		TEST_METHOD(Everyone_Believes_String) {
-			Formula_Creator fc;
-			auto formula = Formula(fc.f_everyone_Believes(fc.f_and({ fc.f_prop("first"), fc.f_prop("second") })));
-			Assert::AreEqual(formula.to_string(), std::string("Everyone_Believes(And(first;second))"));
+			Formula f;
+			f.f_everyone_Believes(f.f_and({ f.f_prop("first"), f.f_prop("second") }));
+			Assert::AreEqual(f.to_string(), std::string("Everyone_Believes(And(first;second))"));
 		}
 
 		TEST_METHOD(Common_Knowledge_String) {
-			Formula_Creator fc;
-			auto formula = Formula(fc.f_common_Knowledge(fc.f_and({ fc.f_prop("first"), fc.f_prop("second") })));
-			Assert::AreEqual(formula.to_string(), std::string("Common_Knowledge(And(first;second))"));
+			Formula f;
+			f.f_common_Knowledge(f.f_and({ f.f_prop("first"), f.f_prop("second") }));
+			Assert::AreEqual(f.to_string(), std::string("Common_Knowledge(And(first;second))"));
 		}
 	};
 }

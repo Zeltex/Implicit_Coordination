@@ -19,8 +19,8 @@ namespace PepperPlannerTests
 		TEST_METHOD(Frontier_Is_Popped_Correctly) {
 
 			Graph graph;
-			State state1;
-			State state2;
+			State state1(0);
+			State state2(0);
 			Node_Id node1 = graph.create_root_node(state1);
 			Node_Id node2 = graph.create_node(state2, node1);
 
@@ -36,8 +36,8 @@ namespace PepperPlannerTests
 
 		TEST_METHOD(Node_Parent_Is_Set_Correctly) {
 			Graph graph;
-			State state1;
-			State state2;
+			State state1(0);
+			State state2(0);
 			Node_Id node1 = graph.create_root_node(state1);
 			Node_Id node2 = graph.create_node(state2, node1);
 
@@ -46,8 +46,8 @@ namespace PepperPlannerTests
 
 		TEST_METHOD(Node_Child_Is_Set_Correctly) {
 			Graph graph;
-			State state1;
-			State state2;
+			State state1(0);
+			State state2(0);
 			Node_Id node1 = graph.create_root_node(state1);
 			Node_Id node2 = graph.create_node(state2, node1);
 			auto children = graph.get_node(node1).get_children();
@@ -56,8 +56,8 @@ namespace PepperPlannerTests
 
 		TEST_METHOD(Root_Is_Set_Correctly) {
 			Graph graph;
-			State state1;
-			State state2;
+			State state1(0);
+			State state2(0);
 			Node_Id node1 = graph.create_root_node(state1);
 			Node_Id node2 = graph.create_node(state2, node1);
 			Assert::IsTrue(graph.get_node(node1).is_root_node());

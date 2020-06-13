@@ -4,10 +4,12 @@
 #include "../Pepper_Planner/World.cpp"
 #include "../Pepper_Planner/Formula.cpp"
 #include "../Pepper_Planner/Formula_Component.cpp"
-#include "../Pepper_Planner/Formula_Creator.cpp"
 #include "../Pepper_Planner/Graph.cpp"
 #include "../Pepper_Planner/Node.cpp"
 #include "../Pepper_Planner/State.cpp"
+#include "../Pepper_Planner/Action.cpp"
+#include "../Pepper_Planner/Action_Event.cpp"
+#include "../Pepper_Planner/DEL_Operations.cpp"
 
 /*
 The test project has to have access to the source code of the main project (Pepper_Planner)

@@ -16,6 +16,33 @@ namespace del {
 		}
 	};
 
+	struct World_Id {
+		size_t id;
+
+		bool operator==(const World_Id& other) const {
+			return this->id == other.id;
+		}
+	};
+
+	struct Event_Id {
+		size_t id;
+
+		bool operator==(const Event_Id& other) const {
+			return this->id == other.id;
+		}
+	};
+
+	struct Formula_Id {
+		size_t id;
+		Formula_Id() = default;
+		Formula_Id(size_t id) : id(id) {}
+		Formula_Id(size_t id, size_t id2) {}
+
+		bool operator==(const Formula_Id& other) const {
+			return this->id == other.id;
+		}
+	};
+
 	enum class Formula_Types {
 		Top,
 		Bot,
@@ -26,5 +53,27 @@ namespace del {
 		Believes,
 		Everyone_Believes,
 		Common_Knowledge
+	};
+
+	struct World_Relation {
+		World_Relation(World_Id world_from, World_Id world_to) :
+			world_from(world_from), world_to(world_to) {}
+		World_Id world_from;
+		World_Id world_to;
+	};
+
+	struct Event_Relation {
+		Event_Relation(Event_Id event_from, Event_Id event_to) :
+			event_from(event_from), event_to(event_to) {}
+		Event_Id event_from;
+		Event_Id event_to;
+	};
+
+	struct World_Entry {
+		World_Entry(World_Id old_world, Event_Id old_event, World_Id new_world) : 
+			old_world(old_world), old_event(old_event), new_world(new_world) {}
+		World_Id old_world;
+		Event_Id old_event;
+		World_Id new_world;
 	};
 }

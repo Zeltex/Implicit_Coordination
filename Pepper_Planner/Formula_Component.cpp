@@ -2,7 +2,7 @@
 
 namespace del {
 
-    bool Formula_Component::valuate(std::unordered_set<std::string>& propositions) 
+    bool Formula_Component::valuate(const std::unordered_set<std::string>& propositions, const std::vector<Formula_Component>& all_formulas) const
     {
         switch (type) {
         case Formula_Types::Top:
@@ -19,12 +19,12 @@ namespace del {
         }
         case Formula_Types::Not:
         {
-            return !formula->valuate(propositions);
+            return !all_formulas[formula.id].valuate(propositions, all_formulas);
         }
         case Formula_Types::And:
         {
             for (auto formula : formulas) {
-                if (!formula->valuate(propositions)) {
+                if (!all_formulas[formula.id].valuate(propositions, all_formulas)) {
                     return false;
                 }
             }
@@ -33,7 +33,7 @@ namespace del {
         case Formula_Types::Or:
         {
             for (auto formula : formulas) {
-                if (formula->valuate(propositions)) {
+                if (all_formulas[formula.id].valuate(propositions, all_formulas)) {
                     return true;
                 }
             }
@@ -58,7 +58,7 @@ namespace del {
         return false;
     }
 
-    std::string Formula_Component::to_string()
+    std::string Formula_Component::to_string(const std::vector<Formula_Component>& all_formulas) const
     {
         std::string result;
 
@@ -77,39 +77,40 @@ namespace del {
         }
         case Formula_Types::Not:
         {
-            return "Not(" + formula->to_string() + ")";
+            return "Not(" + all_formulas.at(formula.id).to_string(all_formulas) + ")";
         }
         case Formula_Types::And:
         {
-            return "And(" + get_string_component(formulas) + ")";
+            return "And(" + get_string_component(formulas, all_formulas) + ")";
         }
         case Formula_Types::Or:
         {
-            return "Or(" + get_string_component(formulas) + ")";
+            return "Or(" + get_string_component(formulas, all_formulas) + ")";
         }
         case Formula_Types::Believes:
         {
-            return "Believes_" + std::to_string(agent.id) + "(" + formula->to_string() + ")";
+            const auto& temp_formula = all_formulas.at(formula.id);
+            return "Believes_" + std::to_string(agent.id) + "(" + all_formulas[formula.id].to_string(all_formulas) + ")";
         }
         case Formula_Types::Everyone_Believes:
         {
-            return "Everyone_Believes(" + formula->to_string() + ")";
+            return "Everyone_Believes(" + all_formulas[formula.id].to_string(all_formulas) + ")";
         }
         case Formula_Types::Common_Knowledge:
         {
-            return "Common_Knowledge(" + formula->to_string() + ")";
+            return "Common_Knowledge(" + all_formulas[formula.id].to_string(all_formulas) + ")";
         }
         }
         return "UNKNOWN TYPE";
     }
 
-    std::string Formula_Component::get_string_component(const std::vector<Formula_Component*>& formulas) const {
+    std::string Formula_Component::get_string_component(const std::vector<Formula_Id>& formulas, const std::vector<Formula_Component>& all_formulas) const {
         std::string result;
         bool first = true;
-        for (Formula_Component* entry : formulas) {
+        for (Formula_Id entry : formulas) {
             if (first) first = false;
             else result += delim;
-            result += entry->to_string();
+            result += all_formulas[entry.id].to_string(all_formulas);
         }
         return result;
     }

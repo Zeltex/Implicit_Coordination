@@ -141,12 +141,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Action.cpp" />
+    <ClCompile Include="Action_Event.cpp" />
+    <ClCompile Include="Action_Library.cpp" />
     <ClCompile Include="Agent.cpp" />
     <ClCompile Include="DEL_Operations.cpp" />
-    <ClCompile Include="Domain.cpp" />
+    <ClCompile Include="Planner.cpp" />
     <ClCompile Include="Formula.cpp" />
     <ClCompile Include="Formula_Component.cpp" />
-    <ClCompile Include="Formula_Creator.cpp" />
     <ClCompile Include="Graph.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Node.cpp" />
@@ -155,12 +156,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Action.hpp" />
+    <ClInclude Include="Action_Event.hpp" />
+    <ClInclude Include="Action_Library.hpp" />
     <ClInclude Include="Agent.hpp" />
     <ClInclude Include="DEL_Operations.hpp" />
-    <ClInclude Include="Domain.hpp" />
+    <ClInclude Include="Planner.hpp" />
     <ClInclude Include="Formula.hpp" />
     <ClInclude Include="Formula_Component.hpp" />
-    <ClInclude Include="Formula_Creator.hpp" />
     <ClInclude Include="Graph.hpp" />
     <ClInclude Include="Node.hpp" />
     <ClInclude Include="State.hpp" />

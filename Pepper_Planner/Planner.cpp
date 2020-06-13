@@ -1,7 +1,7 @@
-#include "Domain.hpp"
+#include "Planner.hpp"
 
 namespace del {
-	bool Domain::find_policy(Formula goal_formula) {
+	bool Planner::find_policy(Formula goal_formula, Action_Library action_library) {
 		Graph graph;
 		while (true) {
 			if (graph.is_frontier_empty()) {
@@ -20,7 +20,7 @@ namespace del {
 			}
 
 			bool found_applicable_action = false;
-			for (Action action : get_all_actions()) {
+			for (Action action : action_library.get_actions()) {
 				State temp = perform_product_update(graph.get_node(current_node).get_state(), action);
 				if (!is_valid_state(temp)) {
 					continue;
@@ -48,31 +48,27 @@ namespace del {
 	}
 
 
-	void Domain::extract_policy() {
+	void Planner::extract_policy() {
 		throw;
 	}
 
-	void Domain::propogate_dead_end_node(Node& node) {
+	void Planner::propogate_dead_end_node(Node& node) {
 		throw;
 	}
 
-	bool Domain::is_goal_node(Node& node, Formula& goal_formula) {
+	bool Planner::is_goal_node(Node& node, Formula& goal_formula) {
 		return node.valuate(goal_formula);
 	}
 
-	bool Domain::is_valid_state(State state) {
+	bool Planner::is_valid_state(State state) {
 		throw;
 	}
 
-	bool Domain::is_root_node(Node& node) {
+	bool Planner::is_root_node(Node& node) {
 		return node.is_root_node();
 	}
 
-	std::vector<Action> Domain::get_all_actions() {
-		throw;
-	}
-
-	std::vector<Agent> Domain::get_all_agents() {
+	std::vector<Agent> Planner::get_all_agents() {
 		throw;
 	}
 

@@ -8,59 +8,46 @@
 namespace del {
 	struct Formula_Component {
 		// TODO - Could probably be done more elegant
-		friend class Formula_Creator;
+		friend class Formula;
 		// TODO - Use (maybe) union to only hold one of prop, formula, formulas
 		Formula_Types type;
 		std::string prop;
-		Formula_Component* formula;
-		std::vector<Formula_Component*> formulas;
+		Formula_Id formula;
+		std::vector<Formula_Id> formulas;
 		Agent_Id agent;
 
 
 		const char delim = ';';
-		std::string to_string();
-		bool valuate(std::unordered_set<std::string>& propositions);
+		std::string to_string(const std::vector<Formula_Component>& all_formulas) const;
+		bool valuate(const  std::unordered_set<std::string>& propositions, const std::vector<Formula_Component>& all_formulas) const;
 
-		~Formula_Component() {
-			if (type == Formula_Types::Not ||
-				type == Formula_Types::Everyone_Believes ||
-				type == Formula_Types::Common_Knowledge ||
-				type == Formula_Types::Believes) {
-				delete formula;
-			}
-			if (type == Formula_Types::And ||
-				type == Formula_Types::Or) {
-				for (Formula_Component* formula : formulas) {
-					delete formula;
-				}
-			}
 
-		};
+		
+		Formula_Component() = delete;
 
 	private:
-		Formula_Component() = delete;
-		
+
 		// Top, Bot
 		Formula_Component(Formula_Types type):
-			type(type), prop(""), formula(0), formulas(std::vector<Formula_Component*>()), agent(Agent_Id{ 9999 }) {};
+			type(type), prop(), formula(), formulas(std::vector<Formula_Id>()), agent(Agent_Id{ 9999 }) {};
 
 		// Prop
 		Formula_Component(Formula_Types type, std::string prop) : 
-			type(type), prop(prop), formula(0), formulas(std::vector<Formula_Component*>()), agent(Agent_Id{ 9999 }) {};
+			type(type), prop(prop), formula(), formulas(std::vector<Formula_Id>()), agent(Agent_Id{ 9999 }) {};
 
 		// And, Or
-		Formula_Component(Formula_Types type, std::vector<Formula_Component*> formulas) : 
-			type(type), prop(""), formula(0), formulas(formulas), agent(Agent_Id{ 99999 }) {};
+		Formula_Component(Formula_Types type, std::vector<Formula_Id> formulas) : 
+			type(type), prop(), formula(), formulas(formulas), agent(Agent_Id{ 99999 }) {};
 
 		// Not, Everyone_Believes, Common_Knowledge
-		Formula_Component(Formula_Types type, Formula_Component* formula) : 
-			type(type), prop(""), formula(formula), formulas(std::vector<Formula_Component*>()), agent(Agent_Id{ 99999 }) {};
+		Formula_Component(Formula_Types type, Formula_Id formula) : 
+			type(type), prop(), formula(formula), formulas(std::vector<Formula_Id>()), agent(Agent_Id{ 99999 }) {};
 
 		// Believes
-		Formula_Component(Formula_Types type, Agent_Id agent, Formula_Component* formula) : 
-			type(type), prop(""), formula(formula), formulas(std::vector<Formula_Component*>()), agent(agent)  {};
+		Formula_Component(Formula_Types type, Agent_Id agent, Formula_Id formula) : 
+			type(type), prop(), formula(formula), formulas(std::vector<Formula_Id>()), agent(agent)  {};
 
-		std::string get_string_component(const std::vector<Formula_Component*>& formulas) const;
+		std::string get_string_component(const std::vector<Formula_Id>& formulas, const std::vector<Formula_Component>& all_formulas) const;
 
 	};
 }
