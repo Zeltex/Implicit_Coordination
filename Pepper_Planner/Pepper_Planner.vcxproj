@@ -144,6 +144,9 @@
     <ClCompile Include="Agent.cpp" />
     <ClCompile Include="DEL.cpp" />
     <ClCompile Include="Domain.cpp" />
+    <ClCompile Include="Formula.cpp" />
+    <ClCompile Include="Formula_Component.cpp" />
+    <ClCompile Include="Formula_Creator.cpp" />
     <ClCompile Include="Graph.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Node.cpp" />
@@ -153,6 +156,9 @@
     <ClInclude Include="Agent.hpp" />
     <ClInclude Include="DEL.hpp" />
     <ClInclude Include="Domain.hpp" />
+    <ClInclude Include="Formula.hpp" />
+    <ClInclude Include="Formula_Component.hpp" />
+    <ClInclude Include="Formula_Creator.hpp" />
     <ClInclude Include="Graph.hpp" />
     <ClInclude Include="Node.hpp" />
     <ClInclude Include="State.hpp" />

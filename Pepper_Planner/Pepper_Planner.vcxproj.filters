@@ -13,6 +13,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\Formula">
+      <UniqueIdentifier>{1934540d-f2e2-4ef1-892b-491735d189ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Formula">
+      <UniqueIdentifier>{3af0cc4b-2749-43c0-95e8-da9a7557b908}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Domain.cpp">
@@ -35,6 +41,15 @@
     </ClCompile>
     <ClCompile Include="Graph.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Formula.cpp">
+      <Filter>Source Files\Formula</Filter>
+    </ClCompile>
+    <ClCompile Include="Formula_Creator.cpp">
+      <Filter>Source Files\Formula</Filter>
+    </ClCompile>
+    <ClCompile Include="Formula_Component.cpp">
+      <Filter>Source Files\Formula</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -61,6 +76,15 @@
     </ClInclude>
     <ClInclude Include="Types.hpp">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Formula.hpp">
+      <Filter>Header Files\Formula</Filter>
+    </ClInclude>
+    <ClInclude Include="Formula_Creator.hpp">
+      <Filter>Header Files\Formula</Filter>
+    </ClInclude>
+    <ClInclude Include="Formula_Component.hpp">
+      <Filter>Header Files\Formula</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

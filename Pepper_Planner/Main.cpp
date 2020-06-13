@@ -1,22 +1,18 @@
 #include "Graph.hpp"
+#include "Formula.hpp"
 #include <iostream>
 
 int main(int argc, char* argv[]) {
+	using namespace del;
 
-	del::Graph graph;
-	del::State state1;
-	del::State state2;
-	del::State state3;
-	del::State state4;
-	del::Node_Id node1 = graph.create_root_node(state1);
-	del::Node_Id node2 = graph.create_node(state2, node1);
-	del::Node_Id node3 = graph.create_root_node(state3);
-	del::Node_Id node4 = graph.create_node(state4, node3);
+	//Formula* formula = new And({ new Or({new Prop("Inner")}) });
+	//Formula* formula = new Prop("Inner");
+	//new Prop("Inner");
+	//new Prop("Inner");
+	//std::cout << formula->to_string() << "\n";
 
-	std::cout << node1.id << "\n";
-
-	graph.add_to_frontier(node1);
-	graph.add_to_frontier(node2);
+	//Prop prop("Inner");
+	//prop.test(Formula_Types::And, {});
 
 	return 0;
 }

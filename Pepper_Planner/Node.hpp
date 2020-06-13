@@ -16,6 +16,7 @@ namespace del {
 		Node_Id get_id();
 		Node_Id get_parent();
 		std::vector<Node_Id>& get_children();
+		bool is_root_node();
 
 	private:
 		State state;

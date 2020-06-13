@@ -65,7 +65,7 @@ namespace del {
 	}
 
 	bool Domain::is_root_node(Node& node) {
-		throw;
+		return node.is_root_node();
 	}
 
 	std::vector<Action> Domain::get_all_actions() {

@@ -20,4 +20,8 @@ namespace del {
 	std::vector<Node_Id>& Node::get_children() {
 		return children;
 	}
+
+	bool Node::is_root_node() {
+		return is_root;
+	}
 }
