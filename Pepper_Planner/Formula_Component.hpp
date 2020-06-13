@@ -7,8 +7,6 @@
 
 namespace del {
 	struct Formula_Component {
-		// TODO - Could probably be done more elegant
-		friend class Formula;
 		// TODO - Use (maybe) union to only hold one of prop, formula, formulas
 		Formula_Types type;
 		std::string prop;
@@ -21,11 +19,9 @@ namespace del {
 		std::string to_string(const std::vector<Formula_Component>& all_formulas) const;
 		bool valuate(const  std::unordered_set<std::string>& propositions, const std::vector<Formula_Component>& all_formulas) const;
 
+		std::string get_string_component(const std::vector<Formula_Id>& formulas, const std::vector<Formula_Component>& all_formulas) const;
 
-		
 		Formula_Component() = delete;
-
-	private:
 
 		// Top, Bot
 		Formula_Component(Formula_Types type):
@@ -46,8 +42,6 @@ namespace del {
 		// Believes
 		Formula_Component(Formula_Types type, Agent_Id agent, Formula_Id formula) : 
 			type(type), prop(), formula(formula), formulas(std::vector<Formula_Id>()), agent(agent)  {};
-
-		std::string get_string_component(const std::vector<Formula_Id>& formulas, const std::vector<Formula_Component>& all_formulas) const;
 
 	};
 }

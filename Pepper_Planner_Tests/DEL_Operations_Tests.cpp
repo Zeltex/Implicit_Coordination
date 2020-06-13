@@ -22,6 +22,7 @@ namespace PepperPlannerTests
 	public:
 
 		TEST_METHOD(Product_Update_Test_One_Event_Applicable_In_One_Designated_World) {
+			
 			State state(2);
 			state.create_world();
 			state.create_world();
@@ -47,14 +48,14 @@ namespace PepperPlannerTests
 			Action_Event event = Action_Event(id, std::move(f), std::unordered_set<std::string>(), std::unordered_set<std::string>());
 			action.add_event(event);
 			State& new_state = perform_product_update(state, action);
+			
+			auto& worlds = new_state.get_worlds();
+			Assert::AreEqual(size_t{ 1 }, worlds.size());
 
-			//auto& worlds = new_state.get_worlds();
-			//Assert::AreEqual(size_t{ 1 }, worlds.size());
-
-			//auto& propositions = worlds[0].get_true_propositions();
-			//Assert::AreEqual(size_t{ 1 }, propositions.size());
-			//
-			//Assert::IsTrue(propositions.find("in(red,Box1)") != propositions.end());
+			auto& propositions = worlds[0].get_true_propositions();
+			Assert::AreEqual(size_t{ 1 }, propositions.size());
+			
+			Assert::IsTrue(propositions.find("in(red,Box1)") != propositions.end());
 
 		}
 	};

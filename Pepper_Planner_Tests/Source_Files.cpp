@@ -2,7 +2,7 @@
 #include "CppUnitTest.h"
 
 #include "../Pepper_Planner/World.cpp"
-#include "../Pepper_Planner/Formula.cpp"
+#include "../Pepper_Planner/formula.cpp"
 #include "../Pepper_Planner/Formula_Component.cpp"
 #include "../Pepper_Planner/Graph.cpp"
 #include "../Pepper_Planner/Node.cpp"
@@ -22,7 +22,7 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace PepperPlannerTests
 {
-	using namespace del;
+	//using namespace del;
 	TEST_CLASS(Source_Files)
 	{
 	public:
