@@ -1,7 +1,7 @@
 #include "Domain.hpp"
 
 namespace del {
-	bool Domain::find_policy() {
+	bool Domain::find_policy(Formula goal_formula) {
 		Graph graph;
 		while (true) {
 			if (graph.is_frontier_empty()) {
@@ -9,7 +9,7 @@ namespace del {
 			}
 
 			Node_Id current_node = graph.get_next_from_frontier();
-			if (is_goal_node(graph.get_node(current_node))) {
+			if (is_goal_node(graph.get_node(current_node), goal_formula)) {
 				if (is_root_node(graph.get_node(current_node))) {
 					extract_policy();
 					return true;
@@ -56,8 +56,8 @@ namespace del {
 		throw;
 	}
 
-	bool Domain::is_goal_node(Node& node) {
-		throw;
+	bool Domain::is_goal_node(Node& node, Formula& goal_formula) {
+		return node.valuate(goal_formula);
 	}
 
 	bool Domain::is_valid_state(State state) {

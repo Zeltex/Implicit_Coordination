@@ -4,9 +4,8 @@
 #include <iostream>
 
 #include "../Pepper_Planner/Graph.hpp"
-#include "../Pepper_Planner/Graph.cpp"
 #include "../Pepper_Planner/Node.hpp"
-#include "../Pepper_Planner/Node.cpp"
+#include "../Pepper_Planner/State.hpp"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 

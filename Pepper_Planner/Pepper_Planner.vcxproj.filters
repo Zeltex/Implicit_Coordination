@@ -19,27 +19,27 @@
     <Filter Include="Source Files\Formula">
       <UniqueIdentifier>{3af0cc4b-2749-43c0-95e8-da9a7557b908}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\DEL">
+      <UniqueIdentifier>{ec917123-ebd0-46ff-859f-d92ed418c5c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\DEL">
+      <UniqueIdentifier>{19d3a1b6-8c87-4c83-8782-57dc94ef86f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Planner">
+      <UniqueIdentifier>{ea26048b-eb9d-49a4-9b89-f75ee5fe517d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Planner">
+      <UniqueIdentifier>{c1e86abe-6009-473c-ae20-951a966592b3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Domain.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Action.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Agent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DEL.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Node.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Graph.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Formula.cpp">
@@ -51,27 +51,30 @@
     <ClCompile Include="Formula_Component.cpp">
       <Filter>Source Files\Formula</Filter>
     </ClCompile>
+    <ClCompile Include="DEL_Operations.cpp">
+      <Filter>Source Files\DEL</Filter>
+    </ClCompile>
+    <ClCompile Include="State.cpp">
+      <Filter>Source Files\DEL</Filter>
+    </ClCompile>
+    <ClCompile Include="World.cpp">
+      <Filter>Source Files\DEL</Filter>
+    </ClCompile>
+    <ClCompile Include="Domain.cpp">
+      <Filter>Source Files\Planner</Filter>
+    </ClCompile>
+    <ClCompile Include="Graph.cpp">
+      <Filter>Source Files\Planner</Filter>
+    </ClCompile>
+    <ClCompile Include="Node.cpp">
+      <Filter>Source Files\Planner</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Domain.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Node.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Action.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="State.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DEL.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Agent.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Graph.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Types.hpp">
@@ -85,6 +88,24 @@
     </ClInclude>
     <ClInclude Include="Formula_Component.hpp">
       <Filter>Header Files\Formula</Filter>
+    </ClInclude>
+    <ClInclude Include="DEL_Operations.hpp">
+      <Filter>Header Files\DEL</Filter>
+    </ClInclude>
+    <ClInclude Include="State.hpp">
+      <Filter>Header Files\DEL</Filter>
+    </ClInclude>
+    <ClInclude Include="World.hpp">
+      <Filter>Header Files\DEL</Filter>
+    </ClInclude>
+    <ClInclude Include="Graph.hpp">
+      <Filter>Header Files\Planner</Filter>
+    </ClInclude>
+    <ClInclude Include="Domain.hpp">
+      <Filter>Header Files\Planner</Filter>
+    </ClInclude>
+    <ClInclude Include="Node.hpp">
+      <Filter>Header Files\Planner</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

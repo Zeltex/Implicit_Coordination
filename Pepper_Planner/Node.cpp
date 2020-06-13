@@ -24,4 +24,8 @@ namespace del {
 	bool Node::is_root_node() {
 		return is_root;
 	}
+
+	bool Node::valuate(Formula& formula) {
+		return state.valuate(formula);
+	}
 }

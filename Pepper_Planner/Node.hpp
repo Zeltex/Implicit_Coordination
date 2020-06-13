@@ -4,6 +4,7 @@
 
 #include "State.hpp"
 #include "Types.hpp"
+#include "Formula.hpp"
 
 namespace del {
 	class Node {
@@ -17,6 +18,7 @@ namespace del {
 		Node_Id get_parent();
 		std::vector<Node_Id>& get_children();
 		bool is_root_node();
+		bool valuate(Formula& formula);
 
 	private:
 		State state;

@@ -3,6 +3,7 @@
 #include "Types.hpp"
 #include <string>
 #include <vector>
+#include <unordered_set>
 
 namespace del {
 	struct Formula_Component {
@@ -18,6 +19,7 @@ namespace del {
 
 		const char delim = ';';
 		std::string to_string();
+		bool valuate(std::unordered_set<std::string>& propositions);
 
 		~Formula_Component() {
 			if (type == Formula_Types::Not ||

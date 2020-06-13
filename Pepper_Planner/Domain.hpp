@@ -5,21 +5,21 @@
 #include "Node.hpp"
 #include "Action.hpp"
 #include "State.hpp"
-#include "DEL.hpp"
+#include "DEL_Operations.hpp"
 #include "Agent.hpp"
 #include "Graph.hpp"
 #include "Types.hpp"
+#include "Formula.hpp"
 
 namespace del {
 
 	class Domain {
 	public:
-		bool find_policy();
+		bool find_policy(Formula formula);
 	private:
-		Node get_next_from_frontier(std::vector<Node> frontier);
 		void extract_policy();
 		void propogate_dead_end_node(Node& node);
-		bool is_goal_node(Node& node);
+		bool is_goal_node(Node& node, Formula& goal_formula);
 		bool is_root_node(Node& node);
 		bool is_valid_state(State state);
 		std::vector<Action> get_all_actions();

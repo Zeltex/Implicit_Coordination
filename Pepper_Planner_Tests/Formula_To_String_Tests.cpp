@@ -4,10 +4,7 @@
 #include <iostream>
 
 #include "../Pepper_Planner/Formula.hpp"
-#include "../Pepper_Planner/Formula.cpp"
 #include "../Pepper_Planner/Formula_Component.hpp"
-#include "../Pepper_Planner/Formula_Component.cpp"
-#include "../Pepper_Planner/Formula_Creator.cpp"
 #include "../Pepper_Planner/Formula_Creator.hpp"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;

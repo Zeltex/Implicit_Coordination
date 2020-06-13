@@ -142,7 +142,7 @@
   <ItemGroup>
     <ClCompile Include="Action.cpp" />
     <ClCompile Include="Agent.cpp" />
-    <ClCompile Include="DEL.cpp" />
+    <ClCompile Include="DEL_Operations.cpp" />
     <ClCompile Include="Domain.cpp" />
     <ClCompile Include="Formula.cpp" />
     <ClCompile Include="Formula_Component.cpp" />
@@ -150,11 +150,13 @@
     <ClCompile Include="Graph.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Node.cpp" />
+    <ClCompile Include="State.cpp" />
+    <ClCompile Include="World.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Action.hpp" />
     <ClInclude Include="Agent.hpp" />
-    <ClInclude Include="DEL.hpp" />
+    <ClInclude Include="DEL_Operations.hpp" />
     <ClInclude Include="Domain.hpp" />
     <ClInclude Include="Formula.hpp" />
     <ClInclude Include="Formula_Component.hpp" />
@@ -163,6 +165,7 @@
     <ClInclude Include="Node.hpp" />
     <ClInclude Include="State.hpp" />
     <ClInclude Include="Types.hpp" />
+    <ClInclude Include="World.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
