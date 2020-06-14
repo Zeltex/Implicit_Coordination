@@ -15,8 +15,10 @@ namespace del {
 		void add_event(Event_Id id, Formula&& precondition, std::unordered_set<std::string>&& proposition_add, std::unordered_set<std::string>&& proposition_delete);
 		std::vector<Action_Event>& get_events();
 		Agent_Id get_owner();
-		bool is_one_reachable(Event_Id world1, Event_Id world2, Agent_Id agent);
+		bool is_one_reachable(Agent_Id agent, Event_Id world1, Event_Id world2);
 		bool is_event_designated(Event_Id event) const;
+		void add_indistinguishability_relation(Agent_Id agent, Event_Id event_from, Event_Id event_to);
+		void add_designated_event(Event_Id event);
 
 	private:
 		std::vector<Action_Event> events;

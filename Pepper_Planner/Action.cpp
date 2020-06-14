@@ -25,7 +25,7 @@ namespace del {
 		return owner;
 	}
 
-	bool Action::is_one_reachable(Event_Id event1, Event_Id event2, Agent_Id agent) {
+	bool Action::is_one_reachable(Agent_Id agent, Event_Id event1, Event_Id event2) {
 		for (auto relations : indistinguishability_relation[agent.id]) {
 			if (relations.event_from == event1 && relations.event_to == event2) {
 				return true;
@@ -37,5 +37,13 @@ namespace del {
 
 	bool Action::is_event_designated(Event_Id event) const {
 		return find(designated_events.begin(), designated_events.end(), event) != designated_events.end();
+	}
+
+	void Action::add_indistinguishability_relation(Agent_Id agent, Event_Id event_from, Event_Id event_to) {
+		indistinguishability_relation[agent.id].emplace_back(event_from, event_to);
+	}
+
+	void Action::add_designated_event(Event_Id event) {
+		designated_events.emplace_back(event);
 	}
 }

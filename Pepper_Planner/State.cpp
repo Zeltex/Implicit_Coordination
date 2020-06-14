@@ -29,7 +29,7 @@ namespace del {
 		return number_of_agents;
 	}
 
-	bool State::is_one_reachable(World_Id world1, World_Id world2, Agent_Id agent) {
+	bool State::is_one_reachable(Agent_Id agent, World_Id world1, World_Id world2) {
 		for (auto relations : indistinguishability_relation[agent.id]) {
 			if (relations.world_from == world1 && relations.world_to == world2) {
 				return true;

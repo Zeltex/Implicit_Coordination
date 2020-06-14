@@ -31,8 +31,8 @@ namespace del {
 			for (auto world2 : new_worlds) {
 				for (size_t i = 0; i < state.get_number_of_agents(); i++) {
 					Agent_Id agent = Agent_Id{ i };
-					if (state.is_one_reachable(world1.old_world, world2.old_world, agent) && 
-						action.is_one_reachable(world1.old_event, world2.old_event, agent)) {
+					if (state.is_one_reachable(agent, world1.old_world, world2.old_world) &&
+						action.is_one_reachable(agent, world1.old_event, world2.old_event)) {
 						result.add_indistinguishability_relation(agent, world1.new_world, world2.new_world);
 					}
 				}

@@ -8,11 +8,7 @@
 namespace del {
 	struct Formula_Component {
 		// TODO - Use (maybe) union to only hold one of prop, formula, formulas
-		Formula_Types type;
-		std::string prop;
-		Formula_Id formula;
-		std::vector<Formula_Id> formulas;
-		Agent_Id agent;
+
 
 
 		const char delim = ';';
@@ -43,5 +39,11 @@ namespace del {
 		Formula_Component(Formula_Types type, Agent_Id agent, Formula_Id formula) : 
 			type(type), prop(), formula(formula), formulas(std::vector<Formula_Id>()), agent(agent)  {};
 
+	private:
+		Formula_Types type;
+		std::string prop;
+		Formula_Id formula;
+		std::vector<Formula_Id> formulas;
+		Agent_Id agent;
 	};
 }
