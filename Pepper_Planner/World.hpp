@@ -10,6 +10,8 @@ namespace del {
 	public:
 
 		World(World_Id id) : id(id), true_propositions(std::unordered_set<std::string>()) {}
+		World(World_Id id, std::unordered_set<std::string> true_propositions) : 
+			id(id), true_propositions(true_propositions) {}
 
 		World_Id get_id() const;
 		//void add_true_propositions(const std::vector<std::string> propositions);
@@ -23,8 +25,7 @@ namespace del {
 
 
 	private:
-		World(World_Id id, std::unordered_set<std::string> true_propositions) : 
-			id(id), true_propositions(true_propositions) {}
+
 		World_Id id;
 		std::unordered_set<std::string> true_propositions;
 	};

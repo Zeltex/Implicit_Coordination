@@ -40,10 +40,59 @@ namespace del {
 		}
 		return std::move(result);
 	}
-	State perform_perspective_shift(State state, Agent agent) {
-		throw;
+	// Using definition: All states reachable by 'agent' from any designated world, 
+	// and the resulting worlds must be closed under 'agent' (any world should be reachable from any other world by 'agent')
+	State perform_perspective_shift(const State& state, const Agent& agent) {
+
+		std::vector<World_Id> frontier;
+		////std::vector<World_Id> visited;
+		// Using size_t instead of World_Id to avoid specifying custom hash function for World_Id
+		std::unordered_set<size_t> visited;
+		for (auto designated_world : state.get_designated_worlds()) {
+			frontier.push_back(designated_world);
+			//visited.push_back(designated_world);
+			visited.insert(designated_world.id);
+		}
+		while (!frontier.empty()) {
+			auto current = frontier.back();
+			frontier.pop_back();
+			for (auto relation : state.get_indistinguishability_relations(agent.get_id())) {
+				if (relation.world_from == current &&
+					std::find(visited.begin(), visited.end(), relation.world_to.id) == visited.end()) {
+
+					frontier.push_back(relation.world_to);
+					//visited.push_back(relation.world_to);
+					visited.insert(relation.world_to.id);
+				}
+			}
+		}
+
+		State result(state.get_number_of_agents());
+		// Using size_t instead of World_Id to avoid specifying custom hash function for World_Id
+		std::unordered_map<size_t, size_t> old_to_new_mapping;
+		for (auto world : visited) {
+			auto& new_world = result.create_world(state.get_world(World_Id{ world }));
+			result.add_designated_world(new_world.get_id());
+			old_to_new_mapping[world] = new_world.get_id().id;
+		}
+		for (size_t agent_number = 0; agent_number < state.get_number_of_agents(); agent_number++) {
+			auto current_agent = Agent_Id{ agent_number };
+			for (auto& relation : state.get_indistinguishability_relations(current_agent)) {
+				if (visited.find(relation.world_from.id) != visited.end() && visited.find(relation.world_to.id) != visited.end()) {
+					result.add_indistinguishability_relation(
+						current_agent, 
+						World_Id{ old_to_new_mapping[relation.world_from.id] }, 
+						World_Id{ old_to_new_mapping[relation.world_to.id] });
+				}
+			}
+		}
+
+		// TODO - Maybe add indistinguishability for the perspective shifting agent, 
+		// such that it may not distinguis between any of the new designated worlds
+
+		return std::move(result);
 	}
-	std::vector<State> split_into_global_states(State state) {
+	std::vector<State> split_into_global_states(State& state) {
 		throw;
 	}
 }

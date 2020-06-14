@@ -16,10 +16,19 @@ namespace del {
 		const std::vector<World>& get_worlds() const;
 		size_t get_number_of_agents() const;
 		bool is_one_reachable(Agent_Id agent, World_Id world1, World_Id world2);
+		std::vector<World_Id> get_designated_world_reachables(Agent_Id agent);
 		void add_indistinguishability_relation(Agent_Id agent, World_Id world_from, World_Id world_to);
 		void add_true_propositions(World_Id world, std::unordered_set<std::string> propositions);
 		void remove_true_propositions(World_Id world, std::unordered_set<std::string> propositions);
 		World& create_world();
+		World& create_world(const World& world);
+
+		size_t get_worlds_count() const;
+		size_t get_designated_worlds_count() const;
+
+		const std::vector<World_Relation>& get_indistinguishability_relations(Agent_Id agent) const;
+		const std::vector<World_Id>& get_designated_worlds() const;
+		const World& get_world(World_Id world) const;
 
 	private:
 		size_t number_of_agents;

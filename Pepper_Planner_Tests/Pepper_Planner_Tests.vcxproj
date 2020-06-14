@@ -157,7 +157,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="DEL_Operations_Tests.cpp" />
+    <ClCompile Include="DEL_Operations_Perspective_Shift_Tests.cpp" />
+    <ClCompile Include="DEL_Operations_Product_Update_Tests.cpp" />
     <ClCompile Include="Formula_To_String_Tests.cpp" />
     <ClCompile Include="Formula_Valuation_Tests.cpp" />
     <ClCompile Include="pch.cpp">

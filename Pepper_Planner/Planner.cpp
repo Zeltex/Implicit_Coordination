@@ -61,7 +61,7 @@ namespace del {
 	}
 
 	bool Planner::is_valid_state(State state) {
-		throw;
+		return state.get_worlds_count() > 0 && state.get_designated_worlds_count() > 0;
 	}
 
 	bool Planner::is_root_node(Node& node) {

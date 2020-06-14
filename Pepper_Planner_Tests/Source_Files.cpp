@@ -10,6 +10,8 @@
 #include "../Pepper_Planner/Action.cpp"
 #include "../Pepper_Planner/Action_Event.cpp"
 #include "../Pepper_Planner/DEL_Operations.cpp"
+#include "../Pepper_Planner/Agent.cpp"
+
 
 /*
 The test project has to have access to the source code of the main project (Pepper_Planner)

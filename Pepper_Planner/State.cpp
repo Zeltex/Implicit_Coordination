@@ -38,6 +38,29 @@ namespace del {
 		return false;
 	}
 
+
+	std::vector<World_Id> State::get_designated_world_reachables(Agent_Id agent) {
+		std::vector<World_Id> frontier;
+		std::vector<World_Id> visited;
+		for (auto designated_world : designated_worlds) {
+			frontier.push_back(designated_world);
+			visited.push_back(designated_world);
+		}
+		while (!frontier.empty()) {
+			auto current = frontier.back();
+			frontier.pop_back();
+			for (auto relation : indistinguishability_relation[agent.id]) {
+				if (relation.world_from.id == current.id && 
+					std::find(visited.begin(), visited.end(), relation.world_to) == visited.end()) {
+
+					frontier.push_back(relation.world_to);
+					visited.push_back(relation.world_to);
+				}
+			}
+		}
+		return visited;
+	}
+
 	void State::add_indistinguishability_relation(Agent_Id agent, World_Id world_from, World_Id world_to) {
 		indistinguishability_relation[agent.id].emplace_back(world_from, world_to);
 	}
@@ -56,6 +79,12 @@ namespace del {
 		return worlds[new_world.id];
 	}
 
+	World& State::create_world(const World& world) {
+		World_Id new_world = World_Id{ worlds.size() };
+		worlds.emplace_back(new_world, world.get_true_propositions());
+		return worlds[new_world.id];
+	}
+
 	bool State::is_world_designated(World_Id world) const {
 		return find(designated_worlds.begin(), designated_worlds.end(), world) != designated_worlds.end();
 	}
@@ -65,5 +94,25 @@ namespace del {
 			return;
 		}
 		designated_worlds.push_back(world);
+	}
+
+	size_t State::get_worlds_count() const {
+		return worlds.size();
+	}
+
+	size_t State::get_designated_worlds_count() const {
+		return designated_worlds.size();
+	}
+
+	const std::vector<World_Relation>& State::get_indistinguishability_relations(Agent_Id agent) const {
+		return indistinguishability_relation[agent.id];
+	}
+
+	const std::vector<World_Id>& State::get_designated_worlds() const {
+		return designated_worlds;
+	}
+
+	const World& State::get_world(World_Id world) const {
+		return worlds[world.id];
 	}
 }

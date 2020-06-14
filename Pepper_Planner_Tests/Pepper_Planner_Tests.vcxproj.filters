@@ -33,7 +33,10 @@
     <ClCompile Include="World_Valuation_Tests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DEL_Operations_Tests.cpp">
+    <ClCompile Include="DEL_Operations_Product_Update_Tests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DEL_Operations_Perspective_Shift_Tests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
