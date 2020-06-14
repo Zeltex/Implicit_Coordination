@@ -55,6 +55,11 @@ namespace del {
 		Common_Knowledge
 	};
 
+	enum class Node_Type {
+		Or,
+		And
+	};
+
 	struct World_Relation {
 		World_Relation(World_Id world_from, World_Id world_to) :
 			world_from(world_from), world_to(world_to) {}

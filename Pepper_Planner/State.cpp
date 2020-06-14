@@ -12,7 +12,7 @@ namespace del {
 	}
 
 
-	bool State::valuate(Formula& formula) {
+	bool State::valuate(const Formula& formula) const {
 		for (auto world : designated_worlds) {
 			if (!worlds[world.id].valuate(formula)) {
 				return false;
@@ -114,5 +114,51 @@ namespace del {
 
 	const World& State::get_world(World_Id world) const {
 		return worlds[world.id];
+	}
+
+	void State::set_global_for_agent(Agent_Id agent, World_Id world) {
+		designated_worlds.clear();
+		designated_worlds.push_back(world);
+		indistinguishability_relation[agent.id].clear();
+		indistinguishability_relation[agent.id].push_back({ world, world });
+	}
+
+	std::string State::to_string() const {
+
+		size_t relations_size = 0;
+		for (auto relation : indistinguishability_relation) {
+			relations_size += relation.size();
+		}
+
+		std::string result = "---- State\n-- Sizes: (agents, " + std::to_string(number_of_agents) +
+			") (worlds, " + std::to_string(worlds.size()) +
+			") (designated worlds, " + std::to_string(designated_worlds.size()) +
+			") (relations, " + std::to_string(relations_size) + ")\n";
+		result += "-- Designated worlds: ";
+		bool first = true;
+		for (auto designated_world : designated_worlds) {
+			if (first) {
+				first = false;
+			} else {
+				result += ", ";
+			}
+			result += std::to_string(designated_world.id);
+		}
+		result += "\n-- ({Agent}, {World from}, {World to}) Relations";
+		int current_agent = 0;
+		for (auto agent_relations : indistinguishability_relation) {
+			for (auto relation : agent_relations) {
+				result += "\n(" 
+					+ std::to_string(current_agent) + ", "
+					+ std::to_string(relation.world_from.id) + ", "
+					+ std::to_string(relation.world_to.id) + ")";
+			}
+			current_agent++;
+		}
+		result += "\n-- World {id}: {propositions}";
+		for (auto world : worlds) {
+			result += "\n" + world.to_string();
+		}
+		return result;
 	}
 }

@@ -20,8 +20,9 @@ namespace del {
 		const std::unordered_set<std::string> get_add_list() const;
 		const std::unordered_set<std::string> get_delete_list() const;
 
-		//Debug
-		void increment_id() { id = Event_Id{ id.id  + 1}; };
+
+		std::string to_string() const;
+
 	private:
 		Event_Id id;
 		Formula precondition;

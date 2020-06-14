@@ -20,6 +20,8 @@ namespace del {
 		void add_indistinguishability_relation(Agent_Id agent, Event_Id event_from, Event_Id event_to);
 		void add_designated_event(Event_Id event);
 
+		std::string to_string() const;
+
 	private:
 		std::vector<Action_Event> events;
 		std::vector<Event_Id> designated_events;

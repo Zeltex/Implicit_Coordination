@@ -46,4 +46,22 @@ namespace del {
 	void Action::add_designated_event(Event_Id event) {
 		designated_events.emplace_back(event);
 	}
+
+	std::string Action::to_string() const {
+		size_t relations_size = 0;
+		for (auto agent_relations : indistinguishability_relation) {
+			for (auto relation : agent_relations) {
+				relations_size++;
+			}
+		}
+		std::string result = "(owner, " + std::to_string(owner.id) + ") (Relations size, " + std::to_string(relations_size) + ") (Designated events";
+		for (auto event_id : designated_events) {
+			result += ", " + std::to_string(event_id.id);
+		}
+		result += ")";
+		for (auto event : events) {
+			result += "\n" + event.to_string();
+		}
+		return result;
+	}
 }

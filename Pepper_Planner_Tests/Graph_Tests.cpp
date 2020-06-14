@@ -22,7 +22,7 @@ namespace PepperPlannerTests
 			State state1(0);
 			State state2(0);
 			Node_Id node1 = graph.create_root_node(state1);
-			Node_Id node2 = graph.create_node(state2, node1);
+			Node_Id node2 = graph.create_or_node(state2, node1);
 
 			graph.add_to_frontier(node1);
 			graph.add_to_frontier(node2);
@@ -39,7 +39,7 @@ namespace PepperPlannerTests
 			State state1(0);
 			State state2(0);
 			Node_Id node1 = graph.create_root_node(state1);
-			Node_Id node2 = graph.create_node(state2, node1);
+			Node_Id node2 = graph.create_or_node(state2, node1);
 
 			Assert::AreEqual(graph.get_node(node2).get_parent().id, node1.id);
 		}
@@ -49,7 +49,7 @@ namespace PepperPlannerTests
 			State state1(0);
 			State state2(0);
 			Node_Id node1 = graph.create_root_node(state1);
-			Node_Id node2 = graph.create_node(state2, node1);
+			Node_Id node2 = graph.create_or_node(state2, node1);
 			auto children = graph.get_node(node1).get_children();
 			Assert::IsTrue(std::find(children.begin(), children.end(), node2) != children.end());
 		}
@@ -59,7 +59,7 @@ namespace PepperPlannerTests
 			State state1(0);
 			State state2(0);
 			Node_Id node1 = graph.create_root_node(state1);
-			Node_Id node2 = graph.create_node(state2, node1);
+			Node_Id node2 = graph.create_or_node(state2, node1);
 			Assert::IsTrue(graph.get_node(node1).is_root_node());
 			Assert::IsFalse(graph.get_node(node2).is_root_node());
 		}

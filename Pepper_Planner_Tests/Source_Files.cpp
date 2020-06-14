@@ -9,8 +9,10 @@
 #include "../Pepper_Planner/State.cpp"
 #include "../Pepper_Planner/Action.cpp"
 #include "../Pepper_Planner/Action_Event.cpp"
+#include "../Pepper_Planner/Action_Library.cpp"
 #include "../Pepper_Planner/DEL_Operations.cpp"
 #include "../Pepper_Planner/Agent.cpp"
+#include "../Pepper_Planner/Planner.cpp"
 
 
 /*

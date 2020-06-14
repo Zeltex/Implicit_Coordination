@@ -1,7 +1,7 @@
 #include "Formula.hpp"
 
 namespace del {
-	std::string Formula::to_string() {
+	std::string Formula::to_string() const {
 		return formulas[root.id].to_string(formulas);
 	}
 	bool Formula::valuate(const std::unordered_set<std::string> propositions) const {

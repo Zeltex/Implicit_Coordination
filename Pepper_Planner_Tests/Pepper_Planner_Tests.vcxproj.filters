@@ -39,6 +39,9 @@
     <ClCompile Include="DEL_Operations_Perspective_Shift_Tests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="DEL_Operations_Split_Into_Globals_Tests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">

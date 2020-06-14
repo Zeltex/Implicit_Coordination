@@ -23,6 +23,7 @@ namespace del {
 		
 		const std::unordered_set<std::string> get_true_propositions() const;
 
+		std::string to_string() const;
 
 	private:
 

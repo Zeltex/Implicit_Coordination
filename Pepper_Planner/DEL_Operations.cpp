@@ -88,11 +88,17 @@ namespace del {
 		}
 
 		// TODO - Maybe add indistinguishability for the perspective shifting agent, 
-		// such that it may not distinguis between any of the new designated worlds
+		// such that it may not distinguish between any of the new designated worlds
 
 		return std::move(result);
 	}
-	std::vector<State> split_into_global_states(State& state) {
-		throw;
+
+	std::vector<State> split_into_global_states(const State& state, Agent_Id agent) {
+		std::vector<State> result;
+		for (auto designated_world : state.get_designated_worlds()) {
+			State new_state = State(state);
+			new_state.set_global_for_agent(agent, designated_world);
+		}
+		return result;
 	}
 }

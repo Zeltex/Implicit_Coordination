@@ -14,7 +14,7 @@ namespace del {
 	public:
 		Formula_Id root;
 		std::vector<Formula_Component> formulas;
-		std::string to_string();
+		std::string to_string() const;
 		bool valuate(const std::unordered_set<std::string> propositions) const;
 		Formula_Id f_top();
 		Formula_Id f_bot();
