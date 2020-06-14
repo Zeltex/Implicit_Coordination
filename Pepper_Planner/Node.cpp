@@ -130,7 +130,7 @@ namespace del {
 		default: type_string = "Unknown";
 		}
 
-		std::string result = "--- Node " + std::to_string(id.id)
+		std::string result = "---- Node " + std::to_string(id.id)
 			+ ": (Type, " + type_string
 			+ ") (Parent, " + std::to_string(parent.id)
 			+ ") (Root, " + (root ? "True" : "False")
@@ -147,7 +147,7 @@ namespace del {
 			result += std::to_string(child.id);
 		}
 
-		result += ")\n-- Action from parent\n" +  (type == Node_Type::And ? "Agent split, no action" : action_from_parent.to_string()) + "\n | \n" + state.to_string();
+		result += ")\n--- Action from parent\n" +  (type == Node_Type::And ? "Agent split, no action" : action_from_parent.to_string()) + " \n" + state.to_string();
 		return result;
 	}
 }

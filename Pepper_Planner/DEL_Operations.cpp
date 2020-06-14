@@ -45,7 +45,6 @@ namespace del {
 	State perform_perspective_shift(const State& state, const Agent& agent) {
 
 		std::vector<World_Id> frontier;
-		////std::vector<World_Id> visited;
 		// Using size_t instead of World_Id to avoid specifying custom hash function for World_Id
 		std::unordered_set<size_t> visited;
 		for (auto designated_world : state.get_designated_worlds()) {
@@ -61,7 +60,6 @@ namespace del {
 					std::find(visited.begin(), visited.end(), relation.world_to.id) == visited.end()) {
 
 					frontier.push_back(relation.world_to);
-					//visited.push_back(relation.world_to);
 					visited.insert(relation.world_to.id);
 				}
 			}
@@ -98,6 +96,7 @@ namespace del {
 		for (auto designated_world : state.get_designated_worlds()) {
 			State new_state = State(state);
 			new_state.set_global_for_agent(agent, designated_world);
+			result.push_back(std::move(new_state));
 		}
 		return result;
 	}

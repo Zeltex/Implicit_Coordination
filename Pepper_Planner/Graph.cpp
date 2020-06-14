@@ -53,7 +53,7 @@ namespace del {
 		}
 		result += ")";
 		for (auto node : nodes) {
-			result += "\n\n" + node.to_string();
+			result += "\n\n\n" + node.to_string();
 		}
 		return result;
 	}

@@ -130,7 +130,7 @@ namespace del {
 			relations_size += relation.size();
 		}
 
-		std::string result = "---- State\n-- Sizes: (agents, " + std::to_string(number_of_agents) +
+		std::string result = "--- State\n-- Sizes: (agents, " + std::to_string(number_of_agents) +
 			") (worlds, " + std::to_string(worlds.size()) +
 			") (designated worlds, " + std::to_string(designated_worlds.size()) +
 			") (relations, " + std::to_string(relations_size) + ")\n";

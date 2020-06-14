@@ -14,10 +14,12 @@ namespace del {
 	public:
 		Node() = delete;
 		Node(State state, Node_Id id, Node_Id parent, Action action_from_parent, bool root) :
-			state(state), id(id), parent(parent), action_from_parent(action_from_parent), root(root), type(Node_Type::And) {};
+			state(state), id(id), parent(parent), action_from_parent(action_from_parent), root(root), type(Node_Type::And),
+			dead(false), solved(false) {};
 		// TODO - Don't create dummy action (though it won't get used)
 		Node(State state, Node_Id id, Node_Id parent, bool root) :
-			state(state), id(id), parent(parent), action_from_parent(Action(Agent_Id{ 0 }, 0)), root(root), type(Node_Type::Or) {};
+			state(state), id(id), parent(parent), action_from_parent(Action(Agent_Id{ 0 }, 0)), root(root), type(Node_Type::Or),
+			dead(false), solved(false) {};
 		void add_child(Node_Id node);
 		void set_dead();
 		void set_solved();

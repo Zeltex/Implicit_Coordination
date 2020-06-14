@@ -43,9 +43,7 @@ namespace PepperPlannerTests
 			Action action(Agent_Id{ 1 }, 2);
 			Formula f;
 			f.f_prop("in(red,Box1)");
-			Event_Id id{ 0 };
-
-			Action_Event event = Action_Event(id, std::move(f), std::unordered_set<std::string>(), std::unordered_set<std::string>());
+			Action_Event event = Action_Event(Event_Id{ 0 }, std::move(f), std::unordered_set<std::string>(), std::unordered_set<std::string>());
 			action.add_event(event);
 			State& new_state = perform_product_update(state, action);
 			

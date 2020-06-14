@@ -16,7 +16,7 @@ namespace del {
 
 	class Planner {
 	public:
-		bool find_policy(Formula formula, Action_Library action_library) const;
+		bool find_policy(const Formula& formula, const Action_Library& action_library, const State& initial_state) const;
 	private:
 		void extract_policy(Graph& graph) const;
 		void propogate_dead_end_node(Graph& graph, Node_Id node) const;
@@ -24,6 +24,6 @@ namespace del {
 		bool is_goal_node(const Node& node, const Formula& goal_formula) const;
 		bool is_root_node(const Node& node) const;
 		bool is_valid_state(const State& state) const;
-		std::vector<Agent> get_all_agents() const;
+		const std::vector<Agent>& get_all_agents(const Action_Library& action_library) const;
 	};
 }

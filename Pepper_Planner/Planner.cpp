@@ -1,9 +1,14 @@
 #include "Planner.hpp"
 
 namespace del {
-	bool Planner::find_policy(Formula goal_formula, Action_Library action_library) const {
+
+	// TODO - Add option to specify for what person the goal must be fulfilled
+	bool Planner::find_policy(const Formula& goal_formula, const Action_Library& action_library, const State& initial_state) const {
 		Graph graph;
+		Node_Id root_node = graph.create_root_node(initial_state);
+		graph.add_to_frontier(root_node);
 		while (true) {
+			std::cout << graph.to_string() << "\n\n\n\n\n" << std::endl;;
 			if (graph.is_frontier_empty()) {
 				return false;
 			}
@@ -22,6 +27,7 @@ namespace del {
 
 			bool found_applicable_action = false;
 			for (Action action : action_library.get_actions()) {
+				// TODO - Check that action preconditions are fulfilled in all designated worlds for the agent
 				State temp = perform_product_update(graph.get_node(current_node).get_state(), action);
 				if (!is_valid_state(temp)) {
 					continue;
@@ -31,7 +37,7 @@ namespace del {
 				}
 				Node_Id action_node = graph.create_and_node(temp, current_node, action);
 
-				for (Agent agent : get_all_agents()) {
+				for (Agent agent : get_all_agents(action_library)) {
 					State perspective_shifted = perform_perspective_shift(graph.get_node(action_node).get_state(), agent);
 					std::vector<State> global_states = split_into_global_states(perspective_shifted, agent.get_id());
 
@@ -113,9 +119,7 @@ namespace del {
 		return node.is_root_node();
 	}
 
-	std::vector<Agent> Planner::get_all_agents() const {
-		throw;
+	const std::vector<Agent>& Planner::get_all_agents(const Action_Library& action_library) const {
+		return action_library.get_agents();
 	}
-
-
 }
