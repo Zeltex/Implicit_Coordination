@@ -6,6 +6,10 @@ namespace del {
 		return state;;
 	}
 
+	Action Node::get_action() {
+		return action_from_parent;
+	}
+
 	Node_Id Node::get_id() {
 		return id;
 	}
@@ -20,6 +24,10 @@ namespace del {
 
 	std::vector<Node_Id>& Node::get_children() {
 		return children;
+	}
+
+	Node_Type Node::get_type() {
+		return type;
 	}
 
 	bool Node::is_root_node() const {

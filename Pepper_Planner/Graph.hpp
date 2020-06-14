@@ -28,6 +28,7 @@ namespace del {
 		std::string to_string() const;
 	private:
 		Node_Id root;
+		// TODO - Change to Node_Id
 		std::deque<int> frontier;
 		std::vector<Node> nodes;
 	};

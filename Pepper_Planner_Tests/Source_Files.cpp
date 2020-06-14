@@ -13,6 +13,7 @@
 #include "../Pepper_Planner/DEL_Operations.cpp"
 #include "../Pepper_Planner/Agent.cpp"
 #include "../Pepper_Planner/Planner.cpp"
+#include "../Pepper_Planner/Policy.cpp"
 
 
 /*

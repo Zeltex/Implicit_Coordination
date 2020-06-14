@@ -25,8 +25,10 @@ namespace del {
 		void set_solved();
 
 		State& get_state();
+		Action get_action();
 		Node_Id get_id();
 		Node_Id get_parent();
+		Node_Type get_type();
 		std::vector<Node_Id>& get_children();
 
 		bool is_root_node() const;

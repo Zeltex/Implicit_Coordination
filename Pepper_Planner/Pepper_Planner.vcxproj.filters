@@ -78,6 +78,9 @@
     <ClCompile Include="Planner.cpp">
       <Filter>Source Files\Planner</Filter>
     </ClCompile>
+    <ClCompile Include="Policy.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Agent.hpp">
@@ -118,6 +121,9 @@
     </ClInclude>
     <ClInclude Include="Planner.hpp">
       <Filter>Header Files\Planner</Filter>
+    </ClInclude>
+    <ClInclude Include="Policy.hpp">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

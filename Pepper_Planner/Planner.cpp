@@ -3,14 +3,14 @@
 namespace del {
 
 	// TODO - Add option to specify for what person the goal must be fulfilled
-	bool Planner::find_policy(const Formula& goal_formula, const Action_Library& action_library, const State& initial_state) const {
+	Policy Planner::find_policy(const Formula& goal_formula, const Action_Library& action_library, const State& initial_state) const {
 		Graph graph;
 		Node_Id root_node = graph.create_root_node(initial_state);
 		graph.add_to_frontier(root_node);
 		while (true) {
-			std::cout << graph.to_string() << "\n\n\n\n\n" << std::endl;;
+			print_graph(graph);
 			if (graph.is_frontier_empty()) {
-				return false;
+				return Policy(false);
 			}
 
 			Node_Id current_node = graph.get_next_from_frontier();
@@ -18,7 +18,7 @@ namespace del {
 				propogate_solved_node(graph, current_node);
 				if (graph.get_root_node().is_solved()) {
 					extract_policy(graph);
-					return true;
+					return Policy(true);
 				}
 				else {
 					continue;
@@ -50,18 +50,41 @@ namespace del {
 			if (!found_applicable_action) {
 				propogate_dead_end_node(graph, current_node);
 				if (graph.get_root_node().is_dead()) {
-					return false;
+					return Policy(false);
 				}
 			}
 		}
-		return false;
+		return Policy(false);
 	}
 
 
-	void Planner::extract_policy(Graph& graph) const {
+	Policy Planner::extract_policy(Graph& graph) const {
+		print_graph(graph);
+		Policy policy(true);
 
+		std::deque<Node_Id> frontier;
+		frontier.push_back(graph.get_root_node().get_id());
+		while (!frontier.empty()) {
+			auto current_node_id = frontier.back();
+			frontier.pop_back();
+			auto& current_node = graph.get_node(current_node_id);
 
-		throw;
+			if (current_node.get_type() == Node_Type::And) {
+				policy.add_policy_entry(current_node.get_state(), current_node.get_action());
+			}
+			for (auto child_id : current_node.get_children()) {
+
+				auto& child = graph.get_node(child_id);
+				if (child.is_solved()) {
+					frontier.push_back(child_id);
+					if (current_node.get_type() == Node_Type::Or) {
+						break;
+					}
+				}
+			}
+		}
+
+		return policy;
 	}
 
 	void Planner::propogate_dead_end_node(Graph& graph, Node_Id node_id) const {
@@ -121,5 +144,9 @@ namespace del {
 
 	const std::vector<Agent>& Planner::get_all_agents(const Action_Library& action_library) const {
 		return action_library.get_agents();
+	}
+
+	void Planner::print_graph(const Graph& graph) const {
+		std::cout << graph.to_string() << "\n\n\n\n\n" << std::endl;;
 	}
 }
