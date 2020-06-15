@@ -9,8 +9,9 @@
 
 
 namespace del {
-	bool is_action_applicable(State& state, Action& action);
-	State perform_product_update(State& state, Action& action);
+	bool is_action_applicable(const State& state, const Action& action);
+	State perform_product_update(const State& state, const Action& action);
 	State perform_perspective_shift(const State& state, const Agent& agent);
-	std::vector<State> split_into_global_states(const State& state, Agent_Id agent);
+	std::vector<State> split_into_global_states(const State& state, const Agent_Id agent);
+	bool are_states_bisimilar(const State& state1, const State& state2);
 }

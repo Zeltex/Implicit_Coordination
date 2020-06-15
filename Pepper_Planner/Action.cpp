@@ -17,15 +17,15 @@ namespace del {
 		events.emplace_back(id, std::move(precondition), proposition_add, proposition_delete);
 	}
 
-	std::vector<Action_Event>& Action::get_events() {
+	const std::vector<Action_Event>& Action::get_events() const {
 		return events;
 	}
 
-	Agent_Id Action::get_owner() {
+	Agent_Id Action::get_owner() const {
 		return owner;
 	}
 
-	bool Action::is_one_reachable(Agent_Id agent, Event_Id event1, Event_Id event2) {
+	bool Action::is_one_reachable(Agent_Id agent, Event_Id event1, Event_Id event2) const {
 		for (auto relations : indistinguishability_relation[agent.id]) {
 			if (relations.event_from == event1 && relations.event_to == event2) {
 				return true;
@@ -48,13 +48,17 @@ namespace del {
 	}
 
 	std::string Action::to_string() const {
+		return to_string(0);
+	}
+
+	std::string Action::to_string(size_t indenation) const {
 		size_t relations_size = 0;
 		for (auto agent_relations : indistinguishability_relation) {
 			for (auto relation : agent_relations) {
 				relations_size++;
 			}
 		}
-		std::string result = "(owner, " + std::to_string(owner.id) + ") (Relations size, " + std::to_string(relations_size) + ") (Designated events";
+		std::string result = get_indentation(indenation) + " Action\n(owner, " + std::to_string(owner.id) + ") (Relations size, " + std::to_string(relations_size) + ") (Designated events";
 		for (auto event_id : designated_events) {
 			result += ", " + std::to_string(event_id.id);
 		}

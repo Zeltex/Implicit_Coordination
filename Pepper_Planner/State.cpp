@@ -28,7 +28,7 @@ namespace del {
 		return number_of_agents;
 	}
 
-	bool State::is_one_reachable(Agent_Id agent, World_Id world1, World_Id world2) {
+	bool State::is_one_reachable(Agent_Id agent, World_Id world1, World_Id world2) const {
 		for (auto relations : indistinguishability_relation[agent.id]) {
 			if (relations.world_from == world1 && relations.world_to == world2) {
 				return true;
@@ -38,7 +38,7 @@ namespace del {
 	}
 
 
-	std::vector<World_Id> State::get_designated_world_reachables(Agent_Id agent) {
+	std::vector<World_Id> State::get_designated_world_reachables(Agent_Id agent) const {
 		std::vector<World_Id> frontier;
 		std::vector<World_Id> visited;
 		for (auto designated_world : designated_worlds) {
@@ -84,6 +84,13 @@ namespace del {
 		return worlds[new_world.id];
 	}
 
+	void State::create_worlds(size_t amount_to_create) {
+		for (size_t i = 0; i < amount_to_create; i++) {
+			World_Id new_world = World_Id{ worlds.size() };
+			worlds.emplace_back(new_world);
+		}
+	}
+
 	bool State::is_world_designated(World_Id world) const {
 		return find(designated_worlds.begin(), designated_worlds.end(), world) != designated_worlds.end();
 	}
@@ -123,17 +130,21 @@ namespace del {
 	}
 
 	std::string State::to_string() const {
+		return to_string(3);
+	}
+
+	std::string State::to_string(size_t indentation) const {
 
 		size_t relations_size = 0;
 		for (auto relation : indistinguishability_relation) {
 			relations_size += relation.size();
 		}
 
-		std::string result = "--- State\n-- Sizes: (agents, " + std::to_string(number_of_agents) +
+		std::string result = get_indentation(indentation) + " State\n" + get_indentation(indentation - 1) + " Sizes: (agents, " + std::to_string(number_of_agents) +
 			") (worlds, " + std::to_string(worlds.size()) +
 			") (designated worlds, " + std::to_string(designated_worlds.size()) +
 			") (relations, " + std::to_string(relations_size) + ")\n";
-		result += "-- Designated worlds: ";
+		result += get_indentation(indentation - 1) + " Designated worlds: ";
 		bool first = true;
 		for (auto designated_world : designated_worlds) {
 			if (first) {
@@ -143,7 +154,7 @@ namespace del {
 			}
 			result += std::to_string(designated_world.id);
 		}
-		result += "\n-- ({Agent}, {World from}, {World to}) Relations";
+		result += "\n" + get_indentation(indentation - 1) + " ({Agent}, {World from}, {World to}) Relations";
 		int current_agent = 0;
 		for (auto agent_relations : indistinguishability_relation) {
 			for (auto relation : agent_relations) {
@@ -154,7 +165,7 @@ namespace del {
 			}
 			current_agent++;
 		}
-		result += "\n-- World {id}: {propositions}";
+		result += "\n" + get_indentation(indentation - 1) + " World {id}: {propositions}";
 		for (auto world : worlds) {
 			result += "\n" + world.to_string();
 		}

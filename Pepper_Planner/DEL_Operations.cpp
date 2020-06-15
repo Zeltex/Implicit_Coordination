@@ -3,13 +3,13 @@
 namespace del {
 
 	// TODO - Check definition of applicable, does there have to be at least one designated world left?
-	State perform_product_update(State& state, Action& action) {
+	State perform_product_update(const State& state, const Action& action) {
 		//Agent_Id agent = action.get_owner();
 		std::vector<World_Entry> new_worlds;
 		State result(state.get_number_of_agents());
 
 		for (auto& world : state.get_worlds()) {
-			for (auto& event : action.get_events()) {
+			for (const auto& event : action.get_events()) {
 				if (world.valuate(event.get_preconditions())) {
 					// TODO - Maybe handle unreachable worlds here
 
@@ -91,7 +91,7 @@ namespace del {
 		return std::move(result);
 	}
 
-	std::vector<State> split_into_global_states(const State& state, Agent_Id agent) {
+	std::vector<State> split_into_global_states(const State& state, const Agent_Id agent) {
 		std::vector<State> result;
 		for (auto designated_world : state.get_designated_worlds()) {
 			State new_state = State(state);
@@ -102,7 +102,7 @@ namespace del {
 	}
 
 
-	bool is_action_applicable(State& state, Action& action) {
+	bool is_action_applicable(const State& state, const Action& action) {
 		auto worlds = state.get_designated_world_reachables(action.get_owner());
 
 		for (auto& world_id : worlds) {
@@ -118,5 +118,12 @@ namespace del {
 			}
 		}
 		return true;
+	}
+
+	bool are_states_bisimilar(const State& state1, const State& state2) {
+
+
+
+		return false;
 	}
 }

@@ -3,6 +3,7 @@
 #include "Formula.hpp"
 #include "World.hpp"
 #include "Types.hpp"
+#include "Misc.hpp"
 
 namespace del {
 
@@ -12,7 +13,7 @@ namespace del {
 		State(size_t number_of_agents);
 		bool valuate(const Formula& formula) const;
 		bool is_world_designated(World_Id world) const;
-		bool is_one_reachable(Agent_Id agent, World_Id world1, World_Id world2);
+		bool is_one_reachable(Agent_Id agent, World_Id world1, World_Id world2) const;
 		
 		void add_indistinguishability_relation(Agent_Id agent, World_Id world_from, World_Id world_to);
 		void add_true_propositions(World_Id world, std::unordered_set<std::string> propositions);
@@ -22,7 +23,8 @@ namespace del {
 
 		World& create_world();
 		World& create_world(const World& world);
-		std::vector<World_Id> get_designated_world_reachables(Agent_Id agent);
+		void create_worlds(size_t amount_to_create);
+		std::vector<World_Id> get_designated_world_reachables(Agent_Id agent) const;
 		const std::vector<World>& get_worlds() const;
 
 		size_t get_number_of_agents() const;
@@ -34,6 +36,7 @@ namespace del {
 		const World& get_world(World_Id world) const;
 
 		std::string to_string() const;
+		std::string to_string(size_t indentation) const;
 
 	private:
 		size_t number_of_agents;

@@ -10,6 +10,7 @@
 #include "DEL_Operations.hpp"
 #include "Action_Library.hpp"
 #include "Planner.hpp"
+#include "Domain.hpp"
 
 using namespace del;
 
@@ -59,14 +60,9 @@ void add_actions(Action_Library& library, size_t amount_of_agents) {
 	//add_pickup_action(library, "in(red,Box2)", "in(red, L)", amount_of_agents);
 }
 
-int main(int argc, char* argv[]) {
-	using namespace del;
 
-	size_t amount_of_agents = 2;
-
+State get_initial_state(size_t amount_of_agents) {
 	// Agents 0:L  1:Pepper
-
-	Formula goal = get_goal_formula();
 
 	State state(amount_of_agents);
 	state.create_world();
@@ -85,15 +81,30 @@ int main(int argc, char* argv[]) {
 
 	state.add_designated_world(World_Id{ 1 });
 
+	return state;
+}
+
+int main(int argc, char* argv[]) {
+	using namespace del;
+
+	size_t amount_of_agents = 2;
 
 
-	Action_Library library(amount_of_agents);
+
+
+	Formula goal = get_goal_formula();
+	State state = get_initial_state(amount_of_agents);
+		Action_Library library(amount_of_agents);
 	add_actions(library, amount_of_agents);
 
-
+	Domain domain(amount_of_agents);
+	
+	
 	Planner planner;
-	planner.find_policy(goal, library, state);
+	auto policy = planner.find_policy(goal, library, state);
 
+
+	std::cout << policy.to_string() << std::endl;
 
 	return 0;
 }

@@ -49,7 +49,7 @@ namespace del {
 	std::string Graph::to_string() const {
 		std::string result = "Graph: (root, " + std::to_string(root.id) + ") (frontier";
 		for (auto node_id : frontier) {
-			result += ", " + node_id;
+			result += ", " + std::to_string(node_id);
 		}
 		result += ")";
 		for (auto node : nodes) {

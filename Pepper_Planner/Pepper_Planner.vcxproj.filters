@@ -81,6 +81,15 @@
     <ClCompile Include="Policy.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Misc.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Domain.cpp">
+      <Filter>Source Files\DEL</Filter>
+    </ClCompile>
+    <ClCompile Include="Bisimulation_Context.cpp">
+      <Filter>Source Files\DEL</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Agent.hpp">
@@ -124,6 +133,15 @@
     </ClInclude>
     <ClInclude Include="Policy.hpp">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Misc.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Domain.hpp">
+      <Filter>Header Files\DEL</Filter>
+    </ClInclude>
+    <ClInclude Include="Bisimulation_Context.hpp">
+      <Filter>Header Files\DEL</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

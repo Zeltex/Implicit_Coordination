@@ -14,6 +14,8 @@
 #include "../Pepper_Planner/Agent.cpp"
 #include "../Pepper_Planner/Planner.cpp"
 #include "../Pepper_Planner/Policy.cpp"
+#include "../Pepper_Planner/Misc.cpp"
+#include "../Pepper_Planner/Bisimulation_Context.cpp"
 
 
 /*

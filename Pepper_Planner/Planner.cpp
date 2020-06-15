@@ -17,8 +17,7 @@ namespace del {
 			if (is_goal_node(graph.get_node(current_node), goal_formula)) {
 				propogate_solved_node(graph, current_node);
 				if (graph.get_root_node().is_solved()) {
-					extract_policy(graph);
-					return Policy(true);
+					return extract_policy(graph);
 				} else {
 					continue;
 				}
