@@ -88,6 +88,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -147,6 +148,9 @@
     <ClCompile Include="Bisimulation_Context.cpp" />
     <ClCompile Include="DEL_Operations.cpp" />
     <ClCompile Include="Domain.cpp" />
+    <ClCompile Include="Environment_Loader.cpp" />
+    <ClCompile Include="DEL_Interface.cpp" />
+    <ClCompile Include="Interface_DTO.cpp" />
     <ClCompile Include="Misc.cpp" />
     <ClCompile Include="Planner.cpp" />
     <ClCompile Include="Formula.cpp" />
@@ -166,6 +170,9 @@
     <ClInclude Include="Bisimulation_Context.hpp" />
     <ClInclude Include="DEL_Operations.hpp" />
     <ClInclude Include="Domain.hpp" />
+    <ClInclude Include="Environment_Loader.hpp" />
+    <ClInclude Include="DEL_Interface.hpp" />
+    <ClInclude Include="Interface_DTO.hpp" />
     <ClInclude Include="Misc.hpp" />
     <ClInclude Include="Planner.hpp" />
     <ClInclude Include="Formula.hpp" />

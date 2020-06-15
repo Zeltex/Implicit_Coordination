@@ -90,6 +90,15 @@
     <ClCompile Include="Bisimulation_Context.cpp">
       <Filter>Source Files\DEL</Filter>
     </ClCompile>
+    <ClCompile Include="Interface_DTO.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Environment_Loader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DEL_Interface.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Agent.hpp">
@@ -142,6 +151,15 @@
     </ClInclude>
     <ClInclude Include="Bisimulation_Context.hpp">
       <Filter>Header Files\DEL</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface_DTO.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Environment_Loader.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DEL_Interface.hpp">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -6,7 +6,7 @@
 #include "State.hpp"
 #include "Action.hpp"
 #include "Agent.hpp"
-
+#include "Bisimulation_Context.hpp"
 
 namespace del {
 	bool is_action_applicable(const State& state, const Action& action);

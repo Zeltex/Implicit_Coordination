@@ -1,9 +1,12 @@
 #pragma once
 
 #include <vector>
+#include <tuple>
+
 #include "State.hpp"
 #include "Action.hpp"
 #include "Misc.hpp"
+#include "DEL_Operations.hpp"
 
 namespace del {
 	class Policy {
@@ -12,6 +15,7 @@ namespace del {
 		Policy(bool solved) : solved(solved) {}
 		bool is_solved() const;
 		void add_policy_entry(State state, Action action);
+		std::tuple<Action, bool> get_action(State state);
 
 		std::string to_string() const;
 	private:

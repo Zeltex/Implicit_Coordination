@@ -11,6 +11,7 @@
 #include "Action_Library.hpp"
 #include "Planner.hpp"
 #include "Domain.hpp"
+#include "DEL_Interface.hpp"
 
 using namespace del;
 
@@ -87,24 +88,36 @@ State get_initial_state(size_t amount_of_agents) {
 int main(int argc, char* argv[]) {
 	using namespace del;
 
-	size_t amount_of_agents = 2;
+	//size_t amount_of_agents = 2;
 
 
 
 
-	Formula goal = get_goal_formula();
-	State state = get_initial_state(amount_of_agents);
-		Action_Library library(amount_of_agents);
-	add_actions(library, amount_of_agents);
+	//Formula goal = get_goal_formula();
+	//State state = get_initial_state(amount_of_agents);
+	//	Action_Library library(amount_of_agents);
+	//add_actions(library, amount_of_agents);
 
-	Domain domain(amount_of_agents);
+	//Domain domain(amount_of_agents);
 	
 	
-	Planner planner;
-	auto policy = planner.find_policy(goal, library, state);
+	//Planner planner;
+	//auto policy = planner.find_policy(goal, library, state);
 
 
-	std::cout << policy.to_string() << std::endl;
+
+
+	//std::cout << policy.to_string() << std::endl;
+
+
+	DEL_Interface del_interface;
+	del_interface.create_policy();
+	Interface_DTO dto = del_interface.get_next_action();
+	del_interface.perform_action(dto.get_action());
+	dto = del_interface.get_next_action();
+	del_interface.perform_action(dto.get_action());
+
+
 
 	return 0;
 }

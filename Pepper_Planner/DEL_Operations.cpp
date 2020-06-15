@@ -121,9 +121,7 @@ namespace del {
 	}
 
 	bool are_states_bisimilar(const State& state1, const State& state2) {
-
-
-
-		return false;
+		Bisimulation_Context bisimulation_context(state1, state2);
+		return bisimulation_context.is_bisimilar();
 	}
 }
