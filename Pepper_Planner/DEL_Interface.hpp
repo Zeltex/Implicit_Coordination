@@ -20,6 +20,7 @@ namespace del {
 		void perform_action(Action action);
 		bool create_policy(Formula goal);
 		bool create_policy();
+		bool is_solved();
 	private:
 		Domain domain;
 		Planner planner;
@@ -27,6 +28,6 @@ namespace del {
 		Policy policy;
 		Action_Library action_library;
 		Agent_Id pepper_id;
-		Formula default_goal;
+		Formula goal;
 	};
 }

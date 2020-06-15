@@ -56,13 +56,13 @@ namespace del {
 	}
 
 	void Environment_Loader::add_actions(Action_Library& library, size_t amount_of_agents) {
-		//add_announce_action(library, "in(red,Box0)", amount_of_agents);
+		add_announce_action(library, "in(red,Box0)", amount_of_agents);
 		add_announce_action(library, "in(red,Box1)", amount_of_agents);
-		//add_announce_action(library, "in(red,Box2)", amount_of_agents);
+		add_announce_action(library, "in(red,Box2)", amount_of_agents);
 
-		//add_pickup_action(library, "in(red,Box0)", "in(red,L)", amount_of_agents);
+		add_pickup_action(library, "in(red,Box0)", "in(red,L)", amount_of_agents);
 		add_pickup_action(library, "in(red,Box1)", "in(red,L)", amount_of_agents);
-		//add_pickup_action(library, "in(red,Box2)", "in(red, L)", amount_of_agents);
+		add_pickup_action(library, "in(red,Box2)", "in(red, L)", amount_of_agents);
 	}
 
 

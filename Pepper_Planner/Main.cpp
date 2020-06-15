@@ -112,10 +112,23 @@ int main(int argc, char* argv[]) {
 
 	DEL_Interface del_interface;
 	del_interface.create_policy();
-	Interface_DTO dto = del_interface.get_next_action();
-	del_interface.perform_action(dto.get_action());
-	dto = del_interface.get_next_action();
-	del_interface.perform_action(dto.get_action());
+	//Interface_DTO dto = del_interface.get_next_action();
+	//del_interface.perform_action(dto.get_action());
+	//dto = del_interface.get_next_action();
+	//del_interface.perform_action(dto.get_action());
+
+	while (!del_interface.is_solved()) {
+		Interface_DTO dto = del_interface.get_next_action();
+		if (dto.has_action()) {
+			del_interface.perform_action(dto.get_action());
+		} else {
+			std::cerr << "NO APPLIABLE ACTION" << std::endl;
+		}
+		if (dto.get_announce_string() != "") {
+			std::cout << "ANNOUNCING: " << dto.get_announce_string() << std::endl;
+		}
+
+	}
 
 
 
