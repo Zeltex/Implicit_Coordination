@@ -100,4 +100,23 @@ namespace del {
 		}
 		return result;
 	}
+
+
+	bool is_action_applicable(State& state, Action& action) {
+		auto worlds = state.get_designated_world_reachables(action.get_owner());
+
+		for (auto& world_id : worlds) {
+			auto& world = state.get_world(world_id);
+			bool found_applicable_event = false;
+			for (auto event : action.get_events()) {
+				if (world.valuate(event.get_preconditions())) {
+					found_applicable_event = true;
+				}
+			}
+			if (!found_applicable_event) {
+				return false;
+			}
+		}
+		return true;
+	}
 }

@@ -11,7 +11,6 @@ namespace del {
 		}
 	}
 
-
 	bool State::valuate(const Formula& formula) const {
 		for (auto world : designated_worlds) {
 			if (!worlds[world.id].valuate(formula)) {

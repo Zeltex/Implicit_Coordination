@@ -9,6 +9,7 @@
 
 
 namespace del {
+	bool is_action_applicable(State& state, Action& action);
 	State perform_product_update(State& state, Action& action);
 	State perform_perspective_shift(const State& state, const Agent& agent);
 	std::vector<State> split_into_global_states(const State& state, Agent_Id agent);

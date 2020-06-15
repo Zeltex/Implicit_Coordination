@@ -19,15 +19,17 @@ namespace del {
 				if (graph.get_root_node().is_solved()) {
 					extract_policy(graph);
 					return Policy(true);
-				}
-				else {
+				} else {
 					continue;
 				}
 			}
 
 			bool found_applicable_action = false;
 			for (Action action : action_library.get_actions()) {
-				// TODO - Check that action preconditions are fulfilled in all designated worlds for the agent
+				if (!is_action_applicable(graph.get_node(current_node).get_state(), action)) {
+					continue;
+				}
+
 				State temp = perform_product_update(graph.get_node(current_node).get_state(), action);
 				if (!is_valid_state(temp)) {
 					continue;
@@ -70,7 +72,8 @@ namespace del {
 			auto& current_node = graph.get_node(current_node_id);
 
 			if (current_node.get_type() == Node_Type::And) {
-				policy.add_policy_entry(current_node.get_state(), current_node.get_action());
+				auto& parent = graph.get_node(current_node.get_parent());
+				policy.add_policy_entry(parent.get_state(), current_node.get_action());
 			}
 			for (auto child_id : current_node.get_children()) {
 
