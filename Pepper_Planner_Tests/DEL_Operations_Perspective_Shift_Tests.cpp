@@ -51,8 +51,8 @@ namespace PepperPlannerTests
 
 			state.add_designated_world(World_Id{ 1 });
 
-			Agent agent(Agent_Id{ 0 });
-			auto new_state = perform_perspective_shift(state, agent);
+			Agent agent(Agent_Id{ 0 }, "Pepper");
+			auto new_state = perform_perspective_shift(state, agent.get_id());
 
 
 			auto& worlds = new_state.get_worlds();
@@ -93,8 +93,8 @@ namespace PepperPlannerTests
 
 			state.add_designated_world(World_Id{ 1 });
 
-			Agent agent(Agent_Id{ 1 });
-			auto new_state = perform_perspective_shift(state, agent);
+			Agent agent(Agent_Id{ 1 }, "L");
+			auto new_state = perform_perspective_shift(state, agent.get_id());
 
 
 			auto& worlds = new_state.get_worlds();

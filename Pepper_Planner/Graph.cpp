@@ -57,4 +57,20 @@ namespace del {
 		}
 		return result;
 	}
+
+	std::string Graph::to_graph(const std::vector<Agent> agents, const std::string node_id) const {
+		std::string result = "digraph G {\ncompound=true;";
+		std::string connections;
+
+		size_t counter = 0;
+		for (auto& node : nodes) {
+			result += "\n" + node.to_graph(agents, std::to_string(counter));
+			//for (auto& child : node.) {
+			//	child.
+			//}
+		}
+
+
+		return result;
+	}
 }

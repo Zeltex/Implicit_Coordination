@@ -39,7 +39,7 @@ namespace del {
 		bool valuate(const Formula& formula) const;
 
 		std::string to_string() const;
-
+		std::string to_graph(const std::vector<Agent> agents, const std::string node_id) const;
 
 	private:
 

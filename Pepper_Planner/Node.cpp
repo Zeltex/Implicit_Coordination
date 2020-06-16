@@ -158,4 +158,10 @@ namespace del {
 		result += ")\n--- Action from parent\n" +  (type == Node_Type::And ? "Agent split, no action" : action_from_parent.to_string()) + " \n" + state.to_string();
 		return result;
 	}
+
+	std::string Node::to_graph(const std::vector<Agent> agents, const std::string node_id) const {
+		std::string result = "subgraph " + node_id + " {\nlabel=\"Node " + node_id + ";\n";
+		result += state.to_graph(agents, node_id) + "\n}";
+		return result;
+	}
 }

@@ -171,4 +171,31 @@ namespace del {
 		}
 		return result;
 	}
+
+	std::string State::to_graph(const std::vector<Agent> agents, const std::string node_id) const {
+		std::string result;
+		for (auto& world : worlds) {
+			result += node_id + std::to_string(world.get_id().id) + " [label=\"" + std::to_string(world.get_id().id) + "\"";
+			if (std::find(designated_worlds.begin(), designated_worlds.end(), world.get_id()) != designated_worlds.end()) {
+				result += ", shape=doublecircle];\n";
+			} else {
+				result += "];\n";
+			}
+		}
+		size_t agent_id = 0;
+		for (auto& agent_relations : indistinguishability_relation) {
+			for (auto& relation : agent_relations) {
+				result += node_id
+					+ std::to_string(relation.world_from.id) 
+					+ " -> " 
+					+ node_id
+					+ std::to_string(relation.world_to.id) 
+					+ "[label=\"" 
+					+ agents[agent_id].get_name() 
+					+ "];\n";
+			}
+			agent_id++;
+		}
+		return result;
+	}
 }

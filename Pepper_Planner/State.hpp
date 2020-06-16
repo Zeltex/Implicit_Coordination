@@ -4,6 +4,7 @@
 #include "World.hpp"
 #include "Types.hpp"
 #include "Misc.hpp"
+#include "Agent.hpp"
 
 namespace del {
 
@@ -37,6 +38,7 @@ namespace del {
 
 		std::string to_string() const;
 		std::string to_string(size_t indentation) const;
+		std::string to_graph(const std::vector<Agent> agents, const std::string node_id) const;
 
 	private:
 		size_t number_of_agents;

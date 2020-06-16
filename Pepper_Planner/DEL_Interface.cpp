@@ -12,7 +12,7 @@ namespace del {
 	
 	DEL_Interface::DEL_Interface(State initial_state, Action_Library library) : domain(initial_state.get_number_of_agents(), initial_state), has_policy(false), policy(false), action_library(2), pepper_id({ 0 }) {
 		domain = Domain(initial_state.get_number_of_agents(), initial_state);
-		action_library = library;
+		action_library = std::move(library);
 	}
 	
 	Interface_DTO DEL_Interface::get_next_action() {
@@ -42,7 +42,7 @@ namespace del {
 	}
 	
 	bool DEL_Interface::create_policy(Formula goal) {
-		this->goal = goal;
+		this->goal = std::move(goal);
 		policy = planner.find_policy(goal, action_library, domain.get_current_state());
 		has_policy = policy.is_solved();
 		return policy.is_solved();

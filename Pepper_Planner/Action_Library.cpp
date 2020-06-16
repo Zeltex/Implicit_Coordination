@@ -5,7 +5,7 @@ namespace del {
 	Action_Library::Action_Library(size_t amount_of_agents) {
 		agents.reserve(amount_of_agents);
 		for (size_t i = 0; i < amount_of_agents; i++) {
-			agents.emplace_back(Agent_Id{ i });
+			agents.emplace_back(Agent_Id{ i }, "");
 		}
 	}
 

@@ -17,7 +17,7 @@ namespace del {
 
 		std::string get_string_component(const std::vector<Formula_Id>& formulas, const std::vector<Formula_Component>& all_formulas) const;
 
-		Formula_Component() = delete;
+		Formula_Component() = default;
 
 		// Top, Bot
 		Formula_Component(Formula_Types type):
@@ -39,6 +39,7 @@ namespace del {
 		Formula_Component(Formula_Types type, Agent_Id agent, Formula_Id formula) : 
 			type(type), prop(), formula(formula), formulas(std::vector<Formula_Id>()), agent(agent)  {};
 
+		bool debug_shit = false;
 	private:
 		Formula_Types type;
 		std::string prop;
