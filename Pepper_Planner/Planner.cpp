@@ -25,28 +25,27 @@ namespace del {
 
 			bool found_applicable_action = false;
 			for (Action action : action_library.get_actions()) {
-				if (!is_action_applicable(graph.get_node(current_node).get_state(), action)) {
+				State temp_perspective_shift = perform_perspective_shift(graph.get_node(current_node).get_state(), action.get_owner());
+				if (!is_action_applicable(temp_perspective_shift, action)) {
 					continue;
 				}
 
-				State temp = perform_product_update(graph.get_node(current_node).get_state(), action);
-				if (!is_valid_state(temp)) {
+				State temp_product_update = perform_product_update(temp_perspective_shift, action);
+				if (!is_valid_state(temp_product_update)) {
 					continue;
 				}
 				else {
 					found_applicable_action = true;
 				}
-				Node_Id action_node = graph.create_and_node(temp, current_node, action);
+				Node_Id action_node = graph.create_and_node(temp_product_update, current_node, action);
 
-				for (Agent agent : get_all_agents(action_library)) {
-					State perspective_shifted = perform_perspective_shift(graph.get_node(action_node).get_state(), agent);
-					std::vector<State> global_states = split_into_global_states(perspective_shifted, agent.get_id());
+				std::vector<State> global_states = split_into_global_states(temp_product_update, action.get_owner());
 
-					for (State state : global_states) {
-						Node_Id global_agent_node = graph.create_or_node(state, action_node);
-						graph.add_to_frontier(global_agent_node);
-					}
+				for (State state : global_states) {
+					Node_Id global_agent_node = graph.create_or_node(state, action_node);
+					graph.add_to_frontier(global_agent_node);
 				}
+
 			}
 			if (!found_applicable_action) {
 				propogate_dead_end_node(graph, current_node);

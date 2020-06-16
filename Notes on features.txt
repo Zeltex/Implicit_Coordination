@@ -7,3 +7,14 @@ Split into globals, how should it work exactly? Currently created a new state fo
 Missing bisimilar check, currently it is possible for two bisimilar states to have two policy entries with two different actions, however it should not be practically possible since actions are always iterated in the same order.
 
 How to handle if pepper attempts an action which is not applicable?
+
+Non-deterministic actions, perceive
+
+
+
+Answers:
+- Product update, all reachable worlds from all designated worlds. Should not include a designated world if it does not have an incoming edge for the agent
+
+- If s is local for i (closed under indistinguishisability) then nothing changes
+
+- Relations should be preserved after taking globals(s)

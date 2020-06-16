@@ -42,7 +42,7 @@ namespace del {
 	}
 	// Using definition: All states reachable by 'agent' from any designated world, 
 	// and the resulting worlds must be closed under 'agent' (any world should be reachable from any other world by 'agent')
-	State perform_perspective_shift(const State& state, const Agent& agent) {
+	State perform_perspective_shift(const State& state, Agent_Id agent_id) {
 
 		std::vector<World_Id> frontier;
 		// Using size_t instead of World_Id to avoid specifying custom hash function for World_Id
@@ -55,7 +55,7 @@ namespace del {
 		while (!frontier.empty()) {
 			auto current = frontier.back();
 			frontier.pop_back();
-			for (auto relation : state.get_indistinguishability_relations(agent.get_id())) {
+			for (auto relation : state.get_indistinguishability_relations(agent_id)) {
 				if (relation.world_from == current &&
 					std::find(visited.begin(), visited.end(), relation.world_to.id) == visited.end()) {
 
