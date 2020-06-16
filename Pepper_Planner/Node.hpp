@@ -24,12 +24,13 @@ namespace del {
 		void set_dead();
 		void set_solved();
 
-		State& get_state();
+		const State& get_state()const ;
 		Action get_action();
 		Node_Id get_id();
 		Node_Id get_parent();
-		Node_Type get_type();
-		std::vector<Node_Id>& get_children();
+		Node_Type get_type() const;
+		const Action& get_parent_action() const;
+		const std::vector<Node_Id>& get_children() const;
 
 		bool is_root_node() const;
 		bool is_dead() const;
@@ -39,7 +40,8 @@ namespace del {
 		bool valuate(const Formula& formula) const;
 
 		std::string to_string() const;
-		std::string to_graph(const std::vector<Agent> agents, const std::string node_id) const;
+		std::string to_graph(const std::vector<Agent> agents, const std::string node_id, const std::string state_id) const;
+		std::string type_to_string() const;
 
 	private:
 

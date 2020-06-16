@@ -2,7 +2,7 @@
 #include "Graph.hpp"
 
 namespace del {
-	State& Node::get_state() {
+	const State& Node::get_state() const {
 		return state;;
 	}
 
@@ -22,12 +22,16 @@ namespace del {
 		return parent;
 	}
 
-	std::vector<Node_Id>& Node::get_children() {
+	const std::vector<Node_Id>& Node::get_children() const {
 		return children;
 	}
 
-	Node_Type Node::get_type() {
+	Node_Type Node::get_type() const {
 		return type;
+	}
+
+	const Action& Node::get_parent_action() const {
+		return action_from_parent;
 	}
 
 	bool Node::is_root_node() const {
@@ -131,12 +135,8 @@ namespace del {
 	}
 
 	std::string Node::to_string() const {
-		std::string type_string;
-		switch(type) {
-		case Node_Type::And: type_string = "And"; break;
-		case Node_Type::Or: type_string = "Or"; break;
-		default: type_string = "Unknown";
-		}
+		std::string type_string = type_to_string();
+
 
 		std::string result = "---- Node " + std::to_string(id.id)
 			+ ": (Type, " + type_string
@@ -159,9 +159,20 @@ namespace del {
 		return result;
 	}
 
-	std::string Node::to_graph(const std::vector<Agent> agents, const std::string node_id) const {
-		std::string result = "subgraph " + node_id + " {\nlabel=\"Node " + node_id + ";\n";
-		result += state.to_graph(agents, node_id) + "\n}";
+	std::string Node::to_graph(const std::vector<Agent> agents, const std::string node_id, const std::string state_id) const {
+		std::string result = "subgraph cluster_" + node_id + " {\nlabel=\"(" + type_to_string() + ")Node " + node_id + "\";\n";
+		if (solved) {
+			result += "pencolor=red;\n";
+		}
+		result += state.to_graph(agents, state_id) + "\n}";
 		return result;
+	}
+
+	std::string Node::type_to_string() const {
+		switch (type) {
+		case Node_Type::And: return "And"; break;
+		case Node_Type::Or: return "Or"; break;
+		default: return "Unknown";
+		}
 	}
 }

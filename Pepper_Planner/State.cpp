@@ -175,7 +175,17 @@ namespace del {
 	std::string State::to_graph(const std::vector<Agent> agents, const std::string node_id) const {
 		std::string result;
 		for (auto& world : worlds) {
-			result += node_id + std::to_string(world.get_id().id) + " [label=\"" + std::to_string(world.get_id().id) + "\"";
+			std::string propositions;
+			bool first = true;
+			for (auto proposition : world.get_true_propositions()) {
+				if (first) {
+					first = false;
+				} else {
+					propositions += ", ";
+				}
+				propositions += proposition;
+			}
+			result += node_id + std::to_string(world.get_id().id) + " [label=\"" + std::to_string(world.get_id().id) + "\n" + propositions + "\"";
 			if (std::find(designated_worlds.begin(), designated_worlds.end(), world.get_id()) != designated_worlds.end()) {
 				result += ", shape=doublecircle];\n";
 			} else {
@@ -192,7 +202,7 @@ namespace del {
 					+ std::to_string(relation.world_to.id) 
 					+ "[label=\"" 
 					+ agents[agent_id].get_name() 
-					+ "];\n";
+					+ "\"];\n";
 			}
 			agent_id++;
 		}

@@ -16,7 +16,12 @@
 using namespace del;
 
 
+Formula get_goal_formula() {
 
+	Formula f;
+	f.f_prop("in(red,L)");
+	return std::move(f);
+}
 
 int main(int argc, char* argv[]) {
 	using namespace del;
@@ -42,10 +47,10 @@ int main(int argc, char* argv[]) {
 
 	//std::cout << policy.to_string() << std::endl;
 
-	//Formula get_goal_formula();
+	auto goal = get_goal_formula();
 
 	DEL_Interface del_interface(0);
-	//del_interface.create_policy();
+	del_interface.create_policy(goal);
 	//Interface_DTO dto = del_interface.get_next_action();
 	//del_interface.perform_action(dto.get_action());
 	//dto = del_interface.get_next_action();

@@ -43,7 +43,7 @@ namespace del {
 	
 	bool DEL_Interface::create_policy(Formula goal) {
 		this->goal = std::move(goal);
-		policy = planner.find_policy(goal, action_library, domain.get_current_state());
+		policy = planner.find_policy(this->goal, action_library, domain.get_current_state());
 		has_policy = policy.is_solved();
 		return policy.is_solved();
 	}

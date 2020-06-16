@@ -68,4 +68,12 @@ namespace del {
 		}
 		return result;
 	}
+
+	std::string Action::to_compact_string() const {
+		std::string result;
+		for (auto& event : events) {
+			result += "<" + event.get_preconditions().to_string() + ",X,X>";
+		}
+		return result;
+	}
 }

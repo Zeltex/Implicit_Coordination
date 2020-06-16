@@ -26,7 +26,7 @@ namespace del {
 		Node& get_root_node();
 
 		std::string to_string() const;
-		std::string to_graph(const std::vector<Agent> agents, const std::string node_id) const;
+		std::string to_graph(const std::vector<Agent> agents) const;
 	private:
 		Node_Id root;
 		// TODO - Change to Node_Id

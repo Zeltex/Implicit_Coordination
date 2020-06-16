@@ -58,17 +58,29 @@ namespace del {
 		return result;
 	}
 
-	std::string Graph::to_graph(const std::vector<Agent> agents, const std::string node_id) const {
+	std::string Graph::to_graph(const std::vector<Agent> agents) const {
 		std::string result = "digraph G {\ncompound=true;";
 		std::string connections;
 
 		size_t counter = 0;
 		for (auto& node : nodes) {
-			result += "\n" + node.to_graph(agents, std::to_string(counter));
-			//for (auto& child : node.) {
-			//	child.
-			//}
+			result += "\n" + node.to_graph(agents, std::to_string(counter), "s" + std::to_string(counter));
+			
+			for (auto& child : node.get_children()) {
+				std::string left = "s" + std::to_string(counter) + "0";
+				std::string right = "s" + std::to_string(child.id) + "0";
+
+				connections += "\n" + left + " -> " + right + "[ltail=cluster_" + std::to_string(counter) + ", lhead=cluster_" + std::to_string(child.id);
+
+				if (nodes[child.id].get_type() == Node_Type::And) {
+					connections += ",label=\"" + nodes[child.id].get_parent_action().to_compact_string() + "\"";
+				}
+					
+				connections += "];";
+			}
+			counter++;
 		}
+		result += connections + "\n}";
 
 
 		return result;

@@ -23,6 +23,7 @@ namespace del {
 
 		std::string to_string() const;
 		std::string to_string(size_t indentation) const;
+		std::string to_compact_string() const;
 
 	private:
 		std::vector<Action_Event> events;
