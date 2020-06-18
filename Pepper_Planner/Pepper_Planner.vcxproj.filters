@@ -102,6 +102,9 @@
     <ClCompile Include="Domain_Interface_Implementation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="General_Action.cpp">
+      <Filter>Source Files\DEL\Action</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Agent.hpp">
@@ -166,6 +169,9 @@
     </ClInclude>
     <ClInclude Include="Domain_Interface_Implementation.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="General_Action.hpp">
+      <Filter>Header Files\DEL\Action</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

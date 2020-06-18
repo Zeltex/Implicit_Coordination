@@ -3,8 +3,8 @@ _domain domain1 {
 		_owner = name
 		_event event1 { 
 			_preconditions = ()
-			_effect_add = []
-			_effect_delete = []
+			_effect_add = [add1, add2, add3]
+			_effect_delete = [del1, del2]
 
 		}
 	}

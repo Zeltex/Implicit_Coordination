@@ -5,6 +5,7 @@
 
 #include "Domain_Interface.hpp"
 #include "Maepl.hpp"
+#include "Domain_Buffer.hpp"
 
 class Loader {
 public:

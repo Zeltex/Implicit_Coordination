@@ -69,6 +69,7 @@
   #include <iostream>
   using namespace std;
   #include "Maepl.hpp"
+  #include "Domain_Buffer.hpp"
 
   // stuff from flex that bison needs to know about:
   extern int yylex();
@@ -79,9 +80,10 @@
   void yyerror(const char *s);
 
   Domain_Interface* domain;
+  Domain_Buffer* buffer;
 
 /* Line 371 of yacc.c  */
-#line 85 "maepl.tab.cpp"
+#line 87 "maepl.tab.cpp"
 
 # ifndef YY_NULL
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -147,7 +149,7 @@ extern int yydebug;
 typedef union YYSTYPE
 {
 /* Line 387 of yacc.c  */
-#line 19 "maepl.y"
+#line 21 "maepl.y"
 
   int ival;
   float fval;
@@ -155,7 +157,7 @@ typedef union YYSTYPE
 
 
 /* Line 387 of yacc.c  */
-#line 159 "maepl.tab.cpp"
+#line 161 "maepl.tab.cpp"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
@@ -183,7 +185,7 @@ int yyparse ();
 /* Copy the second part of user declarations.  */
 
 /* Line 390 of yacc.c  */
-#line 187 "maepl.tab.cpp"
+#line 189 "maepl.tab.cpp"
 
 #ifdef short
 # undef short
@@ -483,10 +485,10 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    61,    61,    61,    67,    67,    72,    73,    73,    77,
-      78,    78,    79,    80,    79,    82,    83,    84,    83,    85,
-      86,    85,    87,    88,    87,    92,    93,    98,   100,   103,
-     104,   106,   107,   108
+       0,    63,    63,    63,    69,    69,    74,    75,    75,    79,
+      80,    80,    81,    82,    81,    84,    85,    86,    85,    87,
+      88,    87,    89,    90,    89,    94,    95,   100,   102,   105,
+     106,   108,   109,   110
 };
 #endif
 
@@ -1419,109 +1421,109 @@ yyreduce:
     {
         case 2:
 /* Line 1792 of yacc.c  */
-#line 61 "maepl.y"
+#line 63 "maepl.y"
     { domain->new_domain(std::string((yyvsp[(2) - (3)].sval)));      }
     break;
 
   case 3:
 /* Line 1792 of yacc.c  */
-#line 62 "maepl.y"
+#line 64 "maepl.y"
     { domain->finish_domain();                  }
     break;
 
   case 4:
 /* Line 1792 of yacc.c  */
-#line 67 "maepl.y"
+#line 69 "maepl.y"
     { domain->new_action(std::string((yyvsp[(2) - (2)].sval)));      }
     break;
 
   case 5:
 /* Line 1792 of yacc.c  */
-#line 70 "maepl.y"
+#line 72 "maepl.y"
     { domain->finish_action();                  }
     break;
 
   case 7:
 /* Line 1792 of yacc.c  */
-#line 73 "maepl.y"
+#line 75 "maepl.y"
     { domain->add_action_input((yyvsp[(1) - (2)].sval), (yyvsp[(2) - (2)].sval));         }
     break;
 
   case 10:
 /* Line 1792 of yacc.c  */
-#line 78 "maepl.y"
+#line 80 "maepl.y"
     { domain->set_action_owner((yyvsp[(3) - (3)].sval));             }
     break;
 
   case 12:
 /* Line 1792 of yacc.c  */
-#line 79 "maepl.y"
-    { domain->new_event((yyvsp[(2) - (3)].sval));                    }
+#line 81 "maepl.y"
+    { buffer->set_event_name((yyvsp[(2) - (3)].sval));                    }
     break;
 
   case 13:
 /* Line 1792 of yacc.c  */
-#line 80 "maepl.y"
-    { domain->finish_event();    }
+#line 82 "maepl.y"
+    { domain->create_event(buffer->get_event_name(), buffer->get_event_preconditions(), buffer->get_event_add_list(), buffer->get_event_delete_list());    }
     break;
 
   case 16:
 /* Line 1792 of yacc.c  */
-#line 83 "maepl.y"
-    { domain->start_preconditions();    }
+#line 85 "maepl.y"
+    { buffer->clear_formula(); }
     break;
 
   case 17:
 /* Line 1792 of yacc.c  */
-#line 84 "maepl.y"
-    { domain->finish_preconditions();   }
+#line 86 "maepl.y"
+    { }
     break;
 
   case 19:
 /* Line 1792 of yacc.c  */
-#line 85 "maepl.y"
-    { domain->start_delete_list();      }
+#line 87 "maepl.y"
+    { buffer->clear_variable_list(); }
     break;
 
   case 20:
 /* Line 1792 of yacc.c  */
-#line 86 "maepl.y"
-    { domain->finish_delete_list();     }
+#line 88 "maepl.y"
+    {  buffer->push_event_delete_list(); }
     break;
 
   case 22:
 /* Line 1792 of yacc.c  */
-#line 87 "maepl.y"
-    { domain->start_add_list();         }
+#line 89 "maepl.y"
+    { buffer->clear_variable_list(); }
     break;
 
   case 23:
 /* Line 1792 of yacc.c  */
-#line 88 "maepl.y"
-    { domain->finish_add_list();        }
+#line 90 "maepl.y"
+    { buffer->push_event_add_list(); }
     break;
 
   case 26:
 /* Line 1792 of yacc.c  */
-#line 93 "maepl.y"
+#line 95 "maepl.y"
     {}
     break;
 
   case 27:
 /* Line 1792 of yacc.c  */
-#line 98 "maepl.y"
+#line 100 "maepl.y"
     {}
     break;
 
   case 28:
 /* Line 1792 of yacc.c  */
-#line 100 "maepl.y"
-    {}
+#line 102 "maepl.y"
+    { buffer->add_variable((yyvsp[(1) - (1)].sval));                  }
     break;
 
 
 /* Line 1792 of yacc.c  */
-#line 1525 "maepl.tab.cpp"
+#line 1527 "maepl.tab.cpp"
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1753,11 +1755,12 @@ yyreturn:
 
 
 /* Line 2055 of yacc.c  */
-#line 114 "maepl.y"
+#line 116 "maepl.y"
 
 
-void parse_domain(Domain_Interface* domain_input, FILE* file_in) {
+void parse_domain(Domain_Interface* domain_input, Domain_Buffer* buffer_input, FILE* file_in) {
     domain = domain_input;
+    buffer = buffer_input;
     yyin = file_in;
     yyparse();
 }

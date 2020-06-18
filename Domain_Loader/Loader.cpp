@@ -19,8 +19,9 @@ void Loader::parse(Domain_Interface* domain, std::string file_path) {
     }
     // Set Flex to read from it instead of defaulting to STDIN:
     //yyin = myfile;
+    Domain_Buffer buffer = Domain_Buffer();
 
-    parse_domain(domain, myfile);
+    parse_domain(domain, &buffer, myfile);
 
     //// Parse through the input:
     //yyparse();

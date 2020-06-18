@@ -140,11 +140,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Domain_Buffer.cpp" />
     <ClCompile Include="Loader.cpp" />
     <ClCompile Include="maepl.flex.cpp" />
     <ClCompile Include="maepl.tab.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Domain_Buffer.hpp" />
     <ClInclude Include="Domain_Interface.hpp" />
     <ClInclude Include="FlexLexer.h" />
     <ClInclude Include="Loader.hpp" />

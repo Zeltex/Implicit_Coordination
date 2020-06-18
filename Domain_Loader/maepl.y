@@ -3,6 +3,7 @@
   #include <iostream>
   using namespace std;
   #include "Maepl.hpp"
+  #include "Domain_Buffer.hpp"
 
   // stuff from flex that bison needs to know about:
   extern int yylex();
@@ -13,6 +14,7 @@
   void yyerror(const char *s);
 
   Domain_Interface* domain;
+  Domain_Buffer* buffer;
 %}
 
 
@@ -76,16 +78,16 @@ action_input:
 
 action_body:
     | OWNER_DEF EQUALS NAME                 { domain->set_action_owner($3);             } action_body
-    | EVENT_DEF NAME LBRACK                 { domain->new_event($2);                    } 
-        event_body RBRACK                   { domain->finish_event();    } action_body
+    | EVENT_DEF NAME LBRACK                 { buffer->set_event_name($2);                    } 
+        event_body RBRACK                   { domain->create_event(buffer->get_event_name(), buffer->get_event_preconditions(), buffer->get_event_add_list(), buffer->get_event_delete_list());    } action_body
 
 event_body:
-    | PRECONDITIONS_DEF EQUALS LBRACK               { domain->start_preconditions();    } 
-        formula RBRACK                              { domain->finish_preconditions();   } event_body
-    | EFFECT_DELETE_DEF EQUALS                      { domain->start_delete_list();      } 
-        variables_container                         { domain->finish_delete_list();     } event_body
-    | EFFECT_ADD_DEF EQUALS                         { domain->start_add_list();         }
-        variables_container                         { domain->finish_add_list();        } event_body
+    | PRECONDITIONS_DEF EQUALS LBRACK               { buffer->clear_formula(); } 
+        formula RBRACK                              { } event_body
+    | EFFECT_DELETE_DEF EQUALS                      { buffer->clear_variable_list(); } 
+        variables_container                         {  buffer->push_event_delete_list(); } event_body
+    | EFFECT_ADD_DEF EQUALS                         { buffer->clear_variable_list(); }
+        variables_container                         { buffer->push_event_add_list(); } event_body
 
 
 
@@ -97,7 +99,7 @@ formula_container:
 
 formula: {}
 
-variable: NAME                                      {}
+variable: NAME                                      { buffer->add_variable($1);                  }
 
 actions:
   actions action
@@ -113,8 +115,9 @@ ENDLS:
 
 %%
 
-void parse_domain(Domain_Interface* domain_input, FILE* file_in) {
+void parse_domain(Domain_Interface* domain_input, Domain_Buffer* buffer_input, FILE* file_in) {
     domain = domain_input;
+    buffer = buffer_input;
     yyin = file_in;
     yyparse();
 }

@@ -76,7 +76,7 @@ extern int yydebug;
 typedef union YYSTYPE
 {
 /* Line 2058 of yacc.c  */
-#line 19 "maepl.y"
+#line 21 "maepl.y"
 
   int ival;
   float fval;

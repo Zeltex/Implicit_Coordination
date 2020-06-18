@@ -15,6 +15,9 @@ namespace del {
 	}
 
 	void Domain_Interface_Implementation::new_action(std::string name) {
+		current_action = General_Action();
+		current_action.set_name(name);
+
 		std::cout << "Starting action" << std::endl;
 	}
 
@@ -57,16 +60,30 @@ namespace del {
 		std::cout << "starting delete list" << std::endl;
 	}
 
-	void Domain_Interface_Implementation::finish_delete_list() {
-		std::cout << "Finishing delete list" << std::endl;
+	void Domain_Interface_Implementation::finish_delete_list(std::vector<std::string> delete_list) {
+		std::cout << "Finishing delete list";
+		for (auto entry : delete_list) {
+			std::cout << entry << " ";
+		}
+		std::cout << std::endl;
 	}
 
 	void Domain_Interface_Implementation::start_add_list() {
 		std::cout << "starting add list" << std::endl;
 	}
 
-	void Domain_Interface_Implementation::finish_add_list() {
-		std::cout << "Finishing add list" << std::endl;
+	void Domain_Interface_Implementation::finish_add_list(std::vector<std::string> add_list) {
+		std::cout << "Finishing add list: ";
+		for (auto entry : add_list) {
+			std::cout << entry << " ";
+		}
+		std::cout << std::endl;
+	}
+
+
+	void Domain_Interface_Implementation::create_event(std::string name, std::string formula, std::vector<std::string> add_list, std::vector<std::string> delete_list) {
+		// TODO - Create event
+		int debug = 0;
 	}
 
 }
