@@ -99,6 +99,9 @@
     <ClCompile Include="DEL_Interface.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Domain_Interface_Implementation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Agent.hpp">
@@ -159,6 +162,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DEL_Interface.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Domain_Interface_Implementation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -7,6 +7,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Pepper_Planner", "Pepper_Pl
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Pepper_Planner_Tests", "Pepper_Planner_Tests\Pepper_Planner_Tests.vcxproj", "{D402F9BB-7E19-46AD-ABFD-5093324290AC}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Domain_Loader", "Domain_Loader\Domain_Loader.vcxproj", "{69CEBA7E-8A96-478D-A9CE-611ADC86C184}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -31,6 +33,14 @@ Global
 		{D402F9BB-7E19-46AD-ABFD-5093324290AC}.Release|x64.Build.0 = Release|x64
 		{D402F9BB-7E19-46AD-ABFD-5093324290AC}.Release|x86.ActiveCfg = Release|Win32
 		{D402F9BB-7E19-46AD-ABFD-5093324290AC}.Release|x86.Build.0 = Release|Win32
+		{69CEBA7E-8A96-478D-A9CE-611ADC86C184}.Debug|x64.ActiveCfg = Debug|x64
+		{69CEBA7E-8A96-478D-A9CE-611ADC86C184}.Debug|x64.Build.0 = Debug|x64
+		{69CEBA7E-8A96-478D-A9CE-611ADC86C184}.Debug|x86.ActiveCfg = Debug|Win32
+		{69CEBA7E-8A96-478D-A9CE-611ADC86C184}.Debug|x86.Build.0 = Debug|Win32
+		{69CEBA7E-8A96-478D-A9CE-611ADC86C184}.Release|x64.ActiveCfg = Release|x64
+		{69CEBA7E-8A96-478D-A9CE-611ADC86C184}.Release|x64.Build.0 = Release|x64
+		{69CEBA7E-8A96-478D-A9CE-611ADC86C184}.Release|x86.ActiveCfg = Release|Win32
+		{69CEBA7E-8A96-478D-A9CE-611ADC86C184}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
