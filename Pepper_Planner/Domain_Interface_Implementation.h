@@ -14,6 +14,17 @@ namespace del {
 		virtual void new_action(std::string name) override;
 		virtual void finish_action() override;
 		virtual void add_action_input(std::string type, std::string name) override;
+		virtual void set_action_owner(std::string name) override;
+		virtual void new_action_preconditions() override;
+		virtual void finish_action_preconditions() override;
+		virtual void new_event(std::string name) override;
+		virtual void finish_event() override;
+		virtual void start_preconditions() override;
+		virtual void finish_preconditions() override;
+		virtual void start_delete_list() override;
+		virtual void finish_delete_list() override;
+		virtual void start_add_list() override;
+		virtual void finish_add_list() override;
 	private:
 		bool working;
 		std::string current_domain_name;

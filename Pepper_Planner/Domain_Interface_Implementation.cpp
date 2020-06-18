@@ -25,4 +25,48 @@ namespace del {
 	void Domain_Interface_Implementation::add_action_input(std::string type, std::string name) {
 		std::cout << "Action input " << type << " " << name <<  std::endl;
 	}
+
+	void Domain_Interface_Implementation::set_action_owner(std::string name) {
+		std::cout << "Action owner " << name << std::endl;
+	}
+
+	void Domain_Interface_Implementation::new_action_preconditions() {
+		std::cout << "Action preconditions start " << std::endl;
+	}
+	void Domain_Interface_Implementation::finish_action_preconditions() {
+		std::cout << "Action preconditions end " << std::endl;
+	}
+
+	void Domain_Interface_Implementation::new_event(std::string name) {
+		std::cout << "Starting event" << std::endl;
+	}
+
+	void Domain_Interface_Implementation::finish_event() {
+		std::cout << "Finishing event" << std::endl;
+	}
+
+	void Domain_Interface_Implementation::start_preconditions() {
+		std::cout << "Starting preconditions" << std::endl;
+	}
+
+	void Domain_Interface_Implementation::finish_preconditions() {
+		std::cout << "Finishing preconditions" << std::endl;
+	}
+
+	void Domain_Interface_Implementation::start_delete_list() {
+		std::cout << "starting delete list" << std::endl;
+	}
+
+	void Domain_Interface_Implementation::finish_delete_list() {
+		std::cout << "Finishing delete list" << std::endl;
+	}
+
+	void Domain_Interface_Implementation::start_add_list() {
+		std::cout << "starting add list" << std::endl;
+	}
+
+	void Domain_Interface_Implementation::finish_add_list() {
+		std::cout << "Finishing add list" << std::endl;
+	}
+
 }

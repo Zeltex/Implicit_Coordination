@@ -30,7 +30,20 @@
 %token DOMAIN_DEF
 %token DEFINE_DEF
 %token ACTION_DEF
+%token OWNER_DEF
+%token PRECONDITIONS_DEF
+%token EVENT_DEF
+%token EFFECT_DELETE_DEF
+%token EFFECT_ADD_DEF
+
+%token AND
+%token OR
+%token NOT
+
+
 %token <sval> NAME
+
+%token EQUALS
 
 // define the "terminal symbol" token types I'm going to use (in CAPS
 // by convention), and associate each with a field of the union:
@@ -45,29 +58,54 @@
 // the first rule defined is the highest-level rule, which in our
 // case is just the concept of a whole "snazzle file":
 maepl: 
-    DOMAIN_DEF NAME LBRACK {
-      domain->new_domain(std::string($2))
-    }
-    actions RBRACK {
-        domain->finish_domain();
-    }
+    DOMAIN_DEF NAME LBRACK                  { domain->new_domain(std::string($2));      }
+    actions RBRACK                          { domain->finish_domain();                  }
 
   ;
 
 action:
-    ACTION_DEF NAME                     { domain->new_action(std::string($2));}
-    LBRACK ACTION_INPUT RBRACK
-    LBRACK 
-    RBRACK                       { domain->finish_action();}
+    ACTION_DEF NAME                         { domain->new_action(std::string($2));      }
+    LBRACK action_input RBRACK
+    LBRACK action_body
+    RBRACK                                  { domain->finish_action();                  }
 
-ACTION_INPUT:
-    | NAME NAME                     { domain->add_action_input($1, $2); }
-        ACTION_INPUT
+action_input:
+    | NAME NAME                             { domain->add_action_input($1, $2);         }
+        action_input
 
+
+action_body:
+    | OWNER_DEF EQUALS NAME                 { domain->set_action_owner($3);             } action_body
+    | EVENT_DEF NAME LBRACK                 { domain->new_event($2);                    } 
+        event_body RBRACK                   { domain->finish_event();    } action_body
+
+event_body:
+    | PRECONDITIONS_DEF EQUALS LBRACK               { domain->start_preconditions();    } 
+        formula RBRACK                              { domain->finish_preconditions();   } event_body
+    | EFFECT_DELETE_DEF EQUALS                      { domain->start_delete_list();      } 
+        variables_container                         { domain->finish_delete_list();     } event_body
+    | EFFECT_ADD_DEF EQUALS                         { domain->start_add_list();         }
+        variables_container                         { domain->finish_add_list();        } event_body
+
+
+
+variables_container:
+    | LBRACK variables RBRACK                        {}
+
+formula_container:
+    | LBRACK formula RBRACK                         {}
+
+formula: {}
+
+variable: NAME                                      {}
 
 actions:
   actions action
   | action ;
+
+variables:
+  | variables variable
+  | variable ;
 
 ENDLS:
   ENDLS ENDL

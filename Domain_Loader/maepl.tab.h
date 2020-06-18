@@ -55,10 +55,19 @@ extern int yydebug;
      DOMAIN_DEF = 264,
      DEFINE_DEF = 265,
      ACTION_DEF = 266,
-     NAME = 267,
-     INT = 268,
-     FLOAT = 269,
-     STRING = 270
+     OWNER_DEF = 267,
+     PRECONDITIONS_DEF = 268,
+     EVENT_DEF = 269,
+     EFFECT_DELETE_DEF = 270,
+     EFFECT_ADD_DEF = 271,
+     AND = 272,
+     OR = 273,
+     NOT = 274,
+     NAME = 275,
+     EQUALS = 276,
+     INT = 277,
+     FLOAT = 278,
+     STRING = 279
    };
 #endif
 
@@ -75,7 +84,7 @@ typedef union YYSTYPE
 
 
 /* Line 2058 of yacc.c  */
-#line 79 "maepl.tab.h"
+#line 88 "maepl.tab.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
