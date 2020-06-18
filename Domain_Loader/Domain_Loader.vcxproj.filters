@@ -18,10 +18,10 @@
     <ClCompile Include="Loader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="snazzle.flex.cpp">
+    <ClCompile Include="maepl.flex.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="snazzle.tab.cpp">
+    <ClCompile Include="maepl.tab.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -35,14 +35,17 @@
     <ClInclude Include="FlexLexer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="snazzle.tab.h">
+    <ClInclude Include="maepl.tab.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Maepl.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Flex Include="snazzle.l" />
+    <Flex Include="maepl.l" />
   </ItemGroup>
   <ItemGroup>
-    <Bison Include="snazzle.y" />
+    <Bison Include="maepl.y" />
   </ItemGroup>
 </Project>

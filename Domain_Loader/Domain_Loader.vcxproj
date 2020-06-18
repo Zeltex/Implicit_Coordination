@@ -141,20 +141,21 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Loader.cpp" />
-    <ClCompile Include="snazzle.flex.cpp" />
-    <ClCompile Include="snazzle.tab.cpp" />
+    <ClCompile Include="maepl.flex.cpp" />
+    <ClCompile Include="maepl.tab.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Domain_Interface.hpp" />
     <ClInclude Include="FlexLexer.h" />
     <ClInclude Include="Loader.hpp" />
-    <ClInclude Include="snazzle.tab.h" />
+    <ClInclude Include="Maepl.hpp" />
+    <ClInclude Include="maepl.tab.h" />
   </ItemGroup>
   <ItemGroup>
-    <Flex Include="snazzle.l" />
+    <Flex Include="maepl.l" />
   </ItemGroup>
   <ItemGroup>
-    <Bison Include="snazzle.y" />
+    <Bison Include="maepl.y" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

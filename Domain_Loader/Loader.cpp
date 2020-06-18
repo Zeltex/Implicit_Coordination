@@ -8,7 +8,7 @@ extern int line_num;
 
 
 void Loader::parse(Domain_Interface* domain, std::string file_path) {
-	domain->set_debug_working();
+	 
     
     //FILE* myfile = fopen_s(file_path.c_str(), "r");
     FILE* myfile;
@@ -18,8 +18,10 @@ void Loader::parse(Domain_Interface* domain, std::string file_path) {
         return;
     }
     // Set Flex to read from it instead of defaulting to STDIN:
-    yyin = myfile;
+    //yyin = myfile;
+
+    parse_domain(domain, myfile);
 
     //// Parse through the input:
-    yyparse();
+    //yyparse();
 }
