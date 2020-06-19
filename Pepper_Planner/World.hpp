@@ -3,7 +3,8 @@
 #include <iostream>
 #include <unordered_set>
 
-#include "Formula.hpp"
+#include "Types.hpp"
+#include "../Formula/Formula.hpp"
 
 namespace del {
 	class World {

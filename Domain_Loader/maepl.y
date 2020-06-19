@@ -97,7 +97,16 @@ variables_container:
 formula_container:
     | LBRACK formula RBRACK                         {}
 
-formula: {}
+formula: 
+                                        {std::cout << "registered empty formula" << std::endl;}
+    | NAME
+    | NAME formula                    {} formula
+    | AND LBRACK                        {buffer->increment_formula_level("AND");    }
+        formula RBRACK                  {buffer->push_formula();                    } formula
+    | OR LBRACK                         {buffer->increment_formula_level("OR");     }
+        formula RBRACK                  {buffer->push_formula();                    } formula
+    | NOT LBRACK                        {buffer->increment_formula_level("NOT");    }
+        formula RBRACK                  {buffer->push_formula();                    } formula
 
 variable: NAME                                      { buffer->add_variable($1);                  }
 

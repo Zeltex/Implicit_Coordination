@@ -4,9 +4,10 @@
 #include <vector>
 #include <string>
 
-#include "Formula.hpp"
+#include "../Formula/Formula.hpp"
 #include "Action_Event.hpp"
 #include "Misc.hpp"
+#include "Types.hpp"
 
 namespace del {
 	class Action {

@@ -11,7 +11,7 @@
 #include "Agent.hpp"
 #include "Graph.hpp"
 #include "Types.hpp"
-#include "Formula.hpp"
+#include "../Formula/Formula.hpp"
 #include "Action_Library.hpp"
 #include "Policy.hpp"
 

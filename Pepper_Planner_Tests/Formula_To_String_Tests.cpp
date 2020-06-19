@@ -3,8 +3,9 @@
 
 #include <iostream>
 
-#include "../Pepper_Planner/Formula.hpp"
-#include "../Pepper_Planner/Formula_Component.hpp"
+#include "../Pepper_Planner/Types.hpp"
+#include "../Formula/Formula.hpp"
+#include "../Formula/Formula_Component.hpp"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -53,7 +54,7 @@ namespace PepperPlannerTests
 
 		TEST_METHOD(Believes_String) {
 			Formula f;
-			f.f_believes(Agent_Id{ 9 }, f.f_and({ f.f_prop("first"), f.f_prop("second")}));
+			f.f_believes( 9 , f.f_and({ f.f_prop("first"), f.f_prop("second")}));
 			Assert::AreEqual(f.to_string(), std::string("Believes_9(And(first;second))"));
 		}
 

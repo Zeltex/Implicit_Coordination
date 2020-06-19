@@ -155,8 +155,6 @@
     <ClCompile Include="Interface_DTO.cpp" />
     <ClCompile Include="Misc.cpp" />
     <ClCompile Include="Planner.cpp" />
-    <ClCompile Include="Formula.cpp" />
-    <ClCompile Include="Formula_Component.cpp" />
     <ClCompile Include="Graph.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Node.cpp" />
@@ -179,8 +177,6 @@
     <ClInclude Include="Interface_DTO.hpp" />
     <ClInclude Include="Misc.hpp" />
     <ClInclude Include="Planner.hpp" />
-    <ClInclude Include="Formula.hpp" />
-    <ClInclude Include="Formula_Component.hpp" />
     <ClInclude Include="Graph.hpp" />
     <ClInclude Include="Node.hpp" />
     <ClInclude Include="Policy.hpp" />
@@ -191,6 +187,9 @@
   <ItemGroup>
     <ProjectReference Include="..\Domain_Loader\Domain_Loader.vcxproj">
       <Project>{69ceba7e-8a96-478d-a9ce-611adc86c184}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Formula\Formula.vcxproj">
+      <Project>{e3af9c11-7f0c-42e3-a149-a30696bab696}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

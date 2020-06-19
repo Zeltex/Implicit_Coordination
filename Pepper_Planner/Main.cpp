@@ -1,10 +1,10 @@
 #include "Graph.hpp"
-#include "Formula.hpp"
+#include "../Formula/Formula.hpp"
 #include <iostream>
 
 #include "World.hpp"
-#include "Formula.hpp"
-#include "Formula_Component.hpp"
+#include "../Formula/Formula.hpp"
+#include "../Formula/Formula_Component.hpp"
 #include "Action.hpp"
 #include "Action_Event.hpp"
 #include "DEL_Operations.hpp"

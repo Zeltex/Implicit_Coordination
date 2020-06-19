@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Formula.hpp"
+#include "../Formula/Formula.hpp"
 #include "World.hpp"
 #include "Types.hpp"
 #include "Misc.hpp"

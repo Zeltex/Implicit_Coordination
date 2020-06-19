@@ -5,7 +5,7 @@
 
 #include "Types.hpp"
 #include "State.hpp"
-#include "Formula.hpp"
+#include "../Formula/Formula.hpp"
 #include "Action_Event.hpp"
 #include "Action.hpp"
 #include "DEL_Operations.hpp"

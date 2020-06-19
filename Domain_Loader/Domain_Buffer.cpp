@@ -53,3 +53,11 @@ void Domain_Buffer::push_event_delete_list() {
 	event_delete_list = variable_list;
 	variable_list.clear();
 }
+
+void Domain_Buffer::increment_formula_level(std::string type) {
+	// TODO
+}
+
+void Domain_Buffer::push_formula() {
+	// TODO
+}

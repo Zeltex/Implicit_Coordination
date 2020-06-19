@@ -19,10 +19,19 @@ public:
 	void clear_variable_list();
 	void push_event_add_list();
 	void push_event_delete_list();
+
+	void increment_formula_level(std::string type);
+	void push_formula();
 private:
 
 	std::vector<std::string> variable_list;
 
+	// Formula stuff
+	bool formula_current_level;
+
+
+
+	// Event stuff
 	std::string event_name;
 	std::string event_preconditions;
 	std::vector<std::string> event_add_list;

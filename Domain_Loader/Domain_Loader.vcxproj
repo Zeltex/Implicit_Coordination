@@ -159,6 +159,11 @@
   <ItemGroup>
     <Bison Include="maepl.y" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Formula\Formula.vcxproj">
+      <Project>{e3af9c11-7f0c-42e3-a149-a30696bab696}</Project>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
     <Import Project="custom_build_rules\win_flex_bison_custom_build.targets" />

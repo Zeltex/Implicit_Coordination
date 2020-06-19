@@ -3,8 +3,8 @@
 
 #include <iostream>
 
-#include "../Pepper_Planner/Formula.hpp"
-#include "../Pepper_Planner/Formula_Component.hpp"
+#include "../Formula/Formula.hpp"
+#include "../Formula/Formula_Component.hpp"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 

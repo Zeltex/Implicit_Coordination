@@ -2,8 +2,8 @@
 #include "CppUnitTest.h"
 
 #include "../Pepper_Planner/World.cpp"
-#include "../Pepper_Planner/formula.cpp"
-#include "../Pepper_Planner/Formula_Component.cpp"
+#include "../Formula/formula.cpp"
+#include "../Formula/Formula_Component.cpp"
 #include "../Pepper_Planner/Graph.cpp"
 #include "../Pepper_Planner/Node.cpp"
 #include "../Pepper_Planner/State.cpp"
