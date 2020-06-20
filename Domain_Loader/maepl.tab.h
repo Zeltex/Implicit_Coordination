@@ -60,14 +60,15 @@ extern int yydebug;
      EVENT_DEF = 269,
      EFFECT_DELETE_DEF = 270,
      EFFECT_ADD_DEF = 271,
-     AND = 272,
-     OR = 273,
-     NOT = 274,
-     NAME = 275,
-     EQUALS = 276,
-     INT = 277,
-     FLOAT = 278,
-     STRING = 279
+     DESIGNATED_EVENTS_DEF = 272,
+     AND = 273,
+     OR = 274,
+     NOT = 275,
+     NAME = 276,
+     EQUALS = 277,
+     INT = 278,
+     FLOAT = 279,
+     STRING = 280
    };
 #endif
 
@@ -84,7 +85,7 @@ typedef union YYSTYPE
 
 
 /* Line 2058 of yacc.c  */
-#line 88 "maepl.tab.h"
+#line 89 "maepl.tab.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <unordered_set>
 
 #include "Action_Event.hpp"
 
@@ -10,11 +11,14 @@ namespace del {
 		General_Action() {}
 		void set_owner(std::string agent);
 		void set_name(std::string name);
-		void add_event(Action_Event event);
+		void set_designated_events(std::vector<std::string> designated_events);
+		void create_event(std::string name, Formula&& preconditions, std::unordered_set<std::string> add_list, std::unordered_set<std::string> delete_list);
+
 	private:
 
 		std::string name;
 		std::string owner;
 		std::vector<Action_Event> events;
+		std::vector<std::string> designated_events;
 	};
 }

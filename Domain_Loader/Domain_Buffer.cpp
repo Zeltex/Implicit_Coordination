@@ -5,11 +5,11 @@ void Domain_Buffer::set_event_name(std::string name) {
 }
 
 void  Domain_Buffer::add_event_add(std::string proposition) {
-	event_add_list.push_back(proposition);
+	event_add_list.insert(proposition);
 }
 
 void Domain_Buffer::add_event_delete(std::string proposition) {
-	event_delete_list.push_back(proposition);
+	event_delete_list.insert(proposition);
 }
 
 std::string Domain_Buffer::get_event_name() {
@@ -22,16 +22,20 @@ Formula Domain_Buffer::get_event_preconditions() {
 	return std::move(temp);
 }
 
-std::vector<std::string> Domain_Buffer::get_event_add_list() {
+std::unordered_set<std::string> Domain_Buffer::get_event_add_list() {
 	return event_add_list;
 }
 
-std::vector<std::string> Domain_Buffer::get_event_delete_list() {
+std::unordered_set<std::string> Domain_Buffer::get_event_delete_list() {
 	return event_delete_list;
 }
 
+std::vector<std::string> Domain_Buffer::get_designated_events() {
+    return designated_events;
+}
+
 void Domain_Buffer::add_variable(std::string variable) {
-	variable_list.push_back(variable);
+	variable_list.insert(variable);
 }
 
 void Domain_Buffer::clear_formula() {
@@ -137,4 +141,13 @@ void Domain_Buffer::pop_formula() {
     if (!formula_buffer.empty()) {
         formula_buffer.back().push_back(id);
     }
+}
+
+
+void Domain_Buffer::add_designated_event(std::string event) {
+    designated_events.push_back(event);
+}
+
+void Domain_Buffer::clear_designated_events() {
+    designated_events.clear();
 }

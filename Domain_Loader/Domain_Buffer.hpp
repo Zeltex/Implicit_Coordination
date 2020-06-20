@@ -12,13 +12,18 @@ using namespace del;
 class Domain_Buffer {
 public:
 	void set_event_name(std::string);
-	void set_event_preconditions(Formula formula);
 	void add_event_add(std::string);
 	void add_event_delete(std::string);
+
+	void add_designated_event(std::string);
+	void clear_designated_events();
+
+
 	std::string get_event_name();
 	Formula get_event_preconditions();
-	std::vector<std::string> get_event_add_list();
-	std::vector<std::string> get_event_delete_list();
+	std::unordered_set<std::string> get_event_add_list();
+	std::unordered_set<std::string> get_event_delete_list();
+	std::vector<std::string> get_designated_events();
 
 	void add_variable(std::string variable);
 	void clear_formula();
@@ -31,7 +36,7 @@ public:
 	void pop_formula();
 private:
 
-	std::vector<std::string> variable_list;
+	std::unordered_set<std::string> variable_list;
 
 	// Formula stuff
 	Formula formula;
@@ -42,7 +47,7 @@ private:
 
 	// Event stuff
 	std::string event_name;
-	std::vector<std::string> event_add_list;
-	std::vector<std::string> event_delete_list;
-	//Formula formula;
+	std::unordered_set<std::string> event_add_list;
+	std::unordered_set<std::string> event_delete_list;
+	std::vector<std::string> designated_events;
 };
