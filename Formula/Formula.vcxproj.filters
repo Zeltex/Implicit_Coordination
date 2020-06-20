@@ -24,12 +24,18 @@
     <ClInclude Include="Types.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Formula_Converter.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Formula.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Formula_Component.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Formula_Converter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

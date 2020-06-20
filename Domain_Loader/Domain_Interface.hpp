@@ -3,6 +3,8 @@
 #include <string>
 #include <vector>
 
+#include "../Formula/Formula.hpp"
+
 class Domain_Interface {
 public:
 	virtual void set_debug_working() = 0;
@@ -23,7 +25,7 @@ public:
 	virtual void start_add_list() = 0;
 	virtual void finish_add_list(std::vector<std::string> add_list) = 0;
 
-	virtual void create_event(std::string name, std::string formula, std::vector<std::string> add_list, std::vector<std::string> delete_list) = 0;
+	virtual void create_event(std::string name, del::Formula formula, std::vector<std::string> add_list, std::vector<std::string> delete_list) = 0;
 private:
 	std::vector<std::string> buffer_list;
 };

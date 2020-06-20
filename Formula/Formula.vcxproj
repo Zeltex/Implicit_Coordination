@@ -21,11 +21,13 @@
   <ItemGroup>
     <ClInclude Include="Formula.hpp" />
     <ClInclude Include="Formula_Component.hpp" />
+    <ClInclude Include="Formula_Converter.hpp" />
     <ClInclude Include="Types.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Formula.cpp" />
     <ClCompile Include="Formula_Component.cpp" />
+    <ClCompile Include="Formula_Converter.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

@@ -28,7 +28,7 @@ namespace del {
 		virtual void start_add_list() override;
 		virtual void finish_add_list(std::vector<std::string> add_list) override;
 
-		virtual void create_event(std::string name, std::string formula, std::vector<std::string> add_list, std::vector<std::string> delete_list) override;
+		virtual void create_event(std::string name, Formula formula, std::vector<std::string> add_list, std::vector<std::string> delete_list) override;
 	private:
 		General_Action current_action;
 

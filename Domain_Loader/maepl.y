@@ -82,31 +82,40 @@ action_body:
         event_body RBRACK                   { domain->create_event(buffer->get_event_name(), buffer->get_event_preconditions(), buffer->get_event_add_list(), buffer->get_event_delete_list());    } action_body
 
 event_body:
-    | PRECONDITIONS_DEF EQUALS LBRACK               { buffer->clear_formula(); } 
-        formula RBRACK                              { } event_body
-    | EFFECT_DELETE_DEF EQUALS                      { buffer->clear_variable_list(); } 
-        variables_container                         {  buffer->push_event_delete_list(); } event_body
-    | EFFECT_ADD_DEF EQUALS                         { buffer->clear_variable_list(); }
-        variables_container                         { buffer->push_event_add_list(); } event_body
+    | PRECONDITIONS_DEF EQUALS LBRACK   { buffer->clear_formula();                  } 
+        formula RBRACK                  {                                           } event_body
+    | EFFECT_DELETE_DEF EQUALS          { buffer->clear_variable_list();            } 
+        variables_container             {  buffer->push_event_delete_list();        } event_body
+    | EFFECT_ADD_DEF EQUALS             { buffer->clear_variable_list();            }
+        variables_container             { buffer->push_event_add_list();            } event_body
 
 
 
 variables_container:
-    | LBRACK variables RBRACK                        {}
+    | LBRACK variables RBRACK           {                                           }
 
 formula_container:
-    | LBRACK formula RBRACK                         {}
+    | LBRACK formula_single RBRACK      {                                           }
 
 formula: 
-                                        {std::cout << "registered empty formula" << std::endl;}
-    | NAME
-    | NAME formula                    {} formula
-    | AND LBRACK                        {buffer->increment_formula_level("AND");    }
-        formula RBRACK                  {buffer->push_formula();                    } formula
-    | OR LBRACK                         {buffer->increment_formula_level("OR");     }
-        formula RBRACK                  {buffer->push_formula();                    } formula
-    | NOT LBRACK                        {buffer->increment_formula_level("NOT");    }
-        formula RBRACK                  {buffer->push_formula();                    } formula
+    | NAME                                {buffer->push_pop_formula("Prop", $1);      } 
+    | NAME                              {buffer->push_pop_formula("Prop", $1);      } formula
+    | AND LBRACK                        {buffer->push_formula("And");               }
+        formula RBRACK                  {buffer->pop_formula();                     } formula
+    | OR LBRACK                         {buffer->push_formula("Or");                }
+        formula RBRACK                  {buffer->pop_formula();                     } formula
+    | NOT LBRACK                        {buffer->push_formula("Not");               }
+        formula_single RBRACK           {buffer->pop_formula();                     } formula
+
+
+formula_single: 
+    | NAME                                {buffer->push_pop_formula("Prop", $1);      }
+    | AND LBRACK                        {buffer->push_formula("And");               }
+        formula RBRACK                  {buffer->pop_formula();                     }
+    | OR LBRACK                         {buffer->push_formula("Or");                }
+        formula RBRACK                  {buffer->pop_formula();                     }
+    | NOT LBRACK                        {buffer->push_formula("Not");               }
+        formula_single RBRACK           {buffer->pop_formula();                     }
 
 variable: NAME                                      { buffer->add_variable($1);                  }
 

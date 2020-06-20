@@ -81,7 +81,7 @@ namespace del {
 	}
 
 
-	void Domain_Interface_Implementation::create_event(std::string name, std::string formula, std::vector<std::string> add_list, std::vector<std::string> delete_list) {
+	void Domain_Interface_Implementation::create_event(std::string name, Formula formula, std::vector<std::string> add_list, std::vector<std::string> delete_list) {
 		// TODO - Create event
 		int debug = 0;
 	}
