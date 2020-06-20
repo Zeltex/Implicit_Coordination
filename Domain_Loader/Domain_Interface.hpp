@@ -23,6 +23,7 @@ public:
 	virtual void set_types(std::unordered_set<std::string> types) = 0;
 	virtual void add_proposition(std::string name, std::vector<std::pair<std::string, std::string>> inputs) = 0;
 	virtual void set_objects(std::unordered_map<std::string, std::unordered_set<std::string>> objects) = 0;
+	virtual void set_domain(std::string domain_name) = 0;
 private:
 	std::vector<std::string> buffer_list;
 };

@@ -52,4 +52,8 @@ namespace del {
 	void Domain_Interface_Implementation::set_objects(std::unordered_map<std::string, std::unordered_set<std::string>> objects) {
 		this->objects = objects;
 	}
+
+	void Domain_Interface_Implementation::set_domain(std::string domain_name) {
+		this->domain_name = domain_name;
+	}
 }

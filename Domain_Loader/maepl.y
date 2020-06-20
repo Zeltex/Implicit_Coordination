@@ -22,6 +22,7 @@
   int ival;
   float fval;
   char *sval;
+  bool bval;
 }
 
 // define the constant-string tokens:
@@ -29,16 +30,22 @@
 %token ACTION_DEF
 %token DEFINE_DEF
 %token DESIGNATED_EVENTS_DEF
+%token DESIGNATED_WORLDS_DEF
 %token DOMAIN_DEF
 %token EFFECT_ADD_DEF
 %token EFFECT_DELETE_DEF
 %token EVENT_DEF
+%token GOAL_DEF
+%token INIT_DEF
 %token OBJECTS_DEF
 %token OWNER_DEF
 %token PRECONDITIONS_DEF
 %token PROBLEM_DEF
 %token PROPOSITIONS_DEF
+%token REACHAbility_DEF
+%token REFLEXIVITY_DEF
 %token TYPES_DEF
+%token WORLD_DEF
 
 %token LBRACK
 %token RBRACK
@@ -49,6 +56,7 @@
 
 
 %token <sval> NAME
+%token <bval> TRUTH
 
 %token EQUALS
 
@@ -68,16 +76,37 @@ maepl:
     |DOMAIN_DEF NAME LBRACK                  { domain->new_domain(std::string($2));                         }
         types_container propositions_container actions RBRACK   { domain->finish_domain();                  } maepl
     | PROBLEM_DEF NAME LBRACK
-        OBJECTS_DEF EQUALS LBRACK
-        objects RBRACK RBRACK                { domain->finish_problem();                                    } maepl  
+        problem_body RBRACK                { domain->finish_problem();                                    } maepl  
 
-  ;
+problem_body:
+    | DOMAIN_DEF EQUALS NAME                                    { domain->set_domain($3);} problem_body
+    | OBJECTS_DEF EQUALS LBRACK objects RBRACK                  {} problem_body
+    | INIT_DEF EQUALS LBRACK init_body RBRACK                   {} problem_body
+    | WORLD_DEF NAME LBRACK world_body RBRACK                   {} problem_body
+    | GOAL_DEF EQUALS LBRACK formula RBRACK                     {} problem_body
+    | DESIGNATED_WORLDS_DEF EQUALS LBRACK variables RBRACK      {} problem_body
+    | REACHAbility_DEF EQUALS LBRACK reachability_body RBRACK           {} problem_body
+    | REFLEXIVITY_DEF EQUALS TRUTH                              {} problem_body
+
+reachability_body:
+    | NAME EQUALS LBRACK pairs RBRACK reachability_body
+
+goal_body:
+    | 
+
+world_body:
+    | NAME LBRACK variables RBRACK world_body
+
+init_body:
+    | NAME LBRACK variables RBRACK init_body
+
+pairs:
+    | LBRACK NAME NAME RBRACK pairs
 
 objects:
     | NAME EQUALS LBRACK variables RBRACK    { buffer->set_object_type($1);
                                                buffer->push_objects(); 
                                                domain->set_objects(buffer->get_objects());                  } objects
-
 
 types_container:                             { std::cerr << "Missing types definition\n";                   }    
     | TYPES_DEF EQUALS LBRACK        

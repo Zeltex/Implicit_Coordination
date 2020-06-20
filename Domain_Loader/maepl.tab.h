@@ -49,26 +49,33 @@ extern int yydebug;
      ACTION_DEF = 258,
      DEFINE_DEF = 259,
      DESIGNATED_EVENTS_DEF = 260,
-     DOMAIN_DEF = 261,
-     EFFECT_ADD_DEF = 262,
-     EFFECT_DELETE_DEF = 263,
-     EVENT_DEF = 264,
-     OBJECTS_DEF = 265,
-     OWNER_DEF = 266,
-     PRECONDITIONS_DEF = 267,
-     PROBLEM_DEF = 268,
-     PROPOSITIONS_DEF = 269,
-     TYPES_DEF = 270,
-     LBRACK = 271,
-     RBRACK = 272,
-     AND = 273,
-     OR = 274,
-     NOT = 275,
-     NAME = 276,
-     EQUALS = 277,
-     INT = 278,
-     FLOAT = 279,
-     STRING = 280
+     DESIGNATED_WORLDS_DEF = 261,
+     DOMAIN_DEF = 262,
+     EFFECT_ADD_DEF = 263,
+     EFFECT_DELETE_DEF = 264,
+     EVENT_DEF = 265,
+     GOAL_DEF = 266,
+     INIT_DEF = 267,
+     OBJECTS_DEF = 268,
+     OWNER_DEF = 269,
+     PRECONDITIONS_DEF = 270,
+     PROBLEM_DEF = 271,
+     PROPOSITIONS_DEF = 272,
+     REACHAbility_DEF = 273,
+     REFLEXIVITY_DEF = 274,
+     TYPES_DEF = 275,
+     WORLD_DEF = 276,
+     LBRACK = 277,
+     RBRACK = 278,
+     AND = 279,
+     OR = 280,
+     NOT = 281,
+     NAME = 282,
+     TRUTH = 283,
+     EQUALS = 284,
+     INT = 285,
+     FLOAT = 286,
+     STRING = 287
    };
 #endif
 
@@ -82,10 +89,11 @@ typedef union YYSTYPE
   int ival;
   float fval;
   char *sval;
+  bool bval;
 
 
 /* Line 2058 of yacc.c  */
-#line 89 "maepl.tab.h"
+#line 97 "maepl.tab.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */

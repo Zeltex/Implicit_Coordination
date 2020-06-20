@@ -14,10 +14,25 @@ _domain Pepper {
 		}
 	}
 }
-_problem problem1 {
+_problem simple_problem {
 	_objects = {
-		container = [box1, box2, box3]
+		container = [box0, box1, box2, L]
 		object = [red_cube]
+		agent = [Pepper, L]
+	}
+	_initial_state = [
+		in(box1, red_cube)
+	]
+	_world world0 [in(box0, red_cube)]
+	_world world1 [in(box1, red_cube)]
+	_world world2 [in(box2, red_cube)]
+	_goal = []
+	_designated_worlds = [world0, world1, world2]
+	_reflexivity = true
+	_reachability = {
+		Pepper = {
+			(world0, world1)
+		}
 	}
 }
 

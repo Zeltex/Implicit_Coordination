@@ -25,11 +25,13 @@ namespace del {
 		virtual void set_types(std::unordered_set<std::string> types) override;
 		virtual void add_proposition(std::string name, std::vector<std::pair<std::string, std::string>> inputs) override;
 		virtual void set_objects(std::unordered_map<std::string, std::unordered_set<std::string>> objects) override;
+		virtual void set_domain(std::string domain_name) override;
 	private:
 		General_Action current_action;
 		std::vector<Proposition> propositions;
 		std::string current_domain_name;
 		std::unordered_set<std::string> types;
 		std::unordered_map<std::string, std::unordered_set<std::string>> objects;
+		std::string domain_name;
 	};
 }
