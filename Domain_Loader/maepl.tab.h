@@ -46,31 +46,29 @@ extern int yydebug;
    /* Put the tokens into the symbol table, so that GDB and other debuggers
       know about them.  */
    enum yytokentype {
-     SNAZZLE = 258,
-     TYPE = 259,
-     END = 260,
-     ENDL = 261,
-     ACTION_DEF = 262,
-     DEFINE_DEF = 263,
-     DESIGNATED_EVENTS_DEF = 264,
-     DOMAIN_DEF = 265,
-     EFFECT_ADD_DEF = 266,
-     EFFECT_DELETE_DEF = 267,
-     EVENT_DEF = 268,
-     OWNER_DEF = 269,
-     PRECONDITIONS_DEF = 270,
-     PROPOSITIONS_DEF = 271,
-     TYPES_DEF = 272,
-     LBRACK = 273,
-     RBRACK = 274,
-     AND = 275,
-     OR = 276,
-     NOT = 277,
-     NAME = 278,
-     EQUALS = 279,
-     INT = 280,
-     FLOAT = 281,
-     STRING = 282
+     ACTION_DEF = 258,
+     DEFINE_DEF = 259,
+     DESIGNATED_EVENTS_DEF = 260,
+     DOMAIN_DEF = 261,
+     EFFECT_ADD_DEF = 262,
+     EFFECT_DELETE_DEF = 263,
+     EVENT_DEF = 264,
+     OBJECTS_DEF = 265,
+     OWNER_DEF = 266,
+     PRECONDITIONS_DEF = 267,
+     PROBLEM_DEF = 268,
+     PROPOSITIONS_DEF = 269,
+     TYPES_DEF = 270,
+     LBRACK = 271,
+     RBRACK = 272,
+     AND = 273,
+     OR = 274,
+     NOT = 275,
+     NAME = 276,
+     EQUALS = 277,
+     INT = 278,
+     FLOAT = 279,
+     STRING = 280
    };
 #endif
 
@@ -87,7 +85,7 @@ typedef union YYSTYPE
 
 
 /* Line 2058 of yacc.c  */
-#line 91 "maepl.tab.h"
+#line 89 "maepl.tab.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */

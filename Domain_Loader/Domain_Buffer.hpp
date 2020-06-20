@@ -3,6 +3,8 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include <unordered_set>
+#include <unordered_map>
 
 #include "../Formula/Formula.hpp"
 #include "../Formula/Types.hpp"
@@ -29,6 +31,7 @@ public:
 	std::vector<std::pair<std::string, std::string>> get_action_inputs();
 	std::vector<std::pair<std::string, std::string>> get_inputs();
 	std::unordered_set<std::string> get_types();
+	std::unordered_map<std::string, std::unordered_set<std::string>>  get_objects();
 
 	void add_variable(std::string variable);
 	void clear_formula();
@@ -36,16 +39,21 @@ public:
 	void push_event_add_list();
 	void push_event_delete_list();
 	void push_types();
+	void push_objects();
 
 	void push_pop_formula(std::string type, std::string argument);
 	void push_formula(std::string type);
 	void pop_formula();
+
+	void set_object_type(std::string type);
 private:
 
 	std::unordered_set<std::string> types;
 	std::unordered_set<std::string> variable_list;
 	std::vector<std::pair<std::string, std::string>> action_inputs;
 	std::vector<std::pair<std::string, std::string>> inputs;
+	std::unordered_map<std::string, std::unordered_set<std::string>> objects;
+	std::string current_object_type;
 
 	// Formula stuff
 	Formula formula;

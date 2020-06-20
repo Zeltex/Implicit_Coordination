@@ -10,6 +10,10 @@ namespace del {
 		std::cout << "Finishing domain" << std::endl;
 	}
 
+	void Domain_Interface_Implementation::finish_problem() {
+		std::cout << "Finishing problem" << std::endl;
+	}
+
 	void Domain_Interface_Implementation::new_action(std::string name) {
 		current_action = General_Action();
 		current_action.set_name(name);
@@ -43,5 +47,9 @@ namespace del {
 
 	void Domain_Interface_Implementation::add_proposition(std::string name, std::vector<std::pair<std::string, std::string>> inputs) {
 		propositions.emplace_back(name, inputs);
+	}
+
+	void Domain_Interface_Implementation::set_objects(std::unordered_map<std::string, std::unordered_set<std::string>> objects) {
+		this->objects = objects;
 	}
 }

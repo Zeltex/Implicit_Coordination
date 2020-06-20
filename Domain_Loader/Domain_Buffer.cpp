@@ -60,6 +60,12 @@ std::vector<std::pair<std::string, std::string>> Domain_Buffer::get_inputs() {
     return std::move(temp);
 }
 
+std::unordered_map<std::string, std::unordered_set<std::string>> Domain_Buffer::get_objects() {
+    auto temp = std::move(objects);
+    objects = std::unordered_map<std::string, std::unordered_set<std::string>>();
+    return std::move(temp);
+}
+
 std::unordered_set<std::string> Domain_Buffer::get_types() {
     return types;
 }
@@ -178,10 +184,20 @@ void Domain_Buffer::push_types() {
     variable_list = std::unordered_set<std::string>();
 }
 
+void Domain_Buffer::push_objects() {
+    objects[current_object_type] = std::move(variable_list);
+    current_object_type = "";
+    variable_list = std::unordered_set<std::string>();
+}
+
 void Domain_Buffer::add_designated_event(std::string event) {
     designated_events.push_back(event);
 }
 
 void Domain_Buffer::clear_designated_events() {
     designated_events.clear();
+}
+
+void Domain_Buffer::set_object_type(std::string type) {
+    current_object_type = type;
 }

@@ -1,8 +1,7 @@
 _domain Pepper {
-	_types = [container, object, place]
+	_types = [container, object]
 	_propositions = [
 		in(container c, object o)
-		at(place p, object o)
 	]
 	_action announce (proposition prop) {
 		_owner = name
@@ -15,6 +14,11 @@ _domain Pepper {
 		}
 	}
 }
-
+_problem problem1 {
+	_objects = {
+		container = [box1, box2, box3]
+		object = [red_cube]
+	}
+}
 
 
