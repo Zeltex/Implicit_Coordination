@@ -1,5 +1,6 @@
 #pragma once
 #include <cstddef>
+#include <vector>
 
 namespace del {
 	struct Node_Id {
@@ -59,5 +60,12 @@ namespace del {
 		World_Id old_world;
 		Event_Id old_event;
 		World_Id new_world;
+	};
+
+	struct Proposition {
+		Proposition(std::string name, std::vector<std::pair<std::string, std::string>> inputs) :
+			name(name), inputs(inputs) {}
+		std::string name;
+		std::vector<std::pair<std::string, std::string>> inputs;
 	};
 }

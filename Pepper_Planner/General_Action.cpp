@@ -14,6 +14,9 @@ namespace del {
 		this->designated_events = designated_events;
 	}
 
+	void General_Action::set_action_input(std::vector<std::pair<std::string, std::string>> inputs) {
+		this->inputs = inputs;
+	}
 
 	void General_Action::create_event(std::string name, Formula&& preconditions, std::unordered_set<std::string> add_list, std::unordered_set<std::string> delete_list) {
 		events.emplace_back(Event_Id{ events.size() }, std::move(preconditions), add_list, delete_list);

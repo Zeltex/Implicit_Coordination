@@ -12,6 +12,7 @@ namespace del {
 		void set_owner(std::string agent);
 		void set_name(std::string name);
 		void set_designated_events(std::vector<std::string> designated_events);
+		void set_action_input(std::vector<std::pair<std::string, std::string>> inputs);
 		void create_event(std::string name, Formula&& preconditions, std::unordered_set<std::string> add_list, std::unordered_set<std::string> delete_list);
 
 	private:
@@ -20,5 +21,6 @@ namespace del {
 		std::string owner;
 		std::vector<Action_Event> events;
 		std::vector<std::string> designated_events;
+		std::vector<std::pair<std::string, std::string>> inputs;
 	};
 }

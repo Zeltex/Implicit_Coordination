@@ -19,8 +19,8 @@ namespace del {
 		std::cout << "Finishing action" << std::endl;
 	}
 
-	void Domain_Interface_Implementation::add_action_input(std::string type, std::string name) {
-		std::cout << "Action input " << type << " " << name <<  std::endl;
+	void Domain_Interface_Implementation::set_action_input(std::vector<std::pair<std::string, std::string>> inputs) {
+		current_action.set_action_input(inputs);
 	}
 
 	void Domain_Interface_Implementation::set_action_owner(std::string name) {
@@ -35,5 +35,9 @@ namespace del {
 
 	void Domain_Interface_Implementation::set_designated_events(std::vector<std::string> designated_events) {
 		current_action.set_designated_events(designated_events);
+	}
+
+	void Domain_Interface_Implementation::add_proposition(std::string name, std::vector<std::pair<std::string, std::string>> inputs) {
+		propositions.emplace_back(name, inputs);
 	}
 }

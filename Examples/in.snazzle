@@ -1,4 +1,8 @@
 _domain Pepper {
+	_propositions = [
+		in(container c, object o)
+		at(place p, object o)
+	]
 	_action announce (proposition prop) {
 		_owner = name
 		_designated_events = [event1]

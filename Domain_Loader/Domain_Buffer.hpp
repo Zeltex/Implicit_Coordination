@@ -16,6 +16,8 @@ public:
 	void add_event_delete(std::string);
 
 	void add_designated_event(std::string);
+	void add_action_input(std::string type, std::string name);
+	void add_input(std::string type, std::string name);
 	void clear_designated_events();
 
 
@@ -24,6 +26,8 @@ public:
 	std::unordered_set<std::string> get_event_add_list();
 	std::unordered_set<std::string> get_event_delete_list();
 	std::vector<std::string> get_designated_events();
+	std::vector<std::pair<std::string, std::string>> get_action_inputs();
+	std::vector<std::pair<std::string, std::string>> get_inputs();
 
 	void add_variable(std::string variable);
 	void clear_formula();
@@ -37,6 +41,8 @@ public:
 private:
 
 	std::unordered_set<std::string> variable_list;
+	std::vector<std::pair<std::string, std::string>> action_inputs;
+	std::vector<std::pair<std::string, std::string>> inputs;
 
 	// Formula stuff
 	Formula formula;

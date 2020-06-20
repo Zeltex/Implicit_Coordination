@@ -23,6 +23,7 @@ _effect_delete		{ return EFFECT_DELETE_DEF;		}
 _event				{ return EVENT_DEF;				}
 _owner				{ return OWNER_DEF;				}
 _preconditions		{ return PRECONDITIONS_DEF;		}
+_propositions		{ return PROPOSITIONS_DEF;		}	
 
 
 AND					{ return AND;					}		

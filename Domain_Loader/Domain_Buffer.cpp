@@ -12,6 +12,14 @@ void Domain_Buffer::add_event_delete(std::string proposition) {
 	event_delete_list.insert(proposition);
 }
 
+void Domain_Buffer::add_action_input(std::string type, std::string name) {
+    action_inputs.emplace_back(type, name);
+}
+
+void Domain_Buffer::add_input(std::string type, std::string name) {
+    inputs.emplace_back(type, name);
+}
+
 std::string Domain_Buffer::get_event_name() {
 	return event_name;
 }
@@ -23,15 +31,33 @@ Formula Domain_Buffer::get_event_preconditions() {
 }
 
 std::unordered_set<std::string> Domain_Buffer::get_event_add_list() {
-	return event_add_list;
+    auto temp = std::move(event_add_list);
+    event_add_list = std::unordered_set<std::string>();
+    return std::move(temp);
 }
 
 std::unordered_set<std::string> Domain_Buffer::get_event_delete_list() {
-	return event_delete_list;
+    auto temp = std::move(event_delete_list);
+    event_delete_list = std::unordered_set<std::string>();
+    return std::move(temp);
 }
 
 std::vector<std::string> Domain_Buffer::get_designated_events() {
-    return designated_events;
+    auto temp = std::move(designated_events);
+    designated_events = std::vector<std::string>();
+    return std::move(temp);
+}
+
+std::vector<std::pair<std::string, std::string>> Domain_Buffer::get_action_inputs() {
+    auto temp = std::move(action_inputs);
+    action_inputs = std::vector<std::pair<std::string, std::string>>();
+    return std::move(temp);
+}
+
+std::vector<std::pair<std::string, std::string>> Domain_Buffer::get_inputs() {
+    auto temp = std::move(inputs);
+    inputs = std::vector<std::pair<std::string, std::string>>();
+    return std::move(temp);
 }
 
 void Domain_Buffer::add_variable(std::string variable) {

@@ -27,17 +27,20 @@
 // define the constant-string tokens:
 %token SNAZZLE TYPE
 %token END ENDL
-%token LBRACK
-%token RBRACK
-%token DOMAIN_DEF
-%token DEFINE_DEF
+
 %token ACTION_DEF
+%token DEFINE_DEF
+%token DESIGNATED_EVENTS_DEF
+%token DOMAIN_DEF
+%token EFFECT_ADD_DEF
+%token EFFECT_DELETE_DEF
+%token EVENT_DEF
 %token OWNER_DEF
 %token PRECONDITIONS_DEF
-%token EVENT_DEF
-%token EFFECT_DELETE_DEF
-%token EFFECT_ADD_DEF
-%token DESIGNATED_EVENTS_DEF
+%token PROPOSITIONS_DEF
+
+%token LBRACK
+%token RBRACK
 
 %token AND
 %token OR
@@ -61,19 +64,30 @@
 // the first rule defined is the highest-level rule, which in our
 // case is just the concept of a whole "snazzle file":
 maepl: 
-    DOMAIN_DEF NAME LBRACK                  { domain->new_domain(std::string($2));      }
-    actions RBRACK                          { domain->finish_domain();                  }
+    DOMAIN_DEF NAME LBRACK                  { domain->new_domain(std::string($2));                      }
+    propositions_container actions RBRACK   { domain->finish_domain();                                  }
 
   ;
 
+propositions_container:                      { std::cerr << "Missing propositions definition\n";         }    
+    | PROPOSITIONS_DEF EQUALS LBRACK        { }
+        propositions RBRACK                 { }
+
+proposition:
+    | NAME LBRACK input RBRACK              { domain->add_proposition($1, buffer->get_inputs());        }    
+
+input:
+    | NAME NAME                             { buffer->add_input($1, $2);                                }
+        input
+
 action:
-    ACTION_DEF NAME                         { domain->new_action(std::string($2));      }
-    LBRACK action_input RBRACK
+    ACTION_DEF NAME                         { domain->new_action(std::string($2));                      }
+    LBRACK action_input RBRACK              { domain->set_action_input(buffer->get_action_inputs());    }
     LBRACK action_body
-    RBRACK                                  { domain->finish_action();                  }
+    RBRACK                                  { domain->finish_action();                                  }
 
 action_input:
-    | NAME NAME                             { domain->add_action_input($1, $2);         }
+    | NAME NAME                             { buffer->add_action_input($1, $2);                         }
         action_input
 
 
@@ -128,6 +142,10 @@ formula_single:
         formula_single RBRACK           {buffer->pop_formula();                         }
 
 variable: NAME                                      { buffer->add_variable($1);                  }
+
+propositions:
+  propositions proposition
+  | proposition ;
 
 actions:
   actions action
