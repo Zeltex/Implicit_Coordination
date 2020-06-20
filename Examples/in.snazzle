@@ -1,4 +1,5 @@
 _domain Pepper {
+	_types = [container, object, place]
 	_propositions = [
 		in(container c, object o)
 		at(place p, object o)

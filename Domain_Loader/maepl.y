@@ -25,8 +25,6 @@
 }
 
 // define the constant-string tokens:
-%token SNAZZLE TYPE
-%token END ENDL
 
 %token ACTION_DEF
 %token DEFINE_DEF
@@ -38,6 +36,7 @@
 %token OWNER_DEF
 %token PRECONDITIONS_DEF
 %token PROPOSITIONS_DEF
+%token TYPES_DEF
 
 %token LBRACK
 %token RBRACK
@@ -65,13 +64,18 @@
 // case is just the concept of a whole "snazzle file":
 maepl: 
     DOMAIN_DEF NAME LBRACK                  { domain->new_domain(std::string($2));                      }
-    propositions_container actions RBRACK   { domain->finish_domain();                                  }
+    types_container propositions_container actions RBRACK   { domain->finish_domain();                                  }
 
   ;
 
+
+types_container:                             { std::cerr << "Missing types definition\n";               }    
+    | TYPES_DEF EQUALS LBRACK        
+        variables RBRACK                     { buffer->push_types(); domain->set_types(buffer->get_types());}
+
 propositions_container:                      { std::cerr << "Missing propositions definition\n";         }    
-    | PROPOSITIONS_DEF EQUALS LBRACK        { }
-        propositions RBRACK                 { }
+    | PROPOSITIONS_DEF EQUALS LBRACK        
+        propositions RBRACK                 
 
 proposition:
     | NAME LBRACK input RBRACK              { domain->add_proposition($1, buffer->get_inputs());        }    
@@ -82,14 +86,9 @@ input:
 
 action:
     ACTION_DEF NAME                         { domain->new_action(std::string($2));                      }
-    LBRACK action_input RBRACK              { domain->set_action_input(buffer->get_action_inputs());    }
+    LBRACK input RBRACK                     { domain->set_action_input(buffer->get_inputs());    }
     LBRACK action_body
     RBRACK                                  { domain->finish_action();                                  }
-
-action_input:
-    | NAME NAME                             { buffer->add_action_input($1, $2);                         }
-        action_input
-
 
 action_body:
     | OWNER_DEF EQUALS NAME                 { domain->set_action_owner($3);             } action_body
@@ -154,10 +153,6 @@ actions:
 variables:
   | variables variable
   | variable ;
-
-ENDLS:
-  ENDLS ENDL
-  | ENDL ;
 
 %%
 

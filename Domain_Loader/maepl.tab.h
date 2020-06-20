@@ -60,16 +60,17 @@ extern int yydebug;
      OWNER_DEF = 269,
      PRECONDITIONS_DEF = 270,
      PROPOSITIONS_DEF = 271,
-     LBRACK = 272,
-     RBRACK = 273,
-     AND = 274,
-     OR = 275,
-     NOT = 276,
-     NAME = 277,
-     EQUALS = 278,
-     INT = 279,
-     FLOAT = 280,
-     STRING = 281
+     TYPES_DEF = 272,
+     LBRACK = 273,
+     RBRACK = 274,
+     AND = 275,
+     OR = 276,
+     NOT = 277,
+     NAME = 278,
+     EQUALS = 279,
+     INT = 280,
+     FLOAT = 281,
+     STRING = 282
    };
 #endif
 
@@ -86,7 +87,7 @@ typedef union YYSTYPE
 
 
 /* Line 2058 of yacc.c  */
-#line 90 "maepl.tab.h"
+#line 91 "maepl.tab.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */

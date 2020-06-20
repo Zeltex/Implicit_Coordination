@@ -18,6 +18,7 @@ public:
 
 	virtual void create_event(std::string name, del::Formula&& preconditions, std::unordered_set<std::string> add_list, std::unordered_set<std::string> delete_list) = 0;
 	virtual void set_designated_events(std::vector<std::string> designated_events) = 0;
+	virtual void set_types(std::unordered_set<std::string> types) = 0;
 	virtual void add_proposition(std::string name, std::vector<std::pair<std::string, std::string>> inputs) = 0;
 private:
 	std::vector<std::string> buffer_list;

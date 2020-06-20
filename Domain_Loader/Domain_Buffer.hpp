@@ -28,18 +28,21 @@ public:
 	std::vector<std::string> get_designated_events();
 	std::vector<std::pair<std::string, std::string>> get_action_inputs();
 	std::vector<std::pair<std::string, std::string>> get_inputs();
+	std::unordered_set<std::string> get_types();
 
 	void add_variable(std::string variable);
 	void clear_formula();
 	void clear_variable_list();
 	void push_event_add_list();
 	void push_event_delete_list();
+	void push_types();
 
 	void push_pop_formula(std::string type, std::string argument);
 	void push_formula(std::string type);
 	void pop_formula();
 private:
 
+	std::unordered_set<std::string> types;
 	std::unordered_set<std::string> variable_list;
 	std::vector<std::pair<std::string, std::string>> action_inputs;
 	std::vector<std::pair<std::string, std::string>> inputs;

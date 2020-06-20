@@ -24,6 +24,7 @@ _event				{ return EVENT_DEF;				}
 _owner				{ return OWNER_DEF;				}
 _preconditions		{ return PRECONDITIONS_DEF;		}
 _propositions		{ return PROPOSITIONS_DEF;		}	
+_types				{ return TYPES_DEF;				}
 
 
 AND					{ return AND;					}		

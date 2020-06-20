@@ -37,6 +37,10 @@ namespace del {
 		current_action.set_designated_events(designated_events);
 	}
 
+	void Domain_Interface_Implementation::set_types(std::unordered_set<std::string> types) {
+		this->types = types;
+	}
+
 	void Domain_Interface_Implementation::add_proposition(std::string name, std::vector<std::pair<std::string, std::string>> inputs) {
 		propositions.emplace_back(name, inputs);
 	}

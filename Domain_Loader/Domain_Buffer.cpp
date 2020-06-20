@@ -60,6 +60,10 @@ std::vector<std::pair<std::string, std::string>> Domain_Buffer::get_inputs() {
     return std::move(temp);
 }
 
+std::unordered_set<std::string> Domain_Buffer::get_types() {
+    return types;
+}
+
 void Domain_Buffer::add_variable(std::string variable) {
 	variable_list.insert(variable);
 }
@@ -169,6 +173,10 @@ void Domain_Buffer::pop_formula() {
     }
 }
 
+void Domain_Buffer::push_types() {
+    types = std::move(variable_list);
+    variable_list = std::unordered_set<std::string>();
+}
 
 void Domain_Buffer::add_designated_event(std::string event) {
     designated_events.push_back(event);
