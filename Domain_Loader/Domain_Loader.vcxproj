@@ -152,6 +152,7 @@
     <ClInclude Include="Loader.hpp" />
     <ClInclude Include="Maepl.hpp" />
     <ClInclude Include="maepl.tab.h" />
+    <ClInclude Include="Types.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Flex Include="maepl.l" />

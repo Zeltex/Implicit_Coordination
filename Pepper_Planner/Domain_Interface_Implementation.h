@@ -5,6 +5,7 @@
 #include <unordered_map>
 
 #include "../Domain_Loader/Domain_Interface.hpp"
+#include "../Domain_Loader/Types.hpp"
 #include "General_Action.hpp"
 
 namespace del {
@@ -26,8 +27,10 @@ namespace del {
 		virtual void add_proposition(std::string name, std::vector<std::pair<std::string, std::string>> inputs) override;
 		virtual void set_objects(std::unordered_map<std::string, std::unordered_set<std::string>> objects) override;
 		virtual void set_domain(std::string domain_name) override;
+		virtual void set_initial_state(std::vector<Proposition_Instance> propositions) override;
 	private:
 		General_Action current_action;
+		std::vector<Proposition_Instance> initial_state;
 		std::vector<Proposition> propositions;
 		std::string current_domain_name;
 		std::unordered_set<std::string> types;

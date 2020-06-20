@@ -81,11 +81,11 @@ maepl:
 problem_body:
     | DOMAIN_DEF EQUALS NAME                                    { domain->set_domain($3);} problem_body
     | OBJECTS_DEF EQUALS LBRACK objects RBRACK                  {} problem_body
-    | INIT_DEF EQUALS LBRACK init_body RBRACK                   {} problem_body
-    | WORLD_DEF NAME LBRACK world_body RBRACK                   {} problem_body
+    | INIT_DEF EQUALS LBRACK proposition_instances RBRACK       { domain->set_initial_state(buffer->get_proposition_instances());} problem_body
+    | WORLD_DEF NAME LBRACK proposition_instances RBRACK        {} problem_body
     | GOAL_DEF EQUALS LBRACK formula RBRACK                     {} problem_body
     | DESIGNATED_WORLDS_DEF EQUALS LBRACK variables RBRACK      {} problem_body
-    | REACHAbility_DEF EQUALS LBRACK reachability_body RBRACK           {} problem_body
+    | REACHAbility_DEF EQUALS LBRACK reachability_body RBRACK   {} problem_body
     | REFLEXIVITY_DEF EQUALS TRUTH                              {} problem_body
 
 reachability_body:
@@ -94,11 +94,8 @@ reachability_body:
 goal_body:
     | 
 
-world_body:
-    | NAME LBRACK variables RBRACK world_body
-
-init_body:
-    | NAME LBRACK variables RBRACK init_body
+proposition_instances:
+    |  NAME LBRACK ordered_variables RBRACK                             {buffer->push_proposition_instance($1);     } proposition_instances
 
 pairs:
     | LBRACK NAME NAME RBRACK pairs
@@ -194,6 +191,8 @@ variables:
   | variables variable
   | variable ;
 
+ordered_variables:
+  | NAME                                    {buffer->add_ordered_variable($1);                               } ordered_variables
 %%
 
 void parse_domain(Domain_Interface* domain_input, Domain_Buffer* buffer_input, FILE* file_in) {

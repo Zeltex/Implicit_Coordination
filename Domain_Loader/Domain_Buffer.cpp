@@ -12,12 +12,17 @@ void Domain_Buffer::add_event_delete(std::string proposition) {
 	event_delete_list.insert(proposition);
 }
 
-void Domain_Buffer::add_action_input(std::string type, std::string name) {
-    action_inputs.emplace_back(type, name);
-}
-
 void Domain_Buffer::add_input(std::string type, std::string name) {
     inputs.emplace_back(type, name);
+}
+
+void Domain_Buffer::add_ordered_variable(std::string variable) {
+    ordered_variable_list.push_back(variable);
+}
+
+void Domain_Buffer::push_proposition_instance(std::string name) {
+    propositions.emplace_back(name, std::move(ordered_variable_list));
+    ordered_variable_list = {};
 }
 
 std::string Domain_Buffer::get_event_name() {
@@ -48,12 +53,6 @@ std::vector<std::string> Domain_Buffer::get_designated_events() {
     return std::move(temp);
 }
 
-std::vector<std::pair<std::string, std::string>> Domain_Buffer::get_action_inputs() {
-    auto temp = std::move(action_inputs);
-    action_inputs = std::vector<std::pair<std::string, std::string>>();
-    return std::move(temp);
-}
-
 std::vector<std::pair<std::string, std::string>> Domain_Buffer::get_inputs() {
     auto temp = std::move(inputs);
     inputs = std::vector<std::pair<std::string, std::string>>();
@@ -66,8 +65,20 @@ std::unordered_map<std::string, std::unordered_set<std::string>> Domain_Buffer::
     return std::move(temp);
 }
 
+std::vector<std::string> Domain_Buffer::get_ordered_variables() {
+    auto temp = std::move(ordered_variable_list);
+    ordered_variable_list = std::vector<std::string>();
+    return std::move(temp);
+}
+
 std::unordered_set<std::string> Domain_Buffer::get_types() {
     return types;
+}
+
+std::vector<Proposition_Instance> Domain_Buffer::get_proposition_instances() {
+    auto temp = std::move(propositions);
+    propositions = {};
+    return std::move(temp);
 }
 
 void Domain_Buffer::add_variable(std::string variable) {

@@ -62,10 +62,4 @@ namespace del {
 		World_Id new_world;
 	};
 
-	struct Proposition {
-		Proposition(std::string name, std::vector<std::pair<std::string, std::string>> inputs) :
-			name(name), inputs(inputs) {}
-		std::string name;
-		std::vector<std::pair<std::string, std::string>> inputs;
-	};
 }

@@ -56,4 +56,8 @@ namespace del {
 	void Domain_Interface_Implementation::set_domain(std::string domain_name) {
 		this->domain_name = domain_name;
 	}
+
+	void Domain_Interface_Implementation::set_initial_state(std::vector<Proposition_Instance> propositions) {
+		this->initial_state = propositions;
+	}
 }

@@ -6,6 +6,7 @@
 #include <unordered_map>
 
 #include "../Formula/Formula.hpp"
+#include "Types.hpp"
 
 class Domain_Interface {
 public:
@@ -24,6 +25,7 @@ public:
 	virtual void add_proposition(std::string name, std::vector<std::pair<std::string, std::string>> inputs) = 0;
 	virtual void set_objects(std::unordered_map<std::string, std::unordered_set<std::string>> objects) = 0;
 	virtual void set_domain(std::string domain_name) = 0;
+	virtual void set_initial_state(std::vector<Proposition_Instance> propositions) = 0;
 private:
 	std::vector<std::string> buffer_list;
 };
