@@ -73,15 +73,15 @@
 // the first rule defined is the highest-level rule, which in our
 // case is just the concept of a whole "snazzle file":
 maepl: 
-    |DOMAIN_DEF NAME LBRACK                                     { domain->new_domain(std::string($2));                         }
-        types_container propositions_container actions RBRACK   { domain->finish_domain();                  } maepl
+    |DOMAIN_DEF NAME LBRACK                                     { domain->new_domain(std::string($2));                                  }
+        types_container propositions_container actions RBRACK   { domain->finish_domain();                                              } maepl
     | PROBLEM_DEF NAME LBRACK
         problem_body RBRACK                                     { if (buffer->is_reflexive()) domain->create_reflexive_reachables();
                                                                   domain->finish_problem();                                             } maepl  
 
 problem_body:
     | DOMAIN_DEF EQUALS NAME                                    { domain->set_domain($3);                                               } problem_body
-    | OBJECTS_DEF EQUALS LBRACK objects RBRACK                  {                                                                       } problem_body
+    | OBJECTS_DEF EQUALS LBRACK objects RBRACK                  { domain->set_objects(buffer->get_objects());                           } problem_body
     | INIT_DEF EQUALS LBRACK proposition_instances RBRACK       { domain->set_initial_state(buffer->get_proposition_instances());       } problem_body
     | WORLD_DEF NAME LBRACK proposition_instances RBRACK        { domain->create_world($2, buffer->get_proposition_instances());        } problem_body
     | GOAL_DEF EQUALS LBRACK formula RBRACK                     {                                                                       } problem_body
@@ -95,19 +95,19 @@ reachability_body:
 goal_body:
     | 
 
-proposition_instances:
-    |  NAME LBRACK ordered_variables RBRACK                             {buffer->push_proposition_instance($1);     } proposition_instances
-
 
 objects:
     | NAME EQUALS LBRACK variables RBRACK    { buffer->set_object_type($1);
-                                               buffer->push_objects(); 
-                                               domain->set_objects(buffer->get_objects());                  } objects
+                                               buffer->push_objects();                                      } objects
 
 types_container:                             { std::cerr << "Missing types definition\n";                   }    
     | TYPES_DEF EQUALS LBRACK        
         variables RBRACK                     { buffer->push_types(); 
                                                domain->set_types(buffer->get_types());                      }
+
+proposition_instance:
+    NAME LBRACK ordered_variables RBRACK  {buffer->push_proposition_instance($1);                           } 
+
 
 propositions_container:                      { std::cerr << "Missing propositions definition\n";            }    
     | PROPOSITIONS_DEF EQUALS LBRACK        
@@ -145,11 +145,11 @@ designated_events_body:
                                              
 event_body:                                  
     | PRECONDITIONS_DEF EQUALS LBRACK        { buffer->clear_formula();                                     } 
-        formula RBRACK                       {                                                              } event_body
+        formula_single RBRACK                {                                                              } event_body
     | EFFECT_DELETE_DEF EQUALS               { buffer->clear_variable_list();                               } 
-        variables_container                  { buffer->push_event_delete_list();                            } event_body
+        bracketed_propositions_instances     { buffer->push_event_delete_list();                            } event_body
     | EFFECT_ADD_DEF EQUALS                  { buffer->clear_variable_list();                               }
-        variables_container                  { buffer->push_event_add_list();                               } event_body
+        bracketed_propositions_instances     { buffer->push_event_add_list();                               } event_body
                                              
                                              
                                              
@@ -160,8 +160,8 @@ formula_container:
     | LBRACK formula_single RBRACK           {                                                              }
                                              
 formula:                                     
-    | NAME                                   {buffer->push_pop_formula("Prop", $1);                         } 
-    | NAME                                   {buffer->push_pop_formula("Prop", $1);                         } formula
+    | NAME                                   {buffer->push_pop_formula($1);                                 } 
+    | NAME                                   {buffer->push_pop_formula($1);                                 } formula
     | AND LBRACK                             {buffer->push_formula("And");                                  }
         formula RBRACK                       {buffer->pop_formula();                                        } formula
     | OR LBRACK                              {buffer->push_formula("Or");                                   }
@@ -171,7 +171,7 @@ formula:
                                              
                                              
 formula_single:                              
-    | NAME                                   {buffer->push_pop_formula("Prop", $1);                         }
+    | NAME                                   {buffer->push_pop_formula($1);                                 }
     | AND LBRACK                             {buffer->push_formula("And");                                  }
         formula RBRACK                       {buffer->pop_formula();                                        }
     | OR LBRACK                              {buffer->push_formula("Or");                                   }
@@ -180,6 +180,12 @@ formula_single:
         formula_single RBRACK                {buffer->pop_formula();                                        }
 
 variable: NAME                               { buffer->add_variable($1);                                    }
+
+bracketed_propositions_instances:
+    LBRACK proposition_instances RBRACK ;
+
+proposition_instances:
+    | proposition_instance proposition_instances ;
 
 propositions:
   propositions proposition

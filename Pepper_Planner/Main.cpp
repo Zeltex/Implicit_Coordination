@@ -21,7 +21,7 @@ using namespace del;
 Formula get_goal_formula() {
 
 	Formula f;
-	f.f_prop("in(red,L)");
+	f.f_prop({ "in", { "red","L" } });
 	return std::move(f);
 }
 

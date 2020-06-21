@@ -4,14 +4,6 @@ void Domain_Buffer::set_event_name(std::string name) {
 	event_name = name;
 }
 
-void  Domain_Buffer::add_event_add(std::string proposition) {
-	event_add_list.insert(proposition);
-}
-
-void Domain_Buffer::add_event_delete(std::string proposition) {
-	event_delete_list.insert(proposition);
-}
-
 void Domain_Buffer::add_input(std::string type, std::string name) {
     inputs.emplace_back(type, name);
 }
@@ -35,15 +27,15 @@ Formula Domain_Buffer::get_event_preconditions() {
 	return std::move(temp);
 }
 
-std::unordered_set<std::string> Domain_Buffer::get_event_add_list() {
+std::vector<Proposition_Instance> Domain_Buffer::get_event_add_list() {
     auto temp = std::move(event_add_list);
-    event_add_list = std::unordered_set<std::string>();
+    event_add_list = {};
     return std::move(temp);
 }
 
-std::unordered_set<std::string> Domain_Buffer::get_event_delete_list() {
+std::vector<Proposition_Instance> Domain_Buffer::get_event_delete_list() {
     auto temp = std::move(event_delete_list);
-    event_delete_list = std::unordered_set<std::string>();
+    event_delete_list = {};
     return std::move(temp);
 }
 
@@ -100,41 +92,19 @@ void Domain_Buffer::clear_variable_list() {
 }
 
 void Domain_Buffer::push_event_add_list() {
-	event_add_list = variable_list;
-	variable_list.clear();
+	event_add_list = std::move(propositions);
+    propositions = {};
 }
 
 void Domain_Buffer::push_event_delete_list() {
-	event_delete_list = variable_list;
-	variable_list.clear();
+	event_delete_list = std::move(propositions);
+    propositions = {};
 }
-void Domain_Buffer::push_pop_formula(std::string type, std::string argument) {
+void Domain_Buffer::push_pop_formula(std::string name) {
     if (formula_buffer.empty()) {
-        switch (Formula_Converter::string_to_type(type)) {
-        case Formula_Types::Prop:
-        {
-            formula.f_prop(argument);
-            break;
-        }
-        case Formula_Types::Top:
-        {
-            formula.f_top();
-            break;
-        }
-        }
+        formula.f_prop(name);
     } else {
-        switch (Formula_Converter::string_to_type(type)) {
-        case Formula_Types::Prop:
-        {
-            formula_buffer.back().push_back(formula.f_prop(argument));
-            break;
-        }
-        case Formula_Types::Top:
-        {
-            formula_buffer.back().push_back(formula.f_top());
-            break;
-        }
-        }
+        formula_buffer.back().push_back(formula.f_prop( name));
     }
 }
 

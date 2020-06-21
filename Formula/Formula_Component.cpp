@@ -2,7 +2,7 @@
 
 namespace del {
 
-    bool Formula_Component::valuate(const std::unordered_set<std::string>& propositions, const std::vector<Formula_Component>& all_formulas) const
+    bool Formula_Component::valuate(const std::vector<std::string>& propositions, const std::vector<Formula_Component>& all_formulas) const
     {
         switch (type) {
         case Formula_Types::Top:
@@ -15,7 +15,7 @@ namespace del {
         };
         case Formula_Types::Prop:
         {
-            return propositions.find(prop) != propositions.end();
+            return find(propositions.begin(), propositions.end(), prop) != propositions.end();
         }
         case Formula_Types::Not:
         {

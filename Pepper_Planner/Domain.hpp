@@ -17,7 +17,7 @@ namespace del {
 		Domain(size_t amount_of_agents) : amount_of_agents(amount_of_agents), states() {}
 		Domain(size_t amount_of_agents, State initial_state) : amount_of_agents(amount_of_agents), states({ initial_state }) {}
 
-		void perform_do(const Agent_Id i, const std::vector<std::string>& add, const std::vector<std::string>& del);
+		void perform_do(const Agent_Id i, const std::vector<Proposition_Instance>& add, const std::vector<Proposition_Instance>& del);
 		void perform_action(Action action);
 		State get_current_state() const;
 	private:

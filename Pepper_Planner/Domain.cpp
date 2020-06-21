@@ -2,16 +2,16 @@
 
 namespace del {
 
-	void Domain::perform_do(const Agent_Id agent, const std::vector<std::string>& add_list, const std::vector<std::string>& delete_list) {
+	void Domain::perform_do(const Agent_Id agent, const std::vector<Proposition_Instance>& add_list, const std::vector<Proposition_Instance>& delete_list) {
 
-		std::unordered_set<std::string> add_set;
+		std::vector<Proposition_Instance> add_set;
 		for (auto proposition : add_list) {
-			add_set.insert(proposition);
+			add_set.push_back(proposition);
 		}
 
-		std::unordered_set<std::string> delete_set;
+		std::vector<Proposition_Instance> delete_set;
 		for (auto proposition : delete_list) {
-			delete_set.insert(proposition);
+			delete_set.push_back(proposition);
 		}
 
 		Formula f;

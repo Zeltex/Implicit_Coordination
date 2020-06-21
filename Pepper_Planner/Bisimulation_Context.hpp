@@ -18,7 +18,7 @@ namespace del {
 		bool are_relations_equal(std::vector<size_t> original_relations1, std::vector<size_t> original_relations2);
 		void move_worlds_to_new_block(const std::vector<World_Id>& worlds_to_be_moved);
 		bool is_bisimilar();
-		std::string convert_propositions_to_string(const std::unordered_set<std::string>& propositions);
+		std::string convert_propositions_to_string(const std::vector<Proposition_Instance>& propositions);
 	private:
 		State state1;
 		State state2;

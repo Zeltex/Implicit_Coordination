@@ -1,5 +1,8 @@
 #pragma once
 
+#include <string>
+#include <vector>
+
 struct Formula_Id {
 	size_t id;
 	Formula_Id() = default;
@@ -21,4 +24,38 @@ enum class Formula_Types {
 	Believes,
 	Everyone_Believes,
 	Common_Knowledge
+};
+
+struct Proposition_Instance {
+	Proposition_Instance() : name(), arguments() {}
+	Proposition_Instance(std::string name, std::vector<std::string> arguments) :
+		name(name), arguments(arguments) {}
+
+	std::string name;
+	std::vector<std::string> arguments;
+
+	std::string to_string() const {
+		std::string result = name + "(";
+		bool first = true;
+		for (auto entry : arguments) {
+			if (first) {
+				first = false;
+			} else {
+				result += ", ";
+			}
+			result += entry;
+		}
+		return result + ")";
+	}
+	bool operator==(const Proposition_Instance& other) const {
+		if (this->name != other.name || this->arguments.size() != other.arguments.size()) {
+			return false;
+		}
+		for (size_t i = 0; i < this->arguments.size(); i++) {
+			if (this->arguments[i] != other.arguments[i]) {
+				return false;
+			}
+		}
+		return true;
+	}
 };

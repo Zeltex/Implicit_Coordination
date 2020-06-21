@@ -15,7 +15,7 @@ namespace del {
 		Action() = delete;
 		Action(Agent_Id owner, size_t number_of_agents);
 		void add_event(const Action_Event& event);
-		void add_event(Event_Id id, Formula&& precondition, std::unordered_set<std::string>&& proposition_add, std::unordered_set<std::string>&& proposition_delete);
+		void add_event(Event_Id id, Formula&& precondition, std::vector<Proposition_Instance>&& proposition_add, std::vector<Proposition_Instance>&& proposition_delete);
 		const std::vector<Action_Event>& get_events() const;
 		Agent_Id get_owner() const;
 		bool is_one_reachable(Agent_Id agent, Event_Id world1, Event_Id world2) const;

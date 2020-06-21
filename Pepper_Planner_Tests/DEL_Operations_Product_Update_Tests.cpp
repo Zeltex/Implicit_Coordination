@@ -2,6 +2,7 @@
 #include "CppUnitTest.h"
 
 #include <iostream>
+#include <algorithm>
 
 #include "../Formula/Formula.hpp"
 #include "../Formula/Formula_Component.hpp"
@@ -27,9 +28,9 @@ namespace PepperPlannerTests
 			state.create_world();
 			state.create_world();
 			state.create_world();
-			state.add_true_propositions(World_Id{ 0 }, { "in(red,Box0)" });
-			state.add_true_propositions(World_Id{ 1 }, { "in(red,Box1)" });
-			state.add_true_propositions(World_Id{ 2 }, { "in(red,Box2)" });
+			state.add_true_propositions(World_Id{ 0 }, { {"in", {"red", "Box0"} } });
+			state.add_true_propositions(World_Id{ 1 }, { {"in", {"red", "Box1"} } });
+			state.add_true_propositions(World_Id{ 2 }, { {"in", {"red", "Box2"} } });
 			for (size_t i = 0; i < 3; i++) {
 				for (size_t j = 0; j < 3; j++) {
 					state.add_indistinguishability_relation(Agent_Id{ 0 }, World_Id{ i }, World_Id{ j });
@@ -42,8 +43,8 @@ namespace PepperPlannerTests
 
 			Action action(Agent_Id{ 1 }, 2);
 			Formula f;
-			f.f_prop("in(red,Box1)");
-			Action_Event event = Action_Event(Event_Id{ 0 }, std::move(f), std::unordered_set<std::string>(), std::unordered_set<std::string>());
+			f.f_prop({ "in", { "red","Box1" } });
+			Action_Event event = Action_Event(Event_Id{ 0 }, std::move(f), std::vector<Proposition_Instance>(), std::vector<Proposition_Instance>());
 			action.add_event(event);
 			State& new_state = perform_product_update(state, action);
 			
@@ -53,7 +54,8 @@ namespace PepperPlannerTests
 			auto& propositions = worlds[0].get_true_propositions();
 			Assert::AreEqual(size_t{ 1 }, propositions.size());
 			
-			Assert::IsTrue(propositions.find("in(red,Box1)") != propositions.end());
+			Proposition_Instance proposition_to_find = { "in",{"red", "Box1"} };
+			Assert::IsTrue(std::find(propositions.begin(), propositions.end(), proposition_to_find) != propositions.end());
 
 		}
 
@@ -63,9 +65,9 @@ namespace PepperPlannerTests
 			state.create_world();
 			state.create_world();
 			state.create_world();
-			state.add_true_propositions(World_Id{ 0 }, { "in(red,Box0)" });
-			state.add_true_propositions(World_Id{ 1 }, { "in(red,Box1)" });
-			state.add_true_propositions(World_Id{ 2 }, { "in(red,Box2)" });
+			state.add_true_propositions(World_Id{ 0 }, { {"in", {"red", "Box0"} } });
+			state.add_true_propositions(World_Id{ 1 }, { {"in", {"red", "Box1"} } });
+			state.add_true_propositions(World_Id{ 2 }, { {"in", {"red", "Box2"} } });
 			for (size_t i = 0; i < 3; i++) {
 				for (size_t j = 0; j < 3; j++) {
 					state.add_indistinguishability_relation(Agent_Id{ 0 }, World_Id{ i }, World_Id{ j });
@@ -79,16 +81,16 @@ namespace PepperPlannerTests
 
 			Action action(Agent_Id{ 1 }, 2);
 			Formula f;
-			f.f_prop("in(red,Box1)");
+			f.f_prop({ "in", { "red","Box1" } });
 			Event_Id id{ 0 };
 
-			Action_Event event = Action_Event(id, std::move(f), std::unordered_set<std::string>(), std::unordered_set<std::string>());
+			Action_Event event = Action_Event(id, std::move(f), std::vector<Proposition_Instance>(), std::vector<Proposition_Instance>());
 			action.add_event(event);
 
 			Formula f2;
 			f2.f_top();
 			Event_Id id2{ 1 };
-			Action_Event event2 = Action_Event(id2, std::move(f2), std::unordered_set<std::string>(), std::unordered_set<std::string>());
+			Action_Event event2 = Action_Event(id2, std::move(f2), std::vector<Proposition_Instance>(), std::vector<Proposition_Instance>());
 			action.add_event(event2);
 
 			action.add_indistinguishability_relation(Agent_Id{ 1 }, id, id2);
@@ -114,7 +116,8 @@ namespace PepperPlannerTests
 			// Designated world has correct proposition
 			auto& propositions = worlds[1].get_true_propositions();
 			Assert::AreEqual(size_t{ 1 }, propositions.size());
-			Assert::IsTrue(propositions.find("in(red,Box1)") != propositions.end());
+			Proposition_Instance proposition_to_find = { "in",{"red", "Box1"} };
+			Assert::IsTrue(std::find(propositions.begin(), propositions.end(), proposition_to_find) != propositions.end());
 
 			// Correct agent 0 (pepper) indistinguishability
 			Assert::IsFalse(new_state.is_one_reachable(Agent_Id{ 0 }, World_Id{ 1 }, World_Id{ 0 }));

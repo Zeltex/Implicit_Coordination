@@ -32,7 +32,7 @@ namespace del {
 		current_action.set_owner(name);
 	}
 
-	void Domain_Interface_Implementation::create_event(std::string name, Formula&& preconditions, std::unordered_set<std::string> add_list, std::unordered_set<std::string> delete_list) {
+	void Domain_Interface_Implementation::create_event(std::string name, Formula&& preconditions, std::vector<Proposition_Instance> add_list, std::vector<Proposition_Instance> delete_list) {
 		current_action.create_event(name, std::move(preconditions), add_list, delete_list);
 	}
 

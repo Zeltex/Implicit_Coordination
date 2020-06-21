@@ -28,10 +28,10 @@ namespace PepperPlannerTests
 			state.create_world();
 			state.create_world();
 			state.create_world();
-			state.add_true_propositions(World_Id{ 0 }, { "in(red,Box0)" });
-			state.add_true_propositions(World_Id{ 1 }, { "in(red,Box1)" });
-			state.add_true_propositions(World_Id{ 2 }, { "in(red,Box1)" });
-			state.add_true_propositions(World_Id{ 3 }, { "in(red,Box2)" });
+			state.add_true_propositions(World_Id{ 0 }, { {"in", {"red", "Box0"} } });
+			state.add_true_propositions(World_Id{ 1 }, { {"in", {"red", "Box1"} } });
+			state.add_true_propositions(World_Id{ 2 }, { {"in", {"red", "Box1"} } });
+			state.add_true_propositions(World_Id{ 3 }, { {"in", {"red", "Box2"} } });
 
 			for (size_t i = 0; i < 4; i++) {
 				state.add_indistinguishability_relation(Agent_Id{ 0 }, World_Id{ i }, World_Id{ i });
@@ -71,10 +71,10 @@ namespace PepperPlannerTests
 			state.create_world();
 			state.create_world();
 			state.create_world();
-			state.add_true_propositions(World_Id{ 0 }, { "in(red,Box0)" });
-			state.add_true_propositions(World_Id{ 1 }, { "in(red,Box1)" });
-			state.add_true_propositions(World_Id{ 2 }, { "in(red,Box1)" });
-			state.add_true_propositions(World_Id{ 3 }, { "in(red,Box2)" });
+			state.add_true_propositions(World_Id{ 0 }, { {"in", {"red", "Box0"} } });
+			state.add_true_propositions(World_Id{ 1 }, { {"in", {"red", "Box1"} } });
+			state.add_true_propositions(World_Id{ 2 }, { {"in", {"red", "Box1"} } });
+			state.add_true_propositions(World_Id{ 3 }, { {"in", {"red", "Box2"} } });
 
 			state.add_indistinguishability_relation(Agent_Id{ 0 }, World_Id{ 1 }, World_Id{ 1 });
 

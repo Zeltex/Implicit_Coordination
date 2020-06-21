@@ -22,7 +22,7 @@ namespace del {
 		virtual void set_action_input(std::vector<std::pair<std::string, std::string>> inputs) override;
 		virtual void set_action_owner(std::string name) override;
 
-		virtual void create_event(std::string name, Formula&& preconditions, std::unordered_set<std::string> add_list, std::unordered_set<std::string> delete_list) override;
+		virtual void create_event(std::string name, Formula&& preconditions, std::vector<Proposition_Instance> add_list, std::vector<Proposition_Instance> delete_list) override;
 		virtual void set_designated_events(std::vector<std::string> designated_events) override;
 		virtual void set_types(std::unordered_set<std::string> types) override;
 		virtual void add_proposition(std::string name, std::vector<std::pair<std::string, std::string>> inputs) override;

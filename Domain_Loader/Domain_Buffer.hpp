@@ -15,8 +15,6 @@ using namespace del;
 class Domain_Buffer {
 public:
 	void set_event_name(std::string);
-	void add_event_add(std::string);
-	void add_event_delete(std::string);
 
 	void add_designated_event(std::string);
 	void add_input(std::string type, std::string name);
@@ -27,8 +25,8 @@ public:
 
 	std::string get_event_name();
 	Formula get_event_preconditions();
-	std::unordered_set<std::string> get_event_add_list();
-	std::unordered_set<std::string> get_event_delete_list();
+	std::vector<Proposition_Instance> get_event_add_list();
+	std::vector<Proposition_Instance> get_event_delete_list();
 	std::vector<std::string> get_designated_events();
 	std::vector<std::pair<std::string, std::string>> get_inputs();
 	std::unordered_set<std::string> get_types();
@@ -46,7 +44,7 @@ public:
 	void push_objects();
 	void push_proposition_instance(std::string name);
 
-	void push_pop_formula(std::string type, std::string argument);
+	void push_pop_formula(std::string name);
 	void push_formula(std::string type);
 	void pop_formula();
 
@@ -73,7 +71,7 @@ private:
 
 	// Event stuff
 	std::string event_name;
-	std::unordered_set<std::string> event_add_list;
-	std::unordered_set<std::string> event_delete_list;
+	std::vector<Proposition_Instance> event_add_list;
+	std::vector<Proposition_Instance> event_delete_list;
 	std::vector<std::string> designated_events;
 };

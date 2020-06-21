@@ -13,7 +13,7 @@ namespace del {
 		//events.emplace_back(event);
 	}
 
-	void Action::add_event(Event_Id id, Formula&& precondition, std::unordered_set<std::string>&& proposition_add, std::unordered_set<std::string>&& proposition_delete) {
+	void Action::add_event(Event_Id id, Formula&& precondition, std::vector<Proposition_Instance>&& proposition_add, std::vector<Proposition_Instance>&& proposition_delete) {
 		events.emplace_back(id, std::move(precondition), proposition_add, proposition_delete);
 	}
 

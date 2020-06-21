@@ -33,7 +33,7 @@ namespace del {
 		}
 	}
 	
-	void DEL_Interface::perform_do(const Agent_Id i, const std::vector<std::string>& add, const std::vector<std::string>& del) {
+	void DEL_Interface::perform_do(const Agent_Id i, const std::vector<Proposition_Instance>& add, const std::vector<Proposition_Instance>& del) {
 		domain.perform_do(i, add, del);
 	}
 	

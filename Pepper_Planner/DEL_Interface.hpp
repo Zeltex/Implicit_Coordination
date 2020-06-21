@@ -16,7 +16,7 @@ namespace del {
 		DEL_Interface(size_t domain_to_load);
 		DEL_Interface(State initial_state, Action_Library library);
 		Interface_DTO get_next_action();
-		void perform_do(const Agent_Id i, const std::vector<std::string>& add, const std::vector<std::string>& del);
+		void perform_do(const Agent_Id i, const std::vector<Proposition_Instance>& add, const std::vector<Proposition_Instance>& del);
 		void perform_action(Action action);
 		bool create_policy(Formula goal);
 		bool is_solved();

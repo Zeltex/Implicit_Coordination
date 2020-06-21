@@ -10,7 +10,7 @@
 namespace del {
 	class Action_Event {
 	public:
-		Action_Event(Event_Id id, Formula&& precondition, std::unordered_set<std::string> proposition_add, std::unordered_set<std::string> proposition_delete) :
+		Action_Event(Event_Id id, Formula&& precondition, std::vector<Proposition_Instance> proposition_add, std::vector<Proposition_Instance> proposition_delete) :
 			id(id), precondition(std::move(precondition)), proposition_add(proposition_add), proposition_delete(proposition_delete) {
 			//precondition = std::move(precondition);
 		}
@@ -18,8 +18,8 @@ namespace del {
 
 		Event_Id get_id() const;
 		const Formula& get_preconditions() const;
-		const std::unordered_set<std::string> get_add_list() const;
-		const std::unordered_set<std::string> get_delete_list() const;
+		const std::vector<Proposition_Instance> get_add_list() const;
+		const std::vector<Proposition_Instance> get_delete_list() const;
 
 
 		std::string to_string() const;
@@ -27,8 +27,8 @@ namespace del {
 	private:
 		Event_Id id;
 		Formula precondition;
-		std::unordered_set<std::string> proposition_add;
-		std::unordered_set<std::string> proposition_delete;
+		std::vector<Proposition_Instance> proposition_add;
+		std::vector<Proposition_Instance> proposition_delete;
 
 	};
 }

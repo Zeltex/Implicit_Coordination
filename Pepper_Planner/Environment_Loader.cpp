@@ -24,16 +24,16 @@ namespace del {
 	Formula Environment_Loader::get_goal_formula() {
 
 		Formula f;
-		f.f_prop("in(red,L)");
+		f.f_prop({ "in", { "red","L" } });
 		return std::move(f);
 	}
 
 
-	void Environment_Loader::add_announce_action(Action_Library& library, std::string proposition, size_t amount_of_agents) {
+	void Environment_Loader::add_announce_action(Action_Library& library, Proposition_Instance proposition, size_t amount_of_agents) {
 		Action action(Agent_Id{ 0 }, 2);
 		Formula f;
 		f.f_prop(proposition);
-		Action_Event event = Action_Event(Event_Id { 0 }, std::move(f), std::unordered_set<std::string>(), std::unordered_set<std::string>());
+		Action_Event event = Action_Event(Event_Id { 0 }, std::move(f), std::vector<Proposition_Instance>(), std::vector<Proposition_Instance>());
 		action.add_event(event);
 		action.add_designated_event(Event_Id{ 0 });
 		action.add_indistinguishability_relation(Agent_Id{ 0 }, Event_Id{ 0 }, Event_Id{ 0 });
@@ -42,7 +42,7 @@ namespace del {
 		library.add_action(action);
 	}
 
-	void Environment_Loader::add_pickup_action(Action_Library& library, std::string from, std::string to, size_t amount_of_agents) {
+	void Environment_Loader::add_pickup_action(Action_Library& library, Proposition_Instance from, Proposition_Instance to, size_t amount_of_agents) {
 		Action action(Agent_Id{ 1 }, 2);
 		Formula f;
 		f.f_prop(from);
@@ -57,18 +57,18 @@ namespace del {
 	}
 
 
-	void Environment_Loader::add_perceive_action(Action_Library& library, std::string proposition, size_t amount_of_agents) {
+	void Environment_Loader::add_perceive_action(Action_Library& library, Proposition_Instance proposition, size_t amount_of_agents) {
 		Action action(Agent_Id{ 1 }, 2);
 		Formula f;
 		f.f_prop(proposition);
-		std::unordered_set<std::string> add_list = { };
-		std::unordered_set<std::string> del_list = { };
+		std::vector<Proposition_Instance> add_list = { };
+		std::vector<Proposition_Instance> del_list = { };
 		Action_Event event = Action_Event(Event_Id { 0 }, std::move(f), add_list, del_list);
 
 		Formula f2;
 		f2.f_not(f2.f_prop(proposition));
-		std::unordered_set<std::string> add_list2 = { };
-		std::unordered_set<std::string> del_list2 = { };
+		std::vector<Proposition_Instance> add_list2 = { };
+		std::vector<Proposition_Instance> del_list2 = { };
 		Action_Event event2 = Action_Event(Event_Id { 1 }, std::move(f2), add_list2, del_list2);
 
 		action.add_event(event);
@@ -85,17 +85,17 @@ namespace del {
 	}
 
 	void Environment_Loader::add_actions(Action_Library& library, size_t amount_of_agents) {
-		add_announce_action(library, "in(red,Box0)", amount_of_agents);
-		add_announce_action(library, "in(red,Box1)", amount_of_agents);
-		add_announce_action(library, "in(red,Box2)", amount_of_agents);
+		add_announce_action(library, { "in", { "red","Box0" } }, amount_of_agents);
+		add_announce_action(library, { "in", { "red","Box1" } }, amount_of_agents);
+		add_announce_action(library, { "in", { "red","Box2" } }, amount_of_agents);
 
-		add_pickup_action(library, "in(red,Box0)", "in(red,L)", amount_of_agents);
-		add_pickup_action(library, "in(red,Box1)", "in(red,L)", amount_of_agents);
-		add_pickup_action(library, "in(red,Box2)", "in(red, L)", amount_of_agents);
+		add_pickup_action(library, { "in", { "red","Box0" } }, { "in", { "red","L" } }, amount_of_agents);
+		add_pickup_action(library, { "in", { "red","Box1" } }, { "in", { "red","L" } }, amount_of_agents);
+		add_pickup_action(library, { "in", { "red","Box2" } }, { "in", { "red","L" } }, amount_of_agents);
 
-		add_perceive_action(library, "in(red,Box0)", amount_of_agents);
-		add_perceive_action(library, "in(red,Box1)", amount_of_agents);
-		add_perceive_action(library, "in(red,Box2)", amount_of_agents);
+		add_perceive_action(library, { "in", { "red","Box0" } }, amount_of_agents);
+		add_perceive_action(library, { "in", { "red","Box1" } }, amount_of_agents);
+		add_perceive_action(library, { "in", { "red","Box2" } }, amount_of_agents);
 	}
 
 
@@ -104,9 +104,9 @@ namespace del {
 
 		State state(amount_of_agents);
 		state.create_worlds(3);
-		state.add_true_propositions(World_Id{ 0 }, { "in(red,Box0)" });
-		state.add_true_propositions(World_Id{ 1 }, { "in(red,Box1)" });
-		state.add_true_propositions(World_Id{ 2 }, { "in(red,Box2)" });
+		state.add_true_propositions(World_Id{ 0 }, { {"in", {"red", "Box0"} } });
+		state.add_true_propositions(World_Id{ 1 }, { {"in", {"red", "Box1"} } });
+		state.add_true_propositions(World_Id{ 2 }, { {"in", {"red", "Box2"} } });
 
 		for (size_t i = 0; i < 3; i++) {
 			for (size_t j = 0; j < 3; j++) {

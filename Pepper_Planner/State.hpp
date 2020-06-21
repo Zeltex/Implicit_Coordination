@@ -17,9 +17,9 @@ namespace del {
 		bool is_one_reachable(Agent_Id agent, World_Id world1, World_Id world2) const;
 		
 		void add_indistinguishability_relation(Agent_Id agent, World_Id world_from, World_Id world_to);
-		void add_true_propositions(World_Id world, std::unordered_set<std::string> propositions);
+		void add_true_propositions(World_Id world, std::vector<Proposition_Instance> propositions);
 		void add_designated_world(World_Id world);
-		void remove_true_propositions(World_Id world, std::unordered_set<std::string> propositions);
+		void remove_true_propositions(World_Id world, std::vector<Proposition_Instance> propositions);
 		void set_global_for_agent(Agent_Id agent, World_Id world);
 
 		World& create_world();

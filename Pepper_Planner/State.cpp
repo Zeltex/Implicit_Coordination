@@ -64,11 +64,11 @@ namespace del {
 		indistinguishability_relation[agent.id].emplace_back(world_from, world_to);
 	}
 
-	void State::add_true_propositions(World_Id world, std::unordered_set<std::string> propositions) {
+	void State::add_true_propositions(World_Id world, std::vector<Proposition_Instance> propositions) {
 		worlds[world.id].add_true_propositions(propositions);
 	}
 
-	void State::remove_true_propositions(World_Id world, std::unordered_set<std::string> propositions) {
+	void State::remove_true_propositions(World_Id world, std::vector<Proposition_Instance> propositions) {
 		worlds[world.id].remove_true_propositions(propositions);
 	}
 
@@ -183,7 +183,7 @@ namespace del {
 				} else {
 					propositions += ", ";
 				}
-				propositions += proposition;
+				propositions += proposition.to_string();
 			}
 			result += node_id + std::to_string(world.get_id().id) + " [label=\"" + std::to_string(world.get_id().id) + "\n" + propositions + "\"";
 			if (std::find(designated_worlds.begin(), designated_worlds.end(), world.get_id()) != designated_worlds.end()) {

@@ -10,15 +10,18 @@ namespace del {
 		return World(id, true_propositions);
 	}
 
-	void World::add_true_propositions(const std::unordered_set<std::string> propositions) {
+	void World::add_true_propositions(const std::vector<Proposition_Instance> propositions) {
 		for (auto proposition : propositions) {
-			true_propositions.insert(proposition);
+			true_propositions.push_back(proposition);
 		}
 	}
 
-	void World::remove_true_propositions(const std::unordered_set<std::string> propositions) {
+	void World::remove_true_propositions(const std::vector<Proposition_Instance> propositions) {
 		for (auto proposition : propositions) {
-			true_propositions.erase(proposition);
+			auto result = find(true_propositions.begin(), true_propositions.end(), proposition);
+			if (result != true_propositions.end()) {
+				true_propositions.erase(result);
+			}
 		}
 	}
 
@@ -26,7 +29,7 @@ namespace del {
 		return formula.valuate(true_propositions);
 	}
 
-	const std::unordered_set<std::string> World::get_true_propositions() const {
+	const std::vector<Proposition_Instance> World::get_true_propositions() const {
 		return true_propositions;
 	}
 
@@ -39,7 +42,7 @@ namespace del {
 			} else {
 				result += ";";
 			}
-			result += proposition;
+			result += proposition.to_string();
 		}
 		return result;
 	}
