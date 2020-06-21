@@ -218,3 +218,11 @@ void Domain_Buffer::clear_designated_events() {
 void Domain_Buffer::set_object_type(std::string type) {
     current_object_type = type;
 }
+
+void Domain_Buffer::set_reflexivity(bool val) {
+    reflexivity = val;
+}
+
+bool Domain_Buffer::is_reflexive() {
+    return reflexivity;
+}

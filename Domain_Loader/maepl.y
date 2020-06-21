@@ -73,10 +73,11 @@
 // the first rule defined is the highest-level rule, which in our
 // case is just the concept of a whole "snazzle file":
 maepl: 
-    |DOMAIN_DEF NAME LBRACK                  { domain->new_domain(std::string($2));                         }
+    |DOMAIN_DEF NAME LBRACK                                     { domain->new_domain(std::string($2));                         }
         types_container propositions_container actions RBRACK   { domain->finish_domain();                  } maepl
     | PROBLEM_DEF NAME LBRACK
-        problem_body RBRACK                { domain->finish_problem();                                    } maepl  
+        problem_body RBRACK                                     { if (buffer->is_reflexive()) domain->create_reflexive_reachables();
+                                                                  domain->finish_problem();                                             } maepl  
 
 problem_body:
     | DOMAIN_DEF EQUALS NAME                                    { domain->set_domain($3);                                               } problem_body
@@ -86,7 +87,7 @@ problem_body:
     | GOAL_DEF EQUALS LBRACK formula RBRACK                     {} problem_body
     | DESIGNATED_WORLDS_DEF EQUALS LBRACK variables RBRACK      { domain->set_designated_worlds(buffer->get_variables());               } problem_body
     | REACHAbility_DEF EQUALS LBRACK reachability_body RBRACK   {} problem_body
-    | REFLEXIVITY_DEF EQUALS TRUTH                              {} problem_body
+    | REFLEXIVITY_DEF EQUALS TRUTH                              { buffer->set_reflexivity($3);                                          } problem_body
 
 reachability_body:
     | NAME EQUALS LBRACK pairs RBRACK reachability_body

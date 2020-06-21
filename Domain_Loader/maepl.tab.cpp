@@ -525,17 +525,17 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    75,    75,    76,    77,    76,    79,    78,    81,    82,
-      82,    83,    83,    84,    84,    85,    85,    86,    86,    87,
-      87,    88,    88,    89,    89,    91,    92,    97,    98,    98,
-     100,   101,   103,   104,   104,   108,   109,   113,   114,   117,
-     118,   120,   121,   121,   125,   126,   125,   130,   131,   131,
-     132,   133,   132,   138,   139,   138,   141,   142,   144,   145,
-     146,   145,   147,   148,   147,   149,   150,   149,   154,   155,
-     160,   161,   162,   162,   163,   164,   163,   165,   166,   165,
-     167,   168,   167,   171,   172,   173,   173,   175,   175,   177,
-     177,   180,   183,   184,   187,   188,   190,   191,   192,   194,
-     195,   195
+       0,    75,    75,    76,    77,    76,    79,    78,    82,    83,
+      83,    84,    84,    85,    85,    86,    86,    87,    87,    88,
+      88,    89,    89,    90,    90,    92,    93,    98,    99,    99,
+     101,   102,   104,   105,   105,   109,   110,   114,   115,   118,
+     119,   121,   122,   122,   126,   127,   126,   131,   132,   132,
+     133,   134,   133,   139,   140,   139,   142,   143,   145,   146,
+     147,   146,   148,   149,   148,   150,   151,   150,   155,   156,
+     161,   162,   163,   163,   164,   165,   164,   166,   167,   166,
+     168,   169,   168,   172,   173,   174,   174,   176,   176,   178,
+     178,   181,   184,   185,   188,   189,   191,   192,   193,   195,
+     196,   196
 };
 #endif
 
@@ -1581,66 +1581,67 @@ yyreduce:
   case 6:
 /* Line 1792 of yacc.c  */
 #line 79 "maepl.y"
-    { domain->finish_problem();                                    }
+    { if (buffer->is_reflexive()) domain->create_reflexive_reachables();
+                                                                  domain->finish_problem();                                             }
     break;
 
   case 9:
 /* Line 1792 of yacc.c  */
-#line 82 "maepl.y"
+#line 83 "maepl.y"
     { domain->set_domain((yyvsp[(3) - (3)].sval));                                               }
     break;
 
   case 11:
 /* Line 1792 of yacc.c  */
-#line 83 "maepl.y"
+#line 84 "maepl.y"
     {}
     break;
 
   case 13:
 /* Line 1792 of yacc.c  */
-#line 84 "maepl.y"
+#line 85 "maepl.y"
     { domain->set_initial_state(buffer->get_proposition_instances());       }
     break;
 
   case 15:
 /* Line 1792 of yacc.c  */
-#line 85 "maepl.y"
+#line 86 "maepl.y"
     { domain->create_world((yyvsp[(2) - (5)].sval), buffer->get_proposition_instances());        }
     break;
 
   case 17:
 /* Line 1792 of yacc.c  */
-#line 86 "maepl.y"
+#line 87 "maepl.y"
     {}
     break;
 
   case 19:
 /* Line 1792 of yacc.c  */
-#line 87 "maepl.y"
+#line 88 "maepl.y"
     { domain->set_designated_worlds(buffer->get_variables());               }
     break;
 
   case 21:
 /* Line 1792 of yacc.c  */
-#line 88 "maepl.y"
+#line 89 "maepl.y"
     {}
     break;
 
   case 23:
 /* Line 1792 of yacc.c  */
-#line 89 "maepl.y"
-    {}
+#line 90 "maepl.y"
+    { buffer->set_reflexivity((yyvsp[(3) - (3)].bval));                                          }
     break;
 
   case 28:
 /* Line 1792 of yacc.c  */
-#line 98 "maepl.y"
+#line 99 "maepl.y"
     {buffer->push_proposition_instance((yyvsp[(1) - (4)].sval));     }
     break;
 
   case 33:
 /* Line 1792 of yacc.c  */
-#line 104 "maepl.y"
+#line 105 "maepl.y"
     { buffer->set_object_type((yyvsp[(1) - (5)].sval));
                                                buffer->push_objects(); 
                                                domain->set_objects(buffer->get_objects());                  }
@@ -1648,68 +1649,68 @@ yyreduce:
 
   case 35:
 /* Line 1792 of yacc.c  */
-#line 108 "maepl.y"
+#line 109 "maepl.y"
     { std::cerr << "Missing types definition\n";                   }
     break;
 
   case 36:
 /* Line 1792 of yacc.c  */
-#line 110 "maepl.y"
+#line 111 "maepl.y"
     { buffer->push_types(); 
                                                domain->set_types(buffer->get_types());                      }
     break;
 
   case 37:
 /* Line 1792 of yacc.c  */
-#line 113 "maepl.y"
+#line 114 "maepl.y"
     { std::cerr << "Missing propositions definition\n";            }
     break;
 
   case 40:
 /* Line 1792 of yacc.c  */
-#line 118 "maepl.y"
+#line 119 "maepl.y"
     { domain->add_proposition((yyvsp[(1) - (4)].sval), buffer->get_inputs());           }
     break;
 
   case 42:
 /* Line 1792 of yacc.c  */
-#line 121 "maepl.y"
+#line 122 "maepl.y"
     { buffer->add_input((yyvsp[(1) - (2)].sval), (yyvsp[(2) - (2)].sval));                                   }
     break;
 
   case 44:
 /* Line 1792 of yacc.c  */
-#line 125 "maepl.y"
+#line 126 "maepl.y"
     { domain->new_action(std::string((yyvsp[(2) - (2)].sval)));                         }
     break;
 
   case 45:
 /* Line 1792 of yacc.c  */
-#line 126 "maepl.y"
+#line 127 "maepl.y"
     { domain->set_action_input(buffer->get_inputs());              }
     break;
 
   case 46:
 /* Line 1792 of yacc.c  */
-#line 128 "maepl.y"
+#line 129 "maepl.y"
     { domain->finish_action();                                     }
     break;
 
   case 48:
 /* Line 1792 of yacc.c  */
-#line 131 "maepl.y"
+#line 132 "maepl.y"
     { domain->set_action_owner((yyvsp[(3) - (3)].sval));                                }
     break;
 
   case 50:
 /* Line 1792 of yacc.c  */
-#line 132 "maepl.y"
+#line 133 "maepl.y"
     { buffer->set_event_name((yyvsp[(2) - (3)].sval));                                  }
     break;
 
   case 51:
 /* Line 1792 of yacc.c  */
-#line 133 "maepl.y"
+#line 134 "maepl.y"
     { domain->create_event(                                        
                                                  buffer->get_event_name(),                                  
                                                  buffer->get_event_preconditions(),                         
@@ -1719,169 +1720,169 @@ yyreduce:
 
   case 53:
 /* Line 1792 of yacc.c  */
-#line 138 "maepl.y"
+#line 139 "maepl.y"
     { buffer->clear_designated_events();                           }
     break;
 
   case 54:
 /* Line 1792 of yacc.c  */
-#line 139 "maepl.y"
+#line 140 "maepl.y"
     { domain->set_designated_events(buffer->get_designated_events());}
     break;
 
   case 57:
 /* Line 1792 of yacc.c  */
-#line 142 "maepl.y"
+#line 143 "maepl.y"
     { buffer->add_designated_event((yyvsp[(1) - (1)].sval));                            }
     break;
 
   case 59:
 /* Line 1792 of yacc.c  */
-#line 145 "maepl.y"
+#line 146 "maepl.y"
     { buffer->clear_formula();                                     }
     break;
 
   case 60:
 /* Line 1792 of yacc.c  */
-#line 146 "maepl.y"
+#line 147 "maepl.y"
     {                                                              }
     break;
 
   case 62:
 /* Line 1792 of yacc.c  */
-#line 147 "maepl.y"
+#line 148 "maepl.y"
     { buffer->clear_variable_list();                               }
     break;
 
   case 63:
 /* Line 1792 of yacc.c  */
-#line 148 "maepl.y"
+#line 149 "maepl.y"
     { buffer->push_event_delete_list();                            }
     break;
 
   case 65:
 /* Line 1792 of yacc.c  */
-#line 149 "maepl.y"
+#line 150 "maepl.y"
     { buffer->clear_variable_list();                               }
     break;
 
   case 66:
 /* Line 1792 of yacc.c  */
-#line 150 "maepl.y"
+#line 151 "maepl.y"
     { buffer->push_event_add_list();                               }
     break;
 
   case 69:
 /* Line 1792 of yacc.c  */
-#line 155 "maepl.y"
+#line 156 "maepl.y"
     {                                                              }
     break;
 
   case 71:
 /* Line 1792 of yacc.c  */
-#line 161 "maepl.y"
+#line 162 "maepl.y"
     {buffer->push_pop_formula("Prop", (yyvsp[(1) - (1)].sval));                         }
     break;
 
   case 72:
 /* Line 1792 of yacc.c  */
-#line 162 "maepl.y"
+#line 163 "maepl.y"
     {buffer->push_pop_formula("Prop", (yyvsp[(1) - (1)].sval));                         }
     break;
 
   case 74:
 /* Line 1792 of yacc.c  */
-#line 163 "maepl.y"
+#line 164 "maepl.y"
     {buffer->push_formula("And");                                  }
     break;
 
   case 75:
 /* Line 1792 of yacc.c  */
-#line 164 "maepl.y"
+#line 165 "maepl.y"
     {buffer->pop_formula();                                        }
     break;
 
   case 77:
 /* Line 1792 of yacc.c  */
-#line 165 "maepl.y"
+#line 166 "maepl.y"
     {buffer->push_formula("Or");                                   }
     break;
 
   case 78:
 /* Line 1792 of yacc.c  */
-#line 166 "maepl.y"
+#line 167 "maepl.y"
     {buffer->pop_formula();                                        }
     break;
 
   case 80:
 /* Line 1792 of yacc.c  */
-#line 167 "maepl.y"
+#line 168 "maepl.y"
     {buffer->push_formula("Not");                                  }
     break;
 
   case 81:
 /* Line 1792 of yacc.c  */
-#line 168 "maepl.y"
+#line 169 "maepl.y"
     {buffer->pop_formula();                                        }
     break;
 
   case 84:
 /* Line 1792 of yacc.c  */
-#line 172 "maepl.y"
+#line 173 "maepl.y"
     {buffer->push_pop_formula("Prop", (yyvsp[(1) - (1)].sval));                         }
     break;
 
   case 85:
 /* Line 1792 of yacc.c  */
-#line 173 "maepl.y"
+#line 174 "maepl.y"
     {buffer->push_formula("And");                                  }
     break;
 
   case 86:
 /* Line 1792 of yacc.c  */
-#line 174 "maepl.y"
+#line 175 "maepl.y"
     {buffer->pop_formula();                                        }
     break;
 
   case 87:
 /* Line 1792 of yacc.c  */
-#line 175 "maepl.y"
+#line 176 "maepl.y"
     {buffer->push_formula("Or");                                   }
     break;
 
   case 88:
 /* Line 1792 of yacc.c  */
-#line 176 "maepl.y"
+#line 177 "maepl.y"
     {buffer->pop_formula();                                        }
     break;
 
   case 89:
 /* Line 1792 of yacc.c  */
-#line 177 "maepl.y"
+#line 178 "maepl.y"
     {buffer->push_formula("Not");                                  }
     break;
 
   case 90:
 /* Line 1792 of yacc.c  */
-#line 178 "maepl.y"
+#line 179 "maepl.y"
     {buffer->pop_formula();                                        }
     break;
 
   case 91:
 /* Line 1792 of yacc.c  */
-#line 180 "maepl.y"
+#line 181 "maepl.y"
     { buffer->add_variable((yyvsp[(1) - (1)].sval));                                    }
     break;
 
   case 100:
 /* Line 1792 of yacc.c  */
-#line 195 "maepl.y"
+#line 196 "maepl.y"
     {buffer->add_ordered_variable((yyvsp[(1) - (1)].sval));                               }
     break;
 
 
 /* Line 1792 of yacc.c  */
-#line 1885 "maepl.tab.cpp"
+#line 1886 "maepl.tab.cpp"
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -2113,7 +2114,7 @@ yyreturn:
 
 
 /* Line 2055 of yacc.c  */
-#line 196 "maepl.y"
+#line 197 "maepl.y"
 
 
 void parse_domain(Domain_Interface* domain_input, Domain_Buffer* buffer_input, FILE* file_in) {

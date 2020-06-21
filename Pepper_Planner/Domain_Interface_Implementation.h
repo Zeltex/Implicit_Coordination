@@ -31,6 +31,8 @@ namespace del {
 		virtual void set_initial_state(std::vector<Proposition_Instance> propositions) override;
 		virtual void create_world(std::string name, std::vector<Proposition_Instance> propositions) override;
 		virtual void set_designated_worlds(std::unordered_set<std::string> designated_worlds) override;
+		virtual void create_reflexive_reachables() override;
+
 	private:
 		General_Action current_action;
 		std::vector<Proposition_Instance> initial_state;

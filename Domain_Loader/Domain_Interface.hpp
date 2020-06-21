@@ -28,6 +28,7 @@ public:
 	virtual void set_initial_state(std::vector<Proposition_Instance> propositions) = 0;
 	virtual void create_world(std::string name, std::vector<Proposition_Instance> propositions) = 0;
 	virtual void set_designated_worlds(std::unordered_set<std::string> designated_worlds) = 0;
+	virtual void create_reflexive_reachables() = 0;
 private:
 	std::vector<std::string> buffer_list;
 };

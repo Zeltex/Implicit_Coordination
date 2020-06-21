@@ -51,6 +51,8 @@ public:
 	void pop_formula();
 
 	void set_object_type(std::string type);
+	void set_reflexivity(bool val);
+	bool is_reflexive();
 private:
 
 	std::unordered_set<std::string> types;
@@ -60,6 +62,7 @@ private:
 	std::unordered_map<std::string, std::unordered_set<std::string>> objects;
 	std::string current_object_type;
 	std::vector<Proposition_Instance> propositions;
+	bool reflexivity;
 
 	// Formula stuff
 	Formula formula;

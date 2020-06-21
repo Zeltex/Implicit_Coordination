@@ -68,4 +68,9 @@ namespace del {
 	void Domain_Interface_Implementation::set_designated_worlds(std::unordered_set<std::string> designated_worlds) {
 		this->designated_worlds = designated_worlds;
 	}
+
+	void Domain_Interface_Implementation::create_reflexive_reachables() {
+		//TODO
+		int debug = 0;
+	}
 }
