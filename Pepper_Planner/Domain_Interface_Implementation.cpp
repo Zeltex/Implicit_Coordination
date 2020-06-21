@@ -64,4 +64,8 @@ namespace del {
 	void Domain_Interface_Implementation::create_world(std::string name, std::vector<Proposition_Instance> propositions) {
 		this->worlds.emplace_back(name, propositions);
 	}
+
+	void Domain_Interface_Implementation::set_designated_worlds(std::unordered_set<std::string> designated_worlds) {
+		this->designated_worlds = designated_worlds;
+	}
 }

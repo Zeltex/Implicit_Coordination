@@ -1587,7 +1587,7 @@ yyreduce:
   case 9:
 /* Line 1792 of yacc.c  */
 #line 82 "maepl.y"
-    { domain->set_domain((yyvsp[(3) - (3)].sval));}
+    { domain->set_domain((yyvsp[(3) - (3)].sval));                                               }
     break;
 
   case 11:
@@ -1599,13 +1599,13 @@ yyreduce:
   case 13:
 /* Line 1792 of yacc.c  */
 #line 84 "maepl.y"
-    { domain->set_initial_state(buffer->get_proposition_instances());}
+    { domain->set_initial_state(buffer->get_proposition_instances());       }
     break;
 
   case 15:
 /* Line 1792 of yacc.c  */
 #line 85 "maepl.y"
-    { domain->create_world((yyvsp[(2) - (5)].sval), buffer->get_proposition_instances());}
+    { domain->create_world((yyvsp[(2) - (5)].sval), buffer->get_proposition_instances());        }
     break;
 
   case 17:
@@ -1617,7 +1617,7 @@ yyreduce:
   case 19:
 /* Line 1792 of yacc.c  */
 #line 87 "maepl.y"
-    {}
+    { domain->set_designated_worlds(buffer->get_variables());               }
     break;
 
   case 21:

@@ -71,6 +71,12 @@ std::vector<std::string> Domain_Buffer::get_ordered_variables() {
     return std::move(temp);
 }
 
+std::unordered_set<std::string> Domain_Buffer::get_variables() {
+    auto temp = std::move(variable_list);
+    variable_list = {};
+    return std::move(temp);
+}
+
 std::unordered_set<std::string> Domain_Buffer::get_types() {
     return types;
 }

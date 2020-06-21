@@ -34,6 +34,7 @@ public:
 	std::unordered_set<std::string> get_types();
 	std::unordered_map<std::string, std::unordered_set<std::string>>  get_objects();
 	std::vector<std::string> get_ordered_variables(); 
+	std::unordered_set<std::string> get_variables();
 	std::vector<Proposition_Instance> get_proposition_instances();
 
 	void add_variable(std::string variable);
