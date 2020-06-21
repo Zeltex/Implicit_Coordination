@@ -151,8 +151,8 @@ namespace del {
 		return node.is_root_node();
 	}
 
-	const std::vector<Agent>& Planner::get_all_agents(const Action_Library& action_library) const {
-		return action_library.get_agents();
+	const std::vector<Agent>& Planner::get_all_agents(const Domain& domain) const {
+		return domain.get_agents();
 	}
 
 	void Planner::print_graph(const Graph& graph) const {

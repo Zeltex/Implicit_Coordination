@@ -100,12 +100,13 @@ void Domain_Buffer::push_event_delete_list() {
 	event_delete_list = std::move(propositions);
     propositions = {};
 }
-void Domain_Buffer::push_pop_formula(std::string name) {
+void Domain_Buffer::push_pop_formula() {
     if (formula_buffer.empty()) {
-        formula.f_prop(name);
+        formula.f_prop(propositions[0]);
     } else {
-        formula_buffer.back().push_back(formula.f_prop( name));
+        formula_buffer.back().push_back(formula.f_prop(propositions[0]));
     }
+    propositions = {};
 }
 
 void Domain_Buffer::push_formula(std::string type) {

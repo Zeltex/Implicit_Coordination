@@ -33,6 +33,9 @@ namespace del {
 		bool operator==(const Event_Id& other) const {
 			return this->id == other.id;
 		}
+
+		Event_Id(size_t id) : id(id) {};
+		Event_Id(const Event_Id& other) :id(other.id) {}
 	};
 
 	enum class Node_Type {

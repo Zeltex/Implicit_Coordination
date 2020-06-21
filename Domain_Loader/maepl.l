@@ -17,6 +17,7 @@
 
 
 _action				{ return ACTION_DEF;			}
+_announce_enabled	{ return ANNOUNCE_DEF;			}
 _designated_events	{ return DESIGNATED_EVENTS_DEF;	}
 _designated_worlds  { return DESIGNATED_WORLDS_DEF; }
 _domain				{ return DOMAIN_DEF;			}

@@ -44,7 +44,7 @@ public:
 	void push_objects();
 	void push_proposition_instance(std::string name);
 
-	void push_pop_formula(std::string name);
+	void push_pop_formula();
 	void push_formula(std::string type);
 	void pop_formula();
 

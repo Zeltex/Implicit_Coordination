@@ -18,6 +18,10 @@ namespace del {
 		return precondition;
 	}
 
+	std::string Action_Event::get_name() const {
+		return name;
+	}
+
 	std::string Action_Event::to_string() const {
 		std::string result = "Event " + std::to_string(id.id) + ": (Preconditions: " + precondition.to_string() + ") (Add list";
 		for (auto add : proposition_add) {
@@ -30,4 +34,5 @@ namespace del {
 		result += ")";
 		return result;
 	}
+
 }

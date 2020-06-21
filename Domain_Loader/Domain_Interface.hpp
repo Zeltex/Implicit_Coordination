@@ -23,13 +23,14 @@ public:
 	virtual void set_designated_events(std::vector<std::string> designated_events) = 0;
 	virtual void set_types(std::unordered_set<std::string> types) = 0;
 	virtual void add_proposition(std::string name, std::vector<std::pair<std::string, std::string>> inputs) = 0;
-	virtual void set_objects(std::unordered_map<std::string, std::unordered_set<std::string>> objects) = 0;
+	virtual void set_objects(std::unordered_map<std::string, std::unordered_set<std::string>>&& objects) = 0;
 	virtual void set_domain(std::string domain_name) = 0;
-	virtual void set_initial_state(std::vector<Proposition_Instance> propositions) = 0;
+	virtual void set_initial_propositions(std::vector<Proposition_Instance> propositions) = 0;
 	virtual void create_world(std::string name, std::vector<Proposition_Instance> propositions) = 0;
 	virtual void set_designated_worlds(std::unordered_set<std::string> designated_worlds) = 0;
 	virtual void create_reflexive_reachables() = 0;
 	virtual void add_reachability(std::string name, std::vector<std::pair<std::string, std::string>> reachables) = 0;
+	virtual void set_announce_enabled() = 0;
 private:
 	std::vector<std::string> buffer_list;
 };

@@ -7,14 +7,40 @@ namespace del {
 			indistinguishability_relation.emplace_back();
 		}
 	}
+	Action::Action(General_Action general_action, Agent_Id owner, const std::unordered_map<std::string, std::string>& input_to_atom): 
+		owner(owner), events(),designated_events(), indistinguishability_relation() {
+		this->owner = owner;
+		std::unordered_map<std::string, Event_Id> event_name_to_id;
+
+		for (auto& event : general_action.get_events()) {
+			std::vector<Proposition_Instance> add_list;
+			std::vector<Proposition_Instance> delete_list;
+			for (auto& entry : event.get_add_list()) {
+				add_list.emplace_back(entry, input_to_atom);
+			}
+			for (auto& entry : event.get_delete_list()) {
+				delete_list.emplace_back(entry, input_to_atom);
+			}
+			Formula preconditions;
+			preconditions.f_top();
+			//TODO - get proper preconditions
+			auto id = Event_Id{ events.size() };
+			event_name_to_id.emplace(event.get_name(), Event_Id{ id.id });
+
+			add_event(event.get_name(), id, std::move(preconditions), std::move(add_list), std::move(delete_list));
+		}		
+
+		for (auto& entry : general_action.get_designated_events()) {
+			this->designated_events.push_back(event_name_to_id.at(entry));
+		}
+	}
 
 	void Action::add_event(const Action_Event& event) {
 		events.push_back(event);
-		//events.emplace_back(event);
 	}
 
-	void Action::add_event(Event_Id id, Formula&& precondition, std::vector<Proposition_Instance>&& proposition_add, std::vector<Proposition_Instance>&& proposition_delete) {
-		events.emplace_back(id, std::move(precondition), proposition_add, proposition_delete);
+	void Action::add_event(std::string name, Event_Id id, Formula&& precondition, std::vector<Proposition_Instance>&& proposition_add, std::vector<Proposition_Instance>&& proposition_delete) {
+		events.emplace_back(name, id, std::move(precondition), proposition_add, proposition_delete);
 	}
 
 	const std::vector<Action_Event>& Action::get_events() const {

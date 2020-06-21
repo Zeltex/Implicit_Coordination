@@ -16,6 +16,9 @@
 #include "../Pepper_Planner/Policy.cpp"
 #include "../Pepper_Planner/Misc.cpp"
 #include "../Pepper_Planner/Bisimulation_Context.cpp"
+#include "../Pepper_Planner/General_Action.cpp"
+#include "../Pepper_Planner/Domain.cpp"
+
 
 
 /*

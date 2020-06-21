@@ -10,8 +10,9 @@ namespace del {
 
 	class State {
 	public:
-		State() = delete;
-		State(size_t number_of_agents);
+		State();
+		State(size_t amount_of_agents);
+		void set_amount_of_agents(size_t amount_of_agents);
 		bool valuate(const Formula& formula) const;
 		bool is_world_designated(World_Id world) const;
 		bool is_one_reachable(Agent_Id agent, World_Id world1, World_Id world2) const;

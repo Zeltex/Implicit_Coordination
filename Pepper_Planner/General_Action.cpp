@@ -19,7 +19,23 @@ namespace del {
 	}
 
 	void General_Action::create_event(std::string name, Formula&& preconditions, std::vector<Proposition_Instance> add_list, std::vector<Proposition_Instance> delete_list) {
-		events.emplace_back(Event_Id{ events.size() }, std::move(preconditions), add_list, delete_list);
+		events.emplace_back(name, Event_Id{ events.size() }, std::move(preconditions), add_list, delete_list);
 		// TODO - Include name
+	}
+
+	const std::vector<std::pair<std::string, std::string>>& General_Action::get_inputs() const {
+		return inputs;
+	}
+
+	std::string General_Action::get_owner() const{
+		return owner;
+	}
+
+	const std::vector<std::string>& General_Action::get_designated_events() const {
+		return designated_events;
+	}
+
+	const std::vector<Action_Event>& General_Action::get_events() const {
+		return events;
 	}
 }

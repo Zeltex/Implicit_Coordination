@@ -28,6 +28,7 @@
 // define the constant-string tokens:
 
 %token ACTION_DEF
+%token ANNOUNCE_DEF
 %token DEFINE_DEF
 %token DESIGNATED_EVENTS_DEF
 %token DESIGNATED_WORLDS_DEF
@@ -74,15 +75,18 @@
 // case is just the concept of a whole "snazzle file":
 maepl: 
     |DOMAIN_DEF NAME LBRACK                                     { domain->new_domain(std::string($2));                                  }
-        types_container propositions_container actions RBRACK   { domain->finish_domain();                                              } maepl
+       domain_body RBRACK                                       { domain->finish_domain();                                              } maepl
     | PROBLEM_DEF NAME LBRACK
         problem_body RBRACK                                     { if (buffer->is_reflexive()) domain->create_reflexive_reachables();
                                                                   domain->finish_problem();                                             } maepl  
 
+domain_body:
+     announce_container types_container propositions_container actions
+
 problem_body:
     | DOMAIN_DEF EQUALS NAME                                    { domain->set_domain($3);                                               } problem_body
     | OBJECTS_DEF EQUALS LBRACK objects RBRACK                  { domain->set_objects(buffer->get_objects());                           } problem_body
-    | INIT_DEF EQUALS LBRACK proposition_instances RBRACK       { domain->set_initial_state(buffer->get_proposition_instances());       } problem_body
+    | INIT_DEF EQUALS LBRACK proposition_instances RBRACK       { domain->set_initial_propositions(buffer->get_proposition_instances());} problem_body
     | WORLD_DEF NAME LBRACK proposition_instances RBRACK        { domain->create_world($2, buffer->get_proposition_instances());        } problem_body
     | GOAL_DEF EQUALS LBRACK formula RBRACK                     {                                                                       } problem_body
     | DESIGNATED_WORLDS_DEF EQUALS LBRACK variables RBRACK      { domain->set_designated_worlds(buffer->get_variables());               } problem_body
@@ -99,6 +103,9 @@ goal_body:
 objects:
     | NAME EQUALS LBRACK variables RBRACK    { buffer->set_object_type($1);
                                                buffer->push_objects();                                      } objects
+
+announce_container:
+    | ANNOUNCE_DEF EQUALS TRUTH              { if ($3) domain->set_announce_enabled();            } 
 
 types_container:                             { std::cerr << "Missing types definition\n";                   }    
     | TYPES_DEF EQUALS LBRACK        
@@ -141,7 +148,7 @@ action_body:
         designated_events_body RBRACK        { domain->set_designated_events(buffer->get_designated_events());} action_body
 
 designated_events_body:
-    | NAME                                   { buffer->add_designated_event($1);                            }      
+    | NAME                                   { buffer->add_designated_event($1);                            } designated_events_body     
                                              
 event_body:                                  
     | PRECONDITIONS_DEF EQUALS LBRACK        { buffer->clear_formula();                                     } 
@@ -160,8 +167,8 @@ formula_container:
     | LBRACK formula_single RBRACK           {                                                              }
                                              
 formula:                                     
-    | NAME                                   {buffer->push_pop_formula($1);                                 } 
-    | NAME                                   {buffer->push_pop_formula($1);                                 } formula
+    | proposition_instance                   {buffer->push_pop_formula();                                 } 
+    | proposition_instance                   {buffer->push_pop_formula();                                 } formula
     | AND LBRACK                             {buffer->push_formula("And");                                  }
         formula RBRACK                       {buffer->pop_formula();                                        } formula
     | OR LBRACK                              {buffer->push_formula("Or");                                   }
@@ -171,7 +178,7 @@ formula:
                                              
                                              
 formula_single:                              
-    | NAME                                   {buffer->push_pop_formula($1);                                 }
+    | proposition_instance                   {buffer->push_pop_formula();                                 }
     | AND LBRACK                             {buffer->push_formula("And");                                  }
         formula RBRACK                       {buffer->pop_formula();                                        }
     | OR LBRACK                              {buffer->push_formula("Or");                                   }

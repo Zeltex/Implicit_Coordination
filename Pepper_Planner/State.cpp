@@ -2,9 +2,17 @@
 
 namespace del {
 
-	State::State(size_t number_of_agents):
-		number_of_agents(number_of_agents), worlds(), designated_worlds(), indistinguishability_relation(){
-		
+	State::State():
+		number_of_agents(0), worlds(), designated_worlds(), indistinguishability_relation(){
+	}
+
+	State::State(size_t number_of_agents) :
+		number_of_agents(0), worlds(), designated_worlds(), indistinguishability_relation() {
+		set_amount_of_agents(number_of_agents);
+	}
+
+	void State::set_amount_of_agents(size_t number_of_agents) {
+		this->number_of_agents = number_of_agents;
 		indistinguishability_relation.reserve(number_of_agents);
 		for (size_t i = 0; i < number_of_agents; i++) {
 			indistinguishability_relation.emplace_back();

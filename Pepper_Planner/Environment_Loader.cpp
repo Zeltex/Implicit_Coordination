@@ -13,7 +13,8 @@ namespace del {
 
 		Formula goal = get_goal_formula();
 		State state = get_initial_state(amount_of_agents);
-		Action_Library library(amount_of_agents);
+		Action_Library library;
+		library.set_amount_of_agents(amount_of_agents);
 		add_actions(library, amount_of_agents);
 
 		Domain domain(amount_of_agents, state);

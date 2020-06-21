@@ -1,15 +1,18 @@
 _domain Pepper {
-	_types = [container, object]
+	_announce_enabled = true
+	_types = [container, object, agent]
 	_propositions = [
 		in(container c, object o)
 	]
-	_action announce (proposition prop) {
-		_owner = name
-		_designated_events = [event1]
-		_event event1 { 
-			_preconditions = (prop)
-			_effect_add = []
-			_effect_delete = []
+
+
+	_action pickup (container from, container to, object o) {
+		_owner = agent
+		_designated_events = [event0]
+		_event event0 { 
+			_preconditions = ( in(from, o) )
+			_effect_add = [in(to, o)]
+			_effect_delete = [in(from, o)]
 
 		}
 	}
@@ -26,12 +29,17 @@ _problem simple_problem {
 	_world world0 [in(box0, red_cube)]
 	_world world1 [in(box1, red_cube)]
 	_world world2 [in(box2, red_cube)]
-	_goal = []
+	_goal = [in(L, red_cube)]
 	_designated_worlds = [world0, world1, world2]
 	_reflexivity = true
 	_reachability = {
-		Pepper = {
+		L = {
 			(world0, world1)
+			(world0, world2)
+			(world1, world0)
+			(world1, world2)
+			(world2, world0)
+			(world2, world1)
 		}
 	}
 }

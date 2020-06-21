@@ -18,3 +18,9 @@ Answers:
 - If s is local for i (closed under indistinguishisability) then nothing changes
 
 - Relations should be preserved after taking globals(s)
+
+
+
+TODO:
+Reachability on events in actions
+Preconditions on actions

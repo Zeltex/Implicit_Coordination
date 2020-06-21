@@ -2,6 +2,7 @@
 
 #include <string>
 #include <vector>
+#include <unordered_map>
 
 struct Formula_Id {
 	size_t id;
@@ -30,6 +31,13 @@ struct Proposition_Instance {
 	Proposition_Instance() : name(), arguments() {}
 	Proposition_Instance(std::string name, std::vector<std::string> arguments) :
 		name(name), arguments(arguments) {}
+
+	Proposition_Instance(const Proposition_Instance& other, const std::unordered_map<std::string, std::string>& input_to_atom) :
+		name(other.name), arguments() {
+		for (auto& entry : other.arguments) {
+			arguments.push_back(input_to_atom.at(entry));
+		}
+	}
 
 	std::string name;
 	std::vector<std::string> arguments;

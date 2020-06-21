@@ -1,0 +1,5 @@
+### Domain Loader
+
+The parser does not care which of '()' '{}' '[]' are used.
+
+The _problem -> _objects tag must define an 'agent' category, and must be the first tag in _problem

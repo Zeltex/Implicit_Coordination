@@ -8,12 +8,14 @@
 #include "../Domain_Loader/Types.hpp"
 #include "General_Action.hpp"
 #include "General_World.hpp"
+#include "Domain.hpp"
+#include "Action_Library.hpp"
 
 namespace del {
 
 	class Domain_Interface_Implementation : public Domain_Interface {
 	public:
-		Domain_Interface_Implementation() {}
+		Domain_Interface_Implementation(): actions(), current_action(), initial_state(), library(), domain(), initial_propositions(), propositions(), world_name_to_id(){}
 		virtual void new_domain(std::string name) override;
 		virtual void finish_domain() override;
 		virtual void finish_problem() override;
@@ -26,24 +28,24 @@ namespace del {
 		virtual void set_designated_events(std::vector<std::string> designated_events) override;
 		virtual void set_types(std::unordered_set<std::string> types) override;
 		virtual void add_proposition(std::string name, std::vector<std::pair<std::string, std::string>> inputs) override;
-		virtual void set_objects(std::unordered_map<std::string, std::unordered_set<std::string>> objects) override;
+		virtual void set_objects(std::unordered_map<std::string, std::unordered_set<std::string>>&& objects) override;
 		virtual void set_domain(std::string domain_name) override;
-		virtual void set_initial_state(std::vector<Proposition_Instance> propositions) override;
+		virtual void set_initial_propositions(std::vector<Proposition_Instance> propositions) override;
 		virtual void create_world(std::string name, std::vector<Proposition_Instance> propositions) override;
 		virtual void set_designated_worlds(std::unordered_set<std::string> designated_worlds) override;
 		virtual void create_reflexive_reachables() override;
 		virtual void add_reachability(std::string name, std::vector<std::pair<std::string, std::string>> reachables) override;
+		virtual void set_announce_enabled() override;
 
+		std::tuple<Domain, Action_Library> get_loaded();
 	private:
+		std::vector<General_Action> actions;
 		General_Action current_action;
-		std::vector<Proposition_Instance> initial_state;
-		std::vector<General_World> worlds;
+		State initial_state;
+		Action_Library library;
+		Domain domain;
+		std::vector<Proposition_Instance> initial_propositions;
 		std::vector<Proposition> propositions;
-		std::string current_domain_name;
-		std::unordered_set<std::string> types;
-		std::unordered_map<std::string, std::unordered_set<std::string>> objects;
-		std::string domain_name;
-		std::unordered_set<std::string> designated_worlds;
-		std::unordered_map<std::string, std::vector<std::pair<std::string, std::string>>> reachables;
+		std::unordered_map<std::string, World_Id> world_name_to_id;
 	};
 }

@@ -28,7 +28,7 @@ namespace del {
 		bool is_goal_node(const Node& node, const Formula& goal_formula) const;
 		bool is_root_node(const Node& node) const;
 		bool is_valid_state(const State& state) const;
-		const std::vector<Agent>& get_all_agents(const Action_Library& action_library) const;
+		const std::vector<Agent>& get_all_agents(const Domain& domain) const;
 		void print_graph(const Graph& graph) const;
 	};
 }

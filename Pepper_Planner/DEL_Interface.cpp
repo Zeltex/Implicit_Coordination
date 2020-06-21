@@ -2,7 +2,7 @@
 
 namespace del {
 
-	DEL_Interface::DEL_Interface(size_t domain_to_load) : domain(1), planner(), has_policy(false), policy(false), action_library(1), pepper_id({ 0 }) {
+	DEL_Interface::DEL_Interface(size_t domain_to_load) : domain(), planner(), has_policy(false), policy(false), action_library(), pepper_id({ 0 }) {
 		Environment_Loader environment_loader;
 		auto [domain, action_library, goal] = environment_loader.load(domain_to_load);
 		this->domain = domain;
@@ -10,7 +10,8 @@ namespace del {
 		this->goal = std::move(goal);
 	}
 	
-	DEL_Interface::DEL_Interface(State initial_state, Action_Library library) : domain(initial_state.get_number_of_agents(), initial_state), has_policy(false), policy(false), action_library(2), pepper_id({ 0 }) {
+	DEL_Interface::DEL_Interface(State initial_state, Action_Library library) : 
+			domain(initial_state.get_number_of_agents(), initial_state), has_policy(false), policy(false), action_library(), pepper_id({ 0 }) {
 		domain = Domain(initial_state.get_number_of_agents(), initial_state);
 		action_library = std::move(library);
 	}

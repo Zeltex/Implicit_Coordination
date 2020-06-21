@@ -3,19 +3,22 @@
 #include <algorithm>
 #include <vector>
 #include <string>
+#include <unordered_map>
 
 #include "../Formula/Formula.hpp"
 #include "Action_Event.hpp"
 #include "Misc.hpp"
 #include "Types.hpp"
+#include "General_Action.hpp"
 
 namespace del {
 	class Action {
 	public:
 		Action() = delete;
 		Action(Agent_Id owner, size_t number_of_agents);
+		Action(General_Action general_action, Agent_Id owner, const std::unordered_map<std::string, std::string>& input_to_atom);
 		void add_event(const Action_Event& event);
-		void add_event(Event_Id id, Formula&& precondition, std::vector<Proposition_Instance>&& proposition_add, std::vector<Proposition_Instance>&& proposition_delete);
+		void add_event(std::string name, Event_Id id, Formula&& precondition, std::vector<Proposition_Instance>&& proposition_add, std::vector<Proposition_Instance>&& proposition_delete);
 		const std::vector<Action_Event>& get_events() const;
 		Agent_Id get_owner() const;
 		bool is_one_reachable(Agent_Id agent, Event_Id world1, Event_Id world2) const;

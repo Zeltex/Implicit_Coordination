@@ -47,35 +47,36 @@ extern int yydebug;
       know about them.  */
    enum yytokentype {
      ACTION_DEF = 258,
-     DEFINE_DEF = 259,
-     DESIGNATED_EVENTS_DEF = 260,
-     DESIGNATED_WORLDS_DEF = 261,
-     DOMAIN_DEF = 262,
-     EFFECT_ADD_DEF = 263,
-     EFFECT_DELETE_DEF = 264,
-     EVENT_DEF = 265,
-     GOAL_DEF = 266,
-     INIT_DEF = 267,
-     OBJECTS_DEF = 268,
-     OWNER_DEF = 269,
-     PRECONDITIONS_DEF = 270,
-     PROBLEM_DEF = 271,
-     PROPOSITIONS_DEF = 272,
-     REACHAbility_DEF = 273,
-     REFLEXIVITY_DEF = 274,
-     TYPES_DEF = 275,
-     WORLD_DEF = 276,
-     LBRACK = 277,
-     RBRACK = 278,
-     AND = 279,
-     OR = 280,
-     NOT = 281,
-     NAME = 282,
-     TRUTH = 283,
-     EQUALS = 284,
-     INT = 285,
-     FLOAT = 286,
-     STRING = 287
+     ANNOUNCE_DEF = 259,
+     DEFINE_DEF = 260,
+     DESIGNATED_EVENTS_DEF = 261,
+     DESIGNATED_WORLDS_DEF = 262,
+     DOMAIN_DEF = 263,
+     EFFECT_ADD_DEF = 264,
+     EFFECT_DELETE_DEF = 265,
+     EVENT_DEF = 266,
+     GOAL_DEF = 267,
+     INIT_DEF = 268,
+     OBJECTS_DEF = 269,
+     OWNER_DEF = 270,
+     PRECONDITIONS_DEF = 271,
+     PROBLEM_DEF = 272,
+     PROPOSITIONS_DEF = 273,
+     REACHAbility_DEF = 274,
+     REFLEXIVITY_DEF = 275,
+     TYPES_DEF = 276,
+     WORLD_DEF = 277,
+     LBRACK = 278,
+     RBRACK = 279,
+     AND = 280,
+     OR = 281,
+     NOT = 282,
+     NAME = 283,
+     TRUTH = 284,
+     EQUALS = 285,
+     INT = 286,
+     FLOAT = 287,
+     STRING = 288
    };
 #endif
 
@@ -93,7 +94,7 @@ typedef union YYSTYPE
 
 
 /* Line 2058 of yacc.c  */
-#line 97 "maepl.tab.h"
+#line 98 "maepl.tab.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
