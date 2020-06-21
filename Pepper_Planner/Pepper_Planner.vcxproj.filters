@@ -93,6 +93,9 @@
     <ClCompile Include="General_Action.cpp">
       <Filter>Source Files\DEL\Action</Filter>
     </ClCompile>
+    <ClCompile Include="General_World.cpp">
+      <Filter>Source Files\DEL</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Agent.hpp">
@@ -154,6 +157,9 @@
     </ClInclude>
     <ClInclude Include="General_Action.hpp">
       <Filter>Header Files\DEL\Action</Filter>
+    </ClInclude>
+    <ClInclude Include="General_World.hpp">
+      <Filter>Header Files\DEL</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

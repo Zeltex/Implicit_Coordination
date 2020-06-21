@@ -60,4 +60,8 @@ namespace del {
 	void Domain_Interface_Implementation::set_initial_state(std::vector<Proposition_Instance> propositions) {
 		this->initial_state = propositions;
 	}
+
+	void Domain_Interface_Implementation::create_world(std::string name, std::vector<Proposition_Instance> propositions) {
+		this->worlds.emplace_back(name, propositions);
+	}
 }

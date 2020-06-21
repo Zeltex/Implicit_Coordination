@@ -152,6 +152,7 @@
     <ClCompile Include="Environment_Loader.cpp" />
     <ClCompile Include="DEL_Interface.cpp" />
     <ClCompile Include="General_Action.cpp" />
+    <ClCompile Include="General_World.cpp" />
     <ClCompile Include="Interface_DTO.cpp" />
     <ClCompile Include="Misc.cpp" />
     <ClCompile Include="Planner.cpp" />
@@ -174,6 +175,7 @@
     <ClInclude Include="Environment_Loader.hpp" />
     <ClInclude Include="DEL_Interface.hpp" />
     <ClInclude Include="General_Action.hpp" />
+    <ClInclude Include="General_World.hpp" />
     <ClInclude Include="Interface_DTO.hpp" />
     <ClInclude Include="Misc.hpp" />
     <ClInclude Include="Planner.hpp" />

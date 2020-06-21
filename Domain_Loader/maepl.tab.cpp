@@ -1605,7 +1605,7 @@ yyreduce:
   case 15:
 /* Line 1792 of yacc.c  */
 #line 85 "maepl.y"
-    {}
+    { domain->create_world((yyvsp[(2) - (5)].sval), buffer->get_proposition_instances());}
     break;
 
   case 17:

@@ -82,7 +82,7 @@ problem_body:
     | DOMAIN_DEF EQUALS NAME                                    { domain->set_domain($3);} problem_body
     | OBJECTS_DEF EQUALS LBRACK objects RBRACK                  {} problem_body
     | INIT_DEF EQUALS LBRACK proposition_instances RBRACK       { domain->set_initial_state(buffer->get_proposition_instances());} problem_body
-    | WORLD_DEF NAME LBRACK proposition_instances RBRACK        {} problem_body
+    | WORLD_DEF NAME LBRACK proposition_instances RBRACK        { domain->create_world($2, buffer->get_proposition_instances());} problem_body
     | GOAL_DEF EQUALS LBRACK formula RBRACK                     {} problem_body
     | DESIGNATED_WORLDS_DEF EQUALS LBRACK variables RBRACK      {} problem_body
     | REACHAbility_DEF EQUALS LBRACK reachability_body RBRACK   {} problem_body
