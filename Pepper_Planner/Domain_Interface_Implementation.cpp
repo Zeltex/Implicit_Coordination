@@ -73,4 +73,8 @@ namespace del {
 		//TODO
 		int debug = 0;
 	}
+
+	void Domain_Interface_Implementation::add_reachability(std::string name, std::vector<std::pair<std::string, std::string>> reachables) {
+		this->reachables[name] = reachables;
+	}
 }

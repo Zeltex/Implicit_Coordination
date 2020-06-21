@@ -81,16 +81,16 @@ maepl:
 
 problem_body:
     | DOMAIN_DEF EQUALS NAME                                    { domain->set_domain($3);                                               } problem_body
-    | OBJECTS_DEF EQUALS LBRACK objects RBRACK                  {} problem_body
+    | OBJECTS_DEF EQUALS LBRACK objects RBRACK                  {                                                                       } problem_body
     | INIT_DEF EQUALS LBRACK proposition_instances RBRACK       { domain->set_initial_state(buffer->get_proposition_instances());       } problem_body
     | WORLD_DEF NAME LBRACK proposition_instances RBRACK        { domain->create_world($2, buffer->get_proposition_instances());        } problem_body
-    | GOAL_DEF EQUALS LBRACK formula RBRACK                     {} problem_body
+    | GOAL_DEF EQUALS LBRACK formula RBRACK                     {                                                                       } problem_body
     | DESIGNATED_WORLDS_DEF EQUALS LBRACK variables RBRACK      { domain->set_designated_worlds(buffer->get_variables());               } problem_body
-    | REACHAbility_DEF EQUALS LBRACK reachability_body RBRACK   {} problem_body
+    | REACHAbility_DEF EQUALS LBRACK reachability_body RBRACK   {                                                                       } problem_body
     | REFLEXIVITY_DEF EQUALS TRUTH                              { buffer->set_reflexivity($3);                                          } problem_body
 
 reachability_body:
-    | NAME EQUALS LBRACK pairs RBRACK reachability_body
+    | NAME EQUALS LBRACK bracketed_input RBRACK                 { domain->add_reachability($1, buffer->get_inputs());                   } reachability_body
 
 goal_body:
     | 
@@ -98,8 +98,6 @@ goal_body:
 proposition_instances:
     |  NAME LBRACK ordered_variables RBRACK                             {buffer->push_proposition_instance($1);     } proposition_instances
 
-pairs:
-    | LBRACK NAME NAME RBRACK pairs
 
 objects:
     | NAME EQUALS LBRACK variables RBRACK    { buffer->set_object_type($1);
@@ -117,10 +115,13 @@ propositions_container:                      { std::cerr << "Missing proposition
 
 proposition:
     | NAME LBRACK input RBRACK               { domain->add_proposition($1, buffer->get_inputs());           }    
-                                             
+           
+
+bracketed_input:
+    | LBRACK NAME NAME RBRACK                { buffer->add_input($2, $3);                                   } bracketed_input
+
 input:                                       
-    | NAME NAME                              { buffer->add_input($1, $2);                                   }
-        input                                
+    | NAME NAME                              { buffer->add_input($1, $2);                                   } input           
                                              
 action:                                      
     ACTION_DEF NAME                          { domain->new_action(std::string($2));                         }

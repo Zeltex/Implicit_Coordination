@@ -55,7 +55,7 @@ std::vector<std::string> Domain_Buffer::get_designated_events() {
 
 std::vector<std::pair<std::string, std::string>> Domain_Buffer::get_inputs() {
     auto temp = std::move(inputs);
-    inputs = std::vector<std::pair<std::string, std::string>>();
+    inputs = {};
     return std::move(temp);
 }
 

@@ -32,6 +32,7 @@ namespace del {
 		virtual void create_world(std::string name, std::vector<Proposition_Instance> propositions) override;
 		virtual void set_designated_worlds(std::unordered_set<std::string> designated_worlds) override;
 		virtual void create_reflexive_reachables() override;
+		virtual void add_reachability(std::string name, std::vector<std::pair<std::string, std::string>> reachables) override;
 
 	private:
 		General_Action current_action;
@@ -43,5 +44,6 @@ namespace del {
 		std::unordered_map<std::string, std::unordered_set<std::string>> objects;
 		std::string domain_name;
 		std::unordered_set<std::string> designated_worlds;
+		std::unordered_map<std::string, std::vector<std::pair<std::string, std::string>>> reachables;
 	};
 }
