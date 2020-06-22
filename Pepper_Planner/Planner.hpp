@@ -31,5 +31,6 @@ namespace del {
 		const std::vector<Agent>& get_all_agents(const Domain& domain) const;
 		void print_graph(const Graph& graph) const;
 		void print_graph_dot(const Graph& graph) const;
+		const Action& get_next_action(const std::vector<Action>& normal_actions, const std::vector<Action>& announce_actions, size_t counter) const;
 	};
 }

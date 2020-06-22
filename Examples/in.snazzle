@@ -20,7 +20,7 @@ _domain Pepper {
 }
 _problem simple_problem {
 	_objects = {
-		container = [box0, box1, box2, L, Pepper]
+		container = [box0, box1, box2, L]
 		object = [red_cube]
 		agent = [Pepper, L]
 	}

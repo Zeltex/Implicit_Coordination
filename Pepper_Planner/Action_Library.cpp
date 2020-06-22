@@ -16,6 +16,56 @@ namespace del {
 	const std::vector<Action>& Action_Library::get_actions() const{
 		return actions;
 	}
+	const std::vector<Action> Action_Library::get_announce_actions(State state) const {
+		std::vector<Action> result;
+		
+		if (!announce_enabled) {
+			return result;
+		}
+		for (size_t agent = 0; agent < state.get_number_of_agents(); agent++) {
+			auto reachables = state.get_designated_world_reachables({ agent });
+			if (reachables.empty()) {
+				continue;
+			}
+			auto propositions_to_announce = state.get_world(reachables[0]).get_true_propositions();
+			for (auto world : reachables) {
+				if (propositions_to_announce.empty()) {
+					break;
+				}
+				auto propositions = state.get_world(world).get_true_propositions();
+				std::vector<size_t> to_delete;
+				size_t counter = 0;
+				for (auto entry : propositions_to_announce) {
+					if (find(propositions.begin(), propositions.end(), entry) == propositions.end()) {
+						to_delete.push_back(counter);
+					}
+					counter++;
+				}
+				for (auto iterator = to_delete.rbegin(); iterator != to_delete.rend(); iterator++) {
+					propositions_to_announce.erase(propositions_to_announce.begin() + *iterator);
+				}
+
+			}
+			for (auto proposition : propositions_to_announce) {
+				result.push_back(create_announce_action({ agent }, proposition, state.get_number_of_agents()));
+			}
+		}
+		return std::move(result);
+		
+	}
+
+	Action Action_Library::create_announce_action(Agent_Id owner, Proposition_Instance proposition, size_t amount_of_agents) const {
+		Action action(owner, amount_of_agents);
+		Formula f;
+		f.f_prop(proposition);
+		Action_Event event = Action_Event(Event_Id { 0 }, std::move(f), std::vector<Proposition_Instance>(), std::vector<Proposition_Instance>());
+		action.add_event(event);
+		action.add_designated_event(Event_Id{ 0 });
+		for (size_t agent = 0; agent < amount_of_agents; agent++) {
+			action.add_indistinguishability_relation(Agent_Id{ agent }, Event_Id{ 0 }, Event_Id{ 0 });
+		}
+		return action;
+	}
 
 	void Action_Library::add_action(const Action& action) {
 		actions.push_back(action);

@@ -25,8 +25,14 @@ namespace del {
 				}
 			}
 
+			auto& normal_actions = action_library.get_actions();
+			auto announce_actions = action_library.get_announce_actions(graph.get_node(current_node).get_state());
+
 			bool found_applicable_action = false;
-			for (Action action : action_library.get_actions()) {
+			size_t counter = 0;
+			while (counter < normal_actions.size() + announce_actions.size()) {
+				const Action& action = get_next_action(normal_actions, announce_actions, counter);
+				counter++;
 				State temp_perspective_shift = perform_perspective_shift(graph.get_node(current_node).get_state(), action.get_owner());
 				if (!is_action_applicable(temp_perspective_shift, action)) {
 					continue;
@@ -61,6 +67,13 @@ namespace del {
 		return Policy(false);
 	}
 
+	const Action& Planner::get_next_action(const std::vector<Action>& normal_actions, const std::vector<Action>& announce_actions, size_t counter) const {
+		if (counter < normal_actions.size()) {
+			return normal_actions.at(counter);
+		} else {
+			return announce_actions.at(counter - normal_actions.size());
+		}
+	}
 
 	Policy Planner::extract_policy(Graph& graph) const {
 		print_graph(graph);

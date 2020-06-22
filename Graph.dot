@@ -27,7 +27,7 @@ subgraph cluster_1 {
 label="(And)Node 1";
 pencolor=red;
 s10 [label="0
-in(Pepper, red_cube)", shape=doublecircle];
+in(box1, red_cube)", shape=doublecircle];
 s10 -> s10[label="Pepper"];
 s10 -> s10[label="L"];
 
@@ -36,41 +36,41 @@ subgraph cluster_2 {
 label="(Or)Node 2";
 pencolor=red;
 s20 [label="0
-in(Pepper, red_cube)", shape=doublecircle];
+in(box1, red_cube)", shape=doublecircle];
 s20 -> s20[label="Pepper"];
 s20 -> s20[label="L"];
 
 }
 subgraph cluster_3 {
 label="(And)Node 3";
+pencolor=red;
 s30 [label="0
-in(Pepper, red_cube)", shape=doublecircle];
+in(L, red_cube)", shape=doublecircle];
 s30 -> s30[label="Pepper"];
 s30 -> s30[label="L"];
 
 }
 subgraph cluster_4 {
 label="(Or)Node 4";
+pencolor=red;
 s40 [label="0
-in(Pepper, red_cube)", shape=doublecircle];
+in(L, red_cube)", shape=doublecircle];
 s40 -> s40[label="Pepper"];
 s40 -> s40[label="L"];
 
 }
 subgraph cluster_5 {
 label="(And)Node 5";
-pencolor=red;
 s50 [label="0
-in(L, red_cube)", shape=doublecircle];
+in(box1, red_cube)", shape=doublecircle];
 s50 -> s50[label="Pepper"];
 s50 -> s50[label="L"];
 
 }
 subgraph cluster_6 {
 label="(Or)Node 6";
-pencolor=red;
 s60 [label="0
-in(L, red_cube)", shape=doublecircle];
+in(box1, red_cube)", shape=doublecircle];
 s60 -> s60[label="Pepper"];
 s60 -> s60[label="L"];
 
@@ -78,7 +78,7 @@ s60 -> s60[label="L"];
 subgraph cluster_7 {
 label="(And)Node 7";
 s70 [label="0
-in(Pepper, red_cube)", shape=doublecircle];
+in(box1, red_cube)", shape=doublecircle];
 s70 -> s70[label="Pepper"];
 s70 -> s70[label="L"];
 
@@ -86,35 +86,17 @@ s70 -> s70[label="L"];
 subgraph cluster_8 {
 label="(Or)Node 8";
 s80 [label="0
-in(Pepper, red_cube)", shape=doublecircle];
+in(box1, red_cube)", shape=doublecircle];
 s80 -> s80[label="Pepper"];
 s80 -> s80[label="L"];
 
 }
-subgraph cluster_9 {
-label="(And)Node 9";
-s90 [label="0
-in(L, red_cube)", shape=doublecircle];
-s90 -> s90[label="Pepper"];
-s90 -> s90[label="L"];
-
-}
-subgraph cluster_10 {
-label="(Or)Node 10";
-s100 [label="0
-in(L, red_cube)", shape=doublecircle];
-s100 -> s100[label="Pepper"];
-s100 -> s100[label="L"];
-
-}
 s00 -> s10[ltail=cluster_0, lhead=cluster_1,label="<in(box1, red_cube),X,X>"];
 s10 -> s20[ltail=cluster_1, lhead=cluster_2];
-s20 -> s30[ltail=cluster_2, lhead=cluster_3,label="<in(Pepper, red_cube),X,X>"];
-s20 -> s50[ltail=cluster_2, lhead=cluster_5,label="<in(Pepper, red_cube),X,X>"];
+s20 -> s30[ltail=cluster_2, lhead=cluster_3,label="<in(box1, red_cube),X,X>"];
+s20 -> s50[ltail=cluster_2, lhead=cluster_5,label="<in(box1, red_cube),X,X>"];
+s20 -> s70[ltail=cluster_2, lhead=cluster_7,label="<in(box1, red_cube),X,X>"];
 s30 -> s40[ltail=cluster_3, lhead=cluster_4];
-s40 -> s70[ltail=cluster_4, lhead=cluster_7,label="<in(Pepper, red_cube),X,X>"];
-s40 -> s90[ltail=cluster_4, lhead=cluster_9,label="<in(Pepper, red_cube),X,X>"];
 s50 -> s60[ltail=cluster_5, lhead=cluster_6];
 s70 -> s80[ltail=cluster_7, lhead=cluster_8];
-s90 -> s100[ltail=cluster_9, lhead=cluster_10];
 }
