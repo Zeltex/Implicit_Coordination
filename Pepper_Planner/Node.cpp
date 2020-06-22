@@ -155,7 +155,7 @@ namespace del {
 			result += std::to_string(child.id);
 		}
 
-		result += ")\n--- Action from parent\n" +  (type == Node_Type::And ? "Agent split, no action" : action_from_parent.to_string()) + " \n" + state.to_string();
+		result += ")\n--- Action from parent\n" +  (type == Node_Type::Or ? "Agent split, no action" : action_from_parent.to_string()) + " \n" + state.to_string();
 		return result;
 	}
 

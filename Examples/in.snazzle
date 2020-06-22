@@ -1,11 +1,10 @@
 _domain Pepper {
-	_announce_enabled = true
+	_announce_enabled = false
 	_reflexivity = true
-	_types = [container, object, agent]
+	_types = [container, object, agent, perceivable]
 	_propositions = [
 		in(container c, object o)
 	]
-
 
 	_action pickup (container from, container to, object o) {
 		_owner = agent to
@@ -17,12 +16,30 @@ _domain Pepper {
 
 		}
 	}
+
+	_action perceive (container c, object o) {
+		_owner = perceivable agent
+		_designated_events = [event0, event1]
+		_event event0 { 
+			_preconditions = ( in(c, o) )
+			_effect_add = [ ]
+			_effect_delete = [ ]
+
+		}
+		_event event1 { 
+			_preconditions = ( NOT(in(c, o)) )
+			_effect_add = [ ]
+			_effect_delete = [ ]
+
+		}
+	}
 }
 _problem simple_problem {
 	_objects = {
 		container = [box0, box1, box2, L]
 		object = [red_cube]
 		agent = [Pepper, L]
+		perceivable = [L]
 	}
 	_initial_state = [
 		in(box1, red_cube)

@@ -95,7 +95,7 @@ namespace del {
 		std::vector<State> result;
 		for (auto designated_world : state.get_designated_worlds()) {
 			State new_state = State(state);
-			new_state.set_global_for_agent(agent, designated_world);
+			new_state.set_single_designated_world(designated_world);
 			result.push_back(std::move(new_state));
 		}
 		return result;

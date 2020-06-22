@@ -103,9 +103,9 @@ namespace del {
 	}
 
 	std::string Action::to_compact_string() const {
-		std::string result;
+		std::string result = std::to_string(owner.id);
 		for (auto& event : events) {
-			result += "<" + event.get_preconditions().to_string() + ",X,X>";
+			result += "\n<" + event.get_preconditions().to_string() + ",X,X>";
 		}
 		return result;
 	}

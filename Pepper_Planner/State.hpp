@@ -21,7 +21,7 @@ namespace del {
 		void add_true_propositions(World_Id world, std::vector<Proposition_Instance> propositions);
 		void add_designated_world(World_Id world);
 		void remove_true_propositions(World_Id world, std::vector<Proposition_Instance> propositions);
-		void set_global_for_agent(Agent_Id agent, World_Id world);
+		void set_single_designated_world(World_Id world);
 
 		World& create_world();
 		World& create_world(const World& world);

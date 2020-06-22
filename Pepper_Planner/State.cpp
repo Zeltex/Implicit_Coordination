@@ -130,11 +130,9 @@ namespace del {
 		return worlds[world.id];
 	}
 
-	void State::set_global_for_agent(Agent_Id agent, World_Id world) {
+	void State::set_single_designated_world(World_Id world) {
 		designated_worlds.clear();
 		designated_worlds.push_back(world);
-		indistinguishability_relation[agent.id].clear();
-		indistinguishability_relation[agent.id].push_back({ world, world });
 	}
 
 	std::string State::to_string() const {
