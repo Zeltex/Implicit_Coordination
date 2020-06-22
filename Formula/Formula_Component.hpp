@@ -13,19 +13,21 @@ namespace del {
 
 		const char delim = ';';
 		std::string to_string(const std::vector<Formula_Component>& all_formulas) const;
-		bool valuate(const  std::vector<std::string>& propositions, const std::vector<Formula_Component>& all_formulas) const;
+		bool valuate(const  std::vector<Proposition_Instance>& propositions, const std::vector<Formula_Component>& all_formulas) const;
 
 		std::string get_string_component(const std::vector<Formula_Id>& formulas, const std::vector<Formula_Component>& all_formulas) const;
 
 		Formula_Component() = default;
+
+		Formula_Component(const Formula_Component& other, const std::unordered_map<std::string, std::string>& input_to_atom);
 
 		// Top, Bot
 		Formula_Component(Formula_Types type):
 			type(type), prop(), formula(), formulas(std::vector<Formula_Id>()), agent(size_t{ 9999 }) {};
 
 		// Prop
-		Formula_Component(Formula_Types type, std::string name) :
-			type(type), prop(name), formula(), formulas(std::vector<Formula_Id>()), agent(size_t{ 9999 }) {};
+		Formula_Component(Formula_Types type, Proposition_Instance prop) :
+			type(type), prop(prop), formula(), formulas(std::vector<Formula_Id>()), agent(size_t{ 9999 }) {};
 
 		// And, Or
 		Formula_Component(Formula_Types type, std::vector<Formula_Id> formulas) : 
@@ -41,7 +43,7 @@ namespace del {
 
 	private:
 		Formula_Types type;
-		std::string prop;
+		Proposition_Instance prop;
 		Formula_Id formula;
 		std::vector<Formula_Id> formulas;
 		size_t agent;

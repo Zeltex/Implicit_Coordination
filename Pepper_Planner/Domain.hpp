@@ -32,6 +32,7 @@ namespace del {
 
 		void set_atom_types(std::unordered_set<std::string> types);
 		void set_objects(std::unordered_map<std::string, std::unordered_set<std::string>> objects);
+		void set_initial_state(State&& state);
 	private:
 		size_t amount_of_agents;
 		std::vector<State> states;

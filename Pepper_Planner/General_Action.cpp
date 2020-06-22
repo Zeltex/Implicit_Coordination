@@ -2,8 +2,8 @@
 
 namespace del {
 
-	void General_Action::set_owner(std::string agent) {
-		owner = agent;
+	void General_Action::set_owner(std::string type, std::string name) {
+		owner = { type, name };
 	}
 
 	void General_Action::set_name(std::string name) {
@@ -23,11 +23,25 @@ namespace del {
 		// TODO - Include name
 	}
 
+	void General_Action::add_reachability_relation(Agent_Id agent, Event_Id from, Event_Id to) {
+		reachability_relation[agent.id].emplace_back(from, to);
+	}
+
+	void General_Action::set_amount_of_agents(size_t amount_of_agents) {
+		for (size_t i = 0; i < amount_of_agents; i++) {
+			reachability_relation.emplace_back();
+		}
+	}
+
+	const std::vector<std::vector<Event_Relation>>& General_Action::get_reachability_relations() const {
+		return reachability_relation;
+	}
+
 	const std::vector<std::pair<std::string, std::string>>& General_Action::get_inputs() const {
 		return inputs;
 	}
 
-	std::string General_Action::get_owner() const{
+	std::pair<std::string, std::string> General_Action::get_owner() const{
 		return owner;
 	}
 

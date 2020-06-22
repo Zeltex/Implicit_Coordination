@@ -15,6 +15,18 @@ namespace del {
 		domain = Domain(initial_state.get_number_of_agents(), initial_state);
 		action_library = std::move(library);
 	}
+
+	DEL_Interface::DEL_Interface(std::string file_path) :
+		domain(), has_policy(false), policy(false), action_library(), pepper_id({ 0 }) {
+		Loader loader;
+		Domain_Interface_Implementation domain_interface;
+		loader.parse(&domain_interface, file_path);
+
+		auto [domain, library, goal] = domain_interface.get_loaded();
+		this->domain = std::move(domain);
+		this->action_library = std::move(library);
+		this->goal = std::move(goal);
+	}
 	
 	Interface_DTO DEL_Interface::get_next_action() {
 		if (has_policy) {
@@ -44,6 +56,10 @@ namespace del {
 	
 	bool DEL_Interface::create_policy(Formula goal) {
 		this->goal = std::move(goal);
+		return create_policy();
+	}
+
+	bool DEL_Interface::create_policy() {
 		policy = planner.find_policy(this->goal, action_library, domain.get_current_state());
 		has_policy = policy.is_solved();
 		return policy.is_solved();

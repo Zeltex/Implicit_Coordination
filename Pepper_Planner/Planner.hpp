@@ -30,5 +30,6 @@ namespace del {
 		bool is_valid_state(const State& state) const;
 		const std::vector<Agent>& get_all_agents(const Domain& domain) const;
 		void print_graph(const Graph& graph) const;
+		void print_graph_dot(const Graph& graph) const;
 	};
 }

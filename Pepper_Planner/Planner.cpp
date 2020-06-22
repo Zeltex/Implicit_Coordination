@@ -10,6 +10,7 @@ namespace del {
 		while (true) {
 			print_graph(graph);
 			if (graph.is_frontier_empty()) {
+				print_graph_dot(graph);
 				return Policy(false);
 			}
 
@@ -17,14 +18,7 @@ namespace del {
 			if (is_goal_node(graph.get_node(current_node), goal_formula)) {
 				propogate_solved_node(graph, current_node);
 				if (graph.get_root_node().is_solved()) {
-#ifdef _DEBUG
-					std::ofstream myfile;
-					myfile.open("../Graph.dot");
-					myfile << graph.to_graph({ Agent({0}, "Pepper"), Agent({1}, "L") });
-					myfile.close();
-#endif
-
-
+					print_graph_dot(graph);
 					return extract_policy(graph);
 				} else {
 					continue;
@@ -58,10 +52,12 @@ namespace del {
 			if (!found_applicable_action) {
 				propogate_dead_end_node(graph, current_node);
 				if (graph.get_root_node().is_dead()) {
+					print_graph_dot(graph);
 					return Policy(false);
 				}
 			}
 		}
+		print_graph_dot(graph);
 		return Policy(false);
 	}
 
@@ -157,5 +153,12 @@ namespace del {
 
 	void Planner::print_graph(const Graph& graph) const {
 		std::cout << graph.to_string() << "\n\n\n\n\n" << std::endl;;
+	}
+
+	void Planner::print_graph_dot(const Graph& graph) const {
+		std::ofstream myfile;
+		myfile.open("../Graph.dot");
+		myfile << graph.to_graph({ Agent({0}, "Pepper"), Agent({1}, "L") });
+		myfile.close();
 	}
 }

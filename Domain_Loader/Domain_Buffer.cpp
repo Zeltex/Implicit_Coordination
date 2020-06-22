@@ -21,7 +21,7 @@ std::string Domain_Buffer::get_event_name() {
 	return event_name;
 }
 
-Formula Domain_Buffer::get_event_preconditions() {
+Formula Domain_Buffer::get_formula() {
     Formula temp = std::move(formula);
     formula = Formula();
 	return std::move(temp);
@@ -190,10 +190,18 @@ void Domain_Buffer::set_object_type(std::string type) {
     current_object_type = type;
 }
 
-void Domain_Buffer::set_reflexivity(bool val) {
-    reflexivity = val;
+void Domain_Buffer::set_state_reflexivity(bool val) {
+    state_reflexivity = val;
 }
 
-bool Domain_Buffer::is_reflexive() {
-    return reflexivity;
+void Domain_Buffer::set_action_reflexivity(bool val) {
+    action_reflexivity = val;
+}
+
+bool Domain_Buffer::is_state_reflexive() {
+    return state_reflexivity;
+}
+
+bool Domain_Buffer::is_action_reflexive() {
+    return action_reflexivity;
 }

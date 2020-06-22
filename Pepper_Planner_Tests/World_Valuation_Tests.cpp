@@ -21,7 +21,7 @@ namespace PepperPlannerTests
 			World world(World_Id{ 0 });
 			world.add_true_propositions({ {"first", { "a" } } });
 			Formula f;
-			f.f_prop( "first(a)" );
+			f.f_prop({ "first", {"a"} });
 			Assert::IsTrue(world.valuate(f));
 		}
 
@@ -29,7 +29,7 @@ namespace PepperPlannerTests
 			World world(World_Id{ 0 });
 			world.add_true_propositions({ {"first", { "a" } } });
 			Formula f;
-			f.f_prop( "second(a)" );
+			f.f_prop({ "second", {"a"} });
 			Assert::IsFalse(world.valuate(f));
 		}
 
@@ -38,7 +38,7 @@ namespace PepperPlannerTests
 			world.add_true_propositions({ {"first", {"a"} } });
 			world.remove_true_propositions({ {"first", {"a"} } });
 			Formula f;
-			f.f_prop( "first(a)" );
+			f.f_prop({ "first", {"a"} });
 			Assert::IsFalse(world.valuate(f));
 		}
 

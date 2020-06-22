@@ -75,37 +75,34 @@
 // case is just the concept of a whole "snazzle file":
 maepl: 
     |DOMAIN_DEF NAME LBRACK                                     { domain->new_domain(std::string($2));                                  }
-       domain_body RBRACK                                       { domain->finish_domain();                                              } maepl
+       domain_body RBRACK                                       { if (buffer->is_action_reflexive()) domain->create_action_reflexive_reachables();
+                                                                    domain->finish_domain();                                              } maepl
     | PROBLEM_DEF NAME LBRACK
-        problem_body RBRACK                                     { if (buffer->is_reflexive()) domain->create_reflexive_reachables();
+        problem_body RBRACK                                     { if (buffer->is_state_reflexive()) domain->create_state_reflexive_reachables();
                                                                   domain->finish_problem();                                             } maepl  
 
 domain_body:
-     announce_container types_container propositions_container actions
+    REFLEXIVITY_DEF EQUALS TRUTH                                { buffer->set_action_reflexivity($3);                                   } domain_body
+    | ANNOUNCE_DEF EQUALS TRUTH                                 { if ($3) domain->set_announce_enabled();                               } domain_body
+    | types_container propositions_container actions
 
 problem_body:
     | DOMAIN_DEF EQUALS NAME                                    { domain->set_domain($3);                                               } problem_body
     | OBJECTS_DEF EQUALS LBRACK objects RBRACK                  { domain->set_objects(buffer->get_objects());                           } problem_body
     | INIT_DEF EQUALS LBRACK proposition_instances RBRACK       { domain->set_initial_propositions(buffer->get_proposition_instances());} problem_body
     | WORLD_DEF NAME LBRACK proposition_instances RBRACK        { domain->create_world($2, buffer->get_proposition_instances());        } problem_body
-    | GOAL_DEF EQUALS LBRACK formula RBRACK                     {                                                                       } problem_body
+    | GOAL_DEF EQUALS LBRACK formula RBRACK                     { domain->set_goal(buffer->get_formula());                              } problem_body
     | DESIGNATED_WORLDS_DEF EQUALS LBRACK variables RBRACK      { domain->set_designated_worlds(buffer->get_variables());               } problem_body
     | REACHAbility_DEF EQUALS LBRACK reachability_body RBRACK   {                                                                       } problem_body
-    | REFLEXIVITY_DEF EQUALS TRUTH                              { buffer->set_reflexivity($3);                                          } problem_body
+    | REFLEXIVITY_DEF EQUALS TRUTH                              { buffer->set_state_reflexivity($3);                                    } problem_body
 
 reachability_body:
     | NAME EQUALS LBRACK bracketed_input RBRACK                 { domain->add_reachability($1, buffer->get_inputs());                   } reachability_body
-
-goal_body:
-    | 
 
 
 objects:
     | NAME EQUALS LBRACK variables RBRACK    { buffer->set_object_type($1);
                                                buffer->push_objects();                                      } objects
-
-announce_container:
-    | ANNOUNCE_DEF EQUALS TRUTH              { if ($3) domain->set_announce_enabled();            } 
 
 types_container:                             { std::cerr << "Missing types definition\n";                   }    
     | TYPES_DEF EQUALS LBRACK        
@@ -137,11 +134,11 @@ action:
     RBRACK                                   { domain->finish_action();                                     }
                                              
 action_body:                                 
-    | OWNER_DEF EQUALS NAME                  { domain->set_action_owner($3);                                } action_body
+    | OWNER_DEF EQUALS NAME NAME             { domain->set_action_owner($3, $4);                            } action_body
     | EVENT_DEF NAME LBRACK                  { buffer->set_event_name($2);                                  } 
         event_body RBRACK                    { domain->create_event(                                        
                                                  buffer->get_event_name(),                                  
-                                                 buffer->get_event_preconditions(),                         
+                                                 buffer->get_formula(),                         
                                                  buffer->get_event_add_list(),                              
                                                  buffer->get_event_delete_list());                          } action_body
     | DESIGNATED_EVENTS_DEF EQUALS LBRACK    { buffer->clear_designated_events();                           }       

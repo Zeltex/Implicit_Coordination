@@ -22,5 +22,6 @@ Answers:
 
 
 TODO:
-Reachability on events in actions
-Preconditions on actions
+- Reachability on events in actions
+- Linking action owner to input parameter
+- DEL_Interface.get_next_action() should take an agent name as parameter

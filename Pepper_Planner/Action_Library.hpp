@@ -19,6 +19,8 @@ namespace del {
 		void set_announce_enabled();
 		void add_general_action(const General_Action& action, const Domain& domain);
 	private:
+		bool increment_counters_success(std::vector<size_t>& counters, std::vector<std::vector<std::string>>& atoms);
+
 		bool announce_enabled;
 		size_t amount_of_agents;
 		std::vector<Action> actions;

@@ -28,12 +28,22 @@ Formula get_goal_formula() {
 int main(int argc, char* argv[]) {
 	using namespace del;
 
+	DEL_Interface del_interface("../examples/in.snazzle");
+	del_interface.create_policy();
 
-	Domain_Interface_Implementation domain_interface;
-	Loader loader;
-	loader.parse(&domain_interface, "../examples/in.snazzle");
+	while (!del_interface.is_solved()) {
+		Interface_DTO dto = del_interface.get_next_action();
+		if (dto.has_action()) {
+			del_interface.perform_action(dto.get_action());
+		}
+		else {
+			std::cerr << "NO APPLIABLE ACTION" << std::endl;
+		}
+		if (dto.get_announce_string() != "") {
+			std::cout << "ANNOUNCING: " << dto.get_announce_string() << std::endl;
+		}
 
-	std::tuple<Domain, Action_Library> results = domain_interface.get_loaded();
+	}
 
 	return 0;
 }

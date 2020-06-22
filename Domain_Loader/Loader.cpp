@@ -23,6 +23,7 @@ void Loader::parse(Domain_Interface* domain, std::string file_path) {
 
     parse_domain(domain, &buffer, myfile);
 
+    fclose(myfile);
     //// Parse through the input:
     //yyparse();
 }

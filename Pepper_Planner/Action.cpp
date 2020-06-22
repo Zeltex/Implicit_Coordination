@@ -21,14 +21,21 @@ namespace del {
 			for (auto& entry : event.get_delete_list()) {
 				delete_list.emplace_back(entry, input_to_atom);
 			}
-			Formula preconditions;
-			preconditions.f_top();
-			//TODO - get proper preconditions
+			Formula preconditions = Formula(event.get_preconditions(), input_to_atom);
 			auto id = Event_Id{ events.size() };
 			event_name_to_id.emplace(event.get_name(), Event_Id{ id.id });
 
 			add_event(event.get_name(), id, std::move(preconditions), std::move(add_list), std::move(delete_list));
 		}		
+
+		size_t agent_counter = 0;
+		for (auto& agent_relations : general_action.get_reachability_relations()) {
+			indistinguishability_relation.emplace_back();
+			for (auto& relation : agent_relations) {
+				indistinguishability_relation[agent_counter].push_back(relation);
+			}
+			agent_counter++;
+		}
 
 		for (auto& entry : general_action.get_designated_events()) {
 			this->designated_events.push_back(event_name_to_id.at(entry));

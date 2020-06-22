@@ -12,9 +12,24 @@ namespace del {
 
 	void Domain_Interface_Implementation::finish_problem() {
 		std::cout << "Finishing problem" << std::endl;
+
+		if (action_reflexivity) {
+			for (auto& action : actions) {
+				action.set_amount_of_agents(domain.get_agents().size());
+				for (auto& agent : domain.get_agents()) {
+					for (auto& event : action.get_events()) {
+						action.add_reachability_relation(agent.get_id(), event.get_id(), event.get_id());
+					}
+				}
+			}
+		}
+
 		for (auto& action : actions) {
 			library.add_general_action(action, domain);
 		}
+		auto temp = std::move(initial_state);
+		initial_state = {};
+		domain.set_initial_state(std::move(temp));
 	}
 
 	void Domain_Interface_Implementation::new_action(std::string name) {
@@ -32,9 +47,9 @@ namespace del {
 		current_action.set_action_input(inputs);
 	}
 
-	void Domain_Interface_Implementation::set_action_owner(std::string name) {
-		std::cout << "Action owner " << name << std::endl;
-		current_action.set_owner(name);
+	void Domain_Interface_Implementation::set_action_owner(std::string type, std::string name) {
+		std::cout << "Action owner " << type << " " << name << std::endl;
+		current_action.set_owner(type, name);
 	}
 
 	void Domain_Interface_Implementation::create_event(std::string name, Formula&& preconditions, std::vector<Proposition_Instance> add_list, std::vector<Proposition_Instance> delete_list) {
@@ -86,7 +101,11 @@ namespace del {
 		}
 	}
 
-	void Domain_Interface_Implementation::create_reflexive_reachables() {
+	void Domain_Interface_Implementation::create_action_reflexive_reachables() {
+		action_reflexivity = true;
+	}
+	
+	void Domain_Interface_Implementation::create_state_reflexive_reachables() {
 		for (auto& world : initial_state.get_worlds()) {
 			for (auto& agent : domain.get_agents()) {
 				initial_state.add_indistinguishability_relation(agent.get_id(), world.get_id(), world.get_id());
@@ -100,11 +119,15 @@ namespace del {
 		}
 	}
 
-	std::tuple<Domain, Action_Library> Domain_Interface_Implementation::get_loaded() {
-		return { std::move(domain), std::move(library) };
+	std::tuple<Domain, Action_Library, Formula> Domain_Interface_Implementation::get_loaded() {
+		return { std::move(domain), std::move(library), std::move(goal) };
 	}
 
 	void Domain_Interface_Implementation::set_announce_enabled() {
 		library.set_announce_enabled();
+	}
+
+	void Domain_Interface_Implementation::set_goal(Formula&& goal) {
+		this->goal = std::move(goal);
 	}
 }

@@ -1,21 +1,21 @@
 #include "Formula.hpp"
 
 namespace del {
+
+    Formula::Formula(const Formula& other, const std::unordered_map<std::string, std::string>& input_to_atom) {
+        this->root = other.root;
+        for (const auto& entry : other.formulas) {
+            this->formulas.emplace_back(entry, input_to_atom);
+        }
+    }
+
 	std::string Formula::to_string() const {
 		return formulas[root.id].to_string(formulas);
 	}
 
-	bool Formula::valuate(const std::vector<std::string> propositions) const {
+	bool Formula::valuate(const std::vector<Proposition_Instance> propositions) const {
 		return formulas[root.id].valuate(propositions, formulas);
 	}
-
-    bool Formula::valuate(const std::vector<Proposition_Instance> propositions) const {
-        std::vector<std::string> temp;
-        for (auto& entry : propositions) {
-            temp.push_back(entry.to_string());
-        }
-        return valuate(temp);
-    }
 
     Formula_Id Formula::f_top()
     {
@@ -31,15 +31,11 @@ namespace del {
         return Formula_Id{ formulas.size() - 1 };
     }
 
-    Formula_Id Formula::f_prop(std::string name)
+    Formula_Id Formula::f_prop(Proposition_Instance proposition) 
     {
-        formulas.emplace_back(Formula_Types::Prop, name);
+        formulas.emplace_back(Formula_Types::Prop, proposition);
         root = Formula_Id{ formulas.size() - 1 };
         return Formula_Id{ formulas.size() - 1 };
-    }
-
-    Formula_Id Formula::f_prop(Proposition_Instance proposition) {
-        return f_prop(proposition.to_string());
     }
 
     Formula_Id Formula::f_not(Formula_Id formula)

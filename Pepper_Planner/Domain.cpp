@@ -88,4 +88,9 @@ namespace del {
 	void Domain::set_objects(std::unordered_map<std::string, std::unordered_set<std::string>> objects) {
 		this->objects = objects;
 	}
+
+	void Domain::set_initial_state(State&& state) {
+		states = {};
+		states.push_back(state);
+	}
 }

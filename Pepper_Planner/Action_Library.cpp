@@ -27,18 +27,27 @@ namespace del {
 
 	void Action_Library::add_general_action(const General_Action& general_action, const Domain& domain) {
 
-		auto& owners = domain.get_all_atoms_of_type(general_action.get_owner());
+		std::pair<std::string, std::string> action_owner = general_action.get_owner();
+		auto& owners = domain.get_all_atoms_of_type(action_owner.first);
 
 
 		std::vector<std::vector<std::string>> atoms;
 		std::vector<std::string> input_names;
 		std::vector<size_t> counters;
 
+		size_t owner_input_index = general_action.get_inputs().size();
+
+		size_t index = 0;
 		for (auto& entry : general_action.get_inputs()) {
 			auto& temp = domain.get_all_atoms_of_type(entry.first);
 			atoms.emplace_back(temp.begin(), temp.end());
 			input_names.emplace_back(entry.second);
 			counters.emplace_back(0);
+
+			if (entry.second == action_owner.second) {
+				owner_input_index = index;
+			}
+			index++;
 		}
 
 		for (auto& owner : owners) {
@@ -50,30 +59,38 @@ namespace del {
 			while (true) {
 
 				std::unordered_map<std::string, std::string> input_to_atom;
+				bool valid_owner_input = true;
 				for (size_t i = 0; i < counters.size(); i++) {
 					input_to_atom[input_names[i]] = atoms[i][counters[i]];
-				}
-				auto owner_id = domain.get_agent_id(owner);
-				actions.emplace_back(general_action, owner_id, input_to_atom);
-
-
-				counters[0]++;
-				for (size_t i = 0; i < counters.size(); i++) {
-					if (counters[i] >= atoms[i].size()) {
-						if (i == counters.size() - 1) {
-							done = true;
-							break;
-						}
-						counters[i] = 0;
-						counters[i + 1]++;
-					} else {
-						break;
+					if (i == owner_input_index && owner != atoms[i][counters[i]]) {
+						valid_owner_input = false;
 					}
 				}
-				if (done) {
+				if (valid_owner_input) {
+					auto owner_id = domain.get_agent_id(owner);
+					actions.emplace_back(general_action, owner_id, input_to_atom);
+				}
+
+				if (!increment_counters_success(counters, atoms)) {
 					break;
 				}
 			}
 		}
+	}
+
+	bool Action_Library::increment_counters_success(std::vector<size_t>& counters, std::vector<std::vector<std::string>>& atoms) {
+		counters[0]++;
+		for (size_t i = 0; i < counters.size(); i++) {
+			if (counters[i] >= atoms[i].size()) {
+				if (i == counters.size() - 1) {
+					return false;
+				}
+				counters[i] = 0;
+				counters[i + 1]++;
+			} else {
+				return true;
+			}
+		}
+		return true;
 	}
 }

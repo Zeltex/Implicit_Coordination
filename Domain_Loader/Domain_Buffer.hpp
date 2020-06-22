@@ -14,6 +14,8 @@
 using namespace del;
 class Domain_Buffer {
 public:
+	Domain_Buffer() : state_reflexivity(false), action_reflexivity(false) {};
+
 	void set_event_name(std::string);
 
 	void add_designated_event(std::string);
@@ -24,7 +26,7 @@ public:
 
 
 	std::string get_event_name();
-	Formula get_event_preconditions();
+	Formula get_formula();
 	std::vector<Proposition_Instance> get_event_add_list();
 	std::vector<Proposition_Instance> get_event_delete_list();
 	std::vector<std::string> get_designated_events();
@@ -49,8 +51,10 @@ public:
 	void pop_formula();
 
 	void set_object_type(std::string type);
-	void set_reflexivity(bool val);
-	bool is_reflexive();
+	void set_state_reflexivity(bool val);
+	void set_action_reflexivity(bool val);
+	bool is_state_reflexive();
+	bool is_action_reflexive();
 private:
 
 	std::unordered_set<std::string> types;
@@ -60,7 +64,8 @@ private:
 	std::unordered_map<std::string, std::unordered_set<std::string>> objects;
 	std::string current_object_type;
 	std::vector<Proposition_Instance> propositions;
-	bool reflexivity;
+	bool state_reflexivity;
+	bool action_reflexivity;
 
 	// Formula stuff
 	Formula formula;

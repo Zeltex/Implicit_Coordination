@@ -1,5 +1,6 @@
 _domain Pepper {
 	_announce_enabled = true
+	_reflexivity = true
 	_types = [container, object, agent]
 	_propositions = [
 		in(container c, object o)
@@ -7,7 +8,7 @@ _domain Pepper {
 
 
 	_action pickup (container from, container to, object o) {
-		_owner = agent
+		_owner = agent to
 		_designated_events = [event0]
 		_event event0 { 
 			_preconditions = ( in(from, o) )
@@ -19,7 +20,7 @@ _domain Pepper {
 }
 _problem simple_problem {
 	_objects = {
-		container = [box0, box1, box2, L]
+		container = [box0, box1, box2, L, Pepper]
 		object = [red_cube]
 		agent = [Pepper, L]
 	}
@@ -30,7 +31,7 @@ _problem simple_problem {
 	_world world1 [in(box1, red_cube)]
 	_world world2 [in(box2, red_cube)]
 	_goal = [in(L, red_cube)]
-	_designated_worlds = [world0, world1, world2]
+	_designated_worlds = [ world1 ]
 	_reflexivity = true
 	_reachability = {
 		L = {

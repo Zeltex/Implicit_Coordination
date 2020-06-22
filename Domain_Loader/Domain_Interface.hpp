@@ -6,6 +6,7 @@
 #include <unordered_map>
 
 #include "../Formula/Formula.hpp"
+#include "../Formula/Formula_Component.hpp"
 #include "Types.hpp"
 
 class Domain_Interface {
@@ -16,7 +17,7 @@ public:
 	virtual void new_action(std::string name) = 0;
 	virtual void finish_action() = 0;
 	virtual void set_action_input(std::vector<std::pair<std::string, std::string>> inputs) = 0;
-	virtual void set_action_owner(std::string name) = 0;
+	virtual void set_action_owner(std::string type, std::string name) = 0;
 
 
 	virtual void create_event(std::string name, del::Formula&& preconditions, std::vector<Proposition_Instance> add_list, std::vector<Proposition_Instance> delete_list) = 0;
@@ -28,9 +29,11 @@ public:
 	virtual void set_initial_propositions(std::vector<Proposition_Instance> propositions) = 0;
 	virtual void create_world(std::string name, std::vector<Proposition_Instance> propositions) = 0;
 	virtual void set_designated_worlds(std::unordered_set<std::string> designated_worlds) = 0;
-	virtual void create_reflexive_reachables() = 0;
+	virtual void create_action_reflexive_reachables() = 0;
+	virtual void create_state_reflexive_reachables() = 0;
 	virtual void add_reachability(std::string name, std::vector<std::pair<std::string, std::string>> reachables) = 0;
 	virtual void set_announce_enabled() = 0;
+	virtual void set_goal(del::Formula&& goal) = 0;
 private:
 	std::vector<std::string> buffer_list;
 };

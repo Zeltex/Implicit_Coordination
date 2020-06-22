@@ -2,7 +2,50 @@
 
 namespace del {
 
-    bool Formula_Component::valuate(const std::vector<std::string>& propositions, const std::vector<Formula_Component>& all_formulas) const
+
+    Formula_Component::Formula_Component(const Formula_Component& other, const std::unordered_map<std::string, std::string>& input_to_atom) : agent(0), formula() {
+        this->type = other.type;
+        switch (other.type) {
+        case Formula_Types::Prop:
+        {
+            this->prop = Proposition_Instance(other.prop, input_to_atom);
+            break;
+        }
+        case Formula_Types::Not:
+        {
+            this->formula = other.formula;
+            break;
+        }
+        case Formula_Types::And:
+        {
+            this->formulas = other.formulas;
+            break;
+        }
+        case Formula_Types::Or:
+        {
+            this->formulas = other.formulas;
+            break;
+        }
+        case Formula_Types::Believes:
+        {
+            this->formula = other.formula;
+            break;
+        }
+        case Formula_Types::Everyone_Believes:
+        {
+            this->formula = other.formula;
+            break;
+        }
+        case Formula_Types::Common_Knowledge:
+        {
+            this->formula = other.formula;
+            this->agent = other.agent;
+            break;
+        }
+        }
+    }
+
+    bool Formula_Component::valuate(const std::vector<Proposition_Instance>& propositions, const std::vector<Formula_Component>& all_formulas) const
     {
         switch (type) {
         case Formula_Types::Top:
@@ -73,7 +116,7 @@ namespace del {
         };
         case Formula_Types::Prop:
         {
-            return prop;
+            return prop.to_string();
         }
         case Formula_Types::Not:
         {
