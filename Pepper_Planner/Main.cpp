@@ -17,18 +17,10 @@
 
 using namespace del;
 
-
-Formula get_goal_formula() {
-
-	Formula f;
-	f.f_prop({ "in", { "red","L" } });
-	return std::move(f);
-}
-
 int main(int argc, char* argv[]) {
 	using namespace del;
 
-	DEL_Interface del_interface("../examples/in.snazzle");
+	DEL_Interface del_interface("../examples/simple.maepl");
 	del_interface.create_policy();
 
 	while (!del_interface.is_solved()) {

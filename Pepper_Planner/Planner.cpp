@@ -25,6 +25,14 @@ namespace del {
 				}
 			}
 
+			if (is_bisimilar_on_path(graph, current_node)) {
+				propogate_dead_end_node(graph, current_node);
+				if (graph.get_root_node().is_dead()) {
+					print_graph_dot(graph);
+					return Policy(false);
+				}
+			}
+
 			auto& normal_actions = action_library.get_actions();
 			auto announce_actions = action_library.get_announce_actions(graph.get_node(current_node).get_state());
 
@@ -73,6 +81,25 @@ namespace del {
 		} else {
 			return announce_actions.at(counter - normal_actions.size());
 		}
+	}
+
+	bool Planner::is_bisimilar_on_path(Graph& graph, Node_Id node_id) const {
+		auto& node = graph.get_node(node_id);
+		if (node.is_root_node()) {
+			return false;
+		}
+		auto current_node_id = node.get_parent();
+		while (true) {
+			auto& current_node = graph.get_node(current_node_id);
+			if (are_states_bisimilar(node.get_state(), current_node.get_state())) {
+				return true;
+			} else if (current_node.is_root_node()) {
+				return false;
+			} else {
+				current_node_id = current_node.get_parent();
+			}
+		}
+		return false;
 	}
 
 	Policy Planner::extract_policy(Graph& graph) const {

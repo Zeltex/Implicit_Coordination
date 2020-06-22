@@ -2,7 +2,7 @@ digraph G {
 compound=true;
 subgraph cluster_0 {
 label="(Or)Node 0";
-pencolor=red;
+pencolor=green;
 s00 [label="0
 in(box0, red_cube)"];
 s01 [label="1
@@ -25,7 +25,7 @@ s02 -> s02[label="L"];
 }
 subgraph cluster_1 {
 label="(And)Node 1";
-pencolor=red;
+pencolor=green;
 s10 [label="0
 in(box1, red_cube)", shape=doublecircle];
 s11 [label="1
@@ -80,6 +80,7 @@ s92 -> s92[label="L"];
 }
 subgraph cluster_13 {
 label="(And)Node 13";
+pencolor=red;
 s130 [label="0
 in(box1, red_cube)", shape=doublecircle];
 s131 [label="1
@@ -100,9 +101,18 @@ s132 -> s131[label="L"];
 s132 -> s132[label="L"];
 
 }
+subgraph cluster_17 {
+label="(And)Node 17";
+pencolor=red;
+s170 [label="0
+in(box1, red_cube)", shape=doublecircle];
+s170 -> s170[label="Pepper"];
+s170 -> s170[label="L"];
+
+}
 subgraph cluster_2 {
 label="(Or)Node 2";
-pencolor=red;
+pencolor=green;
 s20 [label="0
 in(box1, red_cube)", shape=doublecircle];
 s21 [label="1
@@ -121,7 +131,7 @@ s22 -> s22[label="L"];
 }
 subgraph cluster_3 {
 label="(Or)Node 3";
-pencolor=red;
+pencolor=green;
 s30 [label="0
 in(box1, red_cube)"];
 s31 [label="1
@@ -140,7 +150,7 @@ s32 -> s32[label="L"];
 }
 subgraph cluster_4 {
 label="(Or)Node 4";
-pencolor=red;
+pencolor=green;
 s40 [label="0
 in(box1, red_cube)"];
 s41 [label="1
@@ -157,83 +167,74 @@ s42 -> s40[label="L"];
 s42 -> s42[label="L"];
 
 }
-subgraph cluster_17 {
-label="(And)Node 17";
-s170 [label="0
+subgraph cluster_19 {
+label="(And)Node 19";
+s190 [label="0
 in(box1, red_cube)", shape=doublecircle];
-s171 [label="1
+s191 [label="1
 in(box2, red_cube)", shape=doublecircle];
-s170 -> s170[label="Pepper"];
-s171 -> s171[label="Pepper"];
-s170 -> s170[label="L"];
-s170 -> s171[label="L"];
-s171 -> s170[label="L"];
-s171 -> s171[label="L"];
+s190 -> s190[label="Pepper"];
+s191 -> s191[label="Pepper"];
+s190 -> s190[label="L"];
+s190 -> s191[label="L"];
+s191 -> s190[label="L"];
+s191 -> s191[label="L"];
 
 }
-subgraph cluster_20 {
-label="(And)Node 20";
-pencolor=red;
-s200 [label="0
+subgraph cluster_22 {
+label="(And)Node 22";
+pencolor=green;
+s220 [label="0
 in(box1, red_cube)", shape=doublecircle];
-s201 [label="1
+s221 [label="1
 in(box2, red_cube)", shape=doublecircle];
-s200 -> s200[label="Pepper"];
-s201 -> s201[label="Pepper"];
-s200 -> s200[label="L"];
-s201 -> s201[label="L"];
+s220 -> s220[label="Pepper"];
+s221 -> s221[label="Pepper"];
+s220 -> s220[label="L"];
+s221 -> s221[label="L"];
 
 }
-subgraph cluster_23 {
-label="(And)Node 23";
-pencolor=red;
-s230 [label="0
+subgraph cluster_25 {
+label="(And)Node 25";
+pencolor=green;
+s250 [label="0
 in(box1, red_cube)", shape=doublecircle];
-s231 [label="1
+s251 [label="1
 in(box2, red_cube)", shape=doublecircle];
-s230 -> s230[label="Pepper"];
-s231 -> s231[label="Pepper"];
-s230 -> s230[label="L"];
-s231 -> s231[label="L"];
+s250 -> s250[label="Pepper"];
+s251 -> s251[label="Pepper"];
+s250 -> s250[label="L"];
+s251 -> s251[label="L"];
 
 }
-subgraph cluster_26 {
-label="(And)Node 26";
-s260 [label="0
+subgraph cluster_28 {
+label="(And)Node 28";
+s280 [label="0
 in(box1, red_cube)", shape=doublecircle];
-s261 [label="1
+s281 [label="1
 in(box2, red_cube)", shape=doublecircle];
-s260 -> s260[label="Pepper"];
-s261 -> s261[label="Pepper"];
-s260 -> s260[label="L"];
-s260 -> s261[label="L"];
-s261 -> s260[label="L"];
-s261 -> s261[label="L"];
-
-}
-subgraph cluster_29 {
-label="(And)Node 29";
-pencolor=red;
-s290 [label="0
-in(L, red_cube)", shape=doublecircle];
-s290 -> s290[label="Pepper"];
-s290 -> s290[label="L"];
+s280 -> s280[label="Pepper"];
+s281 -> s281[label="Pepper"];
+s280 -> s280[label="L"];
+s280 -> s281[label="L"];
+s281 -> s280[label="L"];
+s281 -> s281[label="L"];
 
 }
 subgraph cluster_31 {
 label="(And)Node 31";
 pencolor=red;
 s310 [label="0
-in(box0, red_cube)", shape=doublecircle];
+in(box1, red_cube)", shape=doublecircle];
 s310 -> s310[label="Pepper"];
 s310 -> s310[label="L"];
 
 }
 subgraph cluster_33 {
 label="(And)Node 33";
-pencolor=red;
+pencolor=green;
 s330 [label="0
-in(box0, red_cube)", shape=doublecircle];
+in(L, red_cube)", shape=doublecircle];
 s330 -> s330[label="Pepper"];
 s330 -> s330[label="L"];
 
@@ -258,347 +259,255 @@ s370 -> s370[label="L"];
 }
 subgraph cluster_39 {
 label="(And)Node 39";
+pencolor=red;
 s390 [label="0
-in(box2, red_cube)", shape=doublecircle];
-s391 [label="1
-in(box1, red_cube)", shape=doublecircle];
+in(box0, red_cube)", shape=doublecircle];
 s390 -> s390[label="Pepper"];
-s391 -> s391[label="Pepper"];
 s390 -> s390[label="L"];
-s390 -> s391[label="L"];
-s391 -> s390[label="L"];
-s391 -> s391[label="L"];
 
 }
-subgraph cluster_42 {
-label="(And)Node 42";
+subgraph cluster_41 {
+label="(And)Node 41";
 pencolor=red;
-s420 [label="0
-in(box2, red_cube)", shape=doublecircle];
-s421 [label="1
-in(box1, red_cube)", shape=doublecircle];
-s420 -> s420[label="Pepper"];
-s421 -> s421[label="Pepper"];
-s420 -> s420[label="L"];
-s421 -> s421[label="L"];
+s410 [label="0
+in(box0, red_cube)", shape=doublecircle];
+s410 -> s410[label="Pepper"];
+s410 -> s410[label="L"];
+
+}
+subgraph cluster_43 {
+label="(And)Node 43";
+pencolor=red;
+s430 [label="0
+in(box0, red_cube)", shape=doublecircle];
+s430 -> s430[label="Pepper"];
+s430 -> s430[label="L"];
 
 }
 subgraph cluster_45 {
 label="(And)Node 45";
+pencolor=red;
 s450 [label="0
-in(box2, red_cube)", shape=doublecircle];
-s451 [label="1
-in(box1, red_cube)", shape=doublecircle];
+in(box0, red_cube)", shape=doublecircle];
 s450 -> s450[label="Pepper"];
-s451 -> s451[label="Pepper"];
 s450 -> s450[label="L"];
-s451 -> s451[label="L"];
 
 }
-subgraph cluster_48 {
-label="(And)Node 48";
-s480 [label="0
+subgraph cluster_47 {
+label="(And)Node 47";
+s470 [label="0
 in(box2, red_cube)", shape=doublecircle];
-s481 [label="1
+s471 [label="1
 in(box1, red_cube)", shape=doublecircle];
-s480 -> s480[label="Pepper"];
-s481 -> s481[label="Pepper"];
-s480 -> s480[label="L"];
-s480 -> s481[label="L"];
-s481 -> s480[label="L"];
-s481 -> s481[label="L"];
+s470 -> s470[label="Pepper"];
+s471 -> s471[label="Pepper"];
+s470 -> s470[label="L"];
+s470 -> s471[label="L"];
+s471 -> s470[label="L"];
+s471 -> s471[label="L"];
 
 }
-subgraph cluster_21 {
-label="(Or)Node 21";
-pencolor=red;
-s210 [label="0
+subgraph cluster_50 {
+label="(And)Node 50";
+pencolor=green;
+s500 [label="0
+in(box2, red_cube)", shape=doublecircle];
+s501 [label="1
 in(box1, red_cube)", shape=doublecircle];
-s211 [label="1
+s500 -> s500[label="Pepper"];
+s501 -> s501[label="Pepper"];
+s500 -> s500[label="L"];
+s501 -> s501[label="L"];
+
+}
+subgraph cluster_53 {
+label="(And)Node 53";
+s530 [label="0
+in(box2, red_cube)", shape=doublecircle];
+s531 [label="1
+in(box1, red_cube)", shape=doublecircle];
+s530 -> s530[label="Pepper"];
+s531 -> s531[label="Pepper"];
+s530 -> s530[label="L"];
+s531 -> s531[label="L"];
+
+}
+subgraph cluster_56 {
+label="(And)Node 56";
+s560 [label="0
+in(box2, red_cube)", shape=doublecircle];
+s561 [label="1
+in(box1, red_cube)", shape=doublecircle];
+s560 -> s560[label="Pepper"];
+s561 -> s561[label="Pepper"];
+s560 -> s560[label="L"];
+s560 -> s561[label="L"];
+s561 -> s560[label="L"];
+s561 -> s561[label="L"];
+
+}
+subgraph cluster_59 {
+label="(And)Node 59";
+pencolor=red;
+s590 [label="0
+in(box2, red_cube)", shape=doublecircle];
+s590 -> s590[label="Pepper"];
+s590 -> s590[label="L"];
+
+}
+subgraph cluster_23 {
+label="(Or)Node 23";
+pencolor=green;
+s230 [label="0
+in(box1, red_cube)", shape=doublecircle];
+s231 [label="1
 in(box2, red_cube)"];
-s210 -> s210[label="Pepper"];
-s211 -> s211[label="Pepper"];
-s210 -> s210[label="L"];
-s211 -> s211[label="L"];
-
-}
-subgraph cluster_22 {
-label="(Or)Node 22";
-pencolor=red;
-s220 [label="0
-in(box1, red_cube)"];
-s221 [label="1
-in(box2, red_cube)", shape=doublecircle];
-s220 -> s220[label="Pepper"];
-s221 -> s221[label="Pepper"];
-s220 -> s220[label="L"];
-s221 -> s221[label="L"];
+s230 -> s230[label="Pepper"];
+s231 -> s231[label="Pepper"];
+s230 -> s230[label="L"];
+s231 -> s231[label="L"];
 
 }
 subgraph cluster_24 {
 label="(Or)Node 24";
-pencolor=red;
+pencolor=green;
 s240 [label="0
-in(box1, red_cube)", shape=doublecircle];
+in(box1, red_cube)"];
 s241 [label="1
-in(box2, red_cube)"];
+in(box2, red_cube)", shape=doublecircle];
 s240 -> s240[label="Pepper"];
 s241 -> s241[label="Pepper"];
 s240 -> s240[label="L"];
 s241 -> s241[label="L"];
 
 }
-subgraph cluster_25 {
-label="(Or)Node 25";
-pencolor=red;
-s250 [label="0
+subgraph cluster_26 {
+label="(Or)Node 26";
+pencolor=green;
+s260 [label="0
+in(box1, red_cube)", shape=doublecircle];
+s261 [label="1
+in(box2, red_cube)"];
+s260 -> s260[label="Pepper"];
+s261 -> s261[label="Pepper"];
+s260 -> s260[label="L"];
+s261 -> s261[label="L"];
+
+}
+subgraph cluster_27 {
+label="(Or)Node 27";
+pencolor=green;
+s270 [label="0
 in(box1, red_cube)"];
-s251 [label="1
+s271 [label="1
 in(box2, red_cube)", shape=doublecircle];
-s250 -> s250[label="Pepper"];
-s251 -> s251[label="Pepper"];
-s250 -> s250[label="L"];
-s251 -> s251[label="L"];
-
-}
-subgraph cluster_30 {
-label="(Or)Node 30";
-pencolor=red;
-s300 [label="0
-in(L, red_cube)", shape=doublecircle];
-s300 -> s300[label="Pepper"];
-s300 -> s300[label="L"];
-
-}
-subgraph cluster_32 {
-label="(Or)Node 32";
-pencolor=red;
-s320 [label="0
-in(box0, red_cube)", shape=doublecircle];
-s320 -> s320[label="Pepper"];
-s320 -> s320[label="L"];
+s270 -> s270[label="Pepper"];
+s271 -> s271[label="Pepper"];
+s270 -> s270[label="L"];
+s271 -> s271[label="L"];
 
 }
 subgraph cluster_34 {
 label="(Or)Node 34";
-pencolor=red;
+pencolor=green;
 s340 [label="0
-in(box0, red_cube)", shape=doublecircle];
+in(L, red_cube)", shape=doublecircle];
 s340 -> s340[label="Pepper"];
 s340 -> s340[label="L"];
 
 }
-subgraph cluster_36 {
-label="(Or)Node 36";
-pencolor=red;
-s360 [label="0
-in(box0, red_cube)", shape=doublecircle];
-s360 -> s360[label="Pepper"];
-s360 -> s360[label="L"];
-
-}
-subgraph cluster_38 {
-label="(Or)Node 38";
-pencolor=red;
-s380 [label="0
-in(box0, red_cube)", shape=doublecircle];
-s380 -> s380[label="Pepper"];
-s380 -> s380[label="L"];
-
-}
-subgraph cluster_43 {
-label="(Or)Node 43";
-pencolor=red;
-s430 [label="0
+subgraph cluster_51 {
+label="(Or)Node 51";
+pencolor=green;
+s510 [label="0
 in(box2, red_cube)", shape=doublecircle];
-s431 [label="1
+s511 [label="1
 in(box1, red_cube)"];
-s430 -> s430[label="Pepper"];
-s431 -> s431[label="Pepper"];
-s430 -> s430[label="L"];
-s431 -> s431[label="L"];
+s510 -> s510[label="Pepper"];
+s511 -> s511[label="Pepper"];
+s510 -> s510[label="L"];
+s511 -> s511[label="L"];
 
 }
-subgraph cluster_44 {
-label="(Or)Node 44";
-pencolor=red;
-s440 [label="0
+subgraph cluster_52 {
+label="(Or)Node 52";
+pencolor=green;
+s520 [label="0
 in(box2, red_cube)"];
-s441 [label="1
+s521 [label="1
 in(box1, red_cube)", shape=doublecircle];
-s440 -> s440[label="Pepper"];
-s441 -> s441[label="Pepper"];
-s440 -> s440[label="L"];
-s441 -> s441[label="L"];
+s520 -> s520[label="Pepper"];
+s521 -> s521[label="Pepper"];
+s520 -> s520[label="L"];
+s521 -> s521[label="L"];
 
 }
-subgraph cluster_191 {
-label="(And)Node 191";
-pencolor=red;
-s1910 [label="0
+subgraph cluster_241 {
+label="(And)Node 241";
+pencolor=green;
+s2410 [label="0
 in(L, red_cube)", shape=doublecircle];
-s1910 -> s1910[label="Pepper"];
-s1910 -> s1910[label="L"];
+s2410 -> s2410[label="Pepper"];
+s2410 -> s2410[label="L"];
 
 }
-subgraph cluster_193 {
-label="(And)Node 193";
-s1930 [label="0
-in(box1, red_cube)", shape=doublecircle];
-s1930 -> s1930[label="Pepper"];
-s1930 -> s1930[label="L"];
-
-}
-subgraph cluster_195 {
-label="(And)Node 195";
-s1950 [label="0
-in(box1, red_cube)", shape=doublecircle];
-s1950 -> s1950[label="Pepper"];
-s1950 -> s1950[label="L"];
-
-}
-subgraph cluster_197 {
-label="(And)Node 197";
-s1970 [label="0
-in(box1, red_cube)", shape=doublecircle];
-s1970 -> s1970[label="Pepper"];
-s1970 -> s1970[label="L"];
-
-}
-subgraph cluster_199 {
-label="(And)Node 199";
-s1990 [label="0
-in(box1, red_cube)", shape=doublecircle];
-s1990 -> s1990[label="Pepper"];
-s1990 -> s1990[label="L"];
-
-}
-subgraph cluster_201 {
-label="(And)Node 201";
+subgraph cluster_243 {
+label="(And)Node 243";
 pencolor=red;
-s2010 [label="0
-in(L, red_cube)", shape=doublecircle];
-s2010 -> s2010[label="Pepper"];
-s2010 -> s2010[label="L"];
+s2430 [label="0
+in(box1, red_cube)", shape=doublecircle];
+s2430 -> s2430[label="Pepper"];
+s2430 -> s2430[label="L"];
 
 }
-subgraph cluster_203 {
-label="(And)Node 203";
-s2030 [label="0
-in(box2, red_cube)", shape=doublecircle];
-s2030 -> s2030[label="Pepper"];
-s2030 -> s2030[label="L"];
-
-}
-subgraph cluster_205 {
-label="(And)Node 205";
-s2050 [label="0
-in(box2, red_cube)", shape=doublecircle];
-s2050 -> s2050[label="Pepper"];
-s2050 -> s2050[label="L"];
-
-}
-subgraph cluster_207 {
-label="(And)Node 207";
-s2070 [label="0
-in(box2, red_cube)", shape=doublecircle];
-s2070 -> s2070[label="Pepper"];
-s2070 -> s2070[label="L"];
-
-}
-subgraph cluster_209 {
-label="(And)Node 209";
-s2090 [label="0
-in(box2, red_cube)", shape=doublecircle];
-s2090 -> s2090[label="Pepper"];
-s2090 -> s2090[label="L"];
-
-}
-subgraph cluster_211 {
-label="(And)Node 211";
+subgraph cluster_245 {
+label="(And)Node 245";
 pencolor=red;
-s2110 [label="0
-in(L, red_cube)", shape=doublecircle];
-s2110 -> s2110[label="Pepper"];
-s2110 -> s2110[label="L"];
-
-}
-subgraph cluster_213 {
-label="(And)Node 213";
-s2130 [label="0
+s2450 [label="0
 in(box1, red_cube)", shape=doublecircle];
-s2130 -> s2130[label="Pepper"];
-s2130 -> s2130[label="L"];
+s2450 -> s2450[label="Pepper"];
+s2450 -> s2450[label="L"];
 
 }
-subgraph cluster_215 {
-label="(And)Node 215";
-s2150 [label="0
-in(box1, red_cube)", shape=doublecircle];
-s2150 -> s2150[label="Pepper"];
-s2150 -> s2150[label="L"];
-
-}
-subgraph cluster_217 {
-label="(And)Node 217";
-s2170 [label="0
-in(box1, red_cube)", shape=doublecircle];
-s2170 -> s2170[label="Pepper"];
-s2170 -> s2170[label="L"];
-
-}
-subgraph cluster_219 {
-label="(And)Node 219";
-s2190 [label="0
-in(box1, red_cube)", shape=doublecircle];
-s2190 -> s2190[label="Pepper"];
-s2190 -> s2190[label="L"];
-
-}
-subgraph cluster_221 {
-label="(And)Node 221";
+subgraph cluster_247 {
+label="(And)Node 247";
 pencolor=red;
-s2210 [label="0
-in(L, red_cube)", shape=doublecircle];
-s2210 -> s2210[label="Pepper"];
-s2210 -> s2210[label="L"];
+s2470 [label="0
+in(box1, red_cube)", shape=doublecircle];
+s2470 -> s2470[label="Pepper"];
+s2470 -> s2470[label="L"];
 
 }
-subgraph cluster_223 {
-label="(And)Node 223";
-s2230 [label="0
-in(box2, red_cube)", shape=doublecircle];
-s2230 -> s2230[label="Pepper"];
-s2230 -> s2230[label="L"];
+subgraph cluster_249 {
+label="(And)Node 249";
+pencolor=red;
+s2490 [label="0
+in(box1, red_cube)", shape=doublecircle];
+s2490 -> s2490[label="Pepper"];
+s2490 -> s2490[label="L"];
 
 }
-subgraph cluster_225 {
-label="(And)Node 225";
-s2250 [label="0
-in(box2, red_cube)", shape=doublecircle];
-s2250 -> s2250[label="Pepper"];
-s2250 -> s2250[label="L"];
+subgraph cluster_251 {
+label="(And)Node 251";
+pencolor=red;
+s2510 [label="0
+in(box1, red_cube)", shape=doublecircle];
+s2510 -> s2510[label="Pepper"];
+s2510 -> s2510[label="L"];
 
 }
-subgraph cluster_227 {
-label="(And)Node 227";
-s2270 [label="0
-in(box2, red_cube)", shape=doublecircle];
-s2270 -> s2270[label="Pepper"];
-s2270 -> s2270[label="L"];
-
-}
-subgraph cluster_229 {
-label="(And)Node 229";
-s2290 [label="0
-in(box2, red_cube)", shape=doublecircle];
-s2290 -> s2290[label="Pepper"];
-s2290 -> s2290[label="L"];
+subgraph cluster_253 {
+label="(And)Node 253";
+pencolor=red;
+s2530 [label="0
+in(box1, red_cube)", shape=doublecircle];
+s2530 -> s2530[label="Pepper"];
+s2530 -> s2530[label="L"];
 
 }
 subgraph cluster_255 {
 label="(And)Node 255";
-pencolor=red;
+pencolor=green;
 s2550 [label="0
 in(L, red_cube)", shape=doublecircle];
 s2550 -> s2550[label="Pepper"];
@@ -607,32 +516,36 @@ s2550 -> s2550[label="L"];
 }
 subgraph cluster_257 {
 label="(And)Node 257";
+pencolor=red;
 s2570 [label="0
-in(box0, red_cube)", shape=doublecircle];
+in(box2, red_cube)", shape=doublecircle];
 s2570 -> s2570[label="Pepper"];
 s2570 -> s2570[label="L"];
 
 }
 subgraph cluster_259 {
 label="(And)Node 259";
+pencolor=red;
 s2590 [label="0
-in(box0, red_cube)", shape=doublecircle];
+in(box2, red_cube)", shape=doublecircle];
 s2590 -> s2590[label="Pepper"];
 s2590 -> s2590[label="L"];
 
 }
 subgraph cluster_261 {
 label="(And)Node 261";
+pencolor=red;
 s2610 [label="0
-in(box0, red_cube)", shape=doublecircle];
+in(box2, red_cube)", shape=doublecircle];
 s2610 -> s2610[label="Pepper"];
 s2610 -> s2610[label="L"];
 
 }
 subgraph cluster_263 {
 label="(And)Node 263";
+pencolor=red;
 s2630 [label="0
-in(box0, red_cube)", shape=doublecircle];
+in(box2, red_cube)", shape=doublecircle];
 s2630 -> s2630[label="Pepper"];
 s2630 -> s2630[label="L"];
 
@@ -641,39 +554,43 @@ subgraph cluster_265 {
 label="(And)Node 265";
 pencolor=red;
 s2650 [label="0
-in(L, red_cube)", shape=doublecircle];
+in(box2, red_cube)", shape=doublecircle];
 s2650 -> s2650[label="Pepper"];
 s2650 -> s2650[label="L"];
 
 }
 subgraph cluster_267 {
 label="(And)Node 267";
+pencolor=red;
 s2670 [label="0
-in(box0, red_cube)", shape=doublecircle];
+in(box2, red_cube)", shape=doublecircle];
 s2670 -> s2670[label="Pepper"];
 s2670 -> s2670[label="L"];
 
 }
 subgraph cluster_269 {
 label="(And)Node 269";
+pencolor=green;
 s2690 [label="0
-in(box0, red_cube)", shape=doublecircle];
+in(L, red_cube)", shape=doublecircle];
 s2690 -> s2690[label="Pepper"];
 s2690 -> s2690[label="L"];
 
 }
 subgraph cluster_271 {
 label="(And)Node 271";
+pencolor=red;
 s2710 [label="0
-in(box0, red_cube)", shape=doublecircle];
+in(box1, red_cube)", shape=doublecircle];
 s2710 -> s2710[label="Pepper"];
 s2710 -> s2710[label="L"];
 
 }
 subgraph cluster_273 {
 label="(And)Node 273";
+pencolor=red;
 s2730 [label="0
-in(box0, red_cube)", shape=doublecircle];
+in(box1, red_cube)", shape=doublecircle];
 s2730 -> s2730[label="Pepper"];
 s2730 -> s2730[label="L"];
 
@@ -682,39 +599,43 @@ subgraph cluster_275 {
 label="(And)Node 275";
 pencolor=red;
 s2750 [label="0
-in(L, red_cube)", shape=doublecircle];
+in(box1, red_cube)", shape=doublecircle];
 s2750 -> s2750[label="Pepper"];
 s2750 -> s2750[label="L"];
 
 }
 subgraph cluster_277 {
 label="(And)Node 277";
+pencolor=red;
 s2770 [label="0
-in(box0, red_cube)", shape=doublecircle];
+in(box1, red_cube)", shape=doublecircle];
 s2770 -> s2770[label="Pepper"];
 s2770 -> s2770[label="L"];
 
 }
 subgraph cluster_279 {
 label="(And)Node 279";
+pencolor=red;
 s2790 [label="0
-in(box0, red_cube)", shape=doublecircle];
+in(box1, red_cube)", shape=doublecircle];
 s2790 -> s2790[label="Pepper"];
 s2790 -> s2790[label="L"];
 
 }
 subgraph cluster_281 {
 label="(And)Node 281";
+pencolor=red;
 s2810 [label="0
-in(box0, red_cube)", shape=doublecircle];
+in(box1, red_cube)", shape=doublecircle];
 s2810 -> s2810[label="Pepper"];
 s2810 -> s2810[label="L"];
 
 }
 subgraph cluster_283 {
 label="(And)Node 283";
+pencolor=green;
 s2830 [label="0
-in(box0, red_cube)", shape=doublecircle];
+in(L, red_cube)", shape=doublecircle];
 s2830 -> s2830[label="Pepper"];
 s2830 -> s2830[label="L"];
 
@@ -723,213 +644,228 @@ subgraph cluster_285 {
 label="(And)Node 285";
 pencolor=red;
 s2850 [label="0
-in(L, red_cube)", shape=doublecircle];
+in(box2, red_cube)", shape=doublecircle];
 s2850 -> s2850[label="Pepper"];
 s2850 -> s2850[label="L"];
 
 }
 subgraph cluster_287 {
 label="(And)Node 287";
+pencolor=red;
 s2870 [label="0
-in(box0, red_cube)", shape=doublecircle];
+in(box2, red_cube)", shape=doublecircle];
 s2870 -> s2870[label="Pepper"];
 s2870 -> s2870[label="L"];
 
 }
 subgraph cluster_289 {
 label="(And)Node 289";
+pencolor=red;
 s2890 [label="0
-in(box0, red_cube)", shape=doublecircle];
+in(box2, red_cube)", shape=doublecircle];
 s2890 -> s2890[label="Pepper"];
 s2890 -> s2890[label="L"];
 
 }
 subgraph cluster_291 {
 label="(And)Node 291";
+pencolor=red;
 s2910 [label="0
-in(box0, red_cube)", shape=doublecircle];
+in(box2, red_cube)", shape=doublecircle];
 s2910 -> s2910[label="Pepper"];
 s2910 -> s2910[label="L"];
 
 }
 subgraph cluster_293 {
 label="(And)Node 293";
+pencolor=red;
 s2930 [label="0
-in(box0, red_cube)", shape=doublecircle];
+in(box2, red_cube)", shape=doublecircle];
 s2930 -> s2930[label="Pepper"];
 s2930 -> s2930[label="L"];
 
 }
-subgraph cluster_319 {
-label="(And)Node 319";
+subgraph cluster_295 {
+label="(And)Node 295";
 pencolor=red;
-s3190 [label="0
-in(L, red_cube)", shape=doublecircle];
-s3190 -> s3190[label="Pepper"];
-s3190 -> s3190[label="L"];
-
-}
-subgraph cluster_321 {
-label="(And)Node 321";
-s3210 [label="0
+s2950 [label="0
 in(box2, red_cube)", shape=doublecircle];
-s3210 -> s3210[label="Pepper"];
-s3210 -> s3210[label="L"];
+s2950 -> s2950[label="Pepper"];
+s2950 -> s2950[label="L"];
 
 }
-subgraph cluster_323 {
-label="(And)Node 323";
-s3230 [label="0
+subgraph cluster_451 {
+label="(And)Node 451";
+pencolor=green;
+s4510 [label="0
+in(L, red_cube)", shape=doublecircle];
+s4510 -> s4510[label="Pepper"];
+s4510 -> s4510[label="L"];
+
+}
+subgraph cluster_453 {
+label="(And)Node 453";
+pencolor=red;
+s4530 [label="0
 in(box2, red_cube)", shape=doublecircle];
-s3230 -> s3230[label="Pepper"];
-s3230 -> s3230[label="L"];
+s4530 -> s4530[label="Pepper"];
+s4530 -> s4530[label="L"];
 
 }
-subgraph cluster_325 {
-label="(And)Node 325";
-s3250 [label="0
+subgraph cluster_455 {
+label="(And)Node 455";
+pencolor=red;
+s4550 [label="0
 in(box2, red_cube)", shape=doublecircle];
-s3250 -> s3250[label="Pepper"];
-s3250 -> s3250[label="L"];
+s4550 -> s4550[label="Pepper"];
+s4550 -> s4550[label="L"];
 
 }
-subgraph cluster_327 {
-label="(And)Node 327";
-s3270 [label="0
+subgraph cluster_457 {
+label="(And)Node 457";
+pencolor=red;
+s4570 [label="0
 in(box2, red_cube)", shape=doublecircle];
-s3270 -> s3270[label="Pepper"];
-s3270 -> s3270[label="L"];
+s4570 -> s4570[label="Pepper"];
+s4570 -> s4570[label="L"];
 
 }
-subgraph cluster_329 {
-label="(And)Node 329";
+subgraph cluster_459 {
+label="(And)Node 459";
 pencolor=red;
-s3290 [label="0
-in(L, red_cube)", shape=doublecircle];
-s3290 -> s3290[label="Pepper"];
-s3290 -> s3290[label="L"];
+s4590 [label="0
+in(box2, red_cube)", shape=doublecircle];
+s4590 -> s4590[label="Pepper"];
+s4590 -> s4590[label="L"];
 
 }
-subgraph cluster_331 {
-label="(And)Node 331";
-s3310 [label="0
+subgraph cluster_461 {
+label="(And)Node 461";
+pencolor=red;
+s4610 [label="0
+in(box2, red_cube)", shape=doublecircle];
+s4610 -> s4610[label="Pepper"];
+s4610 -> s4610[label="L"];
+
+}
+subgraph cluster_463 {
+label="(And)Node 463";
+pencolor=red;
+s4630 [label="0
+in(box2, red_cube)", shape=doublecircle];
+s4630 -> s4630[label="Pepper"];
+s4630 -> s4630[label="L"];
+
+}
+subgraph cluster_465 {
+label="(And)Node 465";
+pencolor=green;
+s4650 [label="0
+in(L, red_cube)", shape=doublecircle];
+s4650 -> s4650[label="Pepper"];
+s4650 -> s4650[label="L"];
+
+}
+subgraph cluster_467 {
+label="(And)Node 467";
+s4670 [label="0
 in(box1, red_cube)", shape=doublecircle];
-s3310 -> s3310[label="Pepper"];
-s3310 -> s3310[label="L"];
+s4670 -> s4670[label="Pepper"];
+s4670 -> s4670[label="L"];
 
 }
-subgraph cluster_333 {
-label="(And)Node 333";
-s3330 [label="0
+subgraph cluster_469 {
+label="(And)Node 469";
+s4690 [label="0
 in(box1, red_cube)", shape=doublecircle];
-s3330 -> s3330[label="Pepper"];
-s3330 -> s3330[label="L"];
+s4690 -> s4690[label="Pepper"];
+s4690 -> s4690[label="L"];
 
 }
-subgraph cluster_335 {
-label="(And)Node 335";
-s3350 [label="0
+subgraph cluster_471 {
+label="(And)Node 471";
+s4710 [label="0
 in(box1, red_cube)", shape=doublecircle];
-s3350 -> s3350[label="Pepper"];
-s3350 -> s3350[label="L"];
+s4710 -> s4710[label="Pepper"];
+s4710 -> s4710[label="L"];
 
 }
-subgraph cluster_337 {
-label="(And)Node 337";
-s3370 [label="0
+subgraph cluster_473 {
+label="(And)Node 473";
+s4730 [label="0
 in(box1, red_cube)", shape=doublecircle];
-s3370 -> s3370[label="Pepper"];
-s3370 -> s3370[label="L"];
+s4730 -> s4730[label="Pepper"];
+s4730 -> s4730[label="L"];
 
 }
-subgraph cluster_192 {
-label="(Or)Node 192";
-pencolor=red;
-s1920 [label="0
-in(L, red_cube)", shape=doublecircle];
-s1920 -> s1920[label="Pepper"];
-s1920 -> s1920[label="L"];
+subgraph cluster_475 {
+label="(And)Node 475";
+s4750 [label="0
+in(box1, red_cube)", shape=doublecircle];
+s4750 -> s4750[label="Pepper"];
+s4750 -> s4750[label="L"];
 
 }
-subgraph cluster_202 {
-label="(Or)Node 202";
-pencolor=red;
-s2020 [label="0
-in(L, red_cube)", shape=doublecircle];
-s2020 -> s2020[label="Pepper"];
-s2020 -> s2020[label="L"];
+subgraph cluster_477 {
+label="(And)Node 477";
+s4770 [label="0
+in(box1, red_cube)", shape=doublecircle];
+s4770 -> s4770[label="Pepper"];
+s4770 -> s4770[label="L"];
 
 }
-subgraph cluster_212 {
-label="(Or)Node 212";
-pencolor=red;
-s2120 [label="0
+subgraph cluster_242 {
+label="(Or)Node 242";
+pencolor=green;
+s2420 [label="0
 in(L, red_cube)", shape=doublecircle];
-s2120 -> s2120[label="Pepper"];
-s2120 -> s2120[label="L"];
-
-}
-subgraph cluster_222 {
-label="(Or)Node 222";
-pencolor=red;
-s2220 [label="0
-in(L, red_cube)", shape=doublecircle];
-s2220 -> s2220[label="Pepper"];
-s2220 -> s2220[label="L"];
+s2420 -> s2420[label="Pepper"];
+s2420 -> s2420[label="L"];
 
 }
 subgraph cluster_256 {
 label="(Or)Node 256";
-pencolor=red;
+pencolor=green;
 s2560 [label="0
 in(L, red_cube)", shape=doublecircle];
 s2560 -> s2560[label="Pepper"];
 s2560 -> s2560[label="L"];
 
 }
-subgraph cluster_266 {
-label="(Or)Node 266";
-pencolor=red;
-s2660 [label="0
+subgraph cluster_270 {
+label="(Or)Node 270";
+pencolor=green;
+s2700 [label="0
 in(L, red_cube)", shape=doublecircle];
-s2660 -> s2660[label="Pepper"];
-s2660 -> s2660[label="L"];
+s2700 -> s2700[label="Pepper"];
+s2700 -> s2700[label="L"];
 
 }
-subgraph cluster_276 {
-label="(Or)Node 276";
-pencolor=red;
-s2760 [label="0
+subgraph cluster_284 {
+label="(Or)Node 284";
+pencolor=green;
+s2840 [label="0
 in(L, red_cube)", shape=doublecircle];
-s2760 -> s2760[label="Pepper"];
-s2760 -> s2760[label="L"];
+s2840 -> s2840[label="Pepper"];
+s2840 -> s2840[label="L"];
 
 }
-subgraph cluster_286 {
-label="(Or)Node 286";
-pencolor=red;
-s2860 [label="0
+subgraph cluster_452 {
+label="(Or)Node 452";
+pencolor=green;
+s4520 [label="0
 in(L, red_cube)", shape=doublecircle];
-s2860 -> s2860[label="Pepper"];
-s2860 -> s2860[label="L"];
+s4520 -> s4520[label="Pepper"];
+s4520 -> s4520[label="L"];
 
 }
-subgraph cluster_320 {
-label="(Or)Node 320";
-pencolor=red;
-s3200 [label="0
+subgraph cluster_466 {
+label="(Or)Node 466";
+pencolor=green;
+s4660 [label="0
 in(L, red_cube)", shape=doublecircle];
-s3200 -> s3200[label="Pepper"];
-s3200 -> s3200[label="L"];
-
-}
-subgraph cluster_330 {
-label="(Or)Node 330";
-pencolor=red;
-s3300 [label="0
-in(L, red_cube)", shape=doublecircle];
-s3300 -> s3300[label="Pepper"];
-s3300 -> s3300[label="L"];
+s4660 -> s4660[label="Pepper"];
+s4660 -> s4660[label="L"];
 
 }
 s00 -> s10[ltail=cluster_0, lhead=cluster_1,label="1
@@ -944,206 +880,176 @@ s00 -> s90[ltail=cluster_0, lhead=cluster_9,label="1
 s00 -> s130[ltail=cluster_0, lhead=cluster_13,label="1
 <in(L, red_cube),X,X>
 <Not(in(L, red_cube)),X,X>"];
+s00 -> s170[ltail=cluster_0, lhead=cluster_17,label="0
+<in(box1, red_cube),X,X>"];
 s10 -> s20[ltail=cluster_1, lhead=cluster_2];
 s10 -> s30[ltail=cluster_1, lhead=cluster_3];
 s10 -> s40[ltail=cluster_1, lhead=cluster_4];
-s20 -> s170[ltail=cluster_2, lhead=cluster_17,label="1
+s20 -> s190[ltail=cluster_2, lhead=cluster_19,label="1
 <in(box0, red_cube),X,X>
 <Not(in(box0, red_cube)),X,X>"];
-s20 -> s200[ltail=cluster_2, lhead=cluster_20,label="1
+s20 -> s220[ltail=cluster_2, lhead=cluster_22,label="1
 <in(box1, red_cube),X,X>
 <Not(in(box1, red_cube)),X,X>"];
-s20 -> s230[ltail=cluster_2, lhead=cluster_23,label="1
+s20 -> s250[ltail=cluster_2, lhead=cluster_25,label="1
 <in(box2, red_cube),X,X>
 <Not(in(box2, red_cube)),X,X>"];
-s20 -> s260[ltail=cluster_2, lhead=cluster_26,label="1
+s20 -> s280[ltail=cluster_2, lhead=cluster_28,label="1
 <in(L, red_cube),X,X>
 <Not(in(L, red_cube)),X,X>"];
-s30 -> s290[ltail=cluster_3, lhead=cluster_29,label="1
-<in(box0, red_cube),X,X>"];
-s30 -> s310[ltail=cluster_3, lhead=cluster_31,label="1
-<in(box0, red_cube),X,X>
-<Not(in(box0, red_cube)),X,X>"];
+s20 -> s310[ltail=cluster_2, lhead=cluster_31,label="0
+<in(box1, red_cube),X,X>"];
 s30 -> s330[ltail=cluster_3, lhead=cluster_33,label="1
-<in(box1, red_cube),X,X>
-<Not(in(box1, red_cube)),X,X>"];
+<in(box0, red_cube),X,X>"];
 s30 -> s350[ltail=cluster_3, lhead=cluster_35,label="1
-<in(box2, red_cube),X,X>
-<Not(in(box2, red_cube)),X,X>"];
+<in(box0, red_cube),X,X>
+<Not(in(box0, red_cube)),X,X>"];
 s30 -> s370[ltail=cluster_3, lhead=cluster_37,label="1
-<in(L, red_cube),X,X>
-<Not(in(L, red_cube)),X,X>"];
-s40 -> s390[ltail=cluster_4, lhead=cluster_39,label="1
-<in(box0, red_cube),X,X>
-<Not(in(box0, red_cube)),X,X>"];
-s40 -> s420[ltail=cluster_4, lhead=cluster_42,label="1
 <in(box1, red_cube),X,X>
 <Not(in(box1, red_cube)),X,X>"];
-s40 -> s450[ltail=cluster_4, lhead=cluster_45,label="1
+s30 -> s390[ltail=cluster_3, lhead=cluster_39,label="1
 <in(box2, red_cube),X,X>
 <Not(in(box2, red_cube)),X,X>"];
-s40 -> s480[ltail=cluster_4, lhead=cluster_48,label="1
+s30 -> s410[ltail=cluster_3, lhead=cluster_41,label="1
 <in(L, red_cube),X,X>
 <Not(in(L, red_cube)),X,X>"];
-s200 -> s210[ltail=cluster_20, lhead=cluster_21];
-s200 -> s220[ltail=cluster_20, lhead=cluster_22];
-s230 -> s240[ltail=cluster_23, lhead=cluster_24];
-s230 -> s250[ltail=cluster_23, lhead=cluster_25];
-s290 -> s300[ltail=cluster_29, lhead=cluster_30];
-s310 -> s320[ltail=cluster_31, lhead=cluster_32];
+s30 -> s430[ltail=cluster_3, lhead=cluster_43,label="0
+<in(box0, red_cube),X,X>"];
+s30 -> s450[ltail=cluster_3, lhead=cluster_45,label="1
+<in(box0, red_cube),X,X>"];
+s40 -> s470[ltail=cluster_4, lhead=cluster_47,label="1
+<in(box0, red_cube),X,X>
+<Not(in(box0, red_cube)),X,X>"];
+s40 -> s500[ltail=cluster_4, lhead=cluster_50,label="1
+<in(box1, red_cube),X,X>
+<Not(in(box1, red_cube)),X,X>"];
+s40 -> s530[ltail=cluster_4, lhead=cluster_53,label="1
+<in(box2, red_cube),X,X>
+<Not(in(box2, red_cube)),X,X>"];
+s40 -> s560[ltail=cluster_4, lhead=cluster_56,label="1
+<in(L, red_cube),X,X>
+<Not(in(L, red_cube)),X,X>"];
+s40 -> s590[ltail=cluster_4, lhead=cluster_59,label="0
+<in(box2, red_cube),X,X>"];
+s220 -> s230[ltail=cluster_22, lhead=cluster_23];
+s220 -> s240[ltail=cluster_22, lhead=cluster_24];
+s250 -> s260[ltail=cluster_25, lhead=cluster_26];
+s250 -> s270[ltail=cluster_25, lhead=cluster_27];
 s330 -> s340[ltail=cluster_33, lhead=cluster_34];
-s350 -> s360[ltail=cluster_35, lhead=cluster_36];
-s370 -> s380[ltail=cluster_37, lhead=cluster_38];
-s420 -> s430[ltail=cluster_42, lhead=cluster_43];
-s420 -> s440[ltail=cluster_42, lhead=cluster_44];
-s210 -> s1910[ltail=cluster_21, lhead=cluster_191,label="1
+s500 -> s510[ltail=cluster_50, lhead=cluster_51];
+s500 -> s520[ltail=cluster_50, lhead=cluster_52];
+s230 -> s2410[ltail=cluster_23, lhead=cluster_241,label="1
 <in(box1, red_cube),X,X>"];
-s210 -> s1930[ltail=cluster_21, lhead=cluster_193,label="1
+s230 -> s2430[ltail=cluster_23, lhead=cluster_243,label="1
 <in(box0, red_cube),X,X>
 <Not(in(box0, red_cube)),X,X>"];
-s210 -> s1950[ltail=cluster_21, lhead=cluster_195,label="1
+s230 -> s2450[ltail=cluster_23, lhead=cluster_245,label="1
 <in(box1, red_cube),X,X>
 <Not(in(box1, red_cube)),X,X>"];
-s210 -> s1970[ltail=cluster_21, lhead=cluster_197,label="1
+s230 -> s2470[ltail=cluster_23, lhead=cluster_247,label="1
 <in(box2, red_cube),X,X>
 <Not(in(box2, red_cube)),X,X>"];
-s210 -> s1990[ltail=cluster_21, lhead=cluster_199,label="1
+s230 -> s2490[ltail=cluster_23, lhead=cluster_249,label="1
 <in(L, red_cube),X,X>
 <Not(in(L, red_cube)),X,X>"];
-s220 -> s2010[ltail=cluster_22, lhead=cluster_201,label="1
-<in(box2, red_cube),X,X>"];
-s220 -> s2030[ltail=cluster_22, lhead=cluster_203,label="1
-<in(box0, red_cube),X,X>
-<Not(in(box0, red_cube)),X,X>"];
-s220 -> s2050[ltail=cluster_22, lhead=cluster_205,label="1
-<in(box1, red_cube),X,X>
-<Not(in(box1, red_cube)),X,X>"];
-s220 -> s2070[ltail=cluster_22, lhead=cluster_207,label="1
-<in(box2, red_cube),X,X>
-<Not(in(box2, red_cube)),X,X>"];
-s220 -> s2090[ltail=cluster_22, lhead=cluster_209,label="1
-<in(L, red_cube),X,X>
-<Not(in(L, red_cube)),X,X>"];
-s240 -> s2110[ltail=cluster_24, lhead=cluster_211,label="1
+s230 -> s2510[ltail=cluster_23, lhead=cluster_251,label="0
 <in(box1, red_cube),X,X>"];
-s240 -> s2130[ltail=cluster_24, lhead=cluster_213,label="1
-<in(box0, red_cube),X,X>
-<Not(in(box0, red_cube)),X,X>"];
-s240 -> s2150[ltail=cluster_24, lhead=cluster_215,label="1
-<in(box1, red_cube),X,X>
-<Not(in(box1, red_cube)),X,X>"];
-s240 -> s2170[ltail=cluster_24, lhead=cluster_217,label="1
-<in(box2, red_cube),X,X>
-<Not(in(box2, red_cube)),X,X>"];
-s240 -> s2190[ltail=cluster_24, lhead=cluster_219,label="1
-<in(L, red_cube),X,X>
-<Not(in(L, red_cube)),X,X>"];
-s250 -> s2210[ltail=cluster_25, lhead=cluster_221,label="1
-<in(box2, red_cube),X,X>"];
-s250 -> s2230[ltail=cluster_25, lhead=cluster_223,label="1
-<in(box0, red_cube),X,X>
-<Not(in(box0, red_cube)),X,X>"];
-s250 -> s2250[ltail=cluster_25, lhead=cluster_225,label="1
-<in(box1, red_cube),X,X>
-<Not(in(box1, red_cube)),X,X>"];
-s250 -> s2270[ltail=cluster_25, lhead=cluster_227,label="1
-<in(box2, red_cube),X,X>
-<Not(in(box2, red_cube)),X,X>"];
-s250 -> s2290[ltail=cluster_25, lhead=cluster_229,label="1
-<in(L, red_cube),X,X>
-<Not(in(L, red_cube)),X,X>"];
-s320 -> s2550[ltail=cluster_32, lhead=cluster_255,label="1
-<in(box0, red_cube),X,X>"];
-s320 -> s2570[ltail=cluster_32, lhead=cluster_257,label="1
-<in(box0, red_cube),X,X>
-<Not(in(box0, red_cube)),X,X>"];
-s320 -> s2590[ltail=cluster_32, lhead=cluster_259,label="1
-<in(box1, red_cube),X,X>
-<Not(in(box1, red_cube)),X,X>"];
-s320 -> s2610[ltail=cluster_32, lhead=cluster_261,label="1
-<in(box2, red_cube),X,X>
-<Not(in(box2, red_cube)),X,X>"];
-s320 -> s2630[ltail=cluster_32, lhead=cluster_263,label="1
-<in(L, red_cube),X,X>
-<Not(in(L, red_cube)),X,X>"];
-s340 -> s2650[ltail=cluster_34, lhead=cluster_265,label="1
-<in(box0, red_cube),X,X>"];
-s340 -> s2670[ltail=cluster_34, lhead=cluster_267,label="1
-<in(box0, red_cube),X,X>
-<Not(in(box0, red_cube)),X,X>"];
-s340 -> s2690[ltail=cluster_34, lhead=cluster_269,label="1
-<in(box1, red_cube),X,X>
-<Not(in(box1, red_cube)),X,X>"];
-s340 -> s2710[ltail=cluster_34, lhead=cluster_271,label="1
-<in(box2, red_cube),X,X>
-<Not(in(box2, red_cube)),X,X>"];
-s340 -> s2730[ltail=cluster_34, lhead=cluster_273,label="1
-<in(L, red_cube),X,X>
-<Not(in(L, red_cube)),X,X>"];
-s360 -> s2750[ltail=cluster_36, lhead=cluster_275,label="1
-<in(box0, red_cube),X,X>"];
-s360 -> s2770[ltail=cluster_36, lhead=cluster_277,label="1
-<in(box0, red_cube),X,X>
-<Not(in(box0, red_cube)),X,X>"];
-s360 -> s2790[ltail=cluster_36, lhead=cluster_279,label="1
-<in(box1, red_cube),X,X>
-<Not(in(box1, red_cube)),X,X>"];
-s360 -> s2810[ltail=cluster_36, lhead=cluster_281,label="1
-<in(box2, red_cube),X,X>
-<Not(in(box2, red_cube)),X,X>"];
-s360 -> s2830[ltail=cluster_36, lhead=cluster_283,label="1
-<in(L, red_cube),X,X>
-<Not(in(L, red_cube)),X,X>"];
-s380 -> s2850[ltail=cluster_38, lhead=cluster_285,label="1
-<in(box0, red_cube),X,X>"];
-s380 -> s2870[ltail=cluster_38, lhead=cluster_287,label="1
-<in(box0, red_cube),X,X>
-<Not(in(box0, red_cube)),X,X>"];
-s380 -> s2890[ltail=cluster_38, lhead=cluster_289,label="1
-<in(box1, red_cube),X,X>
-<Not(in(box1, red_cube)),X,X>"];
-s380 -> s2910[ltail=cluster_38, lhead=cluster_291,label="1
-<in(box2, red_cube),X,X>
-<Not(in(box2, red_cube)),X,X>"];
-s380 -> s2930[ltail=cluster_38, lhead=cluster_293,label="1
-<in(L, red_cube),X,X>
-<Not(in(L, red_cube)),X,X>"];
-s430 -> s3190[ltail=cluster_43, lhead=cluster_319,label="1
-<in(box2, red_cube),X,X>"];
-s430 -> s3210[ltail=cluster_43, lhead=cluster_321,label="1
-<in(box0, red_cube),X,X>
-<Not(in(box0, red_cube)),X,X>"];
-s430 -> s3230[ltail=cluster_43, lhead=cluster_323,label="1
-<in(box1, red_cube),X,X>
-<Not(in(box1, red_cube)),X,X>"];
-s430 -> s3250[ltail=cluster_43, lhead=cluster_325,label="1
-<in(box2, red_cube),X,X>
-<Not(in(box2, red_cube)),X,X>"];
-s430 -> s3270[ltail=cluster_43, lhead=cluster_327,label="1
-<in(L, red_cube),X,X>
-<Not(in(L, red_cube)),X,X>"];
-s440 -> s3290[ltail=cluster_44, lhead=cluster_329,label="1
+s230 -> s2530[ltail=cluster_23, lhead=cluster_253,label="1
 <in(box1, red_cube),X,X>"];
-s440 -> s3310[ltail=cluster_44, lhead=cluster_331,label="1
+s240 -> s2550[ltail=cluster_24, lhead=cluster_255,label="1
+<in(box2, red_cube),X,X>"];
+s240 -> s2570[ltail=cluster_24, lhead=cluster_257,label="1
 <in(box0, red_cube),X,X>
 <Not(in(box0, red_cube)),X,X>"];
-s440 -> s3330[ltail=cluster_44, lhead=cluster_333,label="1
+s240 -> s2590[ltail=cluster_24, lhead=cluster_259,label="1
 <in(box1, red_cube),X,X>
 <Not(in(box1, red_cube)),X,X>"];
-s440 -> s3350[ltail=cluster_44, lhead=cluster_335,label="1
+s240 -> s2610[ltail=cluster_24, lhead=cluster_261,label="1
 <in(box2, red_cube),X,X>
 <Not(in(box2, red_cube)),X,X>"];
-s440 -> s3370[ltail=cluster_44, lhead=cluster_337,label="1
+s240 -> s2630[ltail=cluster_24, lhead=cluster_263,label="1
 <in(L, red_cube),X,X>
 <Not(in(L, red_cube)),X,X>"];
-s1910 -> s1920[ltail=cluster_191, lhead=cluster_192];
-s2010 -> s2020[ltail=cluster_201, lhead=cluster_202];
-s2110 -> s2120[ltail=cluster_211, lhead=cluster_212];
-s2210 -> s2220[ltail=cluster_221, lhead=cluster_222];
+s240 -> s2650[ltail=cluster_24, lhead=cluster_265,label="0
+<in(box2, red_cube),X,X>"];
+s240 -> s2670[ltail=cluster_24, lhead=cluster_267,label="1
+<in(box2, red_cube),X,X>"];
+s260 -> s2690[ltail=cluster_26, lhead=cluster_269,label="1
+<in(box1, red_cube),X,X>"];
+s260 -> s2710[ltail=cluster_26, lhead=cluster_271,label="1
+<in(box0, red_cube),X,X>
+<Not(in(box0, red_cube)),X,X>"];
+s260 -> s2730[ltail=cluster_26, lhead=cluster_273,label="1
+<in(box1, red_cube),X,X>
+<Not(in(box1, red_cube)),X,X>"];
+s260 -> s2750[ltail=cluster_26, lhead=cluster_275,label="1
+<in(box2, red_cube),X,X>
+<Not(in(box2, red_cube)),X,X>"];
+s260 -> s2770[ltail=cluster_26, lhead=cluster_277,label="1
+<in(L, red_cube),X,X>
+<Not(in(L, red_cube)),X,X>"];
+s260 -> s2790[ltail=cluster_26, lhead=cluster_279,label="0
+<in(box1, red_cube),X,X>"];
+s260 -> s2810[ltail=cluster_26, lhead=cluster_281,label="1
+<in(box1, red_cube),X,X>"];
+s270 -> s2830[ltail=cluster_27, lhead=cluster_283,label="1
+<in(box2, red_cube),X,X>"];
+s270 -> s2850[ltail=cluster_27, lhead=cluster_285,label="1
+<in(box0, red_cube),X,X>
+<Not(in(box0, red_cube)),X,X>"];
+s270 -> s2870[ltail=cluster_27, lhead=cluster_287,label="1
+<in(box1, red_cube),X,X>
+<Not(in(box1, red_cube)),X,X>"];
+s270 -> s2890[ltail=cluster_27, lhead=cluster_289,label="1
+<in(box2, red_cube),X,X>
+<Not(in(box2, red_cube)),X,X>"];
+s270 -> s2910[ltail=cluster_27, lhead=cluster_291,label="1
+<in(L, red_cube),X,X>
+<Not(in(L, red_cube)),X,X>"];
+s270 -> s2930[ltail=cluster_27, lhead=cluster_293,label="0
+<in(box2, red_cube),X,X>"];
+s270 -> s2950[ltail=cluster_27, lhead=cluster_295,label="1
+<in(box2, red_cube),X,X>"];
+s510 -> s4510[ltail=cluster_51, lhead=cluster_451,label="1
+<in(box2, red_cube),X,X>"];
+s510 -> s4530[ltail=cluster_51, lhead=cluster_453,label="1
+<in(box0, red_cube),X,X>
+<Not(in(box0, red_cube)),X,X>"];
+s510 -> s4550[ltail=cluster_51, lhead=cluster_455,label="1
+<in(box1, red_cube),X,X>
+<Not(in(box1, red_cube)),X,X>"];
+s510 -> s4570[ltail=cluster_51, lhead=cluster_457,label="1
+<in(box2, red_cube),X,X>
+<Not(in(box2, red_cube)),X,X>"];
+s510 -> s4590[ltail=cluster_51, lhead=cluster_459,label="1
+<in(L, red_cube),X,X>
+<Not(in(L, red_cube)),X,X>"];
+s510 -> s4610[ltail=cluster_51, lhead=cluster_461,label="0
+<in(box2, red_cube),X,X>"];
+s510 -> s4630[ltail=cluster_51, lhead=cluster_463,label="1
+<in(box2, red_cube),X,X>"];
+s520 -> s4650[ltail=cluster_52, lhead=cluster_465,label="1
+<in(box1, red_cube),X,X>"];
+s520 -> s4670[ltail=cluster_52, lhead=cluster_467,label="1
+<in(box0, red_cube),X,X>
+<Not(in(box0, red_cube)),X,X>"];
+s520 -> s4690[ltail=cluster_52, lhead=cluster_469,label="1
+<in(box1, red_cube),X,X>
+<Not(in(box1, red_cube)),X,X>"];
+s520 -> s4710[ltail=cluster_52, lhead=cluster_471,label="1
+<in(box2, red_cube),X,X>
+<Not(in(box2, red_cube)),X,X>"];
+s520 -> s4730[ltail=cluster_52, lhead=cluster_473,label="1
+<in(L, red_cube),X,X>
+<Not(in(L, red_cube)),X,X>"];
+s520 -> s4750[ltail=cluster_52, lhead=cluster_475,label="0
+<in(box1, red_cube),X,X>"];
+s520 -> s4770[ltail=cluster_52, lhead=cluster_477,label="1
+<in(box1, red_cube),X,X>"];
+s2410 -> s2420[ltail=cluster_241, lhead=cluster_242];
 s2550 -> s2560[ltail=cluster_255, lhead=cluster_256];
-s2650 -> s2660[ltail=cluster_265, lhead=cluster_266];
-s2750 -> s2760[ltail=cluster_275, lhead=cluster_276];
-s2850 -> s2860[ltail=cluster_285, lhead=cluster_286];
-s3190 -> s3200[ltail=cluster_319, lhead=cluster_320];
-s3290 -> s3300[ltail=cluster_329, lhead=cluster_330];
+s2690 -> s2700[ltail=cluster_269, lhead=cluster_270];
+s2830 -> s2840[ltail=cluster_283, lhead=cluster_284];
+s4510 -> s4520[ltail=cluster_451, lhead=cluster_452];
+s4650 -> s4660[ltail=cluster_465, lhead=cluster_466];
 }
