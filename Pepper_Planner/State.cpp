@@ -14,8 +14,12 @@ namespace del {
 	void State::set_amount_of_agents(size_t number_of_agents) {
 		this->number_of_agents = number_of_agents;
 		indistinguishability_relation.reserve(number_of_agents);
+		perceivability.reserve(number_of_agents);
+		observability.reserve(number_of_agents);
 		for (size_t i = 0; i < number_of_agents; i++) {
 			indistinguishability_relation.emplace_back();
+			perceivability.emplace_back();
+			observability.emplace_back();
 		}
 	}
 
@@ -133,6 +137,22 @@ namespace del {
 	void State::set_single_designated_world(World_Id world) {
 		designated_worlds.clear();
 		designated_worlds.push_back(world);
+	}
+
+	void State::add_observability(Agent_Id observer, std::vector<Agent_Id> agents) {
+		observability[observer.id] = agents;
+	}
+
+	void State::add_perceivability(Agent_Id perceiver, std::vector<Agent_Id> agents) {
+		perceivability[perceiver.id] = agents;
+	}
+
+	const std::vector<Agent_Id>& State::get_observables(Agent_Id agent) const {
+		return observability[agent.id];
+	}
+
+	const std::vector<Agent_Id>& State::get_perceivables(Agent_Id agent) const {
+		return perceivability[agent.id];
 	}
 
 	std::string State::to_string() const {

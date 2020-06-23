@@ -1,0 +1,25 @@
+digraph G {
+s0[label="event0
+<in(box1, red_cube)>
+<>
+<>", shape=doublecircle];
+s1[label="event1
+<Not(in(box1, red_cube))>
+<>
+<>", shape=doublecircle];
+s2[label="unobservable
+<TOP>
+<>
+<>"];
+s0 -> s0[label="Pepper"];
+s1 -> s1[label="Pepper"];
+s0 -> s0[label="L"];
+s1 -> s1[label="L"];
+s0 -> s0[label="temp1"];
+s0 -> s1[label="temp1"];
+s1 -> s0[label="temp1"];
+s1 -> s1[label="temp1"];
+s0 -> s2[label="temp2"];
+s1 -> s2[label="temp2"];
+s2 -> s2[label="temp2"];
+}

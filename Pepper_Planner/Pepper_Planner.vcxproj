@@ -146,6 +146,7 @@
     <ClCompile Include="Action_Library.cpp" />
     <ClCompile Include="Agent.cpp" />
     <ClCompile Include="Bisimulation_Context.cpp" />
+    <ClCompile Include="Debugger.cpp" />
     <ClCompile Include="DEL_Operations.cpp" />
     <ClCompile Include="Domain.cpp" />
     <ClCompile Include="Domain_Interface_Implementation.cpp" />
@@ -169,6 +170,7 @@
     <ClInclude Include="Action_Library.hpp" />
     <ClInclude Include="Agent.hpp" />
     <ClInclude Include="Bisimulation_Context.hpp" />
+    <ClInclude Include="Debugger.hpp" />
     <ClInclude Include="DEL_Operations.hpp" />
     <ClInclude Include="Domain.hpp" />
     <ClInclude Include="Domain_Interface_Implementation.h" />

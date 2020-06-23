@@ -39,6 +39,8 @@ namespace del {
 		virtual void add_reachability(std::string name, std::vector<std::pair<std::string, std::string>> reachables) override;
 		virtual void set_announce_enabled() override;
 		virtual void set_goal(Formula&& goal) override;
+		virtual void add_observability(std::string observer, std::vector<std::string> agents) override;
+		virtual void add_perceivability(std::string perceiver, std::vector<std::string> agents) override;
 
 		std::tuple<Domain, Action_Library, Formula> get_loaded();
 	private:
@@ -52,5 +54,7 @@ namespace del {
 		std::vector<Proposition_Instance> initial_propositions;
 		std::vector<Proposition> propositions;
 		std::unordered_map<std::string, World_Id> world_name_to_id;
+		std::unordered_map<std::string, std::vector<std::string>> observability;
+		std::unordered_map<std::string, std::vector<std::string>> perceivability;
 	};
 }

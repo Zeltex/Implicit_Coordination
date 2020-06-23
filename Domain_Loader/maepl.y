@@ -39,7 +39,9 @@
 %token GOAL_DEF
 %token INIT_DEF
 %token OBJECTS_DEF
+%token OBSERVABILITY_DEF
 %token OWNER_DEF
+%token PERCEIVABILITY_DEF
 %token PRECONDITIONS_DEF
 %token PROBLEM_DEF
 %token PROPOSITIONS_DEF
@@ -79,6 +81,9 @@ maepl:
                                                                     domain->finish_domain();                                              } maepl
     | PROBLEM_DEF NAME LBRACK
         problem_body RBRACK                                     { if (buffer->is_state_reflexive()) domain->create_state_reflexive_reachables();
+                                                                  for (auto agent : buffer->get_missing_perceivables()) {
+                                                                    domain->add_perceivability(agent, {agent});
+                                                                  }
                                                                   domain->finish_problem();                                             } maepl  
 
 domain_body:
@@ -95,9 +100,19 @@ problem_body:
     | DESIGNATED_WORLDS_DEF EQUALS LBRACK variables RBRACK      { domain->set_designated_worlds(buffer->get_variables());               } problem_body
     | REACHAbility_DEF EQUALS LBRACK reachability_body RBRACK   {                                                                       } problem_body
     | REFLEXIVITY_DEF EQUALS TRUTH                              { buffer->set_state_reflexivity($3);                                    } problem_body
+    | PERCEIVABILITY_DEF EQUALS LBRACK perceivability_body RBRACK {} problem_body
+    | OBSERVABILITY_DEF EQUALS LBRACK observability_body RBRACK {} problem_body
 
 reachability_body:
     | NAME EQUALS LBRACK bracketed_input RBRACK                 { domain->add_reachability($1, buffer->get_inputs());                   } reachability_body
+    
+perceivability_body:
+    | NAME EQUALS LBRACK ordered_variables RBRACK                 { domain->add_perceivability($1, 
+                                                                        buffer->add_reflexive_perceivability($1,
+                                                                            buffer->get_ordered_variables()));                          } perceivability_body
+    
+observability_body:
+    | NAME EQUALS LBRACK ordered_variables RBRACK                 { domain->add_observability($1, buffer->get_ordered_variables());     } observability_body
 
 
 objects:

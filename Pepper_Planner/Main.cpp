@@ -21,6 +21,11 @@ int main(int argc, char* argv[]) {
 	using namespace del;
 
 	DEL_Interface del_interface("../examples/simple.maepl");
+
+	del_interface.print_current_state_to_graph("../State_Before.dot");
+	del_interface.perform_action("perceive", "L", { "box1", "red_cube" });
+	del_interface.print_current_state_to_graph("../State_After.dot");
+
 	del_interface.create_policy();
 
 	while (!del_interface.is_solved()) {

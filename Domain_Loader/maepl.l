@@ -27,7 +27,9 @@ _event				{ return EVENT_DEF;				}
 _goal				{ return GOAL_DEF;				}
 _initial_state  	{ return INIT_DEF;				}
 _objects			{ return OBJECTS_DEF;			}
+_observability		{ return OBSERVABILITY_DEF;		}	
 _owner				{ return OWNER_DEF;				}
+_perceivability		{ return PERCEIVABILITY_DEF;	}
 _preconditions		{ return PRECONDITIONS_DEF;		}
 _problem			{ return PROBLEM_DEF;			}
 _propositions		{ return PROPOSITIONS_DEF;		}	

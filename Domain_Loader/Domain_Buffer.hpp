@@ -23,19 +23,21 @@ public:
 
 	void add_ordered_variable(std::string variable);
 	void clear_designated_events();
+	std::vector<std::string> add_reflexive_perceivability(std::string name, std::vector<std::string> agents);
 
 
-	std::string get_event_name();
-	Formula get_formula();
-	std::vector<Proposition_Instance> get_event_add_list();
-	std::vector<Proposition_Instance> get_event_delete_list();
-	std::vector<std::string> get_designated_events();
-	std::vector<std::pair<std::string, std::string>> get_inputs();
-	std::unordered_set<std::string> get_types();
-	std::unordered_map<std::string, std::unordered_set<std::string>>  get_objects();
-	std::vector<std::string> get_ordered_variables(); 
-	std::unordered_set<std::string> get_variables();
-	std::vector<Proposition_Instance> get_proposition_instances();
+	std::string															get_event_name();
+	Formula																get_formula();
+	std::vector<Proposition_Instance>									get_event_add_list();
+	std::vector<Proposition_Instance>									get_event_delete_list();
+	std::vector<std::string>											get_designated_events();
+	std::vector<std::pair<std::string, std::string>>					get_inputs();
+	std::unordered_set<std::string>										get_types();
+	std::unordered_map<std::string, std::unordered_set<std::string>>	get_objects();
+	std::vector<std::string>											get_ordered_variables(); 
+	std::unordered_set<std::string>										get_variables();
+	std::vector<Proposition_Instance>									get_proposition_instances();
+	std::vector<std::string>											get_missing_perceivables();
 
 	void add_variable(std::string variable);
 	void clear_formula();
@@ -66,6 +68,7 @@ private:
 	std::vector<Proposition_Instance> propositions;
 	bool state_reflexivity;
 	bool action_reflexivity;
+	std::vector<std::string> seen_perceivability;
 
 	// Formula stuff
 	Formula formula;

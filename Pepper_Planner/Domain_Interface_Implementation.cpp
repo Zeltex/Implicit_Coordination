@@ -13,15 +13,34 @@ namespace del {
 	void Domain_Interface_Implementation::finish_problem() {
 		std::cout << "Finishing problem" << std::endl;
 
-		if (action_reflexivity) {
-			for (auto& action : actions) {
-				action.set_amount_of_agents(domain.get_agents().size());
+		// Action reachability and reflexivity
+		for (auto& action : actions) {
+			action.set_amount_of_agents(domain.get_agents().size());
+			if (action_reflexivity) {
 				for (auto& agent : domain.get_agents()) {
 					for (auto& event : action.get_events()) {
 						action.add_reachability_relation(agent.get_id(), event.get_id(), event.get_id());
 					}
 				}
 			}
+		}
+
+		// Perceivability
+		for (auto& perceiver_list : perceivability) {
+			std::vector<Agent_Id> temp;
+			for (auto& agent : perceiver_list.second) {
+				temp.emplace_back(domain.get_agent_id(agent));
+			}
+			initial_state.add_perceivability(domain.get_agent_id(perceiver_list.first), temp);
+		}
+
+		// Observability
+		for (auto& observer_list : observability) {
+			std::vector<Agent_Id> temp;
+			for (auto& agent : observer_list.second) {
+				temp.emplace_back(domain.get_agent_id(agent));
+			}
+			initial_state.add_observability(domain.get_agent_id(observer_list.first), temp);
 		}
 
 		for (auto& action : actions) {
@@ -129,5 +148,13 @@ namespace del {
 
 	void Domain_Interface_Implementation::set_goal(Formula&& goal) {
 		this->goal = std::move(goal);
+	}
+
+	void Domain_Interface_Implementation::add_observability(std::string observer, std::vector<std::string> agents) {
+		observability[observer] = agents;
+	}
+	
+	void Domain_Interface_Implementation::add_perceivability(std::string perceiver, std::vector<std::string> agents) {
+		perceivability[perceiver] = agents;
 	}
 }

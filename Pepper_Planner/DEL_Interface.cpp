@@ -53,6 +53,11 @@ namespace del {
 	void DEL_Interface::perform_action(Action action) {
 		domain.perform_action(action);
 	}
+
+	void DEL_Interface::perform_action(std::string name, std::string owner, std::vector<std::string> arguments) {
+		auto action = action_library.get_general_action(name).create_action(owner, arguments, domain);
+		domain.perform_action(action);
+	}
 	
 	bool DEL_Interface::create_policy(Formula goal) {
 		this->goal = std::move(goal);
@@ -67,5 +72,12 @@ namespace del {
 
 	bool DEL_Interface::is_solved() {
 		return domain.get_current_state().valuate(goal);
+	}
+
+	void DEL_Interface::print_current_state_to_graph(std::string file_path) {
+		std::ofstream myfile;
+		myfile.open(file_path);
+		myfile << "digraph {subgraph cluster_0 {" << domain.get_current_state().to_graph(domain.get_agents(), "s0") << "}}";
+		myfile.close();
 	}
 }

@@ -58,25 +58,27 @@ extern int yydebug;
      GOAL_DEF = 267,
      INIT_DEF = 268,
      OBJECTS_DEF = 269,
-     OWNER_DEF = 270,
-     PRECONDITIONS_DEF = 271,
-     PROBLEM_DEF = 272,
-     PROPOSITIONS_DEF = 273,
-     REACHAbility_DEF = 274,
-     REFLEXIVITY_DEF = 275,
-     TYPES_DEF = 276,
-     WORLD_DEF = 277,
-     LBRACK = 278,
-     RBRACK = 279,
-     AND = 280,
-     OR = 281,
-     NOT = 282,
-     NAME = 283,
-     TRUTH = 284,
-     EQUALS = 285,
-     INT = 286,
-     FLOAT = 287,
-     STRING = 288
+     OBSERVABILITY_DEF = 270,
+     OWNER_DEF = 271,
+     PERCEIVABILITY_DEF = 272,
+     PRECONDITIONS_DEF = 273,
+     PROBLEM_DEF = 274,
+     PROPOSITIONS_DEF = 275,
+     REACHAbility_DEF = 276,
+     REFLEXIVITY_DEF = 277,
+     TYPES_DEF = 278,
+     WORLD_DEF = 279,
+     LBRACK = 280,
+     RBRACK = 281,
+     AND = 282,
+     OR = 283,
+     NOT = 284,
+     NAME = 285,
+     TRUTH = 286,
+     EQUALS = 287,
+     INT = 288,
+     FLOAT = 289,
+     STRING = 290
    };
 #endif
 
@@ -94,7 +96,7 @@ typedef union YYSTYPE
 
 
 /* Line 2058 of yacc.c  */
-#line 98 "maepl.tab.h"
+#line 100 "maepl.tab.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */

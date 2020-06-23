@@ -6,6 +6,8 @@
 #include "Action_Event.hpp"
 
 namespace del {
+	class Action;
+	class Domain;
 	class General_Action {
 	public:
 		General_Action() {}
@@ -22,6 +24,8 @@ namespace del {
 		const std::vector<std::string>& get_designated_events() const;
 		const std::vector<Action_Event>& get_events() const;
 		std::pair<std::string, std::string>  get_owner() const;
+		std::string get_name() const;
+		Action create_action(std::string owner, const std::vector<std::string>& arguments, const Domain& domain) const;
 
 	private:
 

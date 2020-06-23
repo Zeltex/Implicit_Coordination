@@ -1,6 +1,6 @@
 _domain Pepper {
 	_announce_enabled = true
-	_reflexivity = true
+	_reflexivity = false
 	_types = [container, object, agent, perceivable]
 	_propositions = [
 		in(container c, object o)
@@ -38,7 +38,7 @@ _problem simple_problem {
 	_objects = {
 		container = [box0, box1, box2, L]
 		object = [red_cube]
-		agent = [Pepper, L]
+		agent = [Pepper, L, temp1, temp2]
 		perceivable = [L]
 	}
 	_initial_state = [
@@ -59,6 +59,30 @@ _problem simple_problem {
 			(world2, world0)
 			(world2, world1)
 		}
+		temp1 = {
+			(world0, world1)
+			(world0, world2)
+			(world1, world0)
+			(world1, world2)
+			(world2, world0)
+			(world2, world1)
+		}
+		temp2 = {
+			(world0, world1)
+			(world0, world2)
+			(world1, world0)
+			(world1, world2)
+			(world2, world0)
+			(world2, world1)
+		}
+	}
+	_perceivability = {
+		L = [ Pepper ]
+		Pepper = [ L ]
+	}
+	_observability = {
+		temp1 = [ L ]
+
 	}
 }
 

@@ -2,14 +2,13 @@
 
 namespace del {
 
-	Action::Action(Agent_Id owner, size_t number_of_agents) : owner(owner) {
+	Action::Action(Agent_Id owner, size_t number_of_agents) : owner(owner), name("Unknown") {
 		for (size_t i = 0; i < number_of_agents; i++) {
 			indistinguishability_relation.emplace_back();
 		}
 	}
 	Action::Action(General_Action general_action, Agent_Id owner, const std::unordered_map<std::string, std::string>& input_to_atom): 
-		owner(owner), events(),designated_events(), indistinguishability_relation() {
-		this->owner = owner;
+		owner(owner), name(general_action.get_name()), events(),designated_events(), indistinguishability_relation() {
 		std::unordered_map<std::string, Event_Id> event_name_to_id;
 
 		for (auto& event : general_action.get_events()) {
@@ -56,6 +55,10 @@ namespace del {
 
 	Agent_Id Action::get_owner() const {
 		return owner;
+	}
+
+	std::string Action::get_name() const {
+		return name;
 	}
 
 	bool Action::is_one_reachable(Agent_Id agent, Event_Id event1, Event_Id event2) const {
@@ -106,6 +109,43 @@ namespace del {
 		std::string result = std::to_string(owner.id);
 		for (auto& event : events) {
 			result += "\n<" + event.get_preconditions().to_string() + ",X,X>";
+		}
+		return result;
+	}
+
+	std::string Action::to_graph() const {
+		std::string result;
+		for (auto& event : events) {
+			result += "s" + std::to_string(event.get_id().id) + "[label=\"" + event.get_name() + "\n<"
+				+ event.get_preconditions().to_string() + ">\n<"
+				+ get_string(event.get_add_list()) + ">\n<"
+				+ get_string(event.get_delete_list()) + ">\"";
+			if (find(designated_events.begin(), designated_events.end(), event.get_id()) != designated_events.end()) {
+				result += ", shape=doublecircle";
+			}
+			result += "];\n";
+		}
+
+		size_t agent = 0;
+		for (auto agent_relations : indistinguishability_relation) {
+			for (auto relation : agent_relations) {
+				result += "s" + std::to_string(relation.event_from.id) + " -> s" + std::to_string(relation.event_to.id) + "[label=\"" + (Debugger::agents.at(agent).get_name()) + "\"];\n";
+			}
+			agent++;
+		}
+		return result;
+	}
+
+	std::string Action::get_string(const std::vector<Proposition_Instance>& propositions) const {
+		std::string result;
+		bool first = true;
+		for (auto& proposition : propositions) {
+			if (first) {
+				first = false;
+			} else {
+				result += "; ";
+			}
+			result += proposition.to_string();
 		}
 		return result;
 	}

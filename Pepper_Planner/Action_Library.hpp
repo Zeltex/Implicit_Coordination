@@ -15,6 +15,7 @@ namespace del {
 		Action_Library(size_t amount_of_agents);
 		void set_amount_of_agents(size_t amount_of_agents);
 		const std::vector<Action>& get_actions() const;
+		const General_Action& get_general_action(std::string name) const;
 		const std::vector<Action> get_announce_actions(State state) const;
 		Action create_announce_action(Agent_Id owner, Proposition_Instance proposition, size_t amount_of_agents) const;
 		void add_action(const Action& action);
@@ -26,6 +27,7 @@ namespace del {
 		bool announce_enabled;
 		size_t amount_of_agents;
 		std::vector<Action> actions;
-		std::vector<Action> actions_including_announce;
+		std::vector<General_Action> general_actions;
+		std::unordered_map<std::string, size_t> general_action_name_to_id;
 	};
 }

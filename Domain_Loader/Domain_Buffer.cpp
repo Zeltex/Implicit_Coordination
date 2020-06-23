@@ -1,7 +1,7 @@
 #include "Domain_Buffer.hpp"
 
 void Domain_Buffer::set_event_name(std::string name) {
-	event_name = name;
+    event_name = name;
 }
 
 void Domain_Buffer::add_input(std::string type, std::string name) {
@@ -18,13 +18,13 @@ void Domain_Buffer::push_proposition_instance(std::string name) {
 }
 
 std::string Domain_Buffer::get_event_name() {
-	return event_name;
+    return event_name;
 }
 
 Formula Domain_Buffer::get_formula() {
     Formula temp = std::move(formula);
     formula = Formula();
-	return std::move(temp);
+    return std::move(temp);
 }
 
 std::vector<Proposition_Instance> Domain_Buffer::get_event_add_list() {
@@ -77,6 +77,24 @@ std::vector<Proposition_Instance> Domain_Buffer::get_proposition_instances() {
     auto temp = std::move(propositions);
     propositions = {};
     return std::move(temp);
+}
+
+std::vector<std::string> Domain_Buffer::get_missing_perceivables() {
+    std::vector<std::string> result;
+    for (auto agent : objects["agent"]) {
+        if (find(seen_perceivability.begin(), seen_perceivability.end(), agent) == seen_perceivability.end()) {
+            result.push_back(agent);
+        }
+    }
+    return result;
+}
+
+std::vector<std::string> Domain_Buffer::add_reflexive_perceivability(std::string name, std::vector<std::string> agents) {
+    if (find(agents.begin(), agents.end(), name) == agents.end()) {
+        agents.push_back(name);
+    }
+    seen_perceivability.push_back(name);
+    return agents;
 }
 
 void Domain_Buffer::add_variable(std::string variable) {

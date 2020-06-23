@@ -16,6 +16,11 @@ namespace del {
 	const std::vector<Action>& Action_Library::get_actions() const{
 		return actions;
 	}
+
+	const General_Action& Action_Library::get_general_action(std::string name) const {
+		return general_actions.at(general_action_name_to_id.at(name));
+	}
+
 	const std::vector<Action> Action_Library::get_announce_actions(State state) const {
 		std::vector<Action> result;
 		
@@ -76,6 +81,8 @@ namespace del {
 	}
 
 	void Action_Library::add_general_action(const General_Action& general_action, const Domain& domain) {
+		general_actions.push_back(general_action);
+		general_action_name_to_id[general_action.get_name()] = general_actions.size() - 1;
 
 		std::pair<std::string, std::string> action_owner = general_action.get_owner();
 		auto& owners = domain.get_all_atoms_of_type(action_owner.first);

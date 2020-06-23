@@ -32,6 +32,8 @@ public:
 	virtual void create_action_reflexive_reachables() = 0;
 	virtual void create_state_reflexive_reachables() = 0;
 	virtual void add_reachability(std::string name, std::vector<std::pair<std::string, std::string>> reachables) = 0;
+	virtual void add_observability(std::string observer, std::vector<std::string> agents) = 0;
+	virtual void add_perceivability(std::string perceiver, std::vector<std::string> agents) = 0;
 	virtual void set_announce_enabled() = 0;
 	virtual void set_goal(del::Formula&& goal) = 0;
 private:

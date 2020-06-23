@@ -11,6 +11,7 @@
 #include "Environment_Loader.hpp"
 #include "Domain_Interface_Implementation.h"
 #include "../Domain_Loader/Loader.hpp"
+#include "../Formula/Types.hpp"
 
 namespace del {
 	class DEL_Interface {
@@ -21,9 +22,11 @@ namespace del {
 		Interface_DTO get_next_action();
 		void perform_do(const Agent_Id i, const std::vector<Proposition_Instance>& add, const std::vector<Proposition_Instance>& del);
 		void perform_action(Action action);
+		void perform_action(std::string name, std::string owner, std::vector<std::string> arguments);
 		bool create_policy(Formula goal);
 		bool create_policy();
 		bool is_solved();
+		void print_current_state_to_graph(std::string file_path);
 	private:
 		Domain domain;
 		Planner planner;

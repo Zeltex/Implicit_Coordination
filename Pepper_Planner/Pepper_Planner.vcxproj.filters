@@ -96,6 +96,9 @@
     <ClCompile Include="General_World.cpp">
       <Filter>Source Files\DEL</Filter>
     </ClCompile>
+    <ClCompile Include="Debugger.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Agent.hpp">
@@ -160,6 +163,9 @@
     </ClInclude>
     <ClInclude Include="General_World.hpp">
       <Filter>Header Files\DEL</Filter>
+    </ClInclude>
+    <ClInclude Include="Debugger.hpp">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

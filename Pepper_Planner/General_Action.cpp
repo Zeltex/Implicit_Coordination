@@ -1,4 +1,6 @@
 #include "General_Action.hpp"
+#include "Action.hpp"
+#include "Domain.hpp"
 
 namespace del {
 
@@ -45,11 +47,44 @@ namespace del {
 		return owner;
 	}
 
+	std::string General_Action::get_name() const {
+		return name;
+	}
+
 	const std::vector<std::string>& General_Action::get_designated_events() const {
 		return designated_events;
 	}
 
 	const std::vector<Action_Event>& General_Action::get_events() const {
 		return events;
+	}
+
+	Action General_Action::create_action(std::string owner, const std::vector<std::string>& arguments, const Domain& domain) const {
+		auto owner_type_atoms = domain.get_all_atoms_of_type(this->owner.first);
+		if (find(owner_type_atoms.begin(), owner_type_atoms.end(), owner) == owner_type_atoms.end()) {
+			// TODO - Handle with custom exception
+			std::cerr << "Tried to instantiate general_action with owner of wrong type\n";
+			throw;
+		}
+
+		std::unordered_map<std::string, std::string> input_to_atom;
+		size_t counter = 0;
+		for (auto& input : inputs) {
+			if (input.second == this->owner.second && owner != arguments[counter]) {
+				// TODO - Handle with custom exception
+				std::cerr << "Tried to instantiate general_action with owner argument not matching owner\n";
+				throw;
+			}
+			
+			auto& atoms = domain.get_all_atoms_of_type(input.first);
+			if (find(atoms.begin(), atoms.end(), arguments[counter]) == atoms.end()) {
+				// TODO - Handle with custom exception
+				std::cerr << "Tried to instantiate general_action with argument of wrong type\n";
+				throw;
+			}
+			input_to_atom[input.second] = arguments[counter];
+			counter++;
+		}
+		return Action(*this, domain.get_agent_id(owner), input_to_atom);
 	}
 }

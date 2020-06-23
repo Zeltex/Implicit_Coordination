@@ -66,6 +66,9 @@ namespace del {
 	Agent_Id Domain::create_agent(std::string name) {
 		Agent_Id id = Agent_Id{ agents.size() };
 		agents.emplace_back(id, name);
+#ifdef _DEBUG
+		Debugger::agents = this->agents;
+#endif 
 		return id;
 	}
 

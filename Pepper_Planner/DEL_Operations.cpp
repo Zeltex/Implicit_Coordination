@@ -3,8 +3,18 @@
 namespace del {
 
 	// TODO - Check definition of applicable, does there have to be at least one designated world left?
-	State perform_product_update(const State& state, const Action& action) {
-		//Agent_Id agent = action.get_owner();
+	State perform_product_update(const State& state, const Action& orig_action) {
+
+		// TODO - Currently creates an entire copy could probably be done more efficiently
+		Action action = create_perceive_observe_reachables(state, orig_action);
+
+#ifdef _DEBUG
+		std::ofstream file;
+		file.open("../action.dot");
+		file << "digraph G {\n" << action.to_graph() << "}";
+		file.close();
+#endif 
+
 		std::vector<World_Entry> new_worlds;
 		State result(state.get_number_of_agents());
 
@@ -123,5 +133,49 @@ namespace del {
 	bool are_states_bisimilar(const State& state1, const State& state2) {
 		Bisimulation_Context bisimulation_context(state1, state2);
 		return bisimulation_context.is_bisimilar();
+	}
+
+	// TODO - Have to remove reflecive reachables for non-observers
+	Action create_perceive_observe_reachables(const State& state, const Action& action) {
+		Action result(action);
+		std::vector<size_t> agents;
+		Agent_Id owner = action.get_owner();
+		std::vector<Agent_Id> non_observers;
+
+		for (size_t agent = 0; agent < state.get_number_of_agents(); agent++) {
+
+			auto& perceivables = state.get_perceivables({ agent });
+			if (find(perceivables.begin(), perceivables.end(), owner) != perceivables.end()) {
+				for (auto& event : result.get_events()) {
+					result.add_indistinguishability_relation({ agent }, event.get_id(), event.get_id());
+				}
+				continue;
+			}
+
+			auto& observables = state.get_observables({ agent });
+			if (find(observables.begin(), observables.end(), owner) != observables.end()) {
+				for (auto& event1 : result.get_events()) {
+					for (auto& event2 : result.get_events()) {
+						result.add_indistinguishability_relation({ agent }, event1.get_id(), event2.get_id());
+					}
+				}
+				continue;
+			}
+
+			non_observers.push_back({ agent });
+		}
+
+		if (!non_observers.empty()) {
+			Formula preconditions;
+			preconditions.f_top();
+			Event_Id empty_event = result.get_events().size();
+			result.add_event(std::string("unobservable"), Event_Id{ empty_event }, std::move(preconditions), {}, {});
+			for (auto& agent : non_observers) {
+				for (auto& event : result.get_events()) {
+					result.add_indistinguishability_relation({ agent }, event.get_id(), empty_event);
+				}
+			}
+		}
+		return std::move(result);
 	}
 }
