@@ -62,6 +62,7 @@ private:
 	std::unordered_set<std::string> types;
 	std::unordered_set<std::string> variable_list;
 	std::vector<std::string> ordered_variable_list;
+	std::vector<std::string> agents;
 	std::vector<std::pair<std::string, std::string>> inputs;
 	std::unordered_map<std::string, std::unordered_set<std::string>> objects;
 	std::string current_object_type;

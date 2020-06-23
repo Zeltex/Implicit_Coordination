@@ -52,6 +52,7 @@ std::vector<std::pair<std::string, std::string>> Domain_Buffer::get_inputs() {
 }
 
 std::unordered_map<std::string, std::unordered_set<std::string>> Domain_Buffer::get_objects() {
+    agents = { objects["agent"].begin(), objects["agent"].end() };
     auto temp = std::move(objects);
     objects = std::unordered_map<std::string, std::unordered_set<std::string>>();
     return std::move(temp);
@@ -81,7 +82,7 @@ std::vector<Proposition_Instance> Domain_Buffer::get_proposition_instances() {
 
 std::vector<std::string> Domain_Buffer::get_missing_perceivables() {
     std::vector<std::string> result;
-    for (auto agent : objects["agent"]) {
+    for (auto agent : agents){
         if (find(seen_perceivability.begin(), seen_perceivability.end(), agent) == seen_perceivability.end()) {
             result.push_back(agent);
         }
