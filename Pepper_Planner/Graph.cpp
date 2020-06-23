@@ -58,7 +58,7 @@ namespace del {
 		return result;
 	}
 
-	std::string Graph::to_graph(const std::vector<Agent> agents) const {
+	std::string Graph::to_graph(const std::vector<Agent>& agents) const {
 		std::string result = "digraph G {\ncompound=true;";
 		std::string connections;
 
@@ -86,7 +86,7 @@ namespace del {
 		return result;
 	}
 
-	std::string Graph::to_partial_graph(const std::vector<Agent> agents) const {
+	std::string Graph::to_partial_graph(const std::vector<Agent>& agents) const {
 		std::string result = "digraph G {\ncompound=true;";
 		std::string connections;
 

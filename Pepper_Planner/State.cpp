@@ -114,6 +114,11 @@ namespace del {
 		designated_worlds.push_back(world);
 	}
 
+	void State::copy_perceivability_and_observability(const State& other) {
+		perceivability = other.perceivability;
+		observability = other.observability;
+	}
+
 	size_t State::get_worlds_count() const {
 		return worlds.size();
 	}
@@ -159,6 +164,10 @@ namespace del {
 		return to_string(3);
 	}
 
+	void State::set_designated_worlds(std::vector<World_Id> worlds) {
+		designated_worlds = worlds;
+	}
+
 	std::string State::to_string(size_t indentation) const {
 
 		size_t relations_size = 0;
@@ -198,7 +207,7 @@ namespace del {
 		return result;
 	}
 
-	std::string State::to_graph(const std::vector<Agent> agents, const std::string node_id) const {
+	std::string State::to_graph(const std::vector<Agent>& agents, const std::string node_id) const {
 		std::string result;
 		for (auto& world : worlds) {
 			std::string propositions;
@@ -227,7 +236,7 @@ namespace del {
 					+ node_id
 					+ std::to_string(relation.world_to.id) 
 					+ "[label=\"" 
-					+ agents[agent_id].get_name() 
+					+ agents[agent_id].get_name()
 					+ "\"];\n";
 			}
 			agent_id++;

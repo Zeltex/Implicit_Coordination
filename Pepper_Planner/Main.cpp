@@ -22,16 +22,19 @@ int main(int argc, char* argv[]) {
 
 	DEL_Interface del_interface("../examples/simple.maepl");
 
-	del_interface.print_current_state_to_graph("../State_Before.dot");
-	del_interface.perform_action("perceive", "L", { "box1", "red_cube" });
-	del_interface.print_current_state_to_graph("../State_After.dot");
+	//del_interface.print_current_state_to_graph("../State_Before.dot");
+	//del_interface.perform_action("perceive", "L", { "box1", "red_cube" });
+	//del_interface.print_current_state_to_graph("../State_After.dot");
 
 	del_interface.create_policy();
 
 	while (!del_interface.is_solved()) {
 		Interface_DTO dto = del_interface.get_next_action();
 		if (dto.has_action()) {
+
+			del_interface.print_current_state_to_graph("../State_Before.dot");
 			del_interface.perform_action(dto.get_action());
+			del_interface.print_current_state_to_graph("../State_After.dot");
 		}
 		else {
 			std::cerr << "NO APPLIABLE ACTION" << std::endl;

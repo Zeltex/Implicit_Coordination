@@ -11,7 +11,7 @@
 #include "Misc.hpp"
 #include "Types.hpp"
 #include "General_Action.hpp"
-#include "Debugger.hpp"
+#include "Agent.hpp"
 
 namespace del {
 	class Action {
@@ -32,7 +32,7 @@ namespace del {
 		std::string to_string() const;
 		std::string to_string(size_t indentation) const;
 		std::string to_compact_string() const;
-		std::string to_graph() const;
+		std::string to_graph(const std::vector<Agent>& agents) const;
 
 	private:
 		std::string get_string(const std::vector<Proposition_Instance>& propositions) const;

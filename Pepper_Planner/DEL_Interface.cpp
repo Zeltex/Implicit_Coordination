@@ -65,7 +65,7 @@ namespace del {
 	}
 
 	bool DEL_Interface::create_policy() {
-		policy = planner.find_policy(this->goal, action_library, domain.get_current_state());
+		policy = planner.find_policy(this->goal, action_library, domain.get_current_state(), domain.get_agents());
 		has_policy = policy.is_solved();
 		return policy.is_solved();
 	}

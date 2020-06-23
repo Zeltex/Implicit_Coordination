@@ -21,6 +21,8 @@ namespace del {
 		World& create_world();
 		World& create_world(const World& world);
 		void create_worlds(size_t amount_to_create);	
+		void set_designated_worlds(std::vector<World_Id> worlds);
+		void copy_perceivability_and_observability(const State& other);
 
 
 		void add_designated_world(World_Id world);
@@ -44,7 +46,7 @@ namespace del {
 
 		std::string to_string() const;
 		std::string to_string(size_t indentation) const;
-		std::string to_graph(const std::vector<Agent> agents, const std::string node_id) const;
+		std::string to_graph(const std::vector<Agent>& agents, const std::string node_id) const;
 
 	private:
 		size_t number_of_agents;

@@ -30,3 +30,13 @@ TODO:
 - Custom parser and lexer
 - Add check in loader buffer so that everyone perceives themselves
 - Check exactly what edges are supposed to be on the action for perceiver, observer and unaware
+- Announce actions should respect observability (may already do it, not sure)
+- Is_bisimilar_on_path currently only checks against OR nodes, not sure if this is correct or not, think about it
+- Checking if action is applicable in planner may be redundant, as actions are now supposed to contain an event in which it succeeds and one in which it fails
+- Seems that perspective shifts are only supposed to change what worlds are designated, not what worlds exists or relations between them
+- bug in ensuring parser sets reflexive perceivability on agents
+- Create two events in announce actions so that observer knows about the announce, but not the result
+
+
+NOTES:
+- Announce actions do not create reachability relations by default since they are handled based on perceivability/observability in product update

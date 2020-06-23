@@ -24,13 +24,13 @@ namespace del {
 		action.add_event(event);
 
 		const State& current_state = states.back();
-		states.push_back(perform_product_update(current_state, action));
+		states.push_back(perform_product_update(current_state, action, agents));
 
 	}
 
 	void Domain::perform_action(Action action) {
 		const State& current_state = states.back();
-		states.push_back(perform_product_update(current_state, action));
+		states.push_back(perform_product_update(current_state, action, agents));
 	}
 
 	State Domain::get_current_state() const {
@@ -66,9 +66,6 @@ namespace del {
 	Agent_Id Domain::create_agent(std::string name) {
 		Agent_Id id = Agent_Id{ agents.size() };
 		agents.emplace_back(id, name);
-#ifdef _DEBUG
-		Debugger::agents = this->agents;
-#endif 
 		return id;
 	}
 

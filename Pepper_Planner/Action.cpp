@@ -113,7 +113,7 @@ namespace del {
 		return result;
 	}
 
-	std::string Action::to_graph() const {
+	std::string Action::to_graph(const std::vector<Agent>& agents) const {
 		std::string result;
 		for (auto& event : events) {
 			result += "s" + std::to_string(event.get_id().id) + "[label=\"" + event.get_name() + "\n<"
@@ -129,7 +129,7 @@ namespace del {
 		size_t agent = 0;
 		for (auto agent_relations : indistinguishability_relation) {
 			for (auto relation : agent_relations) {
-				result += "s" + std::to_string(relation.event_from.id) + " -> s" + std::to_string(relation.event_to.id) + "[label=\"" + (Debugger::agents.at(agent).get_name()) + "\"];\n";
+				result += "s" + std::to_string(relation.event_from.id) + " -> s" + std::to_string(relation.event_to.id) + "[label=\"" + (agents.at(agent).get_name()) + "\"];\n";
 			}
 			agent++;
 		}

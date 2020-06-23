@@ -3,13 +3,16 @@
 namespace del {
 
 	// TODO - Add option to specify for what person the goal must be fulfilled
-	Policy Planner::find_policy(const Formula& goal_formula, const Action_Library& action_library, const State& initial_state) const {
+	Policy Planner::find_policy(const Formula& goal_formula, const Action_Library& action_library, const State& initial_state, const std::vector<Agent>& agents) const {
 		Graph graph;
 		Node_Id root_node = graph.create_root_node(initial_state);
 		graph.add_to_frontier(root_node);
 		while (true) {
 			if (graph.is_frontier_empty()) {
-				print_graph_dot(graph);
+#ifdef DEBUG_PRINT
+				print_graph_dot(agents, graph);
+				print_graph(graph);
+#endif
 				return Policy(false);
 			}
 
@@ -17,8 +20,10 @@ namespace del {
 			if (is_goal_node(graph.get_node(current_node), goal_formula)) {
 				propogate_solved_node(graph, current_node);
 				if (graph.get_root_node().is_solved()) {
-					print_graph_dot(graph);
+#ifdef DEBUG_PRINT
+					print_graph_dot(agents, graph);
 					print_graph(graph);
+#endif
 					return extract_policy(graph);
 				} else {
 					continue;
@@ -28,7 +33,10 @@ namespace del {
 			if (is_bisimilar_on_path(graph, current_node)) {
 				propogate_dead_end_node(graph, current_node);
 				if (graph.get_root_node().is_dead()) {
-					print_graph_dot(graph);
+#ifdef DEBUG_PRINT
+					print_graph_dot(agents, graph);
+					print_graph(graph);
+#endif
 					return Policy(false);
 				}
 			}
@@ -46,7 +54,7 @@ namespace del {
 					continue;
 				}
 
-				State temp_product_update = perform_product_update(temp_perspective_shift, action);
+				State temp_product_update = perform_product_update(temp_perspective_shift, action, agents);
 				if (!is_valid_state(temp_product_update)) {
 					continue;
 				}
@@ -66,12 +74,15 @@ namespace del {
 			if (!found_applicable_action) {
 				propogate_dead_end_node(graph, current_node);
 				if (graph.get_root_node().is_dead()) {
-					print_graph_dot(graph);
+#ifdef DEBUG_PRINT
+					print_graph_dot(agents, graph);
+					print_graph(graph);
+#endif
 					return Policy(false);
 				}
 			}
 		}
-		print_graph_dot(graph);
+		print_graph_dot(agents, graph);
 		return Policy(false);
 	}
 
@@ -91,7 +102,7 @@ namespace del {
 		auto current_node_id = node.get_parent();
 		while (true) {
 			auto& current_node = graph.get_node(current_node_id);
-			if (are_states_bisimilar(node.get_state(), current_node.get_state())) {
+			if (current_node.get_type() == Node_Type::Or && are_states_bisimilar(node.get_state(), current_node.get_state())) {
 				return true;
 			} else if (current_node.is_root_node()) {
 				return false;
@@ -199,10 +210,14 @@ namespace del {
 		//std::cout << graph.to_string() << "\n\n\n\n\n" << std::endl;;
 	}
 
-	void Planner::print_graph_dot(const Graph& graph) const {
+	void Planner::print_graph_dot(const std::vector<Agent>& agents, const Graph& graph) const {
 		std::ofstream myfile;
 		myfile.open("../Graph.dot");
-		myfile << graph.to_partial_graph({ Agent({0}, "Pepper"), Agent({1}, "L") });
+#ifdef PRINT_PARTIAL
+		myfile << graph.to_partial_graph(agents);
+#else
+		myfile << graph.to_graph(agents);
+#endif
 		myfile.close();
 	}
 }

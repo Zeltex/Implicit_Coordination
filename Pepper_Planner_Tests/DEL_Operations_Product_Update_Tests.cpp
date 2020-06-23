@@ -46,7 +46,7 @@ namespace PepperPlannerTests
 			f.f_prop({ "in", { "red","Box1" } });
 			Action_Event event = Action_Event(Event_Id{ 0 }, std::move(f), std::vector<Proposition_Instance>(), std::vector<Proposition_Instance>());
 			action.add_event(event);
-			State& new_state = perform_product_update(state, action);
+			State& new_state = perform_product_update(state, action, { {{0}, "Pepper"}, {{1}, "L"} });
 			
 			auto& worlds = new_state.get_worlds();
 			Assert::AreEqual(size_t{ 1 }, worlds.size());
@@ -100,8 +100,7 @@ namespace PepperPlannerTests
 			action.add_indistinguishability_relation(Agent_Id{ 0 }, id2, id2);
 			action.add_designated_event(id);
 
-
-			State& new_state = perform_product_update(state, action);
+			State& new_state = perform_product_update(state, action, { {{0}, "Pepper"}, {{1}, "L"} });
 
 			// Correct amount of worlds
 			auto& worlds = new_state.get_worlds();
@@ -171,7 +170,7 @@ namespace PepperPlannerTests
 			action.add_designated_event(id2);
 
 
-			State& new_state = perform_product_update(state, action);
+			State& new_state = perform_product_update(state, action, { {{0}, "Pepper"}, {{1}, "L"} });
 
 			// TODO
 		}

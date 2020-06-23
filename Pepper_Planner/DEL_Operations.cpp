@@ -3,15 +3,15 @@
 namespace del {
 
 	// TODO - Check definition of applicable, does there have to be at least one designated world left?
-	State perform_product_update(const State& state, const Action& orig_action) {
+	State perform_product_update(const State& state, const Action& orig_action, const std::vector<Agent>& agents) {
 
 		// TODO - Currently creates an entire copy could probably be done more efficiently
 		Action action = create_perceive_observe_reachables(state, orig_action);
 
-#ifdef _DEBUG
+#ifdef DEBUG_PRINT
 		std::ofstream file;
 		file.open("../action.dot");
-		file << "digraph G {\n" << action.to_graph() << "}";
+		file << "digraph G {\n" << action.to_graph(agents) << "}";
 		file.close();
 #endif 
 
@@ -48,6 +48,7 @@ namespace del {
 				}
 			}
 		}
+		result.copy_perceivability_and_observability(state);
 		return std::move(result);
 	}
 	// Using definition: All states reachable by 'agent' from any designated world, 
@@ -59,8 +60,6 @@ namespace del {
 		std::unordered_set<size_t> visited;
 		for (auto designated_world : state.get_designated_worlds()) {
 			frontier.push_back(designated_world);
-			//visited.push_back(designated_world);
-			visited.insert(designated_world.id);
 		}
 		while (!frontier.empty()) {
 			auto current = frontier.back();
@@ -74,30 +73,14 @@ namespace del {
 				}
 			}
 		}
-
-		State result(state.get_number_of_agents());
-		// Using size_t instead of World_Id to avoid specifying custom hash function for World_Id
-		std::unordered_map<size_t, size_t> old_to_new_mapping;
-		for (auto world : visited) {
-			auto& new_world = result.create_world(state.get_world(World_Id{ world }));
-			result.add_designated_world(new_world.get_id());
-			old_to_new_mapping[world] = new_world.get_id().id;
-		}
-		for (size_t agent_number = 0; agent_number < state.get_number_of_agents(); agent_number++) {
-			auto current_agent = Agent_Id{ agent_number };
-			for (auto& relation : state.get_indistinguishability_relations(current_agent)) {
-				if (visited.find(relation.world_from.id) != visited.end() && visited.find(relation.world_to.id) != visited.end()) {
-					result.add_indistinguishability_relation(
-						current_agent, 
-						World_Id{ old_to_new_mapping[relation.world_from.id] }, 
-						World_Id{ old_to_new_mapping[relation.world_to.id] });
-				}
-			}
+		std::vector<World_Id> designated_worlds;
+		designated_worlds.reserve(visited.size());
+		for (auto& entry : visited) {
+			designated_worlds.emplace_back(World_Id{ entry });
 		}
 
-		// TODO - Maybe add indistinguishability for the perspective shifting agent, 
-		// such that it may not distinguish between any of the new designated worlds
-
+		State result = State(state);
+		result.set_designated_worlds(designated_worlds);
 		return std::move(result);
 	}
 
@@ -135,7 +118,6 @@ namespace del {
 		return bisimulation_context.is_bisimilar();
 	}
 
-	// TODO - Have to remove reflecive reachables for non-observers
 	Action create_perceive_observe_reachables(const State& state, const Action& action) {
 		Action result(action);
 		std::vector<size_t> agents;
@@ -144,6 +126,7 @@ namespace del {
 
 		for (size_t agent = 0; agent < state.get_number_of_agents(); agent++) {
 
+			// Perceivers
 			auto& perceivables = state.get_perceivables({ agent });
 			if (find(perceivables.begin(), perceivables.end(), owner) != perceivables.end()) {
 				for (auto& event : result.get_events()) {
@@ -152,6 +135,7 @@ namespace del {
 				continue;
 			}
 
+			// Observers
 			auto& observables = state.get_observables({ agent });
 			if (find(observables.begin(), observables.end(), owner) != observables.end()) {
 				for (auto& event1 : result.get_events()) {
@@ -170,9 +154,17 @@ namespace del {
 			preconditions.f_top();
 			Event_Id empty_event = result.get_events().size();
 			result.add_event(std::string("unobservable"), Event_Id{ empty_event }, std::move(preconditions), {}, {});
+
+			for (size_t agent = 0; agent < state.get_number_of_agents(); agent++) {
+				result.add_indistinguishability_relation({ agent }, empty_event, empty_event);
+			}
+
+			// Un-awares
 			for (auto& agent : non_observers) {
 				for (auto& event : result.get_events()) {
-					result.add_indistinguishability_relation({ agent }, event.get_id(), empty_event);
+					if (!(event.get_id() == empty_event)) {
+						result.add_indistinguishability_relation({ agent }, event.get_id(), empty_event);
+					}
 				}
 			}
 		}

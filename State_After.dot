@@ -1,48 +1,63 @@
 digraph {subgraph cluster_0 {s00 [label="0
 in(box0, red_cube)"];
 s01 [label="1
-in(box0, red_cube)"];
+in(L, red_cube)", shape=doublecircle];
 s02 [label="2
-in(box1, red_cube)", shape=doublecircle];
-s03 [label="3
 in(box1, red_cube)"];
+s03 [label="3
+in(L, red_cube)"];
 s04 [label="4
-in(box2, red_cube)"];
+in(box1, red_cube)"];
 s05 [label="5
 in(box2, red_cube)"];
 s00 -> s00[label="Pepper"];
+s01 -> s01[label="Pepper"];
 s02 -> s02[label="Pepper"];
+s03 -> s03[label="Pepper"];
 s04 -> s04[label="Pepper"];
+s05 -> s05[label="Pepper"];
 s00 -> s00[label="L"];
 s00 -> s04[label="L"];
+s00 -> s05[label="L"];
+s01 -> s01[label="L"];
 s02 -> s02[label="L"];
+s03 -> s03[label="L"];
 s04 -> s00[label="L"];
 s04 -> s04[label="L"];
+s04 -> s05[label="L"];
+s05 -> s00[label="L"];
+s05 -> s04[label="L"];
+s05 -> s05[label="L"];
 s00 -> s00[label="temp1"];
-s00 -> s02[label="temp1"];
 s00 -> s04[label="temp1"];
+s00 -> s05[label="temp1"];
+s01 -> s03[label="temp1"];
 s02 -> s00[label="temp1"];
-s02 -> s02[label="temp1"];
 s02 -> s04[label="temp1"];
+s02 -> s05[label="temp1"];
+s03 -> s03[label="temp1"];
 s04 -> s00[label="temp1"];
-s04 -> s02[label="temp1"];
 s04 -> s04[label="temp1"];
-s00 -> s01[label="temp2"];
-s00 -> s03[label="temp2"];
+s04 -> s05[label="temp1"];
+s05 -> s00[label="temp1"];
+s05 -> s04[label="temp1"];
+s05 -> s05[label="temp1"];
+s00 -> s00[label="temp2"];
+s00 -> s04[label="temp2"];
 s00 -> s05[label="temp2"];
-s01 -> s01[label="temp2"];
-s01 -> s03[label="temp2"];
+s01 -> s00[label="temp2"];
+s01 -> s04[label="temp2"];
 s01 -> s05[label="temp2"];
-s02 -> s01[label="temp2"];
-s02 -> s03[label="temp2"];
+s02 -> s00[label="temp2"];
+s02 -> s04[label="temp2"];
 s02 -> s05[label="temp2"];
-s03 -> s01[label="temp2"];
-s03 -> s03[label="temp2"];
+s03 -> s00[label="temp2"];
+s03 -> s04[label="temp2"];
 s03 -> s05[label="temp2"];
-s04 -> s01[label="temp2"];
-s04 -> s03[label="temp2"];
+s04 -> s00[label="temp2"];
+s04 -> s04[label="temp2"];
 s04 -> s05[label="temp2"];
-s05 -> s01[label="temp2"];
-s05 -> s03[label="temp2"];
+s05 -> s00[label="temp2"];
+s05 -> s04[label="temp2"];
 s05 -> s05[label="temp2"];
 }}

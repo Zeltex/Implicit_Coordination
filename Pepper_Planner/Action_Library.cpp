@@ -66,9 +66,6 @@ namespace del {
 		Action_Event event = Action_Event(Event_Id { 0 }, std::move(f), std::vector<Proposition_Instance>(), std::vector<Proposition_Instance>());
 		action.add_event(event);
 		action.add_designated_event(Event_Id{ 0 });
-		for (size_t agent = 0; agent < amount_of_agents; agent++) {
-			action.add_indistinguishability_relation(Agent_Id{ agent }, Event_Id{ 0 }, Event_Id{ 0 });
-		}
 		return action;
 	}
 
