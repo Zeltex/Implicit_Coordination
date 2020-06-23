@@ -49,6 +49,22 @@ namespace del {
 	void DEL_Interface::perform_do(const Agent_Id i, const std::vector<Proposition_Instance>& add, const std::vector<Proposition_Instance>& del) {
 		domain.perform_do(i, add, del);
 	}
+
+	void DEL_Interface::remove_observability(const std::vector<std::string>& observer, const std::vector<std::string>& observee) {
+		domain.remove_observability(observer, observee);
+	}
+	
+	void DEL_Interface::add_observability(const std::vector<std::string>& observer, const std::vector<std::string>& observee) {
+		domain.remove_observability(observer, observee);
+	}
+	
+	void DEL_Interface::remove_perceivability(const std::vector<std::string>& perceiver, const std::vector<std::string>& perceivee) {
+		domain.remove_perceivability(perceiver, perceivee);
+	}
+
+	void DEL_Interface::add_perceivability(const std::vector<std::string>& perceiver, const std::vector<std::string>& perceivee) {
+		domain.remove_perceivability(perceiver, perceivee);
+	}
 	
 	void DEL_Interface::perform_action(Action action) {
 		domain.perform_action(action);

@@ -29,6 +29,8 @@ namespace del {
 		void add_indistinguishability_relation(Agent_Id agent, World_Id world_from, World_Id world_to);
 		void add_observability(Agent_Id observer, std::vector<Agent_Id> agents);
 		void add_perceivability(Agent_Id perceiver, std::vector<Agent_Id> agents);
+		void remove_observability(Agent_Id observer, std::vector<Agent_Id> agents);
+		void remove_perceivability(Agent_Id perceiver, std::vector<Agent_Id> agents);
 		void add_true_propositions(World_Id world, std::vector<Proposition_Instance> propositions);
 
 

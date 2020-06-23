@@ -1,0 +1,63 @@
+_domain Pepper {
+	_announce_enabled = true
+	_reflexivity = false
+	_types = [container, object, agent]
+	_propositions = [
+		in(container c, object o)
+	]
+
+	_action pickup (container from, container to, object o) {
+		_owner = agent to
+		_designated_events = [event0, event1]
+		_event event0 { 
+			_preconditions = ( in(from, o) )
+			_effect_add = [in(to, o)]
+			_effect_delete = [in(from, o)]
+		}
+		_event event1 { 
+			_preconditions = ( NOT(in(from, o)) )
+			_effect_add = [ ]
+			_effect_delete = [ ]
+		}
+	}
+
+	_action put (container from, container to, object o) {
+		_owner = agent from
+		_designated_events = [event0, event1]
+		_event event0 { 
+			_preconditions = ( in(from, o) )
+			_effect_add = [in(to, o)]
+			_effect_delete = [in(from, o)]
+		}
+		_event event1 { 
+			_preconditions = ( NOT(in(from, o)) )
+			_effect_add = [ ]
+			_effect_delete = [ ]
+		}
+	}
+}
+_problem simple_problem {
+	_objects = {
+		container = [basket, box, S, A]
+		object = [marble]
+		agent = [S, A]
+	}
+	_initial_state = [
+		in(S, marble)
+	]
+	_world world0 [in(S, marble)]
+	_goal = [ ]
+	_designated_worlds = [ world1 ]
+	_reflexivity = true
+	_reachability = {
+	}
+	_perceivability = {
+		S = [ A ]
+		A = [ S ]
+	}
+	_observability = {
+		
+	}
+}
+
+

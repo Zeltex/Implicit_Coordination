@@ -30,6 +30,11 @@ namespace del {
 		Agent_Id get_agent_id(std::string name) const;
 		Agent_Id create_agent(std::string name);
 
+		void remove_observability(const std::vector<std::string>& observer, const std::vector<std::string>& observee);
+		void add_observability(const std::vector<std::string>& observer, const std::vector<std::string>& observee);
+		void remove_perceivability(const std::vector<std::string>& perceiver, const std::vector<std::string>& perceivee);
+		void add_perceivability(const std::vector<std::string>& perceiver, const std::vector<std::string>& perceivee);
+
 		void set_atom_types(std::unordered_set<std::string> types);
 		void set_objects(std::unordered_map<std::string, std::unordered_set<std::string>> objects);
 		void set_initial_state(State&& state);

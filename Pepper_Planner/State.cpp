@@ -145,11 +145,41 @@ namespace del {
 	}
 
 	void State::add_observability(Agent_Id observer, std::vector<Agent_Id> agents) {
-		observability[observer.id] = agents;
+		for (auto agent : agents) {
+			auto& temp = observability[observer.id];
+			if (find(temp.begin(), temp.end(), agent) == temp.end()) {
+				observability[observer.id].push_back(agent);
+			}
+		}
 	}
 
 	void State::add_perceivability(Agent_Id perceiver, std::vector<Agent_Id> agents) {
-		perceivability[perceiver.id] = agents;
+		for (auto agent : agents) {
+			auto& temp = perceivability[perceiver.id];
+			if (find(temp.begin(), temp.end(), agent) == temp.end()) {
+				perceivability[perceiver.id].push_back(agent);
+			}
+		}
+	}
+
+	void State::remove_perceivability(Agent_Id perceiver, std::vector<Agent_Id> agents) {
+		for (auto agent : agents) {
+			auto& temp = perceivability[perceiver.id];
+			auto it = find(temp.begin(), temp.end(), agent);
+			if (it != temp.end()) {
+				temp.erase(it);
+			}
+		}
+	}
+
+	void State::remove_observability(Agent_Id observer, std::vector<Agent_Id> agents) {
+		for (auto agent : agents) {
+			auto& temp = observability[observer.id];
+			auto it = find(temp.begin(), temp.end(), agent);
+			if (it != temp.end()) {
+				temp.erase(it);
+			}
+		}
 	}
 
 	const std::vector<Agent_Id>& State::get_observables(Agent_Id agent) const {

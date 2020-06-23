@@ -69,6 +69,50 @@ namespace del {
 		return id;
 	}
 
+	void Domain::remove_observability(const std::vector<std::string>& observers, const std::vector<std::string>& observees) {
+		for (auto& observer : observers) {
+			Agent_Id observer_agent = get_agent_id(observer);
+			std::vector<Agent_Id> observee_agents;
+			for (auto& observee : observees) {
+				observee_agents.push_back(get_agent_id(observee));
+			}
+			states.back().remove_observability(observer_agent, observee_agents);
+		}
+	}
+
+	void Domain::add_observability(const std::vector<std::string>& observers, const std::vector<std::string>& observees) {
+		for (auto& observer : observers) {
+			Agent_Id observer_agent = get_agent_id(observer);
+			std::vector<Agent_Id> observee_agents;
+			for (auto& observee : observees) {
+				observee_agents.push_back(get_agent_id(observee));
+			}
+			states.back().add_observability(observer_agent, observee_agents);
+		}
+	}
+
+	void Domain::remove_perceivability(const std::vector<std::string>& perceivers, const std::vector<std::string>& perceivees) {
+		for (auto& perceiver : perceivers) {
+			Agent_Id perceiver_agent = get_agent_id(perceiver);
+			std::vector<Agent_Id> perceivee_agents;
+			for (auto& perceivee : perceivees) {
+				perceivee_agents.push_back(get_agent_id(perceivee));
+			}
+			states.back().remove_perceivability(perceiver_agent, perceivee_agents);
+		}
+	}
+
+	void Domain::add_perceivability(const std::vector<std::string>& perceivers, const std::vector<std::string>& perceivees) {
+		for (auto& perceiver : perceivers) {
+			Agent_Id perceiver_agent = get_agent_id(perceiver);
+			std::vector<Agent_Id> perceivee_agents;
+			for (auto& perceivee : perceivees) {
+				perceivee_agents.push_back(get_agent_id(perceivee));
+			}
+			states.back().add_perceivability(perceiver_agent, perceivee_agents);
+		}
+	}
+
 	void Domain::set_atom_types(std::unordered_set<std::string> types) {
 		atom_types = types;
 	}
