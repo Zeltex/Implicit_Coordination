@@ -2,10 +2,12 @@
 
 #include <string>
 #include <iostream>
+#include <fstream>
 
 #include "Domain_Interface.hpp"
 #include "Maepl.hpp"
 #include "Domain_Buffer.hpp"
+#include "Custom_Lexer.hpp"
 
 class Loader {
 public:
