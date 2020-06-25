@@ -163,7 +163,7 @@ designated_events_body:
     | NAME                                   { buffer->add_designated_event($1);                            } designated_events_body     
                                              
 event_body:                                  
-    | PRECONDITIONS_DEF EQUALS LBRACK        { buffer->clear_formula();                                     } 
+    | PRECONDITIONS_DEF EQUALS LBRACK        {                                                              } 
         formula_single RBRACK                {                                                              } event_body
     | EFFECT_DELETE_DEF EQUALS               { buffer->clear_variable_list();                               } 
         bracketed_propositions_instances     { buffer->push_event_delete_list();                            } event_body

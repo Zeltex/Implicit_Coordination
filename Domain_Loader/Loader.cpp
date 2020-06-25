@@ -17,6 +17,7 @@ void Loader::parse(Domain_Interface* domain, std::string file_path) {
 
     Custom_Lexer lexer;
     lexer.lex(file);
+    Custom_Parser parser(domain, &buffer, &lexer);
 
     /*parse_domain(domain, &buffer, file);*/
 

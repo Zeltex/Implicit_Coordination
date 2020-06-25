@@ -8,6 +8,7 @@
 #include "Maepl.hpp"
 #include "Domain_Buffer.hpp"
 #include "Custom_Lexer.hpp"
+#include "Custom_Parser.hpp"
 
 class Loader {
 public:

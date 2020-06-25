@@ -89,6 +89,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -141,6 +142,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Custom_Lexer.cpp" />
+    <ClCompile Include="Custom_Parser.cpp" />
     <ClCompile Include="Domain_Buffer.cpp" />
     <ClCompile Include="Loader.cpp" />
     <ClCompile Include="maepl.flex.cpp" />
@@ -148,6 +150,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Custom_Lexer.hpp" />
+    <ClInclude Include="Custom_Parser.hpp" />
     <ClInclude Include="Domain_Buffer.hpp" />
     <ClInclude Include="Domain_Interface.hpp" />
     <ClInclude Include="FlexLexer.h" />

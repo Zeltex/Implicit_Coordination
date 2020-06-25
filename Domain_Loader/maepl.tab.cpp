@@ -1835,7 +1835,7 @@ yyreduce:
   case 75:
 /* Line 1792 of yacc.c  */
 #line 166 "maepl.y"
-    { buffer->clear_formula();                                     }
+    {                                                              }
     break;
 
   case 76:

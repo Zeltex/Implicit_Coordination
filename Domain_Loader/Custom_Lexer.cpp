@@ -39,9 +39,9 @@ void Custom_Lexer::lex(std::ifstream& file) {
 		}
 		line_number++;
 	}
-	int debug = 0;
 }
 
+// TODO - Optimise with a trie like datastructure
 void Custom_Lexer::handle_def(const std::string& line, size_t& pointer, const size_t& line_number) {
 	pointer++;
 	size_t end_of_token = get_end_of_name(line, pointer);
@@ -76,7 +76,12 @@ void Custom_Lexer::handle_def(const std::string& line, size_t& pointer, const si
 
 size_t Custom_Lexer::get_end_of_name(const std::string& line, const size_t& pointer) const {
 	size_t result = pointer + 1;
-	for (char c = line[result]; result < line.size() - 1 && ( (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9') || c == '_'); c = line[++result]);
+	char c = line[result];
+	while ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9') || c == '_') {
+		result++;
+		if (result >= line.size()) break;
+		c = line[result];
+	}
 	return result;
 }
 
