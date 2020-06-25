@@ -26,6 +26,24 @@ namespace del {
 		this->domain = std::move(domain);
 		this->action_library = std::move(library);
 		this->goal = std::move(goal);
+
+#ifdef DEBUG_PRINT
+		std::string path;
+#ifdef DEBUG_PRINT_PATH
+		path = DEBUG_PRINT_PATH;
+#else
+		path = "../Debug_Output/";
+#endif
+		std::string command = "rm -r " + path + "dot/*";
+		system(command.c_str());
+		command = "rm -r " + path + "png/*";
+		system(command.c_str());
+		std::ofstream state_file;
+		state_file.open(path + "dot/State" + std::to_string(debug_counter) + ".dot");
+		state_file << "digraph {subgraph cluster_0 {" << this->domain.get_current_state().to_graph(this->domain.get_agents(), "s0") << "}}";
+		state_file.close();
+#endif
+
 	}
 	
 	Interface_DTO DEL_Interface::get_next_action() {
@@ -73,6 +91,22 @@ namespace del {
 	void DEL_Interface::perform_action(std::string name, std::string owner, std::vector<std::string> arguments) {
 		auto action = action_library.get_general_action(name).create_action(owner, arguments, domain);
 		domain.perform_action(action);
+#ifdef DEBUG_PRINT
+		std::string path;
+ #ifdef DEBUG_PRINT_PATH
+		path = DEBUG_PRINT_PATH;
+ #else
+		path = "../Debug_Output/";
+ #endif
+		std::ofstream action_file;
+		action_file.open(path + "dot/Action" + std::to_string(debug_counter++) + ".dot");
+		action_file << "digraph G {\n" << action.to_graph(domain.get_agents()) << "}";
+		action_file.close();
+		std::ofstream state_file;
+		state_file.open(path + "dot/State" + std::to_string(debug_counter) + ".dot");
+		state_file << "digraph {subgraph cluster_0 {" << domain.get_current_state().to_graph(domain.get_agents(), "s0") << "}}";
+		state_file.close();
+#endif
 	}
 	
 	bool DEL_Interface::create_policy(Formula goal) {
@@ -88,12 +122,5 @@ namespace del {
 
 	bool DEL_Interface::is_solved() {
 		return domain.get_current_state().valuate(goal);
-	}
-
-	void DEL_Interface::print_current_state_to_graph(std::string file_path) {
-		std::ofstream myfile;
-		myfile.open(file_path);
-		myfile << "digraph {subgraph cluster_0 {" << domain.get_current_state().to_graph(domain.get_agents(), "s0") << "}}";
-		myfile.close();
 	}
 }

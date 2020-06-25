@@ -1,0 +1,10 @@
+digraph G {
+s0[label="event0
+<in(S, marble)>
+<in(basket, marble)>
+<in(S, marble)>", shape=doublecircle];
+s1[label="event1
+<Not(in(S, marble))>
+<>
+<>", shape=doublecircle];
+}

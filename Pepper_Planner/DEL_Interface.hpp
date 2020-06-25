@@ -40,5 +40,8 @@ namespace del {
 		Action_Library action_library;
 		Agent_Id pepper_id;
 		Formula goal;
+#ifdef DEBUG_PRINT
+		size_t debug_counter = 0;
+#endif
 	};
 }

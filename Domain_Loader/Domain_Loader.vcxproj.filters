@@ -18,12 +18,6 @@
     <ClCompile Include="Loader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="maepl.flex.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="maepl.tab.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Domain_Buffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -41,12 +35,6 @@
     <ClInclude Include="Domain_Interface.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="FlexLexer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="maepl.tab.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Maepl.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -62,11 +50,5 @@
     <ClInclude Include="Custom_Parser.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <Flex Include="maepl.l" />
-  </ItemGroup>
-  <ItemGroup>
-    <Bison Include="maepl.y" />
   </ItemGroup>
 </Project>

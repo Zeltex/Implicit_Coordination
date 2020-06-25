@@ -1,0 +1,17 @@
+digraph {subgraph cluster_0 {s00 [label="0
+in(box, marble)", shape=doublecircle];
+s01 [label="1
+in(A, marble)"];
+s02 [label="2
+in(basket, marble)"];
+s03 [label="3
+in(basket, marble)"];
+s00 -> s03[label="S"];
+s01 -> s03[label="S"];
+s02 -> s03[label="S"];
+s03 -> s03[label="S"];
+s00 -> s00[label="A"];
+s01 -> s01[label="A"];
+s02 -> s02[label="A"];
+s03 -> s03[label="A"];
+}}
