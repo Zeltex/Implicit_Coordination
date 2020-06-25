@@ -1,0 +1,49 @@
+_domain Second {
+	_announce_enabled = true
+	_reflexivity = false
+	_types = [container, object, agent]
+	_propositions = [
+		in(container c, object o)
+	]
+
+	_action transfer (container from, container to, object o) {
+		_owner = agent agent
+		_designated_events = [event0]
+		_event event0 { 
+			_preconditions = ( in(from, o) )
+			_effect_add = [in(to, o)]
+			_effect_delete = [in(from, o)]
+		}
+		_event event0 { 
+			_preconditions = ( NOT(in(from, o)) )
+			_effect_add = []
+			_effect_delete = []
+		}
+	}
+}
+_problem simple_problem {
+	_objects = {
+		container = [box1, box2]
+		object = [cube_red]
+		agent = [A, B, C]
+	}
+	_initial_state = [
+		in(box1, cube_red)
+	]
+	_world world0 [in(box1, cube_red)]
+	_goal = [ ]
+	_designated_worlds = [ world0 ]
+	_reflexivity = true
+	_reachability = {
+	}
+	_perceivability = {
+		A = [ B, C ]
+		B = [ A, C ]
+		C = [ A, B ]
+	}
+	_observability = {
+		
+	}
+}
+
+

@@ -46,4 +46,7 @@ namespace del {
 		}
 		return result;
 	}
+	void World::set_id(World_Id id) {
+		this->id = std::move(id);
+	}
 }

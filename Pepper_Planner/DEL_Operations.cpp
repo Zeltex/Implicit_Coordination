@@ -49,6 +49,7 @@ namespace del {
 			}
 		}
 		result.copy_perceivability_and_observability(state);
+		result.remove_unreachable_worlds();
 		return std::move(result);
 	}
 	// Using definition: All states reachable by 'agent' from any designated world, 
@@ -170,4 +171,5 @@ namespace del {
 		}
 		return std::move(result);
 	}
+
 }

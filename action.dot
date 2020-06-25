@@ -1,20 +1,23 @@
 digraph G {
 s0[label="event0
-<in(A, marble)>
-<in(box, marble)>
-<in(A, marble)>", shape=doublecircle];
-s1[label="event1
-<Not(in(A, marble))>
+<in(box1, cube_red)>
+<in(box2, cube_red)>
+<in(box1, cube_red)>", shape=doublecircle];
+s1[label="event0
+<Not(in(box1, cube_red))>
 <>
-<>", shape=doublecircle];
+<>"];
 s2[label="unobservable
 <TOP>
 <>
 <>"];
-s2 -> s2[label="S"];
-s0 -> s2[label="S"];
-s1 -> s2[label="S"];
 s0 -> s0[label="A"];
 s1 -> s1[label="A"];
 s2 -> s2[label="A"];
+s2 -> s2[label="B"];
+s0 -> s2[label="B"];
+s1 -> s2[label="B"];
+s0 -> s0[label="C"];
+s1 -> s1[label="C"];
+s2 -> s2[label="C"];
 }

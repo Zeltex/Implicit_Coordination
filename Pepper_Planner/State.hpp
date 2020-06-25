@@ -32,6 +32,7 @@ namespace del {
 		void remove_observability(Agent_Id observer, std::vector<Agent_Id> agents);
 		void remove_perceivability(Agent_Id perceiver, std::vector<Agent_Id> agents);
 		void add_true_propositions(World_Id world, std::vector<Proposition_Instance> propositions);
+		void remove_unreachable_worlds();
 
 
 		std::vector<World_Id>				get_designated_world_reachables(Agent_Id agent) const;

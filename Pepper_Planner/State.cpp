@@ -198,6 +198,78 @@ namespace del {
 		designated_worlds = worlds;
 	}
 
+	void State::remove_unreachable_worlds() {
+
+		// Convert relations
+		std::unordered_map<size_t, std::unordered_set<size_t>> relations;
+		for (auto& world : worlds) {
+			relations[world.get_id().id].reserve(worlds.size());
+		}
+		for (auto& agent_relations : indistinguishability_relation) {
+			for (const auto& relation : agent_relations) {
+				relations[relation.world_from.id].insert(relation.world_to.id);
+			}
+		}
+
+		// Get reachable worlds
+		std::vector<size_t> frontier;
+		std::unordered_set<size_t> visited;
+		for (auto designated_world : designated_worlds) {
+			frontier.push_back(designated_world.id);
+			visited.insert(designated_world.id);
+		}
+		while (!frontier.empty()) {
+			const auto& current = frontier.back();
+			frontier.pop_back();
+			for (const auto& relation : relations[current]) {
+				if (std::find(visited.begin(), visited.end(), relation) == visited.end()) {
+					frontier.push_back(relation);
+					visited.insert(relation);
+				}
+			}
+		}
+		std::unordered_map<size_t, size_t> world_old_to_new;
+		world_old_to_new.reserve(worlds.size());
+
+		// Delete worlds
+		std::vector<World> new_worlds;
+		new_worlds.reserve(visited.size());
+		{
+			size_t counter = 0;
+			for (auto& world : worlds) {
+				if (visited.find(world.get_id().id) != visited.end()) {
+					world_old_to_new[world.get_id().id] = counter;
+					world.set_id({ counter });
+					new_worlds.emplace_back(std::move(world));
+					counter++;
+				}
+			}
+			worlds = std::move(new_worlds);
+		}
+
+		// Delete relations
+		std::vector<std::vector<World_Relation>> new_relations;
+		new_relations.reserve(number_of_agents);
+		for (size_t i = 0; i < number_of_agents; i++) {
+			new_relations.emplace_back();
+			new_relations[i].reserve(worlds.size());
+		}
+		size_t agent = 0;
+		for (auto& agent_relations : indistinguishability_relation) {
+			for (const auto& relation : agent_relations) {
+				if (visited.find(relation.world_from.id) != visited.end() 
+					&& visited.find(relation.world_to.id) != visited.end()) {
+					new_relations[agent].emplace_back(
+						World_Id{ world_old_to_new[relation.world_from.id] },
+						World_Id{ world_old_to_new[relation.world_to.id] });
+				}
+			}
+			agent++;
+		}
+		indistinguishability_relation = std::move(new_relations);
+	}
+
+
 	std::string State::to_string(size_t indentation) const {
 
 		size_t relations_size = 0;

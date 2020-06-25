@@ -1,9 +1,0 @@
-digraph {subgraph cluster_0 {s00 [label="0
-in(A, marble)", shape=doublecircle];
-s01 [label="1
-in(basket, marble)"];
-s00 -> s01[label="S"];
-s01 -> s01[label="S"];
-s00 -> s00[label="A"];
-s01 -> s01[label="A"];
-}}
