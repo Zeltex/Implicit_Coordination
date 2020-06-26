@@ -3,9 +3,9 @@
 
 #include <iostream>
 
-#include "../Pepper_Planner/World.hpp"
-#include "../Formula/Formula.hpp"
-#include "../Formula/Formula_Component.hpp"
+#include "World.hpp"
+#include "Formula.hpp"
+#include "Formula_Component.hpp"
 
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;

@@ -10,8 +10,8 @@
 #include "Action_Library.hpp"
 #include "Environment_Loader.hpp"
 #include "Domain_Interface_Implementation.h"
-#include "../Domain_Loader/Loader.hpp"
-#include "../Formula/Types.hpp"
+#include "Loader.hpp"
+#include "Types.hpp"
 
 namespace del {
 	class DEL_Interface {

@@ -3,9 +3,9 @@
 
 #include <iostream>
 
-#include "../Pepper_Planner/Types.hpp"
-#include "../Pepper_Planner/DEL_Operations.hpp"
-#include "../Pepper_Planner/Bisimulation_Context.hpp"
+#include "Types.hpp"
+#include "DEL_Operations.hpp"
+#include "Bisimulation_Context.hpp"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 

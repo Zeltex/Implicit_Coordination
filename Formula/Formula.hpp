@@ -5,8 +5,8 @@
 #include <unordered_set>
 #include <memory>
 
-#include "Types.hpp"
-#include "../Formula/Formula_Component.hpp"
+#include "Formula_Types.hpp"
+#include "Formula_Component.hpp"
 
 namespace del {
 

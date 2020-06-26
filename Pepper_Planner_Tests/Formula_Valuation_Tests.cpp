@@ -3,8 +3,8 @@
 
 #include <iostream>
 
-#include "../Formula/Formula.hpp"
-#include "../Formula/Formula_Component.hpp"
+#include "Formula.hpp"
+#include "Formula_Component.hpp"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 

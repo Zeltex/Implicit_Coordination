@@ -4,7 +4,7 @@
 
 #include "State.hpp"
 #include "Types.hpp"
-#include "../Formula/Formula.hpp"
+#include "Formula.hpp"
 #include "Action.hpp"
 
 namespace del {

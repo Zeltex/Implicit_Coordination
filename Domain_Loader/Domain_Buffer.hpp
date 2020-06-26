@@ -6,10 +6,10 @@
 #include <unordered_set>
 #include <unordered_map>
 
-#include "../Formula/Formula.hpp"
-#include "../Formula/Types.hpp"
-#include "../Formula/Formula_Converter.hpp"
-#include "Types.hpp"
+#include "Formula.hpp"
+#include "Formula_Types.hpp"
+#include "Formula_Converter.hpp"
+#include "Loader_Types.hpp"
 
 using namespace del;
 class Domain_Buffer {

@@ -4,8 +4,8 @@
 #include <unordered_set>
 #include <unordered_map>
 
-#include "../Domain_Loader/Domain_Interface.hpp"
-#include "../Domain_Loader/Types.hpp"
+#include "Domain_Interface.hpp"
+#include "Loader_Types.hpp"
 #include "General_Action.hpp"
 #include "General_World.hpp"
 #include "Domain.hpp"

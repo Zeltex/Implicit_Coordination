@@ -21,10 +21,10 @@
     <ClInclude Include="Formula_Component.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Types.hpp">
+    <ClInclude Include="Formula_Converter.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Formula_Converter.hpp">
+    <ClInclude Include="Formula_Types.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

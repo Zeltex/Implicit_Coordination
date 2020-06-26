@@ -5,8 +5,8 @@
 #include <string>
 #include <unordered_map>
 
-#include "../Formula/Formula.hpp"
-#include "../Formula/Types.hpp"
+#include "Formula.hpp"
+#include "Formula_Types.hpp"
 #include "Action_Event.hpp"
 #include "Misc.hpp"
 #include "Types.hpp"

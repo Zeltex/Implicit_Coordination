@@ -3,14 +3,14 @@
 
 #include <iostream>
 
-#include "../Formula/Formula.hpp"
-#include "../Formula/Formula_Component.hpp"
-#include "../Pepper_Planner/State.hpp"
-#include "../Pepper_Planner/Action.hpp"
-#include "../Pepper_Planner/Action_Event.hpp"
-#include "../Pepper_Planner/DEL_Operations.hpp"
-#include "../Pepper_Planner/Types.hpp"
-#include "../Pepper_Planner/DEL_Operations.hpp"
+#include "Formula.hpp"
+#include "Formula_Component.hpp"
+#include "State.hpp"
+#include "Action.hpp"
+#include "Action_Event.hpp"
+#include "DEL_Operations.hpp"
+#include "Types.hpp"
+#include "DEL_Operations.hpp"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 

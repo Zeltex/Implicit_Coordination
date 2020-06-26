@@ -4,7 +4,7 @@
 #include <unordered_set>
 
 #include "Types.hpp"
-#include "../Formula/Formula.hpp"
+#include "Formula.hpp"
 
 namespace del {
 	class World {

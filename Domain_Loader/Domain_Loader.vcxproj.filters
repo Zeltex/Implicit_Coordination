@@ -41,13 +41,13 @@
     <ClInclude Include="Domain_Buffer.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Types.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Custom_Lexer.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Custom_Parser.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Loader_Types.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -5,9 +5,9 @@
 #include <unordered_set>
 #include <unordered_map>
 
-#include "../Formula/Formula.hpp"
-#include "../Formula/Formula_Component.hpp"
-#include "Types.hpp"
+#include "Formula.hpp"
+#include "Formula_Component.hpp"
+#include "Loader_Types.hpp"
 
 class Domain_Interface {
 public:

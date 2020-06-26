@@ -3,7 +3,7 @@
 #include <vector>
 #include <string>
 
-#include "../Domain_Loader/Types.hpp"
+#include "Loader_Types.hpp"
 
 namespace del {
 	class General_World {

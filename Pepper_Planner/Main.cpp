@@ -1,10 +1,10 @@
 #include "Graph.hpp"
-#include "../Formula/Formula.hpp"
+#include "Formula.hpp"
 #include <iostream>
 
 #include "World.hpp"
-#include "../Formula/Formula.hpp"
-#include "../Formula/Formula_Component.hpp"
+#include "Formula.hpp"
+#include "Formula_Component.hpp"
 #include "Action.hpp"
 #include "Action_Event.hpp"
 #include "DEL_Operations.hpp"
@@ -13,7 +13,7 @@
 #include "Domain.hpp"
 #include "DEL_Interface.hpp"
 #include "Domain_Interface_Implementation.h"
-#include "../Domain_Loader/Loader.hpp"
+#include "Loader.hpp"
 
 using namespace del;
 
