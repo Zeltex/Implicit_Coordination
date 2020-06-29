@@ -226,60 +226,43 @@ label="(Or)Node 2";
 pencolor=green;
 s20 [label="0
 perceives(L, Pepper), perceives(Pepper, L), in(L, red_cube)", shape=doublecircle];
-s21 [label="1
-in(box1, red_cube), perceives(L, Pepper), perceives(Pepper, L)"];
-s22 [label="2
-in(box2, red_cube), perceives(L, Pepper), perceives(Pepper, L)"];
 s20 -> s20[label="Pepper"];
-s21 -> s21[label="Pepper"];
-s22 -> s22[label="Pepper"];
 s20 -> s20[label="L"];
-s21 -> s21[label="L"];
-s21 -> s22[label="L"];
-s22 -> s21[label="L"];
-s22 -> s22[label="L"];
 
 }
 subgraph cluster_3 {
 label="(Or)Node 3";
 pencolor=green;
 s30 [label="0
-perceives(L, Pepper), perceives(Pepper, L), in(L, red_cube)"];
-s31 [label="1
 in(box1, red_cube), perceives(L, Pepper), perceives(Pepper, L)", shape=doublecircle];
-s32 [label="2
+s31 [label="1
 in(box2, red_cube), perceives(L, Pepper), perceives(Pepper, L)"];
 s30 -> s30[label="Pepper"];
 s31 -> s31[label="Pepper"];
-s32 -> s32[label="Pepper"];
 s30 -> s30[label="L"];
+s30 -> s31[label="L"];
+s31 -> s30[label="L"];
 s31 -> s31[label="L"];
-s31 -> s32[label="L"];
-s32 -> s31[label="L"];
-s32 -> s32[label="L"];
 
 }
 subgraph cluster_4 {
 label="(Or)Node 4";
 pencolor=green;
 s40 [label="0
-perceives(L, Pepper), perceives(Pepper, L), in(L, red_cube)"];
-s41 [label="1
 in(box1, red_cube), perceives(L, Pepper), perceives(Pepper, L)"];
-s42 [label="2
+s41 [label="1
 in(box2, red_cube), perceives(L, Pepper), perceives(Pepper, L)", shape=doublecircle];
 s40 -> s40[label="Pepper"];
 s41 -> s41[label="Pepper"];
-s42 -> s42[label="Pepper"];
 s40 -> s40[label="L"];
+s40 -> s41[label="L"];
+s41 -> s40[label="L"];
 s41 -> s41[label="L"];
-s41 -> s42[label="L"];
-s42 -> s41[label="L"];
-s42 -> s42[label="L"];
 
 }
 subgraph cluster_47 {
 label="(And)Node 47";
+pencolor=red;
 s470 [label="0
 in(box1, red_cube), perceives(L, Pepper), perceives(Pepper, L)", shape=doublecircle];
 s471 [label="1
@@ -320,6 +303,7 @@ s531 -> s531[label="L"];
 }
 subgraph cluster_56 {
 label="(And)Node 56";
+pencolor=red;
 s560 [label="0
 in(box1, red_cube), perceives(L, Pepper), perceives(Pepper, L)", shape=doublecircle];
 s561 [label="1
@@ -334,6 +318,7 @@ s561 -> s561[label="L"];
 }
 subgraph cluster_59 {
 label="(And)Node 59";
+pencolor=red;
 s590 [label="0
 in(box1, red_cube), perceives(L, Pepper), perceives(Pepper, L)", shape=doublecircle];
 s591 [label="1
@@ -374,6 +359,7 @@ s651 -> s651[label="L"];
 }
 subgraph cluster_68 {
 label="(And)Node 68";
+pencolor=red;
 s680 [label="0
 in(box1, red_cube), perceives(L, Pepper), perceives(Pepper, L)", shape=doublecircle];
 s681 [label="1
@@ -427,6 +413,7 @@ in(box2, red_cube), perceives(L, Pepper), perceives(Pepper, L)", shape=doublecir
 }
 subgraph cluster_83 {
 label="(And)Node 83";
+pencolor=red;
 s830 [label="0
 in(box1, red_cube), perceives(L, Pepper), perceives(Pepper, L)", shape=doublecircle];
 s831 [label="1
@@ -466,6 +453,7 @@ s891 -> s891[label="L"];
 }
 subgraph cluster_92 {
 label="(And)Node 92";
+pencolor=red;
 s920 [label="0
 in(box1, red_cube), perceives(L, Pepper), perceives(Pepper, L)", shape=doublecircle];
 s921 [label="1
@@ -480,6 +468,7 @@ s921 -> s921[label="L"];
 }
 subgraph cluster_95 {
 label="(And)Node 95";
+pencolor=red;
 s950 [label="0
 in(box1, red_cube), perceives(L, Pepper), perceives(Pepper, L)", shape=doublecircle];
 s951 [label="1
@@ -518,6 +507,7 @@ s1011 -> s1011[label="L"];
 }
 subgraph cluster_104 {
 label="(And)Node 104";
+pencolor=red;
 s1040 [label="0
 in(box1, red_cube), perceives(L, Pepper), perceives(Pepper, L)", shape=doublecircle];
 s1041 [label="1
@@ -574,25 +564,17 @@ label="(Or)Node 51";
 pencolor=green;
 s510 [label="0
 perceives(L, Pepper), perceives(Pepper, L), in(L, red_cube)", shape=doublecircle];
-s511 [label="1
-in(box2, red_cube), perceives(L, Pepper), perceives(Pepper, L)"];
 s510 -> s510[label="Pepper"];
-s511 -> s511[label="Pepper"];
 s510 -> s510[label="L"];
-s511 -> s511[label="L"];
 
 }
 subgraph cluster_52 {
 label="(Or)Node 52";
 pencolor=green;
 s520 [label="0
-perceives(L, Pepper), perceives(Pepper, L), in(L, red_cube)"];
-s521 [label="1
 in(box2, red_cube), perceives(L, Pepper), perceives(Pepper, L)", shape=doublecircle];
 s520 -> s520[label="Pepper"];
-s521 -> s521[label="Pepper"];
 s520 -> s520[label="L"];
-s521 -> s521[label="L"];
 
 }
 subgraph cluster_54 {
@@ -600,25 +582,17 @@ label="(Or)Node 54";
 pencolor=green;
 s540 [label="0
 in(box1, red_cube), perceives(L, Pepper), perceives(Pepper, L)", shape=doublecircle];
-s541 [label="1
-perceives(L, Pepper), perceives(Pepper, L), in(L, red_cube)"];
 s540 -> s540[label="Pepper"];
-s541 -> s541[label="Pepper"];
 s540 -> s540[label="L"];
-s541 -> s541[label="L"];
 
 }
 subgraph cluster_55 {
 label="(Or)Node 55";
 pencolor=green;
 s550 [label="0
-in(box1, red_cube), perceives(L, Pepper), perceives(Pepper, L)"];
-s551 [label="1
 perceives(L, Pepper), perceives(Pepper, L), in(L, red_cube)", shape=doublecircle];
 s550 -> s550[label="Pepper"];
-s551 -> s551[label="Pepper"];
 s550 -> s550[label="L"];
-s551 -> s551[label="L"];
 
 }
 subgraph cluster_63 {
@@ -626,25 +600,17 @@ label="(Or)Node 63";
 pencolor=green;
 s630 [label="0
 in(box1, red_cube), perceives(L, Pepper), perceives(Pepper, L)", shape=doublecircle];
-s631 [label="1
-in(box2, red_cube), perceives(L, Pepper), perceives(Pepper, L)"];
 s630 -> s630[label="Pepper"];
-s631 -> s631[label="Pepper"];
 s630 -> s630[label="L"];
-s631 -> s631[label="L"];
 
 }
 subgraph cluster_64 {
 label="(Or)Node 64";
 pencolor=green;
 s640 [label="0
-in(box1, red_cube), perceives(L, Pepper), perceives(Pepper, L)"];
-s641 [label="1
 in(box2, red_cube), perceives(L, Pepper), perceives(Pepper, L)", shape=doublecircle];
 s640 -> s640[label="Pepper"];
-s641 -> s641[label="Pepper"];
 s640 -> s640[label="L"];
-s641 -> s641[label="L"];
 
 }
 subgraph cluster_66 {
@@ -652,25 +618,17 @@ label="(Or)Node 66";
 pencolor=green;
 s660 [label="0
 in(box1, red_cube), perceives(L, Pepper), perceives(Pepper, L)", shape=doublecircle];
-s661 [label="1
-in(box2, red_cube), perceives(L, Pepper), perceives(Pepper, L)"];
 s660 -> s660[label="Pepper"];
-s661 -> s661[label="Pepper"];
 s660 -> s660[label="L"];
-s661 -> s661[label="L"];
 
 }
 subgraph cluster_67 {
 label="(Or)Node 67";
 pencolor=green;
 s670 [label="0
-in(box1, red_cube), perceives(L, Pepper), perceives(Pepper, L)"];
-s671 [label="1
 in(box2, red_cube), perceives(L, Pepper), perceives(Pepper, L)", shape=doublecircle];
 s670 -> s670[label="Pepper"];
-s671 -> s671[label="Pepper"];
 s670 -> s670[label="L"];
-s671 -> s671[label="L"];
 
 }
 subgraph cluster_87 {
@@ -678,29 +636,22 @@ label="(Or)Node 87";
 pencolor=green;
 s870 [label="0
 perceives(L, Pepper), perceives(Pepper, L), in(L, red_cube)", shape=doublecircle];
-s871 [label="1
-in(box2, red_cube), perceives(L, Pepper), perceives(Pepper, L)"];
 s870 -> s870[label="Pepper"];
-s871 -> s871[label="Pepper"];
 s870 -> s870[label="L"];
-s871 -> s871[label="L"];
 
 }
 subgraph cluster_88 {
 label="(Or)Node 88";
 pencolor=green;
 s880 [label="0
-perceives(L, Pepper), perceives(Pepper, L), in(L, red_cube)"];
-s881 [label="1
 in(box2, red_cube), perceives(L, Pepper), perceives(Pepper, L)", shape=doublecircle];
 s880 -> s880[label="Pepper"];
-s881 -> s881[label="Pepper"];
 s880 -> s880[label="L"];
-s881 -> s881[label="L"];
 
 }
 subgraph cluster_911 {
 label="(And)Node 911";
+pencolor=red;
 s9110 [label="0
 in(box2, red_cube), perceives(L, Pepper), perceives(Pepper, L)", shape=doublecircle];
 s9110 -> s9110[label="Pepper"];
@@ -709,6 +660,7 @@ s9110 -> s9110[label="L"];
 }
 subgraph cluster_913 {
 label="(And)Node 913";
+pencolor=red;
 s9130 [label="0
 in(box2, red_cube), perceives(L, Pepper), perceives(Pepper, L)", shape=doublecircle];
 s9130 -> s9130[label="Pepper"];
@@ -726,6 +678,7 @@ s9150 -> s9150[label="L"];
 }
 subgraph cluster_917 {
 label="(And)Node 917";
+pencolor=red;
 s9170 [label="0
 in(box2, red_cube), perceives(L, Pepper), perceives(Pepper, L)", shape=doublecircle];
 s9170 -> s9170[label="Pepper"];
@@ -734,6 +687,7 @@ s9170 -> s9170[label="L"];
 }
 subgraph cluster_919 {
 label="(And)Node 919";
+pencolor=red;
 s9190 [label="0
 in(box2, red_cube), perceives(L, Pepper), perceives(Pepper, L)", shape=doublecircle];
 s9190 -> s9190[label="Pepper"];
@@ -742,6 +696,7 @@ s9190 -> s9190[label="L"];
 }
 subgraph cluster_921 {
 label="(And)Node 921";
+pencolor=red;
 s9210 [label="0
 in(box2, red_cube), perceives(L, Pepper), perceives(Pepper, L)", shape=doublecircle];
 s9210 -> s9210[label="Pepper"];
@@ -750,6 +705,7 @@ s9210 -> s9210[label="L"];
 }
 subgraph cluster_923 {
 label="(And)Node 923";
+pencolor=red;
 s9230 [label="0
 in(box2, red_cube), perceives(L, Pepper), perceives(Pepper, L)", shape=doublecircle];
 s9230 -> s9230[label="Pepper"];
@@ -758,6 +714,7 @@ s9230 -> s9230[label="L"];
 }
 subgraph cluster_925 {
 label="(And)Node 925";
+pencolor=red;
 s9250 [label="0
 in(box2, red_cube), perceives(L, Pepper), perceives(Pepper, L)", shape=doublecircle];
 s9250 -> s9250[label="Pepper"];
@@ -808,6 +765,7 @@ in(box2, red_cube), perceives(L, Pepper), perceives(Pepper, L)", shape=doublecir
 }
 subgraph cluster_939 {
 label="(And)Node 939";
+pencolor=red;
 s9390 [label="0
 in(box1, red_cube), perceives(L, Pepper), perceives(Pepper, L)", shape=doublecircle];
 s9390 -> s9390[label="Pepper"];
@@ -825,6 +783,7 @@ s9410 -> s9410[label="L"];
 }
 subgraph cluster_943 {
 label="(And)Node 943";
+pencolor=red;
 s9430 [label="0
 in(box1, red_cube), perceives(L, Pepper), perceives(Pepper, L)", shape=doublecircle];
 s9430 -> s9430[label="Pepper"];
@@ -833,6 +792,7 @@ s9430 -> s9430[label="L"];
 }
 subgraph cluster_945 {
 label="(And)Node 945";
+pencolor=red;
 s9450 [label="0
 in(box1, red_cube), perceives(L, Pepper), perceives(Pepper, L)", shape=doublecircle];
 s9450 -> s9450[label="Pepper"];
@@ -841,6 +801,7 @@ s9450 -> s9450[label="L"];
 }
 subgraph cluster_947 {
 label="(And)Node 947";
+pencolor=red;
 s9470 [label="0
 in(box1, red_cube), perceives(L, Pepper), perceives(Pepper, L)", shape=doublecircle];
 s9470 -> s9470[label="Pepper"];
@@ -849,6 +810,7 @@ s9470 -> s9470[label="L"];
 }
 subgraph cluster_949 {
 label="(And)Node 949";
+pencolor=red;
 s9490 [label="0
 in(box1, red_cube), perceives(L, Pepper), perceives(Pepper, L)", shape=doublecircle];
 s9490 -> s9490[label="Pepper"];
@@ -857,6 +819,7 @@ s9490 -> s9490[label="L"];
 }
 subgraph cluster_951 {
 label="(And)Node 951";
+pencolor=red;
 s9510 [label="0
 in(box1, red_cube), perceives(L, Pepper), perceives(Pepper, L)", shape=doublecircle];
 s9510 -> s9510[label="Pepper"];
@@ -865,6 +828,7 @@ s9510 -> s9510[label="L"];
 }
 subgraph cluster_953 {
 label="(And)Node 953";
+pencolor=red;
 s9530 [label="0
 in(box1, red_cube), perceives(L, Pepper), perceives(Pepper, L)", shape=doublecircle];
 s9530 -> s9530[label="Pepper"];
@@ -915,6 +879,7 @@ in(box1, red_cube), perceives(L, Pepper), perceives(Pepper, L)", shape=doublecir
 }
 subgraph cluster_1111 {
 label="(And)Node 1111";
+pencolor=red;
 s11110 [label="0
 in(box1, red_cube), perceives(L, Pepper), perceives(Pepper, L)", shape=doublecircle];
 s11110 -> s11110[label="Pepper"];
@@ -932,6 +897,7 @@ s11130 -> s11130[label="L"];
 }
 subgraph cluster_1115 {
 label="(And)Node 1115";
+pencolor=red;
 s11150 [label="0
 in(box1, red_cube), perceives(L, Pepper), perceives(Pepper, L)", shape=doublecircle];
 s11150 -> s11150[label="Pepper"];
@@ -940,6 +906,7 @@ s11150 -> s11150[label="L"];
 }
 subgraph cluster_1117 {
 label="(And)Node 1117";
+pencolor=red;
 s11170 [label="0
 in(box1, red_cube), perceives(L, Pepper), perceives(Pepper, L)", shape=doublecircle];
 s11170 -> s11170[label="Pepper"];
@@ -948,6 +915,7 @@ s11170 -> s11170[label="L"];
 }
 subgraph cluster_1119 {
 label="(And)Node 1119";
+pencolor=red;
 s11190 [label="0
 in(box1, red_cube), perceives(L, Pepper), perceives(Pepper, L)", shape=doublecircle];
 s11190 -> s11190[label="Pepper"];
@@ -956,6 +924,7 @@ s11190 -> s11190[label="L"];
 }
 subgraph cluster_1121 {
 label="(And)Node 1121";
+pencolor=red;
 s11210 [label="0
 in(box1, red_cube), perceives(L, Pepper), perceives(Pepper, L)", shape=doublecircle];
 s11210 -> s11210[label="Pepper"];
@@ -964,6 +933,7 @@ s11210 -> s11210[label="L"];
 }
 subgraph cluster_1123 {
 label="(And)Node 1123";
+pencolor=red;
 s11230 [label="0
 in(box1, red_cube), perceives(L, Pepper), perceives(Pepper, L)", shape=doublecircle];
 s11230 -> s11230[label="Pepper"];
@@ -972,6 +942,7 @@ s11230 -> s11230[label="L"];
 }
 subgraph cluster_1125 {
 label="(And)Node 1125";
+pencolor=red;
 s11250 [label="0
 in(box1, red_cube), perceives(L, Pepper), perceives(Pepper, L)", shape=doublecircle];
 s11250 -> s11250[label="Pepper"];
@@ -1022,6 +993,7 @@ in(box1, red_cube), perceives(L, Pepper), perceives(Pepper, L)", shape=doublecir
 }
 subgraph cluster_1139 {
 label="(And)Node 1139";
+pencolor=red;
 s11390 [label="0
 in(box2, red_cube), perceives(L, Pepper), perceives(Pepper, L)", shape=doublecircle];
 s11390 -> s11390[label="Pepper"];
@@ -1030,6 +1002,7 @@ s11390 -> s11390[label="L"];
 }
 subgraph cluster_1141 {
 label="(And)Node 1141";
+pencolor=red;
 s11410 [label="0
 in(box2, red_cube), perceives(L, Pepper), perceives(Pepper, L)", shape=doublecircle];
 s11410 -> s11410[label="Pepper"];
@@ -1047,6 +1020,7 @@ s11430 -> s11430[label="L"];
 }
 subgraph cluster_1145 {
 label="(And)Node 1145";
+pencolor=red;
 s11450 [label="0
 in(box2, red_cube), perceives(L, Pepper), perceives(Pepper, L)", shape=doublecircle];
 s11450 -> s11450[label="Pepper"];
@@ -1055,6 +1029,7 @@ s11450 -> s11450[label="L"];
 }
 subgraph cluster_1147 {
 label="(And)Node 1147";
+pencolor=red;
 s11470 [label="0
 in(box2, red_cube), perceives(L, Pepper), perceives(Pepper, L)", shape=doublecircle];
 s11470 -> s11470[label="Pepper"];
@@ -1063,6 +1038,7 @@ s11470 -> s11470[label="L"];
 }
 subgraph cluster_1149 {
 label="(And)Node 1149";
+pencolor=red;
 s11490 [label="0
 in(box2, red_cube), perceives(L, Pepper), perceives(Pepper, L)", shape=doublecircle];
 s11490 -> s11490[label="Pepper"];
@@ -1071,6 +1047,7 @@ s11490 -> s11490[label="L"];
 }
 subgraph cluster_1151 {
 label="(And)Node 1151";
+pencolor=red;
 s11510 [label="0
 in(box2, red_cube), perceives(L, Pepper), perceives(Pepper, L)", shape=doublecircle];
 s11510 -> s11510[label="Pepper"];
@@ -1079,6 +1056,7 @@ s11510 -> s11510[label="L"];
 }
 subgraph cluster_1153 {
 label="(And)Node 1153";
+pencolor=red;
 s11530 [label="0
 in(box2, red_cube), perceives(L, Pepper), perceives(Pepper, L)", shape=doublecircle];
 s11530 -> s11530[label="Pepper"];
@@ -1129,6 +1107,7 @@ in(box2, red_cube), perceives(L, Pepper), perceives(Pepper, L)", shape=doublecir
 }
 subgraph cluster_1167 {
 label="(And)Node 1167";
+pencolor=red;
 s11670 [label="0
 in(box1, red_cube), perceives(L, Pepper), perceives(Pepper, L)", shape=doublecircle];
 s11670 -> s11670[label="Pepper"];
@@ -1146,6 +1125,7 @@ s11690 -> s11690[label="L"];
 }
 subgraph cluster_1171 {
 label="(And)Node 1171";
+pencolor=red;
 s11710 [label="0
 in(box1, red_cube), perceives(L, Pepper), perceives(Pepper, L)", shape=doublecircle];
 s11710 -> s11710[label="Pepper"];
@@ -1154,6 +1134,7 @@ s11710 -> s11710[label="L"];
 }
 subgraph cluster_1173 {
 label="(And)Node 1173";
+pencolor=red;
 s11730 [label="0
 in(box1, red_cube), perceives(L, Pepper), perceives(Pepper, L)", shape=doublecircle];
 s11730 -> s11730[label="Pepper"];
@@ -1162,6 +1143,7 @@ s11730 -> s11730[label="L"];
 }
 subgraph cluster_1175 {
 label="(And)Node 1175";
+pencolor=red;
 s11750 [label="0
 in(box1, red_cube), perceives(L, Pepper), perceives(Pepper, L)", shape=doublecircle];
 s11750 -> s11750[label="Pepper"];
@@ -1170,6 +1152,7 @@ s11750 -> s11750[label="L"];
 }
 subgraph cluster_1177 {
 label="(And)Node 1177";
+pencolor=red;
 s11770 [label="0
 in(box1, red_cube), perceives(L, Pepper), perceives(Pepper, L)", shape=doublecircle];
 s11770 -> s11770[label="Pepper"];
@@ -1178,6 +1161,7 @@ s11770 -> s11770[label="L"];
 }
 subgraph cluster_1179 {
 label="(And)Node 1179";
+pencolor=red;
 s11790 [label="0
 in(box1, red_cube), perceives(L, Pepper), perceives(Pepper, L)", shape=doublecircle];
 s11790 -> s11790[label="Pepper"];
@@ -1186,6 +1170,7 @@ s11790 -> s11790[label="L"];
 }
 subgraph cluster_1181 {
 label="(And)Node 1181";
+pencolor=red;
 s11810 [label="0
 in(box1, red_cube), perceives(L, Pepper), perceives(Pepper, L)", shape=doublecircle];
 s11810 -> s11810[label="Pepper"];
@@ -1236,6 +1221,7 @@ in(box1, red_cube), perceives(L, Pepper), perceives(Pepper, L)", shape=doublecir
 }
 subgraph cluster_1195 {
 label="(And)Node 1195";
+pencolor=red;
 s11950 [label="0
 in(box2, red_cube), perceives(L, Pepper), perceives(Pepper, L)", shape=doublecircle];
 s11950 -> s11950[label="Pepper"];
@@ -1244,6 +1230,7 @@ s11950 -> s11950[label="L"];
 }
 subgraph cluster_1197 {
 label="(And)Node 1197";
+pencolor=red;
 s11970 [label="0
 in(box2, red_cube), perceives(L, Pepper), perceives(Pepper, L)", shape=doublecircle];
 s11970 -> s11970[label="Pepper"];
@@ -1261,6 +1248,7 @@ s11990 -> s11990[label="L"];
 }
 subgraph cluster_1201 {
 label="(And)Node 1201";
+pencolor=red;
 s12010 [label="0
 in(box2, red_cube), perceives(L, Pepper), perceives(Pepper, L)", shape=doublecircle];
 s12010 -> s12010[label="Pepper"];
@@ -1269,6 +1257,7 @@ s12010 -> s12010[label="L"];
 }
 subgraph cluster_1203 {
 label="(And)Node 1203";
+pencolor=red;
 s12030 [label="0
 in(box2, red_cube), perceives(L, Pepper), perceives(Pepper, L)", shape=doublecircle];
 s12030 -> s12030[label="Pepper"];
@@ -1277,6 +1266,7 @@ s12030 -> s12030[label="L"];
 }
 subgraph cluster_1205 {
 label="(And)Node 1205";
+pencolor=red;
 s12050 [label="0
 in(box2, red_cube), perceives(L, Pepper), perceives(Pepper, L)", shape=doublecircle];
 s12050 -> s12050[label="Pepper"];
@@ -1285,6 +1275,7 @@ s12050 -> s12050[label="L"];
 }
 subgraph cluster_1207 {
 label="(And)Node 1207";
+pencolor=red;
 s12070 [label="0
 in(box2, red_cube), perceives(L, Pepper), perceives(Pepper, L)", shape=doublecircle];
 s12070 -> s12070[label="Pepper"];
@@ -1293,6 +1284,7 @@ s12070 -> s12070[label="L"];
 }
 subgraph cluster_1209 {
 label="(And)Node 1209";
+pencolor=red;
 s12090 [label="0
 in(box2, red_cube), perceives(L, Pepper), perceives(Pepper, L)", shape=doublecircle];
 s12090 -> s12090[label="Pepper"];
@@ -1343,6 +1335,7 @@ in(box2, red_cube), perceives(L, Pepper), perceives(Pepper, L)", shape=doublecir
 }
 subgraph cluster_1367 {
 label="(And)Node 1367";
+pencolor=red;
 s13670 [label="0
 in(box2, red_cube), perceives(L, Pepper), perceives(Pepper, L)", shape=doublecircle];
 s13670 -> s13670[label="Pepper"];
@@ -1351,6 +1344,7 @@ s13670 -> s13670[label="L"];
 }
 subgraph cluster_1369 {
 label="(And)Node 1369";
+pencolor=red;
 s13690 [label="0
 in(box2, red_cube), perceives(L, Pepper), perceives(Pepper, L)", shape=doublecircle];
 s13690 -> s13690[label="Pepper"];
