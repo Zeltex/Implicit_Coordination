@@ -11,7 +11,7 @@ namespace del {
 
     std::string Formula::to_string() const {
         if (formulas.empty()) {
-            return "";
+            return Formula_Converter::type_to_string(Formula_Types::Top);
         } else {
             return formulas[root.id].to_string(formulas);
         }

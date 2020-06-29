@@ -26,6 +26,8 @@ namespace del {
 				const std::unordered_map<std::string, std::vector<Agent>>& condition_owner_to_agent);
 		void add_event(const Action_Event& event);
 		void add_event(std::string name, Event_Id id, Formula&& precondition, std::vector<Proposition_Instance>&& proposition_add, std::vector<Proposition_Instance>&& proposition_delete);
+		void add_reachability(Agent_Id owner, Event_Id event_from, Event_Id event_to, Formula&& condition);
+
 		const std::vector<Action_Event>& get_events() const;
 		Agent_Id get_owner() const;
 		std::string get_name() const;

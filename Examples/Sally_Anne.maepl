@@ -3,7 +3,7 @@ _domain Pepper {
 	_types = [container, object, agent]
 	_propositions = [
 		in(container c, object o)
-		sees(agent a1, agent a2)
+		perceives(agent a1, agent a2)
 	]
 
 	_action pickup (container from, container to, object o) {
@@ -31,12 +31,12 @@ _domain Pepper {
 				(event2 event2) = (TOP)
 			}
 			_rest = {
-				(event0 event0) = (sees(_rest, to))
-				(event1 event1) = (sees(_rest, to))
+				(event0 event0) = (perceives(_rest, to))
+				(event1 event1) = (perceives(_rest, to))
 				(event2 event2) = ()
 
-				(event0 event2) = (NOT(sees(_rest, to)))
-				(event1 event2) = (NOT(sees(_rest, to)))
+				(event0 event2) = (NOT(perceives(_rest, to)))
+				(event1 event2) = (NOT(perceives(_rest, to)))
 			}
 		}
 	}
@@ -66,12 +66,12 @@ _domain Pepper {
 				(event2 event2) = (TOP)
 			}
 			_rest = {
-				(event0 event0) = (sees(_rest, from))
-				(event1 event1) = (sees(_rest, from))
+				(event0 event0) = (perceives(_rest, from))
+				(event1 event1) = (perceives(_rest, from))
 				(event2 event2) = ()
 
-				(event0 event2) = (NOT(sees(_rest, from)))
-				(event1 event2) = (NOT(sees(_rest, from)))
+				(event0 event2) = (NOT(perceives(_rest, from)))
+				(event1 event2) = (NOT(perceives(_rest, from)))
 			}
 		}
 	}
@@ -85,7 +85,7 @@ _problem simple_problem {
 	_initial_state = [
 		in(S, marble)
 	]
-	_world world0 [in(S, marble), sees(S, S), sees(S, A), sees(A, S), sees(A, A)]
+	_world world0 [in(S, marble), perceives(S, S), perceives(S, A), perceives(A, S), perceives(A, A)]
 	_goal = [ ]
 	_designated_worlds = [ world0 ]
 	_reflexivity = true

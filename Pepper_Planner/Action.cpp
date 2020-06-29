@@ -100,6 +100,10 @@ namespace del {
 		events.emplace_back(name, id, std::move(precondition), proposition_add, proposition_delete);
 	}
 
+	void Action::add_reachability(Agent_Id owner, Event_Id event_from, Event_Id event_to, Formula&& condition) {
+		edge_conditions.at(owner.id).insert(event_from, event_to, std::move(condition));
+	}
+
 	const std::vector<Action_Event>& Action::get_events() const {
 		return events;
 	}

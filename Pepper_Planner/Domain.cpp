@@ -5,12 +5,12 @@ namespace del {
 	void Domain::perform_do(const Agent_Id agent, const std::vector<Proposition_Instance>& add_list, const std::vector<Proposition_Instance>& delete_list) {
 
 		std::vector<Proposition_Instance> add_set;
-		for (auto proposition : add_list) {
+		for (const auto& proposition : add_list) {
 			add_set.push_back(proposition);
 		}
 
 		std::vector<Proposition_Instance> delete_set;
-		for (auto proposition : delete_list) {
+		for (const auto& proposition : delete_list) {
 			delete_set.push_back(proposition);
 		}
 
@@ -27,10 +27,77 @@ namespace del {
 		states.push_back(perform_product_update(current_state, action, agents));
 
 	}
+	
+	void Domain::perform_oc(const Agent_Id owner, std::vector<Proposition_Instance>&& add_list, std::vector<Proposition_Instance>&& delete_list, std::string perceivability_proposition, std::string observability_proposition) {
+		std::unordered_set<size_t> obs;
+		auto owner_name = get_agent(owner).get_name();
+		bool owner_found = false;
+		for (auto proposition : add_list) {
+			if (!owner_found && proposition.arguments.at(0) == owner_name) {
+				owner_found = true;
+			}
+			obs.insert(get_agent(proposition.arguments.at(0)).get_id().id);
+		}
+		for (auto proposition : delete_list) {
+			if (!owner_found && proposition.arguments.at(0) == owner_name) {
+				owner_found = true;
+			}
+			obs.insert(get_agent(proposition.arguments.at(0)).get_id().id);
+		}
+
+		if (!owner_found) {
+			obs.insert(get_agent(owner).get_id().id);
+		}
+		Action action(owner, amount_of_agents);
+		action.add_event("oc", {0}, {}, std::move(add_list), std::move(delete_list));
+		action.add_event("nothign", {1}, {}, {}, {});
+		action.add_designated_event({ 0 });
+
+		for (auto& agent : agents) {
+			Formula condition00;
+			std::vector<Formula_Id> proposition_ids00;
+			proposition_ids00.reserve(obs.size());
+			if (std::find(obs.begin(), obs.end(), agent.get_id().id) == obs.end()) {
+				condition00.f_top();
+			} else {
+				Formula condition01;
+				std::vector<Formula_Id> proposition_ids01;
+				proposition_ids01.reserve(obs.size());
+				for (auto& obs_id : obs) {
+					auto obs_name = get_agent(Agent_Id{ obs_id }).get_name();
+					proposition_ids00.push_back(condition00.f_prop({ perceivability_proposition, { agent.get_name(), obs_name} }));
+					proposition_ids01.push_back(condition01.f_not(condition01.f_prop({ perceivability_proposition, { agent.get_name(), obs_name } })));
+				}
+				condition00.f_or(proposition_ids00);
+				condition01.f_and(proposition_ids01);
+				action.add_reachability(agent.get_id(), { 0 }, { 1 }, std::move(condition01));
+			}
+			action.add_reachability(agent.get_id(), { 0 }, { 0 }, std::move(condition00));
+			action.add_reachability(agent.get_id(), { 1 }, { 1 }, {});
+
+		}
+		perform_action(action);
+	}
 
 	void Domain::perform_action(Action action) {
 		const State& current_state = states.back();
 		states.push_back(perform_product_update(current_state, action, agents));
+#ifdef DEBUG_PRINT
+		std::string path;
+#ifdef DEBUG_PRINT_PATH
+		path = DEBUG_PRINT_PATH;
+#else
+		path = "../Debug_Output/";
+#endif
+		std::ofstream action_file;
+		action_file.open(path + "dot/Action" + std::to_string(debug_counter++) + ".dot");
+		action_file << "digraph G {\n" << action.to_graph(get_agents()) << "}";
+		action_file.close();
+		std::ofstream state_file;
+		state_file.open(path + "dot/State" + std::to_string(debug_counter) + ".dot");
+		state_file << "digraph {subgraph cluster_0 {" << get_current_state().to_graph(get_agents(), "s0") << "}}";
+		state_file.close();
+#endif
 	}
 
 	State Domain::get_current_state() const {
@@ -53,7 +120,7 @@ namespace del {
 	}
 
 	// TODO - Optimise
-	const Agent& Domain::get_agent(std::string name) const {
+	const Agent& Domain::get_agent(const std::string& name) const {
 		for (auto& entry : agents) {
 			if (entry.get_name() == name) {
 				return entry;
@@ -62,6 +129,16 @@ namespace del {
 		// TODO - Handle this
 		std::cerr << "No agent with name: " << name << "\n";
 		exit(-1);
+	}
+
+	const Agent& Domain::get_agent(const Agent_Id& id) const {
+		if (id.id > agents.size()) {
+		// TODO - Handle this
+			std::cerr << "No agent with name: " << name << "\n";
+			exit(-1);
+		} else {
+			return agents[id.id];
+		}
 	}
 
 	// TODO - Optimise
@@ -80,50 +157,6 @@ namespace del {
 		Agent_Id id = Agent_Id{ agents.size() };
 		agents.emplace_back(id, name);
 		return id;
-	}
-
-	void Domain::remove_observability(const std::vector<std::string>& observers, const std::vector<std::string>& observees) {
-		for (auto& observer : observers) {
-			Agent_Id observer_agent = get_agent_id(observer);
-			std::vector<Agent_Id> observee_agents;
-			for (auto& observee : observees) {
-				observee_agents.push_back(get_agent_id(observee));
-			}
-			states.back().remove_observability(observer_agent, observee_agents);
-		}
-	}
-
-	void Domain::add_observability(const std::vector<std::string>& observers, const std::vector<std::string>& observees) {
-		for (auto& observer : observers) {
-			Agent_Id observer_agent = get_agent_id(observer);
-			std::vector<Agent_Id> observee_agents;
-			for (auto& observee : observees) {
-				observee_agents.push_back(get_agent_id(observee));
-			}
-			states.back().add_observability(observer_agent, observee_agents);
-		}
-	}
-
-	void Domain::remove_perceivability(const std::vector<std::string>& perceivers, const std::vector<std::string>& perceivees) {
-		for (auto& perceiver : perceivers) {
-			Agent_Id perceiver_agent = get_agent_id(perceiver);
-			std::vector<Agent_Id> perceivee_agents;
-			for (auto& perceivee : perceivees) {
-				perceivee_agents.push_back(get_agent_id(perceivee));
-			}
-			states.back().remove_perceivability(perceiver_agent, perceivee_agents);
-		}
-	}
-
-	void Domain::add_perceivability(const std::vector<std::string>& perceivers, const std::vector<std::string>& perceivees) {
-		for (auto& perceiver : perceivers) {
-			Agent_Id perceiver_agent = get_agent_id(perceiver);
-			std::vector<Agent_Id> perceivee_agents;
-			for (auto& perceivee : perceivees) {
-				perceivee_agents.push_back(get_agent_id(perceivee));
-			}
-			states.back().add_perceivability(perceiver_agent, perceivee_agents);
-		}
 	}
 
 	void Domain::set_atom_types(std::unordered_set<std::string> types) {

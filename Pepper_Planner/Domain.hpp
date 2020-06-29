@@ -18,6 +18,7 @@ namespace del {
 		Domain(size_t amount_of_agents, State initial_state) : amount_of_agents(amount_of_agents), states({ initial_state }), name(), agents(), atom_types() {}
 
 		void perform_do(const Agent_Id i, const std::vector<Proposition_Instance>& add, const std::vector<Proposition_Instance>& del);
+		void perform_oc(const Agent_Id i, std::vector<Proposition_Instance>&& add_list, std::vector<Proposition_Instance>&& delete_list, std::string perceivability_proposition = "perceives", std::string observability_proposition = "obeserves");
 		void perform_action(Action action);
 		State get_current_state() const;
 		void set_name(const std::string name);
@@ -28,13 +29,9 @@ namespace del {
 		const std::unordered_set<std::string>& get_atom_types() const;
 		const std::unordered_set<std::string>& get_all_atoms_of_type(std::string type) const;
 		Agent_Id get_agent_id(std::string name) const;
-		const Agent& get_agent(std::string name) const;
+		const Agent& get_agent(const std::string& name) const;
+		const Agent& get_agent(const Agent_Id& id) const;
 		Agent_Id create_agent(std::string name);
-
-		void remove_observability(const std::vector<std::string>& observer, const std::vector<std::string>& observee);
-		void add_observability(const std::vector<std::string>& observer, const std::vector<std::string>& observee);
-		void remove_perceivability(const std::vector<std::string>& perceiver, const std::vector<std::string>& perceivee);
-		void add_perceivability(const std::vector<std::string>& perceiver, const std::vector<std::string>& perceivee);
 
 		void set_atom_types(std::unordered_set<std::string> types);
 		void set_objects(std::unordered_map<std::string, std::unordered_set<std::string>> objects);
@@ -46,5 +43,8 @@ namespace del {
 		std::vector<Agent> agents;
 		std::unordered_set<std::string> atom_types;
 		std::unordered_map<std::string, std::unordered_set<std::string>> objects;
+#ifdef DEBUG_PRINT
+		size_t debug_counter = 0;
+#endif
 	};
 }

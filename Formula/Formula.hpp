@@ -7,6 +7,7 @@
 
 #include "Formula_Types.hpp"
 #include "Formula_Component.hpp"
+#include "Formula_Converter.hpp"
 
 namespace del {
 

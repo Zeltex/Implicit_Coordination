@@ -39,7 +39,7 @@ namespace del {
 		command = "rm -r " + path + "png/*";
 		system(command.c_str());
 		std::ofstream state_file;
-		state_file.open(path + "dot/State" + std::to_string(debug_counter) + ".dot");
+		state_file.open(path + "dot/State0.dot");
 		state_file << "digraph {subgraph cluster_0 {" << this->domain.get_current_state().to_graph(this->domain.get_agents(), "s0") << "}}";
 		state_file.close();
 #endif
@@ -68,20 +68,12 @@ namespace del {
 		domain.perform_do(i, add, del);
 	}
 
-	void DEL_Interface::remove_observability(const std::vector<std::string>& observer, const std::vector<std::string>& observee) {
-		domain.remove_observability(observer, observee);
-	}
-	
-	void DEL_Interface::add_observability(const std::vector<std::string>& observer, const std::vector<std::string>& observee) {
-		domain.add_observability(observer, observee);
-	}
-	
-	void DEL_Interface::remove_perceivability(const std::vector<std::string>& perceiver, const std::vector<std::string>& perceivee) {
-		domain.remove_perceivability(perceiver, perceivee);
+	void DEL_Interface::perform_oc(const Agent_Id i, std::vector<Proposition_Instance>&& add, std::vector<Proposition_Instance>&& del) {
+		domain.perform_oc(i, std::move(add), std::move(del));
 	}
 
-	void DEL_Interface::add_perceivability(const std::vector<std::string>& perceiver, const std::vector<std::string>& perceivee) {
-		domain.add_perceivability(perceiver, perceivee);
+	void DEL_Interface::perform_oc(const std::string owner_name, std::vector<Proposition_Instance>&& add, std::vector<Proposition_Instance>&& del) {
+		return domain.perform_oc(domain.get_agent(owner_name).get_id(), std::move(add), std::move(del));
 	}
 	
 	void DEL_Interface::perform_action(Action action) {
@@ -91,22 +83,7 @@ namespace del {
 	void DEL_Interface::perform_action(std::string name, std::string owner, std::vector<std::string> arguments) {
 		auto action = action_library.get_general_action(name).create_action(owner, arguments, domain);
 		domain.perform_action(action);
-#ifdef DEBUG_PRINT
-		std::string path;
- #ifdef DEBUG_PRINT_PATH
-		path = DEBUG_PRINT_PATH;
- #else
-		path = "../Debug_Output/";
- #endif
-		std::ofstream action_file;
-		action_file.open(path + "dot/Action" + std::to_string(debug_counter++) + ".dot");
-		action_file << "digraph G {\n" << action.to_graph(domain.get_agents()) << "}";
-		action_file.close();
-		std::ofstream state_file;
-		state_file.open(path + "dot/State" + std::to_string(debug_counter) + ".dot");
-		state_file << "digraph {subgraph cluster_0 {" << domain.get_current_state().to_graph(domain.get_agents(), "s0") << "}}";
-		state_file.close();
-#endif
+
 	}
 	
 	bool DEL_Interface::create_policy(Formula goal) {

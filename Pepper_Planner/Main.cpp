@@ -45,8 +45,7 @@ void execute_test_case() {
 	DEL_Interface del_interface("../examples/Sally_Anne.maepl");
 
 	del_interface.perform_action("put", "S", { "S", "basket", "marble" });
-	del_interface.remove_perceivability({ "S" }, { "A" });
-	del_interface.remove_perceivability({ "A" }, { "S" });
+	del_interface.perform_oc("S", {  }, { {"perceives", {"S", "A"}}, {"perceives", {"A", "S"}} });
 	del_interface.perform_action("pickup", "A", { "basket", "A", "marble" });
 	del_interface.perform_action("put", "A", { "A", "box", "marble" });
 
@@ -54,22 +53,18 @@ void execute_test_case() {
 
 void execute_second_order() {
 	DEL_Interface del_interface("../examples/Second_Order.maepl");
-	del_interface.remove_perceivability({ "A" }, { "B", "C" });
-	del_interface.remove_perceivability({ "B", "C" }, { "A" });
+	del_interface.perform_oc("A", {  }, { {"perceives", {"A", "B"}}, {"perceives", {"A", "C"}}, {"perceives", {"B", "A"}}, {"perceives", {"C", "A"}} });
 	del_interface.perform_action("transfer", "B", { "box1", "box2", "cube_red" });
-	del_interface.remove_perceivability({ "B" }, { "C" });
-	del_interface.remove_perceivability({ "C" }, { "B" });
+	del_interface.perform_oc("B", {  }, { {"perceives", {"B", "C"}}, {"perceives", {"C", "B"}} });
 	del_interface.perform_action("transfer", "C", { "box2", "box1", "cube_red" });
-	del_interface.add_perceivability({ "A" }, { "C" });
-	del_interface.add_perceivability({ "C" }, { "A" });
+	del_interface.perform_oc("A", { {"perceives", {"A", "C"}}, {"perceives", {"C", "A"}} }, {  });
 	del_interface.perform_action("transfer", "A", { "box1", "box2", "cube_red" });
-	del_interface.remove_perceivability({ "A" }, { "C" });
-	del_interface.remove_perceivability({ "C" }, { "A" });
+	del_interface.perform_oc("A", {  }, { {"perceives", {"A", "C"}}, {"perceives", {"C", "A"}} });
 }
 
 int main(int argc, char* argv[]) {
-	//execute_second_order();
-	execute_test_case();
+	execute_second_order();
+	//execute_test_case();
 
 
 	//find_and_execute_policy(del_interface);
