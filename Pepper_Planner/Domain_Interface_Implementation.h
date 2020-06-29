@@ -22,26 +22,30 @@ namespace del {
 		virtual void finish_problem() override;
 		virtual void new_action(std::string name) override;
 		virtual void finish_action() override;
+
+
 		virtual void set_action_input(std::vector<std::pair<std::string, std::string>> inputs) override;
 		virtual void set_action_owner(std::string type, std::string name) override;
-
-		virtual void create_event(std::string name, Formula&& preconditions, std::vector<Proposition_Instance> add_list, std::vector<Proposition_Instance> delete_list) override;
+		virtual void set_announce_enabled() override;
 		virtual void set_designated_events(std::vector<std::string> designated_events) override;
-		virtual void set_types(std::unordered_set<std::string> types) override;
-		virtual void add_proposition(std::string name, std::vector<std::pair<std::string, std::string>> inputs) override;
-		virtual void set_objects(std::unordered_map<std::string, std::unordered_set<std::string>>&& objects) override;
-		virtual void set_domain(std::string domain_name) override;
-		virtual void set_initial_propositions(std::vector<Proposition_Instance> propositions) override;
-		virtual void create_world(std::string name, std::vector<Proposition_Instance> propositions) override;
 		virtual void set_designated_worlds(std::unordered_set<std::string> designated_worlds) override;
+		virtual void set_domain(std::string domain_name) override;
+		virtual void set_goal(del::Formula&& goal) override;
+		virtual void set_initial_propositions(std::vector<Proposition_Instance> propositions) override;
+		virtual void set_objects(std::unordered_map<std::string, std::unordered_set<std::string>>&& objects) override;
+		virtual void set_types(std::unordered_set<std::string> types) override;
+
+
+		virtual void create_event(std::string name, del::Formula&& preconditions, std::vector<Proposition_Instance> add_list, std::vector<Proposition_Instance> delete_list) override;
+		virtual void create_world(std::string name, std::vector<Proposition_Instance> propositions) override;
 		virtual void create_action_reflexive_reachables() override;
 		virtual void create_state_reflexive_reachables() override;
-		virtual void add_reachability(std::string name, std::vector<std::pair<std::string, std::string>> reachables) override;
-		virtual void set_announce_enabled() override;
-		virtual void set_goal(Formula&& goal) override;
-		virtual void add_observability(std::string observer, std::vector<std::string> agents) override;
-		virtual void add_perceivability(std::string perceiver, std::vector<std::string> agents) override;
 
+		virtual void add_observability(std::string observer, std::vector<std::string> agents) override;
+		virtual void add_edge_condition(std::string agent, std::vector< std::tuple<std::string, std::string, del::Formula>> edge_conditions) override;
+		virtual void add_perceivability(std::string perceiver, std::vector<std::string> agents) override;
+		virtual void add_proposition(std::string name, std::vector<std::pair<std::string, std::string>> inputs) override;
+		virtual void add_reachability(std::string name, std::vector<std::pair<std::string, std::string>> reachables) override;
 		std::tuple<Domain, Action_Library, Formula> get_loaded();
 	private:
 		std::vector<General_Action> actions;

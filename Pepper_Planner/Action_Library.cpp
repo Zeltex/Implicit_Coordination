@@ -60,6 +60,8 @@ namespace del {
 	}
 
 	Action Action_Library::create_announce_action(Agent_Id owner, Proposition_Instance proposition, size_t amount_of_agents) const {
+		// TODO - Figure out how to handle announce actions
+
 		Action action(owner, amount_of_agents);
 		Formula f;
 		f.f_prop(proposition);
@@ -78,10 +80,15 @@ namespace del {
 	}
 
 	void Action_Library::add_general_action(const General_Action& general_action, const Domain& domain) {
+
+		// ---- TODO - This needs to be changed to use edge conditions -----
+
 		general_actions.push_back(general_action);
 		general_action_name_to_id[general_action.get_name()] = general_actions.size() - 1;
 
-		std::pair<std::string, std::string> action_owner = general_action.get_owner();
+		// TODO ---- this stuff
+
+		/*std::pair<std::string, std::string> action_owner = general_action.get_owner();
 		auto& owners = domain.get_all_atoms_of_type(action_owner.first);
 
 
@@ -129,7 +136,7 @@ namespace del {
 					break;
 				}
 			}
-		}
+		}*/
 	}
 
 	bool Action_Library::increment_counters_success(std::vector<size_t>& counters, std::vector<std::vector<std::string>>& atoms) {

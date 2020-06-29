@@ -1,6 +1,5 @@
 _domain Second {
 	_announce_enabled = true
-	_reflexivity = false
 	_types = [container, object, agent]
 	_propositions = [
 		in(container c, object o)
@@ -14,10 +13,43 @@ _domain Second {
 			_effect_add = [in(to, o)]
 			_effect_delete = [in(from, o)]
 		}
-		_event event0 { 
+		_event event1 { 
 			_preconditions = ( NOT(in(from, o)) )
 			_effect_add = []
 			_effect_delete = []
+		}
+		_reachability = {
+			agent = {
+				(event0 event0) = (TOP)
+			}
+			_rest = {
+				(event0 event0) = (sees(_rest, agent))
+				(event0 event1) = (NOT(sees(_rest, agent)))
+			}
+		}
+	}
+
+	_action do (container from, container to, object o) {
+		_owner = agent agent
+		_designated_events = [event0]
+		_event event0 {
+			_preconditions = (TOP)
+			_effect_add = [in(to, o)]
+			_effect_delete = [in(from, o)]
+		}
+		_event event0 {
+			_preconditions = (TOP)
+			_effect_add = []
+			_effect_delete = []
+		}
+		_reachability = {
+			agent = {
+				(event0 event0) = (TOP)
+			}
+			_rest = {
+				(event0 event0) = (sees(rest, agent))
+				(event0 event1) = (NOT(sees(rest, agent)))
+			}
 		}
 	}
 }

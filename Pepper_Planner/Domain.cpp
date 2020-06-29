@@ -52,6 +52,19 @@ namespace del {
 		return agents;
 	}
 
+	// TODO - Optimise
+	const Agent& Domain::get_agent(std::string name) const {
+		for (auto& entry : agents) {
+			if (entry.get_name() == name) {
+				return entry;
+			}
+		}
+		// TODO - Handle this
+		std::cerr << "No agent with name: " << name << "\n";
+		exit(-1);
+	}
+
+	// TODO - Optimise
 	Agent_Id Domain::get_agent_id(std::string name) const {
 		for (auto& entry : agents) {
 			if (entry.get_name() == name) {
@@ -60,7 +73,7 @@ namespace del {
 		}
 		// TODO - Handle this
 		std::cerr << "No agent with name: " << name << "\n";
-		throw;
+		exit(-1);
 	}
 
 	Agent_Id Domain::create_agent(std::string name) {

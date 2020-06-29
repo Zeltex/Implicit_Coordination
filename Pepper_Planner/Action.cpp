@@ -1,16 +1,79 @@
 #include "Action.hpp"
+#include "World.hpp"
 
 namespace del {
 
+	// TODO - Check if this constructor is used/should be used anymore. Seems the constructor based on General_Action should be default
 	Action::Action(Agent_Id owner, size_t number_of_agents) : owner(owner), name("Unknown") {
 		for (size_t i = 0; i < number_of_agents; i++) {
-			indistinguishability_relation.emplace_back();
+			edge_conditions.emplace_back(number_of_agents);
 		}
 	}
-	Action::Action(General_Action general_action, Agent_Id owner, const std::unordered_map<std::string, std::string>& input_to_atom): 
-		owner(owner), name(general_action.get_name()), events(),designated_events(), indistinguishability_relation() {
-		std::unordered_map<std::string, Event_Id> event_name_to_id;
 
+	// TODO - Way too many input parameters, just needed it to work
+	Action::Action(	General_Action general_action, 
+					Agent_Id owner, 
+					const std::unordered_map<std::string, std::string>& input_to_atom, 
+					const std::unordered_map<std::string, std::vector<Agent>>& condition_owner_to_agent)
+			:owner(owner), name(general_action.get_name()), events(),designated_events(){
+
+		//for (auto& entry : condition_owner_to_agent) {
+		//	for (auto& agent : entry.second) {
+		//		edge_conditions
+		//	}
+		//}
+
+
+		std::unordered_map<std::string, Event_Id> event_name_to_id = copy_and_instantiate_events(general_action, input_to_atom);
+		copy_and_instantiate_designated_events(general_action, event_name_to_id);
+		copy_and_instantiate_edge_conditions(general_action, condition_owner_to_agent, event_name_to_id, input_to_atom);
+	}
+
+	void Action::copy_and_instantiate_edge_conditions(
+				const General_Action& general_action, 
+				const std::unordered_map<std::string, std::vector<Agent>>& condition_owner_to_agent, 
+				const std::unordered_map<std::string, Event_Id>& event_name_to_id,
+				std::unordered_map<std::string, std::string> input_to_atom) {
+
+#define REST_KEYWORD "_rest"
+		
+		size_t agents_size = 0;
+		edge_conditions = std::vector<Agent_Edges>();
+		edge_conditions.reserve(agents_size);
+		for (auto& entry : condition_owner_to_agent) {
+		
+			agents_size += entry.second.size();
+		}
+		for (auto& entry : condition_owner_to_agent) {
+			for (auto& entry2 : entry.second) {
+				edge_conditions.emplace_back(agents_size);
+			}
+		}
+		// TODO - Assumes all agents are present in edge definition (meaning _rest pretty much has to be defined)
+
+		for (auto& agent_edges : general_action.get_edge_conditions()) {
+			for (auto& agent : condition_owner_to_agent.at(agent_edges.first)) { // Needed for edge conditions for _rest/(REST_KEYWORD)
+
+				if (agent_edges.first == REST_KEYWORD) {
+					input_to_atom[agent_edges.first] = agent.get_name();
+				}
+				for (auto& edge_condition : agent_edges.second) {
+					Formula condition = Formula(edge_condition.condition, input_to_atom);
+
+					edge_conditions.at(agent.get_id().id).insert(event_name_to_id.at(edge_condition.event_from), event_name_to_id.at(edge_condition.event_to), std::move(condition));
+				}
+			}
+		}
+	}
+
+	void Action::copy_and_instantiate_designated_events(const General_Action& general_action, const std::unordered_map<std::string, Event_Id>& event_name_to_id) {
+		for (auto& entry : general_action.get_designated_events()) {
+			this->designated_events.push_back(event_name_to_id.at(entry));
+		}
+	}
+
+	std::unordered_map<std::string, Event_Id> Action::copy_and_instantiate_events(const General_Action& general_action, const std::unordered_map<std::string, std::string>& input_to_atom) {
+		std::unordered_map<std::string, Event_Id> event_name_to_id;
 		for (auto& event : general_action.get_events()) {
 			std::vector<Proposition_Instance> add_list;
 			std::vector<Proposition_Instance> delete_list;
@@ -25,20 +88,8 @@ namespace del {
 			event_name_to_id.emplace(event.get_name(), Event_Id{ id.id });
 
 			add_event(event.get_name(), id, std::move(preconditions), std::move(add_list), std::move(delete_list));
-		}		
-
-		size_t agent_counter = 0;
-		for (auto& agent_relations : general_action.get_reachability_relations()) {
-			indistinguishability_relation.emplace_back();
-			for (auto& relation : agent_relations) {
-				indistinguishability_relation[agent_counter].push_back(relation);
-			}
-			agent_counter++;
 		}
-
-		for (auto& entry : general_action.get_designated_events()) {
-			this->designated_events.push_back(event_name_to_id.at(entry));
-		}
+		return std::move(event_name_to_id);
 	}
 
 	void Action::add_event(const Action_Event& event) {
@@ -61,22 +112,17 @@ namespace del {
 		return name;
 	}
 
-	bool Action::is_one_reachable(Agent_Id agent, Event_Id event1, Event_Id event2) const {
-		for (auto relations : indistinguishability_relation[agent.id]) {
-			if (relations.event_from == event1 && relations.event_to == event2) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-
 	bool Action::is_event_designated(Event_Id event) const {
 		return find(designated_events.begin(), designated_events.end(), event) != designated_events.end();
 	}
 
-	void Action::add_indistinguishability_relation(Agent_Id agent, Event_Id event_from, Event_Id event_to) {
-		indistinguishability_relation[agent.id].emplace_back(event_from, event_to);
+	bool Action::is_condition_fulfilled(Agent_Id agent, Event_Id event_from, Event_Id event_to, const World& world) const {
+		auto condition = edge_conditions.at(agent.id).get_condition(event_from, event_to);
+		if (condition.has_value()) {
+			return world.valuate(*(condition.value()));
+		} else {
+			return false;
+		}
 	}
 
 	void Action::add_designated_event(Event_Id event) {
@@ -89,10 +135,8 @@ namespace del {
 
 	std::string Action::to_string(size_t indenation) const {
 		size_t relations_size = 0;
-		for (auto agent_relations : indistinguishability_relation) {
-			for (auto relation : agent_relations) {
-				relations_size++;
-			}
+		for (auto& agent_relations : edge_conditions) {
+			relations_size += agent_relations.size();
 		}
 		std::string result = get_indentation(indenation) + " Action\n(owner, " + std::to_string(owner.id) + ") (Relations size, " + std::to_string(relations_size) + ") (Designated events";
 		for (auto event_id : designated_events) {
@@ -127,10 +171,8 @@ namespace del {
 		}
 
 		size_t agent = 0;
-		for (auto agent_relations : indistinguishability_relation) {
-			for (auto relation : agent_relations) {
-				result += "s" + std::to_string(relation.event_from.id) + " -> s" + std::to_string(relation.event_to.id) + "[label=\"" + (agents.at(agent).get_name()) + "\"];\n";
-			}
+		for (const auto& agent_relations : edge_conditions) {
+			result += agent_relations.to_graph(agents.at(agent).get_name());
 			agent++;
 		}
 		return result;

@@ -37,8 +37,9 @@ enum class Token {
 	PRECONDITIONS_DEF,
 	PROBLEM_DEF,
 	PROPOSITIONS_DEF,
-	REACHAbility_DEF,
+	REACHABILITY_DEF,
 	REFLEXIVITY_DEF,
+	REST_DEF,
 	TYPES_DEF,
 	WORLD_DEF,
 
@@ -48,7 +49,7 @@ enum class Token {
 	AND,
 	OR,
 	NOT,
-
+	TOP,
 
 	NAME,
 	TRUTH,

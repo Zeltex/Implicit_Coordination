@@ -5,6 +5,7 @@
 #include <iostream>
 #include <unordered_set>
 #include <unordered_map>
+#include <tuple>
 
 #include "Formula.hpp"
 #include "Formula_Types.hpp"
@@ -22,14 +23,16 @@ public:
 	void add_input(std::string type, std::string name);
 
 	void add_ordered_variable(std::string variable);
+	void add_edge_condition(std::tuple<std::string, std::string, Formula>&& edge_condition);
 	void clear_designated_events();
 	std::vector<std::string> add_reflexive_perceivability(std::string name, std::vector<std::string> agents);
 
 
-	std::string															get_event_name();
 	Formula																get_formula();
+	std::vector<std::tuple<std::string, std::string, Formula>>			get_edge_conditions();
 	std::vector<Proposition_Instance>									get_event_add_list();
 	std::vector<Proposition_Instance>									get_event_delete_list();
+	std::string															get_event_name();
 	std::vector<std::string>											get_designated_events();
 	std::vector<std::pair<std::string, std::string>>					get_inputs();
 	std::unordered_set<std::string>										get_types();
@@ -48,15 +51,13 @@ public:
 	void push_objects();
 	void push_proposition_instance(std::string name);
 
-	void push_pop_formula();
+	void push_pop_formula(std::string type);
 	void push_formula(std::string type);
 	void pop_formula();
 
 	void set_object_type(std::string type);
 	void set_state_reflexivity(bool val);
-	void set_action_reflexivity(bool val);
 	bool is_state_reflexive();
-	bool is_action_reflexive();
 private:
 
 	std::unordered_set<std::string> types;
@@ -70,6 +71,7 @@ private:
 	bool state_reflexivity;
 	bool action_reflexivity;
 	std::vector<std::string> seen_perceivability;
+	std::vector<std::tuple<std::string, std::string, Formula>> edge_conditions;
 
 	// Formula stuff
 	Formula formula;

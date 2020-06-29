@@ -28,6 +28,7 @@ namespace del {
 		const std::unordered_set<std::string>& get_atom_types() const;
 		const std::unordered_set<std::string>& get_all_atoms_of_type(std::string type) const;
 		Agent_Id get_agent_id(std::string name) const;
+		const Agent& get_agent(std::string name) const;
 		Agent_Id create_agent(std::string name);
 
 		void remove_observability(const std::vector<std::string>& observer, const std::vector<std::string>& observee);

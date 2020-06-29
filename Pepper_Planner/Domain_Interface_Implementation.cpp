@@ -16,13 +16,15 @@ namespace del {
 		// Action reachability and reflexivity
 		for (auto& action : actions) {
 			action.set_amount_of_agents(domain.get_agents().size());
-			if (action_reflexivity) {
-				for (auto& agent : domain.get_agents()) {
-					for (auto& event : action.get_events()) {
-						action.add_reachability_relation(agent.get_id(), event.get_id(), event.get_id());
-					}
-				}
-			}
+
+			// TODO - Removed option for implicit action reflexivity, should probably delete soon
+			//if (action_reflexivity) {
+			//	for (auto& agent : domain.get_agents()) {
+			//		for (auto& event : action.get_events()) {
+			//			action.add_reachability_relation(agent.get_id(), event.get_id(), event.get_id());
+			//		}
+			//	}
+			//}
 		}
 
 		// Perceivability
@@ -148,6 +150,16 @@ namespace del {
 
 	void Domain_Interface_Implementation::set_goal(Formula&& goal) {
 		this->goal = std::move(goal);
+	}
+
+	void Domain_Interface_Implementation::add_edge_condition(std::string agent, std::vector< std::tuple<std::string, std::string, Formula>> edge_conditions) {
+
+		std::vector<Edge_Condition> temp;
+		temp.reserve(edge_conditions.size());
+		for (auto&[event_from, event_to, condition] : edge_conditions) {
+			temp.emplace_back(std::move(event_from), std::move(event_to), std::move(condition));
+		}
+		current_action.add_edge_condition(agent, std::move(temp));
 	}
 
 	void Domain_Interface_Implementation::add_observability(std::string observer, std::vector<std::string> agents) {

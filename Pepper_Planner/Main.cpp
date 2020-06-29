@@ -29,9 +29,7 @@ void find_and_execute_policy() {
 		Interface_DTO dto = del_interface.get_next_action();
 		if (dto.has_action()) {
 
-			//del_interface.print_current_state_to_graph("../State_Before.dot");
 			del_interface.perform_action(dto.get_action());
-			//del_interface.print_current_state_to_graph("../State_After.dot");
 		}
 		else {
 			std::cerr << "NO APPLIABLE ACTION" << std::endl;
@@ -46,15 +44,11 @@ void find_and_execute_policy() {
 void execute_test_case() {
 	DEL_Interface del_interface("../examples/Sally_Anne.maepl");
 
-	//del_interface.print_current_state_to_graph("../Sally_Anne0.dot");
 	del_interface.perform_action("put", "S", { "S", "basket", "marble" });
-	//del_interface.print_current_state_to_graph("../Sally_Anne1.dot");
 	del_interface.remove_perceivability({ "S" }, { "A" });
 	del_interface.remove_perceivability({ "A" }, { "S" });
 	del_interface.perform_action("pickup", "A", { "basket", "A", "marble" });
-	//del_interface.print_current_state_to_graph("../Sally_Anne2.dot");
 	del_interface.perform_action("put", "A", { "A", "box", "marble" });
-	//del_interface.print_current_state_to_graph("../Sally_Anne3.dot");
 
 }
 
@@ -74,7 +68,8 @@ void execute_second_order() {
 }
 
 int main(int argc, char* argv[]) {
-	execute_second_order();
+	//execute_second_order();
+	execute_test_case();
 
 
 	//find_and_execute_policy(del_interface);

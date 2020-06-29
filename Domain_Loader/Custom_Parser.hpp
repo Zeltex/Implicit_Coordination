@@ -23,7 +23,9 @@ private:
 	bool get_bvalue(size_t argument_index);
 	std::string token_to_string(Token token);
 
+	void action_agent_reachability();
 	void action_body();
+	void action_reachability();
 	void actions();
 	void bracketed_input();
 	void designated_events_body();

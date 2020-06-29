@@ -1,9 +1,9 @@
 _domain Pepper {
 	_announce_enabled = true
-	_reflexivity = false
 	_types = [container, object, agent]
 	_propositions = [
 		in(container c, object o)
+		sees(agent a1, agent a2)
 	]
 
 	_action pickup (container from, container to, object o) {
@@ -18,6 +18,26 @@ _domain Pepper {
 			_preconditions = ( NOT(in(from, o)) )
 			_effect_add = [ ]
 			_effect_delete = [ ]
+		}
+		_event event2 {
+			_preconditions = ()
+			_effect_add = [ ]
+			_effect_delete = [ ]
+		}
+		_reachability = {
+			to = {
+				(event0 event0) = (TOP)
+				(event1 event1) = (TOP)
+				(event2 event2) = (TOP)
+			}
+			_rest = {
+				(event0 event0) = (sees(_rest, to))
+				(event1 event1) = (sees(_rest, to))
+				(event2 event2) = ()
+
+				(event0 event2) = (NOT(sees(_rest, to)))
+				(event1 event2) = (NOT(sees(_rest, to)))
+			}
 		}
 	}
 
@@ -34,6 +54,26 @@ _domain Pepper {
 			_effect_add = [ ]
 			_effect_delete = [ ]
 		}
+		_event event2 {
+			_preconditions = ()
+			_effect_add = [ ]
+			_effect_delete = [ ]
+		}
+		_reachability = {
+			from = {
+				(event0 event0) = (TOP)
+				(event1 event1) = (TOP)
+				(event2 event2) = (TOP)
+			}
+			_rest = {
+				(event0 event0) = (sees(_rest, from))
+				(event1 event1) = (sees(_rest, from))
+				(event2 event2) = ()
+
+				(event0 event2) = (NOT(sees(_rest, from)))
+				(event1 event2) = (NOT(sees(_rest, from)))
+			}
+		}
 	}
 }
 _problem simple_problem {
@@ -45,18 +85,12 @@ _problem simple_problem {
 	_initial_state = [
 		in(S, marble)
 	]
-	_world world0 [in(S, marble)]
+	_world world0 [in(S, marble), sees(S, S), sees(S, A), sees(A, S), sees(A, A)]
 	_goal = [ ]
-	_designated_worlds = [ world1 ]
+	_designated_worlds = [ world0 ]
 	_reflexivity = true
 	_reachability = {
-	}
-	_perceivability = {
-		S = [ A ]
-		A = [ S ]
-	}
-	_observability = {
-		
+
 	}
 }
 

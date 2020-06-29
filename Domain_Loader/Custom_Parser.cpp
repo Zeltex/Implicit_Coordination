@@ -21,13 +21,16 @@ bool Custom_Parser::try_match(const std::vector<Token>& pattern) {
 
 bool Custom_Parser::must_match(const std::vector<Token>& pattern) {
 	if (!try_match(pattern)) {
-		std::cerr << "Expected token" << (pattern.size() > 1 ? "s " : " ");
+		std::cerr << "Syntax error line: " << lexer->line_numbers[pointer] << ". Expected token" << (pattern.size() > 1 ? "s " : " ");
 		for (auto& entry : pattern) {
-			std::cerr << token_to_string(entry);
+			std::cerr << token_to_string(entry) << " ";
+		}
+		if (pointer < lexer->tokens.size()) {
+			std::cerr << " Found " << token_to_string(lexer->tokens[pointer]);
 		}
 		std::cerr << std::endl;
 		// TODO - Throw custom error
-		return false;
+		exit(-1);
 	}
 	else {
 		return true;
@@ -61,8 +64,9 @@ std::string Custom_Parser::token_to_string(Token token) {
 		case Token::PRECONDITIONS_DEF		: return "_preconditions";
 		case Token::PROBLEM_DEF				: return "_problem";
 		case Token::PROPOSITIONS_DEF		: return "_propositions";
-		case Token::REACHAbility_DEF		: return "_reachability";
-		case Token::REFLEXIVITY_DEF			: return "_reflexivity";	
+		case Token::REACHABILITY_DEF		: return "_reachability";
+		case Token::REFLEXIVITY_DEF			: return "_reflexivity";
+		case Token::REST_DEF				: return "_rest";
 		case Token::TYPES_DEF				: return "_types";
 		case Token::WORLD_DEF				: return "_world";
 		case Token::LBRACK					: return "(|[|{";
@@ -70,6 +74,7 @@ std::string Custom_Parser::token_to_string(Token token) {
 		case Token::AND						: return "AND";
 		case Token::OR						: return "OR";
 		case Token::NOT						: return "NOT";
+		case Token::TOP						: return "TOP";
 		case Token::NAME					: return "NAME";
 		case Token::TRUTH					: return "true|false";
 		case Token::EQUALS					: return "=";
@@ -81,7 +86,6 @@ void Custom_Parser::maepl() {
 		domain->new_domain(get_svalue(1));
 		domain_body();
 		if (!must_match({ Token::RBRACK })) return;
-		if (buffer->is_action_reflexive()) domain->create_action_reflexive_reachables();
 		domain->finish_domain();
 		return maepl();
 	}
@@ -100,11 +104,6 @@ void Custom_Parser::maepl() {
 
 void Custom_Parser::domain_body() {
 
-	if (try_match({ Token::REFLEXIVITY_DEF, Token::EQUALS, Token::TRUTH })) {
-		buffer->set_action_reflexivity(get_bvalue(2));
-		return domain_body();
-	}
-
 	if (try_match({ Token::ANNOUNCE_DEF, Token::EQUALS, Token::TRUTH })) {
 		if (get_bvalue(2)) domain->set_announce_enabled();
 		return domain_body();
@@ -122,7 +121,8 @@ void Custom_Parser::domain_body() {
 
 		return actions();
 	}
-	// TODO - Throw error
+	std::cerr << "Syntax error line: " << lexer->line_numbers[pointer] << std::endl;
+	exit(-1);
 }
 
 void Custom_Parser::problem_body() {
@@ -167,7 +167,7 @@ void Custom_Parser::problem_body() {
 		return problem_body();
 	}
 
-	if (try_match({ Token::REACHAbility_DEF, Token::EQUALS, Token::LBRACK })) {
+	if (try_match({ Token::REACHABILITY_DEF, Token::EQUALS, Token::LBRACK })) {
 		reachability_body();
 		if (!must_match({ Token::RBRACK })) return;
 		return problem_body();
@@ -288,6 +288,47 @@ void Custom_Parser::action_body() {
 		if (!must_match({ Token::RBRACK })) return;
 		return action_body();
 	}
+
+	if (try_match({ Token::REACHABILITY_DEF, Token::EQUALS, Token::LBRACK })) {
+		action_reachability();
+
+		// TODO -- If _rest not defined, add empty entry, important for agent size later on
+		if (!must_match({ Token::RBRACK })) return;
+		return action_body();
+	}
+}
+
+void Custom_Parser::action_reachability() {
+	if (try_match({ Token::NAME, Token::EQUALS, Token::LBRACK })) {
+		std::string agent_name = get_svalue(0);
+		action_agent_reachability();
+		domain->add_edge_condition(agent_name, buffer->get_edge_conditions());
+		if (!must_match({ Token::RBRACK })) return;
+		return action_reachability();
+	}
+
+	if (try_match({ Token::REST_DEF, Token::EQUALS, Token::LBRACK })) {
+		std::string rest_def = get_svalue(0);
+		action_agent_reachability();
+		domain->add_edge_condition(rest_def, buffer->get_edge_conditions());
+		if (!must_match({ Token::RBRACK })) return;
+		return action_reachability();
+	}
+	return;
+}
+
+void Custom_Parser::action_agent_reachability() {
+
+	if (try_match({ Token::LBRACK, Token::NAME, Token::NAME, Token::RBRACK, Token::EQUALS, Token::LBRACK})) {
+		std::string event0 = get_svalue(1);
+		std::string event1 = get_svalue(2);
+		formula_single();
+		buffer->add_edge_condition({ event0, event1, std::move(buffer->get_formula()) });
+		if (!must_match({ Token::RBRACK })) return;
+		action_agent_reachability();
+	}
+	return;
+
 }
 
 void Custom_Parser::designated_events_body() {
@@ -324,7 +365,7 @@ void Custom_Parser::event_body() {
 
 void Custom_Parser::formula() {
 	if (proposition_instance()) {
-		buffer->push_pop_formula();
+		buffer->push_pop_formula("Prop");
 		return formula();
 	}
 
@@ -351,13 +392,19 @@ void Custom_Parser::formula() {
 		buffer->pop_formula();
 		return formula();
 	}
+
+	if (try_match({ Token::TOP })) {
+		buffer->push_pop_formula("TOP");
+		return formula();
+	}
+
 
 	return;
 }
 
 void Custom_Parser::formula_single() {
 	if (proposition_instance()) {
-		buffer->push_pop_formula();
+		buffer->push_pop_formula("Prop");
 		return;
 	}
 
@@ -384,6 +431,12 @@ void Custom_Parser::formula_single() {
 		buffer->pop_formula();
 		return;
 	}
+
+	if (try_match({ Token::TOP })) {
+		buffer->push_pop_formula("TOP");
+		return;
+	}
+
 
 	return;
 }
@@ -434,6 +487,10 @@ void Custom_Parser::variables() {
 
 void Custom_Parser::ordered_variables() {
 	if (try_match({ Token::NAME })) {
+		buffer->add_ordered_variable(get_svalue(0));
+		return ordered_variables();
+	}
+	if (try_match({ Token::REST_DEF })) {
 		buffer->add_ordered_variable(get_svalue(0));
 		return ordered_variables();
 	}

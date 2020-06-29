@@ -35,7 +35,12 @@ struct Proposition_Instance {
 	Proposition_Instance(const Proposition_Instance& other, const std::unordered_map<std::string, std::string>& input_to_atom) :
 		name(other.name), arguments() {
 		for (auto& entry : other.arguments) {
-			arguments.push_back(input_to_atom.at(entry));
+			auto it = input_to_atom.find(entry);
+			if (it == input_to_atom.end()) {
+				arguments.push_back(entry);
+			} else {
+				arguments.push_back(it->second);
+			}
 		}
 	}
 

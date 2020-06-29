@@ -12,6 +12,10 @@ void Domain_Buffer::add_ordered_variable(std::string variable) {
     ordered_variable_list.push_back(variable);
 }
 
+void Domain_Buffer::add_edge_condition(std::tuple<std::string, std::string, Formula>&& edge_condition) {
+    edge_conditions.emplace_back(std::move(edge_condition));
+}
+
 void Domain_Buffer::push_proposition_instance(std::string name) {
     propositions.emplace_back(name, std::move(ordered_variable_list));
     ordered_variable_list = {};
@@ -24,6 +28,12 @@ std::string Domain_Buffer::get_event_name() {
 Formula Domain_Buffer::get_formula() {
     Formula temp = std::move(formula);
     formula = Formula();
+    return std::move(temp);
+}
+
+std::vector<std::tuple<std::string, std::string, Formula>> Domain_Buffer::get_edge_conditions() {
+    auto temp = std::move(edge_conditions);
+    edge_conditions = std::vector<std::tuple<std::string, std::string, Formula>>();
     return std::move(temp);
 }
 
@@ -119,11 +129,18 @@ void Domain_Buffer::push_event_delete_list() {
 	event_delete_list = std::move(propositions);
     propositions = {};
 }
-void Domain_Buffer::push_pop_formula() {
+void Domain_Buffer::push_pop_formula(std::string type) {
     if (formula_buffer.empty()) {
-        formula.f_prop(propositions[0]);
+        switch (Formula_Converter::string_to_type(type)) {
+        case Formula_Types::Top:    formula.f_top();                    break;
+        case Formula_Types::Prop:   formula.f_prop(propositions[0]);    break;
+        }
+       
     } else {
-        formula_buffer.back().push_back(formula.f_prop(propositions[0]));
+        switch (Formula_Converter::string_to_type(type)) {
+        case Formula_Types::Top:    formula_buffer.back().push_back(formula.f_top());                    break;
+        case Formula_Types::Prop:   formula_buffer.back().push_back(formula.f_prop(propositions[0]));    break;
+        }
     }
     propositions = {};
 }
@@ -213,14 +230,6 @@ void Domain_Buffer::set_state_reflexivity(bool val) {
     state_reflexivity = val;
 }
 
-void Domain_Buffer::set_action_reflexivity(bool val) {
-    action_reflexivity = val;
-}
-
 bool Domain_Buffer::is_state_reflexive() {
     return state_reflexivity;
-}
-
-bool Domain_Buffer::is_action_reflexive() {
-    return action_reflexivity;
 }

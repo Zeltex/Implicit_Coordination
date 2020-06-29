@@ -9,12 +9,20 @@ namespace del {
         }
     }
 
-	std::string Formula::to_string() const {
-		return formulas[root.id].to_string(formulas);
-	}
+    std::string Formula::to_string() const {
+        if (formulas.empty()) {
+            return "";
+        } else {
+            return formulas[root.id].to_string(formulas);
+        }
+    }
 
 	bool Formula::valuate(const std::vector<Proposition_Instance> propositions) const {
-		return formulas[root.id].valuate(propositions, formulas);
+        if (formulas.empty()) {
+            return true;
+        } else {
+            return formulas[root.id].valuate(propositions, formulas);
+        }
 	}
 
     Formula_Id Formula::f_top()
