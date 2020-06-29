@@ -62,12 +62,16 @@ void execute_second_order() {
 	del_interface.perform_oc("A", {  }, { {"perceives", {"A", "C"}}, {"perceives", {"C", "A"}} });
 }
 
+void execute_second_order_seeing_is_believing() {
+
+}
+
 int main(int argc, char* argv[]) {
-	execute_second_order();
+	//execute_second_order();
 	//execute_test_case();
 
 
-	//find_and_execute_policy(del_interface);
+	find_and_execute_policy();
 
 
 	return 0;

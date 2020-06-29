@@ -30,24 +30,7 @@ namespace del {
 	
 	void Domain::perform_oc(const Agent_Id owner, std::vector<Proposition_Instance>&& add_list, std::vector<Proposition_Instance>&& delete_list, std::string perceivability_proposition, std::string observability_proposition) {
 		std::unordered_set<size_t> obs;
-		auto owner_name = get_agent(owner).get_name();
-		bool owner_found = false;
-		for (auto proposition : add_list) {
-			if (!owner_found && proposition.arguments.at(0) == owner_name) {
-				owner_found = true;
-			}
-			obs.insert(get_agent(proposition.arguments.at(0)).get_id().id);
-		}
-		for (auto proposition : delete_list) {
-			if (!owner_found && proposition.arguments.at(0) == owner_name) {
-				owner_found = true;
-			}
-			obs.insert(get_agent(proposition.arguments.at(0)).get_id().id);
-		}
 
-		if (!owner_found) {
-			obs.insert(get_agent(owner).get_id().id);
-		}
 		Action action(owner, amount_of_agents);
 		action.add_event("oc", {0}, {}, std::move(add_list), std::move(delete_list));
 		action.add_event("nothign", {1}, {}, {}, {});
@@ -76,7 +59,31 @@ namespace del {
 			action.add_reachability(agent.get_id(), { 1 }, { 1 }, {});
 
 		}
+
 		perform_action(action);
+	}
+
+	std::unordered_set<size_t> Domain::get_obs_set(const Agent_Id& owner, const std::vector<Proposition_Instance>& add_list, const std::vector<Proposition_Instance>& delete_list) {
+		std::unordered_set<size_t> obs;
+		auto owner_name = get_agent(owner).get_name();
+		bool owner_found = false;
+		for (auto proposition : add_list) {
+			if (!owner_found && proposition.arguments.at(0) == owner_name) {
+				owner_found = true;
+			}
+			obs.insert(get_agent(proposition.arguments.at(0)).get_id().id);
+		}
+		for (auto proposition : delete_list) {
+			if (!owner_found && proposition.arguments.at(0) == owner_name) {
+				owner_found = true;
+			}
+			obs.insert(get_agent(proposition.arguments.at(0)).get_id().id);
+		}
+
+		if (!owner_found) {
+			obs.insert(get_agent(owner).get_id().id);
+		}
+		return std::move(obs);
 	}
 
 	void Domain::perform_action(Action action) {
@@ -91,7 +98,7 @@ namespace del {
 #endif
 		std::ofstream action_file;
 		action_file.open(path + "dot/Action" + std::to_string(debug_counter++) + ".dot");
-		action_file << "digraph G {\n" << action.to_graph(get_agents()) << "}";
+		action_file << "digraph G {\n" << action.to_graph(get_agents(), "a") << "}";
 		action_file.close();
 		std::ofstream state_file;
 		state_file.open(path + "dot/State" + std::to_string(debug_counter) + ".dot");

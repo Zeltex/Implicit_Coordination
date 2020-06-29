@@ -25,6 +25,10 @@ namespace del {
 
 	bool State::valuate(const Formula& formula) const {
 		for (auto world : designated_worlds) {
+			if (world.id >= worlds.size()) {
+				int debug = 0;
+			}
+
 			if (!worlds[world.id].valuate(formula)) {
 				return false;
 			}
@@ -267,6 +271,13 @@ namespace del {
 			agent++;
 		}
 		indistinguishability_relation = std::move(new_relations);
+
+		std::vector<World_Id> new_designated_worlds;
+		new_designated_worlds.reserve(designated_worlds.size());
+		for (auto& world : designated_worlds) {
+			new_designated_worlds.push_back({ world_old_to_new[world.id] });
+		}
+		designated_worlds = std::move(new_designated_worlds);
 	}
 
 

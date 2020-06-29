@@ -203,8 +203,14 @@ namespace del {
 	}
 
 	void Planner::print_graph(const Graph& graph) const {
+		std::string path;
+#ifdef DEBUG_PRINT_PATH
+		path = DEBUG_PRINT_PATH;
+#else
+		path = "../Debug_Output/";
+#endif
 		std::ofstream myfile;
-		myfile.open("../Graph.log");
+		myfile.open(path + "Graph.log");
 		myfile << graph.to_string();
 		myfile.close();
 		//std::cout << graph.to_string() << "\n\n\n\n\n" << std::endl;;
@@ -212,7 +218,13 @@ namespace del {
 
 	void Planner::print_graph_dot(const std::vector<Agent>& agents, const Graph& graph) const {
 		std::ofstream myfile;
-		myfile.open("../Graph.dot");
+		std::string path;
+#ifdef DEBUG_PRINT_PATH
+		path = DEBUG_PRINT_PATH;
+#else
+		path = "../Debug_Output/";
+#endif
+		myfile.open(path + "Graph.dot");
 #ifdef PRINT_PARTIAL
 		myfile << graph.to_partial_graph(agents);
 #else

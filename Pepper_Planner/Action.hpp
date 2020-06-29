@@ -40,7 +40,7 @@ namespace del {
 		std::string to_string() const;
 		std::string to_string(size_t indentation) const;
 		std::string to_compact_string() const;
-		std::string to_graph(const std::vector<Agent>& agents) const;
+		std::string to_graph(const std::vector<Agent>& agents, const std::string& base_id) const;
 
 	private:
 		void copy_and_instantiate_edge_conditions(const General_Action& general_action, const std::unordered_map<std::string, std::vector<Agent>>& condition_owner_to_id, const std::unordered_map<std::string, Event_Id>& event_name_to_id, std::unordered_map<std::string, std::string> input_to_atom);

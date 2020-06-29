@@ -18,6 +18,39 @@ namespace del {
 		}
 		return { Action({ 0 }, 0), false };
 	}
+	std::string Policy::to_graph(const std::vector<Agent>& agents) const {
+		std::string result;
+		size_t counter = 0;
+		for (auto& entry : policy) {
+			std::string counter_s = std::to_string(counter);
+			result += "subgraph cluster_"
+				+ counter_s
+				+ "{label=\"entry"
+				+ counter_s
+				+ "\";\nsubgraph cluster_s"
+				+ counter_s
+				+ "{"
+				+ entry.first.to_graph(agents, "s" + counter_s)
+				+ "} subgraph cluster_a"
+				+ counter_s
+				+ "{label=\""
+				+ entry.second.get_name()
+				+ "\"\n"
+				+ entry.second.to_graph(agents, "a" + counter_s)
+				+ "}"
+				+ "s" 
+				+ counter_s
+				+ "0->a"
+				+ counter_s
+				+ "0[ltail=cluster_s"
+				+ counter_s
+				+ ", lhead=cluster_a"
+				+ counter_s
+				+ "];}\n";
+			counter++;
+		}
+		return result;
+	}
 
 	std::string Policy::to_string() const {
 		size_t indentation = 4;

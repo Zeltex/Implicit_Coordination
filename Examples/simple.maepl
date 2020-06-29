@@ -1,6 +1,5 @@
 _domain Pepper {
 	_announce_enabled = true
-	_reflexivity = false
 	_types = [container, object, agent, perceivable]
 	_propositions = [
 		in(container c, object o)
@@ -8,12 +7,36 @@ _domain Pepper {
 
 	_action pickup (container from, container to, object o) {
 		_owner = agent to
-		_designated_events = [event0]
+		_designated_events = [event0, event1]
 		_event event0 { 
 			_preconditions = ( in(from, o) )
 			_effect_add = [in(to, o)]
 			_effect_delete = [in(from, o)]
+		}
+		_event event1 { 
+			_preconditions = ( NOT(in(from, o)) )
+			_effect_add = []
+			_effect_delete = []
+		}
+		_event event2 { 
+			_preconditions = ()
+			_effect_add = []
+			_effect_delete = []
+		}
+		_reachability = {
+			to = {
+				(event0 event0) = (TOP)
+				(event1 event1) = (TOP)
+				(event2 event2) = (TOP)
+			}
+			_rest = {
+				(event0 event0) = (perceives(_rest, to))
+				(event1 event1) = (perceives(_rest, to))
+				(event2 event2) = ()
 
+				(event0 event2) = (NOT(perceives(_rest, to)))
+				(event1 event2) = (NOT(perceives(_rest, to)))
+			}
 		}
 	}
 
@@ -24,13 +47,31 @@ _domain Pepper {
 			_preconditions = ( in(c, o) )
 			_effect_add = [ ]
 			_effect_delete = [ ]
-
 		}
 		_event event1 { 
 			_preconditions = ( NOT(in(c, o)) )
 			_effect_add = [ ]
 			_effect_delete = [ ]
+		}
+		_event event2 { 
+			_preconditions = ()
+			_effect_add = []
+			_effect_delete = []
+		}
+		_reachability = {
+			agent = {
+				(event0 event0) = (TOP)
+				(event1 event1) = (TOP)
+				(event2 event2) = (TOP)
+			}
+			_rest = {
+				(event0 event0) = (perceives(_rest, agent))
+				(event1 event1) = (perceives(_rest, agent))
+				(event2 event2) = ()
 
+				(event0 event2) = (NOT(perceives(_rest, agent)))
+				(event1 event2) = (NOT(perceives(_rest, agent)))
+			}
 		}
 	}
 }
@@ -38,15 +79,15 @@ _problem simple_problem {
 	_objects = {
 		container = [box0, box1, box2, L]
 		object = [red_cube]
-		agent = [Pepper, L, temp1, temp2]
+		agent = [Pepper, L]
 		perceivable = [L]
 	}
 	_initial_state = [
 		in(box1, red_cube)
 	]
-	_world world0 [in(box0, red_cube)]
-	_world world1 [in(box1, red_cube)]
-	_world world2 [in(box2, red_cube)]
+	_world world0 [in(box0, red_cube), perceives(L, Pepper), perceives(Pepper, L)]
+	_world world1 [in(box1, red_cube), perceives(L, Pepper), perceives(Pepper, L)]
+	_world world2 [in(box2, red_cube), perceives(L, Pepper), perceives(Pepper, L)]
 	_goal = [in(L, red_cube)]
 	_designated_worlds = [ world1 ]
 	_reflexivity = true
@@ -59,30 +100,6 @@ _problem simple_problem {
 			(world2, world0)
 			(world2, world1)
 		}
-		temp1 = {
-			(world0, world1)
-			(world0, world2)
-			(world1, world0)
-			(world1, world2)
-			(world2, world0)
-			(world2, world1)
-		}
-		temp2 = {
-			(world0, world1)
-			(world0, world2)
-			(world1, world0)
-			(world1, world2)
-			(world2, world0)
-			(world2, world1)
-		}
-	}
-	_perceivability = {
-		L = [ Pepper ]
-		Pepper = [ L ]
-	}
-	_observability = {
-		temp1 = [ L ]
-
 	}
 }
 

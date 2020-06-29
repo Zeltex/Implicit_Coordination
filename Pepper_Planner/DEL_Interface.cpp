@@ -93,6 +93,20 @@ namespace del {
 
 	bool DEL_Interface::create_policy() {
 		policy = planner.find_policy(this->goal, action_library, domain.get_current_state(), domain.get_agents());
+
+#ifdef DEBUG_PRINT
+		std::string path;
+#ifdef DEBUG_PRINT_PATH
+		path = DEBUG_PRINT_PATH;
+#else
+		path = "../Debug_Output/";
+#endif
+		std::ofstream state_file;
+		state_file.open(path + "Policy.dot");
+		state_file << "digraph {\ncompound = true;\n" << policy.to_graph(domain.get_agents()) << "}";
+		state_file.close();
+#endif
+
 		has_policy = policy.is_solved();
 		return policy.is_solved();
 	}

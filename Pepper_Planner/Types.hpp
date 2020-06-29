@@ -103,13 +103,13 @@ namespace del {
 			return this->current_size;
 		}
 
-		std::string to_graph(const std::string& agent_name) const {
+		std::string to_graph(const std::string& agent_name, const std::string& base_id) const {
 			std::string result;
 			// Magic number, estimating around 20 characters per edge
 			result.reserve(current_size * 20);
 			for (const auto& entry1 : conditions) {
 				for (const auto& entry2 : entry1.second) {
-					result += "s" + std::to_string(entry1.first) + " -> s" + std::to_string(entry2.first) + "[label=\"" + (agent_name) + ":" + entry2.second.to_string() + "\"];\n";
+					result += base_id + std::to_string(entry1.first) + " -> " + base_id + std::to_string(entry2.first) + "[label=\"" + (agent_name) + ":" + entry2.second.to_string() + "\"];\n";
 				}
 			}
 			return std::move(result);

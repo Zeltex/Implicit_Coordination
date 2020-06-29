@@ -37,6 +37,8 @@ namespace del {
 		void set_objects(std::unordered_map<std::string, std::unordered_set<std::string>> objects);
 		void set_initial_state(State&& state);
 	private:
+		std::unordered_set<size_t> get_obs_set(const Agent_Id& owner, const std::vector<Proposition_Instance>& add_list, const std::vector<Proposition_Instance>& delete_list);
+
 		size_t amount_of_agents;
 		std::vector<State> states;
 		std::string name;

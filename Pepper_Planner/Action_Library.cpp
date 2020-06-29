@@ -81,14 +81,10 @@ namespace del {
 
 	void Action_Library::add_general_action(const General_Action& general_action, const Domain& domain) {
 
-		// ---- TODO - This needs to be changed to use edge conditions -----
-
 		general_actions.push_back(general_action);
 		general_action_name_to_id[general_action.get_name()] = general_actions.size() - 1;
 
-		// TODO ---- this stuff
-
-		/*std::pair<std::string, std::string> action_owner = general_action.get_owner();
+		std::pair<std::string, std::string> action_owner = general_action.get_owner();
 		auto& owners = domain.get_all_atoms_of_type(action_owner.first);
 
 
@@ -119,24 +115,27 @@ namespace del {
 			bool done = false;
 			while (true) {
 
-				std::unordered_map<std::string, std::string> input_to_atom;
+				//std::unordered_map<std::string, std::string> input_to_atom;
+				std::vector<std::string> arguments;
 				bool valid_owner_input = true;
 				for (size_t i = 0; i < counters.size(); i++) {
-					input_to_atom[input_names[i]] = atoms[i][counters[i]];
+					//input_to_atom[input_names[i]] = atoms[i][counters[i]];
+					arguments.emplace_back(atoms[i][counters[i]]);
 					if (i == owner_input_index && owner != atoms[i][counters[i]]) {
 						valid_owner_input = false;
 					}
 				}
 				if (valid_owner_input) {
 					auto owner_id = domain.get_agent_id(owner);
-					actions.emplace_back(general_action, owner_id, input_to_atom);
+					actions.emplace_back(general_action.create_action(owner, arguments, domain));
+					//actions.emplace_back(general_action, owner_id, input_to_atom);
 				}
 
 				if (!increment_counters_success(counters, atoms)) {
 					break;
 				}
 			}
-		}*/
+		}
 	}
 
 	bool Action_Library::increment_counters_success(std::vector<size_t>& counters, std::vector<std::vector<std::string>>& atoms) {

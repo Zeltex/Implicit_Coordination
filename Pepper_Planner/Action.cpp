@@ -142,7 +142,7 @@ namespace del {
 		for (auto& agent_relations : edge_conditions) {
 			relations_size += agent_relations.size();
 		}
-		std::string result = get_indentation(indenation) + " Action\n(owner, " + std::to_string(owner.id) + ") (Relations size, " + std::to_string(relations_size) + ") (Designated events";
+		std::string result = get_indentation(indenation) + " Action\n(name, " + name + ") (owner, " + std::to_string(owner.id) + ") (Relations size, " + std::to_string(relations_size) + ") (Designated events";
 		for (auto event_id : designated_events) {
 			result += ", " + std::to_string(event_id.id);
 		}
@@ -161,10 +161,10 @@ namespace del {
 		return result;
 	}
 
-	std::string Action::to_graph(const std::vector<Agent>& agents) const {
+	std::string Action::to_graph(const std::vector<Agent>& agents, const std::string& base_id) const {
 		std::string result;
 		for (auto& event : events) {
-			result += "s" + std::to_string(event.get_id().id) + "[label=\"" + event.get_name() + "\n<"
+			result += base_id + std::to_string(event.get_id().id) + "[label=\"" + event.get_name() + "\n<"
 				+ event.get_preconditions().to_string() + ">\n<"
 				+ get_string(event.get_add_list()) + ">\n<"
 				+ get_string(event.get_delete_list()) + ">\"";
@@ -176,7 +176,7 @@ namespace del {
 
 		size_t agent = 0;
 		for (const auto& agent_relations : edge_conditions) {
-			result += agent_relations.to_graph(agents.at(agent).get_name());
+			result += agent_relations.to_graph(agents.at(agent).get_name(), base_id);
 			agent++;
 		}
 		return result;
