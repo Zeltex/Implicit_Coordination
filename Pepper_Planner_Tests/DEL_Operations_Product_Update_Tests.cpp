@@ -93,11 +93,11 @@ namespace PepperPlannerTests
 			Action_Event event2 = Action_Event(id2, std::move(f2), std::vector<Proposition_Instance>(), std::vector<Proposition_Instance>());
 			action.add_event(event2);
 
-			action.add_indistinguishability_relation(Agent_Id{ 1 }, id, id2);
-			action.add_indistinguishability_relation(Agent_Id{ 1 }, id, id);
-			action.add_indistinguishability_relation(Agent_Id{ 1 }, id2, id2);
-			action.add_indistinguishability_relation(Agent_Id{ 0 }, id, id);
-			action.add_indistinguishability_relation(Agent_Id{ 0 }, id2, id2);
+			action.add_reachability(Agent_Id{ 1 }, id, id2, Formula());
+			action.add_reachability(Agent_Id{ 1 }, id, id, Formula());
+			action.add_reachability(Agent_Id{ 1 }, id2, id2, Formula());
+			action.add_reachability(Agent_Id{ 0 }, id, id, Formula());
+			action.add_reachability(Agent_Id{ 0 }, id2, id2, Formula());
 			action.add_designated_event(id);
 
 			State& new_state = perform_product_update(state, action, { {{0}, "Pepper"}, {{1}, "L"} });
@@ -162,10 +162,10 @@ namespace PepperPlannerTests
 			Action_Event event2 = Action_Event(id2, std::move(f2), std::vector<Proposition_Instance>(), std::vector<Proposition_Instance>());
 			action.add_event(event2);
 
-			action.add_indistinguishability_relation(Agent_Id{ 1 }, id, id);
-			action.add_indistinguishability_relation(Agent_Id{ 1 }, id2, id2);
-			action.add_indistinguishability_relation(Agent_Id{ 0 }, id, id);
-			action.add_indistinguishability_relation(Agent_Id{ 0 }, id2, id2);
+			action.add_reachability(Agent_Id{ 1 }, id, id, Formula());
+			action.add_reachability(Agent_Id{ 1 }, id2, id2, Formula());
+			action.add_reachability(Agent_Id{ 0 }, id, id, Formula());
+			action.add_reachability(Agent_Id{ 0 }, id2, id2, Formula());
 			action.add_designated_event(id);
 			action.add_designated_event(id2);
 

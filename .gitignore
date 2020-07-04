@@ -1,7 +1,7 @@
 .vs/
-Pepper_Planner/Debug/
-Pepper_Planner_Tests/Debug/
-Domain_Loader/Debug/
-Formula/Debug/
 Debug_Output/png/*.png
 Debug_Output/dot/*.dot
+*/Debug/
+*/Release/
+Release/
+Debug/

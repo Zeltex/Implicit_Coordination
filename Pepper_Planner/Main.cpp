@@ -1,6 +1,10 @@
 #include "Graph.hpp"
 #include "Formula.hpp"
 #include <iostream>
+#include <chrono>
+#include <ctime>    
+#include <time.h>
+
 
 #include "World.hpp"
 #include "Formula.hpp"
@@ -23,7 +27,16 @@ void find_and_execute_policy() {
 //del_interface.perform_action("perceive", "L", { "box1", "red_cube" });
 //del_interface.print_current_state_to_graph("../State_After.dot");
 
+	auto start = std::chrono::high_resolution_clock::now();
 	del_interface.create_policy();
+	// Some computation here
+	auto end = std::chrono::high_resolution_clock::now();
+
+	auto elapsed = end - start;
+
+	
+
+	std::cout << "elapsed time: " << (elapsed.count() / 1000000) << "ms\n";
 
 	while (!del_interface.is_solved()) {
 		Interface_DTO dto = del_interface.get_next_action();
