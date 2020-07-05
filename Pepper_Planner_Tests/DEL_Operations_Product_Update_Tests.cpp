@@ -43,9 +43,9 @@ namespace PepperPlannerTests
 				for (size_t j = 0; j < 3; j++) {
 					state.add_indistinguishability_relation(Agent_Id{ 0 }, World_Id{ i }, World_Id{ j });
 				}
-			}
 
-			state.add_indistinguishability_relation(Agent_Id{ 1 }, World_Id{ 1 }, World_Id{ 1 });
+			state.add_indistinguishability_relation(Agent_Id{ 1 }, World_Id{ i }, World_Id{ i });
+			}
 
 			state.add_designated_world(World_Id{ 1 });
 
@@ -54,6 +54,7 @@ namespace PepperPlannerTests
 			f.f_prop({ "in", { atom_to_id["red"], atom_to_id["Box1"] } });
 			Action_Event event = Action_Event(Event_Id{ 0 }, std::move(f), std::vector<Proposition_Instance>(), std::vector<Proposition_Instance>());
 			action.add_event(event);
+			action.add_designated_event({ 0 });
 			State& new_state = perform_product_update(state, action, { {{0}, {atom_to_id.size()}, "Pepper"}, {{1}, {atom_to_id.size()+1}, "L"} });
 			
 			auto& worlds = new_state.get_worlds();
