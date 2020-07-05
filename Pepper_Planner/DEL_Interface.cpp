@@ -162,7 +162,11 @@ namespace del {
 		return domain.get_current_state().valuate(goal);
 	}
 
-	const std::unordered_map<std::string, Atom_Id>& DEL_Interface::get_formula_context() {
+	const std::unordered_map<std::string, Atom_Id>& DEL_Interface::get_proposition_context() {
 		return domain.get_atom_to_id();
+	}
+
+	std::unordered_map<std::string, size_t> DEL_Interface::get_belief_context() {
+		return domain.get_agent_to_id();
 	}
 }

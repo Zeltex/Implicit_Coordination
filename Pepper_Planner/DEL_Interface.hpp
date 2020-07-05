@@ -33,7 +33,8 @@ namespace del {
 		bool create_policy();
 		bool is_solved();
 
-		const std::unordered_map<std::string, Atom_Id>& get_formula_context();
+		const std::unordered_map<std::string, Atom_Id>& get_proposition_context();
+		std::unordered_map<std::string, size_t> get_belief_context();
 	private:
 		Domain domain;
 		Planner planner;

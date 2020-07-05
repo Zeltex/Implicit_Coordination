@@ -84,11 +84,12 @@ void execute_second_order() {
 	del_interface.perform_oc("A", {  }, { {"perceives", "A", "C"}, {"perceives", "C", "A"} });
 
 	Formula goal;
-	auto& context = del_interface.get_formula_context();
+	auto& proposition_context = del_interface.get_proposition_context();
+	auto belief_context = del_interface.get_belief_context();
 
-	auto prop = goal.f_prop({ "in", { "box1", "cube_red" }, context });
-	auto belief1 = goal.f_believes(0, prop);
-	auto belief2 = goal.f_believes(1, belief1);
+	auto prop = goal.f_prop({ "in", { "box1", "cube_red" }, proposition_context });
+	auto belief1 = goal.f_believes("A", prop, belief_context);
+	auto belief2 = goal.f_believes("B", belief1, belief_context);
 	if (del_interface.query(goal)) {
 		std::cout << "-=-=- Success -=-=-";
 	} else {

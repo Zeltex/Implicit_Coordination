@@ -24,6 +24,7 @@ namespace del {
 		Formula_Id f_and(std::vector<Formula_Id> formulas);
 		Formula_Id f_or(std::vector<Formula_Id> formulas);
 		Formula_Id f_believes(size_t agent, Formula_Id formula);
+		Formula_Id f_believes(std::string agent, Formula_Id formula, std::unordered_map<std::string, size_t> context);
 		Formula_Id f_everyone_Believes(Formula_Id formula);
 		Formula_Id f_common_Knowledge(Formula_Id formula);
 

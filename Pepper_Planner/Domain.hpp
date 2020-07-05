@@ -41,6 +41,7 @@ namespace del {
 
 		const std::unordered_map<size_t, std::string>& get_id_to_atom() const;
 		const std::unordered_map<std::string, Atom_Id>& get_atom_to_id() const;
+		std::unordered_map<std::string, size_t> get_agent_to_id() const;
 
 		std::string get_atom_name(Atom_Id atom_id) const;
 		Atom_Id get_atom_id(std::string atom_name) const;

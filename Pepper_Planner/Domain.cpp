@@ -242,4 +242,12 @@ namespace del {
 	const std::unordered_map<std::string, Atom_Id>& Domain::get_atom_to_id() const {
 		return atom_to_id;
 	}
+	
+	std::unordered_map<std::string, size_t> Domain::get_agent_to_id() const {
+		std::unordered_map<std::string, size_t> result;
+		for (auto& agent : agents) {
+			result[agent.get_name()] = agent.get_id().id;
+		}
+		return result;
+	}
 }

@@ -74,6 +74,11 @@ namespace del {
         return Formula_Id{ formulas.size() - 1 };
     }
 
+    Formula_Id Formula::f_believes(std::string agent, Formula_Id formula, std::unordered_map<std::string, size_t> context)
+    {
+        return f_believes(context[agent], formula);
+    }
+
     Formula_Id Formula::f_everyone_Believes(Formula_Id formula)
     {
         formulas.emplace_back(Formula_Types::Everyone_Believes, formula);
