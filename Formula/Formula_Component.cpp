@@ -2,6 +2,12 @@
 
 namespace del {
 
+    Formula_Types Formula_Component::get_type() const {
+        return type;
+    }
+    const Proposition_Instance& Formula_Component::get_proposition() const {
+        return prop;
+    }
 
     Formula_Component::Formula_Component(const Formula_Component& other, const std::unordered_map<size_t, Atom_Id>& input_to_atom) : agent(0), formula() {
         this->type = other.type;
@@ -45,7 +51,13 @@ namespace del {
         }
     }
 
-    bool Formula_Component::valuate(const std::vector<Proposition_Instance>& propositions, const std::vector<Formula_Component>& all_formulas) const
+    bool Formula_Component::valuate(
+            const std::vector<Proposition_Instance>& propositions, 
+            const std::vector<Formula_Component>& all_formulas
+        //, 
+        //    std::vector<std::pair<size_t, std::vector<Proposition_Instance>>> (get_reachables)(size_t agent, size_t world),
+        //    size_t world
+    ) const
     {
         switch (type) {
         case Formula_Types::Top:
@@ -84,7 +96,14 @@ namespace del {
         }
         case Formula_Types::Believes:
         {
-            // TODO - Implement
+            // TODO
+            //auto reachables = get_reachables(agent, world);
+            //for (auto entry : reachables) {
+            //    if (!all_formulas.at(formula.id).valuate(entry.second, all_formulas, get_reachables, entry.first)) {
+            //        return false;
+            //    }
+            //}
+            //return !reachables.empty();
             return false;
         }
         case Formula_Types::Everyone_Believes:

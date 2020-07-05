@@ -63,6 +63,10 @@ namespace del {
 			return Interface_DTO();
 		}
 	}
+
+	bool DEL_Interface::query(const Formula& query) {
+		return domain.get_current_state().valuate(query);
+	}
 	
 	void DEL_Interface::perform_do(const Agent_Id i, const std::vector<Proposition_Instance>& add, const std::vector<Proposition_Instance>& del) {
 		domain.perform_do(i, add, del);
@@ -156,5 +160,9 @@ namespace del {
 
 	bool DEL_Interface::is_solved() {
 		return domain.get_current_state().valuate(goal);
+	}
+
+	const std::unordered_map<std::string, Atom_Id>& DEL_Interface::get_formula_context() {
+		return domain.get_atom_to_id();
 	}
 }

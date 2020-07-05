@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <string>
+#include <optional>
 
 #include "Domain.hpp"
 #include "Action.hpp"
@@ -20,6 +21,8 @@ namespace del {
 		DEL_Interface(size_t domain_to_load);
 		DEL_Interface(State initial_state, Action_Library library);
 		Interface_DTO get_next_action();
+
+		bool query(const Formula& query);
 		void perform_do(const Agent_Id i, const std::vector<Proposition_Instance>& add, const std::vector<Proposition_Instance>& del);
 		void perform_oc(const Agent_Id i, std::vector<std::vector<std::string>>&& add, std::vector<std::vector<std::string>>&& del);
 		void perform_oc(const std::string owner_name, std::vector<std::vector<std::string>>&& add, std::vector<std::vector<std::string>>&& del);
@@ -29,6 +32,8 @@ namespace del {
 		bool create_policy(Formula goal);
 		bool create_policy();
 		bool is_solved();
+
+		const std::unordered_map<std::string, Atom_Id>& get_formula_context();
 	private:
 		Domain domain;
 		Planner planner;

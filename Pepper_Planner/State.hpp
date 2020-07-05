@@ -42,6 +42,7 @@ namespace del {
 		size_t								get_number_of_agents() const;
 		const std::vector<Agent_Id>&		get_observables(Agent_Id agent) const;
 		const std::vector<Agent_Id>&		get_perceivables(Agent_Id agent) const;
+		std::vector<World_Id>				get_reachables(Agent_Id agent, World_Id world) const;
 		const World&						get_world(World_Id world) const;
 		const std::vector<World>&			get_worlds() const;
 		size_t								get_worlds_count() const;
@@ -52,6 +53,8 @@ namespace del {
 		std::string to_graph(const std::vector<Agent>& agents, const std::string node_id, const Domain& domain) const;
 
 	private:
+		bool valuate_world(const Formula& formula, const Formula_Id& formula_id, const World_Id world) const;
+
 		size_t number_of_agents;
 		std::vector<World> worlds;
 		std::vector<World_Id> designated_worlds;

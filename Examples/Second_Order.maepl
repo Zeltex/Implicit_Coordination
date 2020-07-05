@@ -55,7 +55,7 @@ _problem simple_problem {
 		in(box1, cube_red)
 	]
 	_world world0 [in(box1, cube_red), perceives(A,A), perceives(A,B), perceives(A,C), perceives(B,A), perceives(B,B), perceives(B,C), perceives(C,A), perceives(C,B), perceives(C,C)]
-	_goal = [ in(L, cube_red) ]
+	_goal = [  ]
 	_designated_worlds = [ world0 ]
 	_reflexivity = true
 	_reachability = {

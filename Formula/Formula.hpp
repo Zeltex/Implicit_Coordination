@@ -27,10 +27,12 @@ namespace del {
 		Formula_Id f_everyone_Believes(Formula_Id formula);
 		Formula_Id f_common_Knowledge(Formula_Id formula);
 
+		const Formula_Component& get_component(Formula_Id formula) const;
+		const Formula_Id& get_root() const;
 
+	private:
 		Formula_Id root;
 		std::vector<Formula_Component> formulas;
-	private:
 	};
 	
 }

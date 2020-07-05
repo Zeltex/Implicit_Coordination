@@ -82,6 +82,18 @@ void execute_second_order() {
 	del_interface.perform_oc("A", { {"perceives", "A", "C"}, {"perceives", "C", "A"} }, {  });
 	del_interface.perform_action("transfer", "A", { "box1", "box2", "cube_red" });
 	del_interface.perform_oc("A", {  }, { {"perceives", "A", "C"}, {"perceives", "C", "A"} });
+
+	Formula goal;
+	auto& context = del_interface.get_formula_context();
+
+	auto prop = goal.f_prop({ "in", { "box1", "cube_red" }, context });
+	auto belief1 = goal.f_believes(0, prop);
+	auto belief2 = goal.f_believes(1, belief1);
+	if (del_interface.query(goal)) {
+		std::cout << "-=-=- Success -=-=-";
+	} else {
+		std::cout << "-=-=- Fail -=-=-";
+	}
 }
 
 void execute_second_order_seeing_is_believing() {
@@ -89,11 +101,11 @@ void execute_second_order_seeing_is_believing() {
 }
 
 int main(int argc, char* argv[]) {
-	//execute_second_order();
+	execute_second_order();
 	//execute_test_case();
 
 
-	find_and_execute_policy();
+	//find_and_execute_policy();
 
 
 	return 0;

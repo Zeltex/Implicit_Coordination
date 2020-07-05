@@ -87,4 +87,12 @@ namespace del {
         root = Formula_Id{ formulas.size() - 1 };
         return Formula_Id{ formulas.size() - 1 };
     }
+
+    const Formula_Component& Formula::get_component(Formula_Id formula) const {
+        return formulas.at(formula.id);
+    }
+    
+    const Formula_Id& Formula::get_root() const {
+        return root;
+    }
 }

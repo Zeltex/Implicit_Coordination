@@ -238,4 +238,8 @@ namespace del {
 	const std::unordered_map<size_t, std::string>& Domain::get_id_to_atom() const {
 		return id_to_atom;
 	}
+
+	const std::unordered_map<std::string, Atom_Id>& Domain::get_atom_to_id() const {
+		return atom_to_id;
+	}
 }

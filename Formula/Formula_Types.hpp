@@ -56,7 +56,7 @@ struct Proposition_Instance {
 	}
 
 	Proposition_Instance(const std::string& name, const std::vector<Atom_Id>& input):
-		name(name) {
+		name(name), arguments() {
 		size_t counter;
 		for (counter = 0; counter < input.size(); counter++) {
 			arguments[counter] = input[counter];
@@ -67,10 +67,17 @@ struct Proposition_Instance {
 		}
 	}
 
-	// So far removed so that non-used argument entries can be flooded with EMPTY_INDEX
-	//Proposition_Instance(const std::string& name, const prop_array& arguments) :
-	//	name(name), arguments(arguments) {
-	//}
+	Proposition_Instance(const std::string& name, const std::vector<std::string>& input, const std::unordered_map<std::string, Atom_Id>& context) :
+		name(name), arguments() {
+		size_t counter;
+		for (counter = 0; counter < input.size(); counter++) {
+			arguments[counter] = context.at(input[counter]);
+		}
+		while (counter < PROPOSITION_LENGTH) {
+			arguments[counter] = EMPTY_INDEX;
+			counter++;
+		}
+	}
 
 	Proposition_Instance(const Proposition_Instance& other, const std::unordered_map<size_t, Atom_Id>& input_to_atom) :
 		name(other.name), arguments() {
