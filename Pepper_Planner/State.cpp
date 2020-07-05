@@ -1,4 +1,5 @@
 #include "State.hpp"
+#include "Domain.hpp"
 
 namespace del {
 
@@ -194,10 +195,6 @@ namespace del {
 		return perceivability[agent.id];
 	}
 
-	std::string State::to_string() const {
-		return to_string(3);
-	}
-
 	void State::set_designated_worlds(std::vector<World_Id> worlds) {
 		designated_worlds = worlds;
 	}
@@ -280,8 +277,12 @@ namespace del {
 		designated_worlds = std::move(new_designated_worlds);
 	}
 
+	std::string State::to_string(const Domain& domain) const {
+		return to_string(3, domain);
+	}
 
-	std::string State::to_string(size_t indentation) const {
+
+	std::string State::to_string(size_t indentation, const Domain& domain) const {
 
 		size_t relations_size = 0;
 		for (auto relation : indistinguishability_relation) {
@@ -303,11 +304,11 @@ namespace del {
 			result += std::to_string(designated_world.id);
 		}
 		result += "\n" + get_indentation(indentation - 1) + " ({Agent}, {World from}, {World to}) Relations";
-		int current_agent = 0;
+		size_t current_agent = 0;
 		for (auto agent_relations : indistinguishability_relation) {
 			for (auto relation : agent_relations) {
 				result += "\n(" 
-					+ std::to_string(current_agent) + ", "
+					+ domain.get_agent(Agent_Id{ current_agent }).get_name() + ", "
 					+ std::to_string(relation.world_from.id) + ", "
 					+ std::to_string(relation.world_to.id) + ")";
 			}
@@ -315,12 +316,12 @@ namespace del {
 		}
 		result += "\n" + get_indentation(indentation - 1) + " World {id}: {propositions}";
 		for (auto world : worlds) {
-			result += "\n" + world.to_string();
+			result += "\n" + world.to_string(domain);
 		}
 		return result;
 	}
 
-	std::string State::to_graph(const std::vector<Agent>& agents, const std::string node_id) const {
+	std::string State::to_graph(const std::vector<Agent>& agents, const std::string node_id, const Domain& domain) const {
 		std::string result;
 		for (auto& world : worlds) {
 			std::string propositions;
@@ -331,7 +332,7 @@ namespace del {
 				} else {
 					propositions += ", ";
 				}
-				propositions += proposition.to_string();
+				propositions += proposition.to_string(domain.get_id_to_atom());
 			}
 			result += node_id + std::to_string(world.get_id().id) + " [label=\"" + std::to_string(world.get_id().id) + "\n" + propositions + "\"";
 			if (std::find(designated_worlds.begin(), designated_worlds.end(), world.get_id()) != designated_worlds.end()) {

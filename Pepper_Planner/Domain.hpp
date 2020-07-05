@@ -27,15 +27,22 @@ namespace del {
 
 		const std::vector<Agent>& get_agents() const;
 		const std::unordered_set<std::string>& get_atom_types() const;
-		const std::unordered_set<std::string>& get_all_atoms_of_type(std::string type) const;
+		const std::unordered_set<size_t>& get_all_atoms_of_type(std::string type) const;
 		Agent_Id get_agent_id(std::string name) const;
+		Agent_Id get_agent_id(Atom_Id atom_id) const;
 		const Agent& get_agent(const std::string& name) const;
 		const Agent& get_agent(const Agent_Id& id) const;
+		const Agent& get_agent_from_atom(const Atom_Id& id) const;
 		Agent_Id create_agent(std::string name);
 
 		void set_atom_types(std::unordered_set<std::string> types);
 		void set_objects(std::unordered_map<std::string, std::unordered_set<std::string>> objects);
 		void set_initial_state(State&& state);
+
+		const std::unordered_map<size_t, std::string>& get_id_to_atom() const;
+
+		std::string get_atom_name(Atom_Id atom_id) const;
+		Atom_Id get_atom_id(std::string atom_name) const;
 	private:
 		std::unordered_set<size_t> get_obs_set(const Agent_Id& owner, const std::vector<Proposition_Instance>& add_list, const std::vector<Proposition_Instance>& delete_list);
 
@@ -44,7 +51,11 @@ namespace del {
 		std::string name;
 		std::vector<Agent> agents;
 		std::unordered_set<std::string> atom_types;
-		std::unordered_map<std::string, std::unordered_set<std::string>> objects;
+
+		// Objects and atoms are same thing, one is just sorted on type (need to rename objects to atoms)
+		std::unordered_map<std::string, std::unordered_set<size_t>> objects;
+		std::unordered_map<std::string, Atom_Id> atom_to_id;
+		std::unordered_map<size_t, std::string> id_to_atom;
 #ifdef DEBUG_PRINT
 		size_t debug_counter = 0;
 #endif

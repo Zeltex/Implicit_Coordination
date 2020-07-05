@@ -27,7 +27,7 @@ public:
 	void clear_designated_events();
 	std::vector<std::string> add_reflexive_perceivability(std::string name, std::vector<std::string> agents);
 
-
+	std::unordered_map<std::string, Atom_Id>							get_atom_to_id();
 	Formula																get_formula();
 	std::vector<std::tuple<std::string, std::string, Formula>>			get_edge_conditions();
 	std::vector<Proposition_Instance>									get_event_add_list();
@@ -42,9 +42,11 @@ public:
 	std::vector<Proposition_Instance>									get_proposition_instances();
 	std::vector<std::string>											get_missing_perceivables();
 
-	void add_variable(std::string variable);
+	void add_variable(std::string variable); 
+	void clear_seen_atoms();
 	void clear_formula();
 	void clear_variable_list();
+	void clear_proposition_instances();
 	void push_event_add_list();
 	void push_event_delete_list();
 	void push_types();
@@ -77,6 +79,7 @@ private:
 	Formula formula;
 	std::vector<std::vector<Formula_Id>> formula_buffer;
 	std::vector<Formula_Types> formula_buffer_type;
+	std::unordered_map<std::string, Atom_Id> atom_to_id;
 
 
 

@@ -217,7 +217,7 @@ namespace del {
 	std::string Bisimulation_Context::convert_propositions_to_string(const std::vector<Proposition_Instance>& propositions) {
 		std::vector<std::string> vector_propositions;
 		for (auto& proposition : propositions) {
-			vector_propositions.push_back(proposition.to_string());
+			vector_propositions.push_back(proposition.to_simple_string());
 		}
 		std::sort(vector_propositions.begin(), vector_propositions.end());
 		std::string result;

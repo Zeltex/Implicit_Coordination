@@ -24,13 +24,21 @@ namespace PepperPlannerTests
 
 		TEST_METHOD(Product_Update_Test_One_Event_Applicable_In_One_Designated_World) {
 			
+
+			std::unordered_map<std::string, Atom_Id> atom_to_id;
+			atom_to_id["red"] = 0;
+			atom_to_id["Box0"] = 1;
+			atom_to_id["Box1"] = 2;
+			atom_to_id["Box2"] = 3;
+
 			State state(2);
 			state.create_world();
 			state.create_world();
 			state.create_world();
-			state.add_true_propositions(World_Id{ 0 }, { {"in", {"red", "Box0"} } });
-			state.add_true_propositions(World_Id{ 1 }, { {"in", {"red", "Box1"} } });
-			state.add_true_propositions(World_Id{ 2 }, { {"in", {"red", "Box2"} } });
+
+			state.add_true_propositions(World_Id{ 0 }, { {"in", {atom_to_id["red"], atom_to_id["Box0"]} } });
+			state.add_true_propositions(World_Id{ 1 }, { {"in", {atom_to_id["red"], atom_to_id["Box1"]} } });
+			state.add_true_propositions(World_Id{ 2 }, { {"in", {atom_to_id["red"], atom_to_id["Box2"]} } });
 			for (size_t i = 0; i < 3; i++) {
 				for (size_t j = 0; j < 3; j++) {
 					state.add_indistinguishability_relation(Agent_Id{ 0 }, World_Id{ i }, World_Id{ j });
@@ -43,10 +51,10 @@ namespace PepperPlannerTests
 
 			Action action(Agent_Id{ 1 }, 2);
 			Formula f;
-			f.f_prop({ "in", { "red","Box1" } });
+			f.f_prop({ "in", { atom_to_id["red"], atom_to_id["Box1"] } });
 			Action_Event event = Action_Event(Event_Id{ 0 }, std::move(f), std::vector<Proposition_Instance>(), std::vector<Proposition_Instance>());
 			action.add_event(event);
-			State& new_state = perform_product_update(state, action, { {{0}, "Pepper"}, {{1}, "L"} });
+			State& new_state = perform_product_update(state, action, { {{0}, {atom_to_id.size()}, "Pepper"}, {{1}, {atom_to_id.size()+1}, "L"} });
 			
 			auto& worlds = new_state.get_worlds();
 			Assert::AreEqual(size_t{ 1 }, worlds.size());
@@ -54,20 +62,28 @@ namespace PepperPlannerTests
 			auto& propositions = worlds[0].get_true_propositions();
 			Assert::AreEqual(size_t{ 1 }, propositions.size());
 			
-			Proposition_Instance proposition_to_find = { "in",{"red", "Box1"} };
+			Proposition_Instance proposition_to_find = { "in",{atom_to_id["red"], atom_to_id["Box1"]} };
 			Assert::IsTrue(std::find(propositions.begin(), propositions.end(), proposition_to_find) != propositions.end());
 
 		}
 
 		TEST_METHOD(Product_Update_Test_Perceive_Action_Only_Observable_To_Owner) {
+
+
+			std::unordered_map<std::string, Atom_Id> atom_to_id;
+			atom_to_id["red"] = 0;
+			atom_to_id["Box0"] = 1;
+			atom_to_id["Box1"] = 2;
+			atom_to_id["Box2"] = 3;
+
 			//Agents; 0:Pepper, 1:L
 			State state(2);
 			state.create_world();
 			state.create_world();
 			state.create_world();
-			state.add_true_propositions(World_Id{ 0 }, { {"in", {"red", "Box0"} } });
-			state.add_true_propositions(World_Id{ 1 }, { {"in", {"red", "Box1"} } });
-			state.add_true_propositions(World_Id{ 2 }, { {"in", {"red", "Box2"} } });
+			state.add_true_propositions(World_Id{ 0 }, { {"in", {atom_to_id["red"], atom_to_id["Box0"]} } });
+			state.add_true_propositions(World_Id{ 1 }, { {"in", {atom_to_id["red"], atom_to_id["Box1"]} } });
+			state.add_true_propositions(World_Id{ 2 }, { {"in", {atom_to_id["red"], atom_to_id["Box2"]} } });
 			for (size_t i = 0; i < 3; i++) {
 				for (size_t j = 0; j < 3; j++) {
 					state.add_indistinguishability_relation(Agent_Id{ 0 }, World_Id{ i }, World_Id{ j });
@@ -81,7 +97,7 @@ namespace PepperPlannerTests
 
 			Action action(Agent_Id{ 1 }, 2);
 			Formula f;
-			f.f_prop({ "in", { "red","Box1" } });
+			f.f_prop({ "in", { atom_to_id["red"],atom_to_id["Box1"] } });
 			Event_Id id{ 0 };
 
 			Action_Event event = Action_Event(id, std::move(f), std::vector<Proposition_Instance>(), std::vector<Proposition_Instance>());
@@ -100,7 +116,7 @@ namespace PepperPlannerTests
 			action.add_reachability(Agent_Id{ 0 }, id2, id2, Formula());
 			action.add_designated_event(id);
 
-			State& new_state = perform_product_update(state, action, { {{0}, "Pepper"}, {{1}, "L"} });
+			State& new_state = perform_product_update(state, action, { {{0}, {atom_to_id.size()}, "Pepper"}, {{1}, {atom_to_id.size()+1}, "L"} });
 
 			// Correct amount of worlds
 			auto& worlds = new_state.get_worlds();
@@ -115,7 +131,7 @@ namespace PepperPlannerTests
 			// Designated world has correct proposition
 			auto& propositions = worlds[1].get_true_propositions();
 			Assert::AreEqual(size_t{ 1 }, propositions.size());
-			Proposition_Instance proposition_to_find = { "in",{"red", "Box1"} };
+			Proposition_Instance proposition_to_find = { "in", {atom_to_id["red"], atom_to_id["Box1"]} };
 			Assert::IsTrue(std::find(propositions.begin(), propositions.end(), proposition_to_find) != propositions.end());
 
 			// Correct agent 0 (pepper) indistinguishability
@@ -132,14 +148,21 @@ namespace PepperPlannerTests
 		}
 
 		TEST_METHOD(Product_Update_Test_Perceive_Two_Events) {
+
+			std::unordered_map<std::string, Atom_Id> atom_to_id;
+			atom_to_id["red"] = 0;
+			atom_to_id["Box0"] = 1;
+			atom_to_id["Box1"] = 2;
+			atom_to_id["Box2"] = 3;
+
 			//Agents; 0:Pepper, 1:L
 			State state(2);
 			state.create_world();
 			state.create_world();
 			state.create_world();
-			state.add_true_propositions(World_Id{ 0 }, { {"in", {"red", "Box1"} } });
-			state.add_true_propositions(World_Id{ 1 }, { {"in", {"red", "Box0"} } });
-			state.add_true_propositions(World_Id{ 2 }, { {"in", {"red", "Box2"} } });
+			state.add_true_propositions(World_Id{ 0 }, { {"in", {atom_to_id["red"], atom_to_id["Box1"]} } });
+			state.add_true_propositions(World_Id{ 1 }, { {"in", {atom_to_id["red"], atom_to_id["Box0"]} } });
+			state.add_true_propositions(World_Id{ 2 }, { {"in", {atom_to_id["red"], atom_to_id["Box2"]} } });
 			for (size_t i = 0; i < 3; i++) {
 					state.add_indistinguishability_relation(Agent_Id{ 0 }, World_Id{ i }, World_Id{ i });
 					state.add_indistinguishability_relation(Agent_Id{ 1 }, World_Id{ i }, World_Id{ i });
@@ -151,13 +174,13 @@ namespace PepperPlannerTests
 
 			Action action(Agent_Id{ 1 }, 2);
 			Formula f;
-			f.f_prop({ "in", { "red","Box2" } });
+			f.f_prop({ "in", { atom_to_id["red"],atom_to_id["Box2"] } });
 			Event_Id id{ 0 };
 			Action_Event event = Action_Event(id, std::move(f), std::vector<Proposition_Instance>(), std::vector<Proposition_Instance>());
 			action.add_event(event);
 
 			Formula f2;
-			f2.f_not(f2.f_prop({ "in", { "red","Box2" } }));
+			f2.f_not(f2.f_prop({ "in", { atom_to_id["red"],atom_to_id["Box2"] } }));
 			Event_Id id2{ 1 };
 			Action_Event event2 = Action_Event(id2, std::move(f2), std::vector<Proposition_Instance>(), std::vector<Proposition_Instance>());
 			action.add_event(event2);
@@ -170,7 +193,7 @@ namespace PepperPlannerTests
 			action.add_designated_event(id2);
 
 
-			State& new_state = perform_product_update(state, action, { {{0}, "Pepper"}, {{1}, "L"} });
+			State& new_state = perform_product_update(state, action, { {{0}, {atom_to_id.size()}, "Pepper"}, {{1}, {atom_to_id.size()+1}, "L"} });
 
 			// TODO
 		}

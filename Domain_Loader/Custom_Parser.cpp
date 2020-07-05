@@ -147,15 +147,16 @@ void Custom_Parser::problem_body() {
 
 	if (try_match({ Token::WORLD_DEF, Token::NAME, Token::LBRACK })) {
 		auto world_name = get_svalue(1);
+		buffer->clear_proposition_instances();
 		proposition_instances();
-		domain->create_world(world_name, buffer->get_proposition_instances());
+		domain->create_world(world_name, buffer->get_proposition_instances(), buffer->get_atom_to_id());
 		if (!must_match({ Token::RBRACK })) return;
 		return problem_body();
 	}
 
 	if (try_match({ Token::GOAL_DEF, Token::EQUALS, Token::LBRACK })) {
 		formula();
-		domain->set_goal(buffer->get_formula());
+		domain->set_goal(buffer->get_formula(), buffer->get_atom_to_id());
 		if (!must_match({ Token::RBRACK })) return;
 		return problem_body();
 	}
@@ -465,12 +466,16 @@ void Custom_Parser::propositions() {
 
 void Custom_Parser::actions() {
 	if (try_match({ Token::ACTION_DEF, Token::NAME, Token::LBRACK })) {
+		buffer->clear_proposition_instances();
+		buffer->clear_seen_atoms();
 		domain->new_action(get_svalue(1));
 		input();
 		domain->set_action_input(buffer->get_inputs());
 		if (!must_match({ Token::RBRACK, Token::LBRACK })) return;
 		action_body();
 		domain->finish_action();
+		buffer->clear_proposition_instances();
+		buffer->clear_seen_atoms();
 		if (!must_match({ Token::RBRACK })) return;
 		return actions();
 	}

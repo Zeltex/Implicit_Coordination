@@ -18,6 +18,7 @@
 #include "Bisimulation_Context.cpp"
 #include "General_Action.cpp"
 #include "Domain.cpp"
+#include "Types.cpp"
 
 
 

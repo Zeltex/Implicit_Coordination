@@ -2,18 +2,18 @@
 
 namespace del {
 
-    Formula::Formula(const Formula& other, const std::unordered_map<std::string, std::string>& input_to_atom) {
+    Formula::Formula(const Formula& other, const std::unordered_map<size_t, Atom_Id>& input_to_atom) {
         this->root = other.root;
         for (const auto& entry : other.formulas) {
             this->formulas.emplace_back(entry, input_to_atom);
         }
     }
 
-    std::string Formula::to_string() const {
+    std::string Formula::to_string(const std::unordered_map<size_t, std::string>& id_to_atom) const {
         if (formulas.empty()) {
             return Formula_Converter::type_to_string(Formula_Types::Top);
         } else {
-            return formulas[root.id].to_string(formulas);
+            return formulas[root.id].to_string(formulas, id_to_atom);
         }
     }
 

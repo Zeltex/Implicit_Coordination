@@ -7,6 +7,7 @@
 #include "Formula.hpp"
 
 namespace del {
+	class Domain;
 	class World {
 	public:
 
@@ -24,7 +25,7 @@ namespace del {
 		
 		const std::vector<Proposition_Instance> get_true_propositions() const;
 
-		std::string to_string() const;
+		std::string to_string(const Domain& domain) const;
 		void set_id(World_Id id);
 
 	private:

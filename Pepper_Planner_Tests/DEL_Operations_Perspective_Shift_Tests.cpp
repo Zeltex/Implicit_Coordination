@@ -22,16 +22,24 @@ namespace PepperPlannerTests
 	public:
 
 		TEST_METHOD(Perspective_Shift_Agent_P) {
+			
+
+			std::unordered_map<std::string, Atom_Id> atom_to_id;
+			atom_to_id["red"] = 0;
+			atom_to_id["Box0"] = 1;
+			atom_to_id["Box1"] = 2;
+			atom_to_id["Box2"] = 3;
+
 			//Agents; 0:Pepper, 1:L
 			State state(2);
 			state.create_world();
 			state.create_world();
 			state.create_world();
 			state.create_world();
-			state.add_true_propositions(World_Id{ 0 }, { {"in", {"red", "Box0"} } });
-			state.add_true_propositions(World_Id{ 1 }, { {"in", {"red", "Box1"} } });
-			state.add_true_propositions(World_Id{ 2 }, { {"in", {"red", "Box1"} } });
-			state.add_true_propositions(World_Id{ 3 }, { {"in", {"red", "Box2"} } });
+			state.add_true_propositions(World_Id{ 0 }, { {"in", {atom_to_id["red"], atom_to_id["Box0"]} } });
+			state.add_true_propositions(World_Id{ 1 }, { {"in", {atom_to_id["red"], atom_to_id["Box1"]} } });
+			state.add_true_propositions(World_Id{ 2 }, { {"in", {atom_to_id["red"], atom_to_id["Box1"]} } });
+			state.add_true_propositions(World_Id{ 3 }, { {"in", {atom_to_id["red"], atom_to_id["Box2"]} } });
 
 			for (size_t i = 0; i < 4; i++) {
 				state.add_indistinguishability_relation(Agent_Id{ 0 }, World_Id{ i }, World_Id{ i });
@@ -51,7 +59,7 @@ namespace PepperPlannerTests
 
 			state.add_designated_world(World_Id{ 1 });
 
-			Agent agent(Agent_Id{ 0 }, "Pepper");
+			Agent agent(Agent_Id{ 0 }, { atom_to_id.size() }, "Pepper");
 			auto new_state = perform_perspective_shift(state, agent.get_id());
 
 
@@ -65,16 +73,24 @@ namespace PepperPlannerTests
 		}
 
 		TEST_METHOD(Perspective_Shift_Agent_L) {
+
+
+			std::unordered_map<std::string, Atom_Id> atom_to_id;
+			atom_to_id["red"] = 0;
+			atom_to_id["Box0"] = 1;
+			atom_to_id["Box1"] = 2;
+			atom_to_id["Box2"] = 3;
+
 			//Agents; 0:Pepper, 1:L
 			State state(2);
 			state.create_world();
 			state.create_world();
 			state.create_world();
 			state.create_world();
-			state.add_true_propositions(World_Id{ 0 }, { {"in", {"red", "Box0"} } });
-			state.add_true_propositions(World_Id{ 1 }, { {"in", {"red", "Box1"} } });
-			state.add_true_propositions(World_Id{ 2 }, { {"in", {"red", "Box1"} } });
-			state.add_true_propositions(World_Id{ 3 }, { {"in", {"red", "Box2"} } });
+			state.add_true_propositions(World_Id{ 0 }, { {"in", {atom_to_id["red"], atom_to_id["Box0"]} } });
+			state.add_true_propositions(World_Id{ 1 }, { {"in", {atom_to_id["red"], atom_to_id["Box1"]} } });
+			state.add_true_propositions(World_Id{ 2 }, { {"in", {atom_to_id["red"], atom_to_id["Box1"]} } });
+			state.add_true_propositions(World_Id{ 3 }, { {"in", {atom_to_id["red"], atom_to_id["Box2"]} } });
 
 			state.add_indistinguishability_relation(Agent_Id{ 0 }, World_Id{ 1 }, World_Id{ 1 });
 
@@ -93,7 +109,7 @@ namespace PepperPlannerTests
 
 			state.add_designated_world(World_Id{ 1 });
 
-			Agent agent(Agent_Id{ 1 }, "L");
+			Agent agent(Agent_Id{ 1 }, { atom_to_id.size() }, "L");
 			auto new_state = perform_perspective_shift(state, agent.get_id());
 
 

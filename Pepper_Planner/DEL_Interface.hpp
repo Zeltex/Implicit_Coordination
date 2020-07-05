@@ -21,11 +21,11 @@ namespace del {
 		DEL_Interface(State initial_state, Action_Library library);
 		Interface_DTO get_next_action();
 		void perform_do(const Agent_Id i, const std::vector<Proposition_Instance>& add, const std::vector<Proposition_Instance>& del);
-		void perform_oc(const Agent_Id i, std::vector<Proposition_Instance>&& add, std::vector<Proposition_Instance>&& del);
-		void perform_oc(const std::string owner_name, std::vector<Proposition_Instance>&& add, std::vector<Proposition_Instance>&& del);
+		void perform_oc(const Agent_Id i, std::vector<std::vector<std::string>>&& add, std::vector<std::vector<std::string>>&& del);
+		void perform_oc(const std::string owner_name, std::vector<std::vector<std::string>>&& add, std::vector<std::vector<std::string>>&& del);
 
 		void perform_action(Action action);
-		void perform_action(std::string name, std::string owner, std::vector<std::string> arguments);
+		void perform_action(const std::string& name, const std::string& owner, const std::vector<std::string>& arguments);
 		bool create_policy(Formula goal);
 		bool create_policy();
 		bool is_solved();

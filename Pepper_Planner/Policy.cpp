@@ -18,7 +18,7 @@ namespace del {
 		}
 		return { Action({ 0 }, 0), false };
 	}
-	std::string Policy::to_graph(const std::vector<Agent>& agents) const {
+	std::string Policy::to_graph(const std::vector<Agent>& agents, const Domain& domain) const {
 		std::string result;
 		size_t counter = 0;
 		for (auto& entry : policy) {
@@ -30,13 +30,13 @@ namespace del {
 				+ "\";\nsubgraph cluster_s"
 				+ counter_s
 				+ "{"
-				+ entry.first.to_graph(agents, "s" + counter_s)
+				+ entry.first.to_graph(agents, "s" + counter_s, domain)
 				+ "} subgraph cluster_a"
 				+ counter_s
 				+ "{label=\""
 				+ entry.second.get_name()
 				+ "\"\n"
-				+ entry.second.to_graph(agents, "a" + counter_s)
+				+ entry.second.to_graph(agents, "a" + counter_s, domain)
 				+ "}"
 				+ "s" 
 				+ counter_s
@@ -52,7 +52,7 @@ namespace del {
 		return result;
 	}
 
-	std::string Policy::to_string() const {
+	std::string Policy::to_string(const Domain& domain) const {
 		size_t indentation = 4;
 		std::string result = get_indentation(indentation) + " Policy";
 		size_t counter = 0;
@@ -62,9 +62,9 @@ namespace del {
 				+ " Entry " 
 				+ std::to_string(counter) 
 				+ "\n" 
-				+ policy_entry.first.to_string(indentation - 2) 
+				+ policy_entry.first.to_string(indentation - 2, domain) 
 				+ "\n" 
-				+ policy_entry.second.to_string(indentation - 2) 
+				+ policy_entry.second.to_string(indentation - 2, domain) 
 				+ "\n";
 			counter++;
 		}

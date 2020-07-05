@@ -22,21 +22,29 @@
 using namespace del;
 
 void find_and_execute_policy() {
+
+
+	auto time1 = std::chrono::high_resolution_clock::now();
+
 	DEL_Interface del_interface("../examples/simple.maepl");
+	//DEL_Interface del_interface("../examples/simple_transfer.maepl");
+	//DEL_Interface del_interface("../examples/Second_Order.maepl");
 	//del_interface.print_current_state_to_graph("../State_Before.dot");
 //del_interface.perform_action("perceive", "L", { "box1", "red_cube" });
 //del_interface.print_current_state_to_graph("../State_After.dot");
 
-	auto start = std::chrono::high_resolution_clock::now();
+	auto time2 = std::chrono::high_resolution_clock::now();
 	del_interface.create_policy();
 	// Some computation here
-	auto end = std::chrono::high_resolution_clock::now();
+	auto time3 = std::chrono::high_resolution_clock::now();
 
-	auto elapsed = end - start;
+	auto elapsed1 = time2 - time1;
+	auto elapsed2 = time3 - time2;
 
 	
 
-	std::cout << "elapsed time: " << (elapsed.count() / 1000000) << "ms\n";
+	std::cout << ".maepl load time " << (elapsed1.count() / 1000000) << "ms\n";
+	std::cout << "planning execution time " << (elapsed2.count() / 1000000) << "ms\n";
 
 	while (!del_interface.is_solved()) {
 		Interface_DTO dto = del_interface.get_next_action();
@@ -46,6 +54,7 @@ void find_and_execute_policy() {
 		}
 		else {
 			std::cerr << "NO APPLIABLE ACTION" << std::endl;
+			break;
 		}
 		if (dto.get_announce_string() != "") {
 			std::cout << "ANNOUNCING: " << dto.get_announce_string() << std::endl;
@@ -58,7 +67,7 @@ void execute_test_case() {
 	DEL_Interface del_interface("../examples/Sally_Anne.maepl");
 
 	del_interface.perform_action("put", "S", { "S", "basket", "marble" });
-	del_interface.perform_oc("S", {  }, { {"perceives", {"S", "A"}}, {"perceives", {"A", "S"}} });
+	del_interface.perform_oc("S", {  }, { {"perceives", "S", "A"}, {"perceives", "A", "S"} });
 	del_interface.perform_action("pickup", "A", { "basket", "A", "marble" });
 	del_interface.perform_action("put", "A", { "A", "box", "marble" });
 
@@ -66,13 +75,13 @@ void execute_test_case() {
 
 void execute_second_order() {
 	DEL_Interface del_interface("../examples/Second_Order.maepl");
-	del_interface.perform_oc("A", {  }, { {"perceives", {"A", "B"}}, {"perceives", {"A", "C"}}, {"perceives", {"B", "A"}}, {"perceives", {"C", "A"}} });
+	del_interface.perform_oc("A", {  }, { {"perceives", "A", "B"}, {"perceives", "A", "C"}, {"perceives", "B", "A"}, {"perceives", "C", "A"} });
 	del_interface.perform_action("transfer", "B", { "box1", "box2", "cube_red" });
-	del_interface.perform_oc("B", {  }, { {"perceives", {"B", "C"}}, {"perceives", {"C", "B"}} });
+	del_interface.perform_oc("B", {  }, { {"perceives", "B", "C"}, {"perceives", "C", "B"} });
 	del_interface.perform_action("transfer", "C", { "box2", "box1", "cube_red" });
-	del_interface.perform_oc("A", { {"perceives", {"A", "C"}}, {"perceives", {"C", "A"}} }, {  });
+	del_interface.perform_oc("A", { {"perceives", "A", "C"}, {"perceives", "C", "A"} }, {  });
 	del_interface.perform_action("transfer", "A", { "box1", "box2", "cube_red" });
-	del_interface.perform_oc("A", {  }, { {"perceives", {"A", "C"}}, {"perceives", {"C", "A"}} });
+	del_interface.perform_oc("A", {  }, { {"perceives", "A", "C"}, {"perceives", "C", "A"} });
 }
 
 void execute_second_order_seeing_is_believing() {

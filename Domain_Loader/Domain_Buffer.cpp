@@ -6,6 +6,10 @@ void Domain_Buffer::set_event_name(std::string name) {
 
 void Domain_Buffer::add_input(std::string type, std::string name) {
     inputs.emplace_back(type, name);
+    auto it = atom_to_id.find(name);
+    if (it == atom_to_id.end()) {
+        atom_to_id[name] = atom_to_id.size();
+    }
 }
 
 void Domain_Buffer::add_ordered_variable(std::string variable) {
@@ -17,7 +21,22 @@ void Domain_Buffer::add_edge_condition(std::tuple<std::string, std::string, Form
 }
 
 void Domain_Buffer::push_proposition_instance(std::string name) {
-    propositions.emplace_back(name, std::move(ordered_variable_list));
+    std::vector<Atom_Id> temp_atoms;
+    temp_atoms.reserve(ordered_variable_list.size());
+
+    for (auto& entry : ordered_variable_list) {
+        if (entry == REST_KEYWORD) {
+            atom_to_id[REST_KEYWORD] = REST_INDEX;
+        } else {
+            auto it = atom_to_id.find(entry);
+            if (it == atom_to_id.end()) {
+                atom_to_id[entry] = atom_to_id.size();
+            }
+        }
+        temp_atoms.emplace_back(atom_to_id[entry]);
+    }
+
+    propositions.emplace_back(name, temp_atoms);
     ordered_variable_list = {};
 }
 
@@ -87,6 +106,12 @@ std::unordered_set<std::string> Domain_Buffer::get_types() {
 std::vector<Proposition_Instance> Domain_Buffer::get_proposition_instances() {
     auto temp = std::move(propositions);
     propositions = {};
+    return std::move(temp);
+}
+
+std::unordered_map<std::string, Atom_Id> Domain_Buffer::get_atom_to_id() {
+    auto temp = std::move(atom_to_id);
+    atom_to_id = {};
     return std::move(temp);
 }
 
@@ -232,4 +257,12 @@ void Domain_Buffer::set_state_reflexivity(bool val) {
 
 bool Domain_Buffer::is_state_reflexive() {
     return state_reflexivity;
+}
+
+void Domain_Buffer::clear_proposition_instances() {
+    propositions.clear();
+}
+
+void Domain_Buffer::clear_seen_atoms() {
+    atom_to_id.clear();
 }

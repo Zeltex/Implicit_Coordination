@@ -25,7 +25,7 @@ namespace del {
 		std::string get_name() const;
 
 
-		std::string to_string() const;
+		std::string to_string(const Domain& domain) const;
 
 	private:
 		std::string name;

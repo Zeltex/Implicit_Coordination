@@ -19,26 +19,26 @@ namespace PepperPlannerTests
 
 		TEST_METHOD(Valuate_Positive_Proposition) {
 			World world(World_Id{ 0 });
-			world.add_true_propositions({ {"first", { "a" } } });
+			world.add_true_propositions({ {"first"} });
 			Formula f;
-			f.f_prop({ "first", {"a"} });
+			f.f_prop({ "first" });
 			Assert::IsTrue(world.valuate(f));
 		}
 
 		TEST_METHOD(Valuate_Never_Added_Proposition) {
 			World world(World_Id{ 0 });
-			world.add_true_propositions({ {"first", { "a" } } });
+			world.add_true_propositions({ {"first"} });
 			Formula f;
-			f.f_prop({ "second", {"a"} });
+			f.f_prop({ "second" });
 			Assert::IsFalse(world.valuate(f));
 		}
 
 		TEST_METHOD(Valuate_Deleted_Positive_Proposition) {
 			World world(World_Id{ 0 });
-			world.add_true_propositions({ {"first", {"a"} } });
-			world.remove_true_propositions({ {"first", {"a"} } });
+			world.add_true_propositions({ {"first" } });
+			world.remove_true_propositions({ {"first" } });
 			Formula f;
-			f.f_prop({ "first", {"a"} });
+			f.f_prop({ "first" });
 			Assert::IsFalse(world.valuate(f));
 		}
 

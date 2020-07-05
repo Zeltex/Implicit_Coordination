@@ -1,5 +1,5 @@
 _domain Pepper {
-	_announce_enabled = true
+	_announce_enabled = false
 	_types = [container, object, agent, perceivable]
 	_propositions = [
 		in(container c, object o)
@@ -85,9 +85,9 @@ _problem simple_problem {
 	_initial_state = [
 		in(box1, red_cube)
 	]
-	_world world0 [in(box0, red_cube), perceives(L, Pepper), perceives(Pepper, L)]
-	_world world1 [in(box1, red_cube), perceives(L, Pepper), perceives(Pepper, L)]
-	_world world2 [in(box2, red_cube), perceives(L, Pepper), perceives(Pepper, L)]
+	_world world0 [in(box0, red_cube), perceives(L, Pepper), perceives(Pepper, L), perceives(Pepper, Pepper), perceives(L, L)]
+	_world world1 [in(box1, red_cube), perceives(L, Pepper), perceives(Pepper, L), perceives(Pepper, Pepper), perceives(L, L)]
+	_world world2 [in(box2, red_cube), perceives(L, Pepper), perceives(Pepper, L), perceives(Pepper, Pepper), perceives(L, L)]
 	_goal = [in(L, red_cube)]
 	_designated_worlds = [ world1 ]
 	_reflexivity = true

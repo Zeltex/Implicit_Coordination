@@ -22,8 +22,8 @@ namespace del {
 		Action(Agent_Id owner, size_t number_of_agents);
 		Action(	General_Action general_action, 
 				Agent_Id owner, 
-				const std::unordered_map<std::string, std::string>& input_to_atom, 
-				const std::unordered_map<std::string, std::vector<Agent>>& condition_owner_to_agent);
+				const std::unordered_map<size_t, Atom_Id>& input_to_atom,
+				const std::unordered_map<size_t, std::vector<Agent>>& condition_owner_to_agent);
 		void add_event(const Action_Event& event);
 		void add_event(std::string name, Event_Id id, Formula&& precondition, std::vector<Proposition_Instance>&& proposition_add, std::vector<Proposition_Instance>&& proposition_delete);
 		void add_reachability(Agent_Id owner, Event_Id event_from, Event_Id event_to, Formula&& condition);
@@ -37,17 +37,17 @@ namespace del {
 
 		void add_designated_event(Event_Id event);
 
-		std::string to_string() const;
-		std::string to_string(size_t indentation) const;
-		std::string to_compact_string() const;
-		std::string to_graph(const std::vector<Agent>& agents, const std::string& base_id) const;
+		std::string to_string(const Domain& domain) const;
+		std::string to_string(size_t indentation, const Domain& domain) const;
+		std::string to_compact_string(const Domain& domain) const;
+		std::string to_graph(const std::vector<Agent>& agents, const std::string& base_id, const Domain& domain) const;
 
 	private:
-		void copy_and_instantiate_edge_conditions(const General_Action& general_action, const std::unordered_map<std::string, std::vector<Agent>>& condition_owner_to_id, const std::unordered_map<std::string, Event_Id>& event_name_to_id, std::unordered_map<std::string, std::string> input_to_atom);
+		void copy_and_instantiate_edge_conditions(const General_Action& general_action, const std::unordered_map<size_t, std::vector<Agent>>& condition_owner_to_id, const std::unordered_map<std::string, Event_Id>& event_name_to_id, std::unordered_map<size_t, Atom_Id> input_to_atom);
 		void copy_and_instantiate_designated_events(const General_Action& general_action, const std::unordered_map<std::string, Event_Id>& event_name_to_id);
-		std::unordered_map<std::string, Event_Id> copy_and_instantiate_events(const General_Action& general_action, const std::unordered_map<std::string, std::string>& input_to_atom);
+		std::unordered_map<std::string, Event_Id> copy_and_instantiate_events(const General_Action& general_action, const std::unordered_map<size_t, Atom_Id>& input_to_atom);
 
-		std::string get_string(const std::vector<Proposition_Instance>& propositions) const;
+		std::string get_string(const std::vector<Proposition_Instance>& propositions, const Domain& domain) const;
 
 		std::vector<Action_Event> events;
 		std::vector<Event_Id> designated_events;

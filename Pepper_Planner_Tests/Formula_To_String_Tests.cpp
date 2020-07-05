@@ -19,55 +19,55 @@ namespace PepperPlannerTests
 		TEST_METHOD(Top_String) {
 			Formula f;
 			f.f_top();
-			Assert::AreEqual(f.to_string(), std::string("TOP"));
+			Assert::AreEqual(f.to_string({}), std::string("TOP"));
 		}
 
 		TEST_METHOD(Bot_String) {
 			Formula f;
 			f.f_bot();
-			Assert::AreEqual(f.to_string(), std::string("BOT"));
+			Assert::AreEqual(f.to_string({}), std::string("BOT"));
 		}
 
 		TEST_METHOD(Prop_String) {
 			Formula f;
-			f.f_prop({"first",{"a"}});
-			Assert::AreEqual(f.to_string(), std::string("first(a)"));
+			f.f_prop({"first"});
+			Assert::AreEqual(f.to_string({}), std::string("first()"));
 		}
 
 		TEST_METHOD(Not_String) {
 			Formula f;
-			f.f_not(f.f_prop({"first",{"a"}}));
-			Assert::AreEqual(f.to_string(), std::string("Not(first(a))"));
+			f.f_not(f.f_prop({"first"}));
+			Assert::AreEqual(f.to_string({}), std::string("Not(first())"));
 		}
 
 		TEST_METHOD(And_String) {
 			Formula f;
-			f.f_and({ f.f_not(f.f_prop({"first",{"a"}})), f.f_prop({"second",{"a"}}) });
-			Assert::AreEqual(f.to_string(), std::string("And(Not(first(a));second(a))"));
+			f.f_and({ f.f_not(f.f_prop({"first"})), f.f_prop({"second"}) });
+			Assert::AreEqual(f.to_string({}), std::string("And(Not(first());second())"));
 		}
 
 		TEST_METHOD(Or_String) {
 			Formula f;
-			f.f_or({ f.f_and({f.f_prop({"first",{"a"}}), f.f_prop({"second",{"a"}})}), f.f_prop({"third", {"a"}}) });
-			Assert::AreEqual(f.to_string(), std::string("Or(And(first(a);second(a));third(a))"));
+			f.f_or({ f.f_and({f.f_prop({"first"}), f.f_prop({"second"})}), f.f_prop({"third"}) });
+			Assert::AreEqual(f.to_string({}), std::string("Or(And(first();second());third())"));
 		}
 
 		TEST_METHOD(Believes_String) {
 			Formula f;
-			f.f_believes( 9 , f.f_and({ f.f_prop({"first",{"a"}}), f.f_prop({"second",{"a"}})}));
-			Assert::AreEqual(f.to_string(), std::string("Believes_9(And(first(a);second(a)))"));
+			f.f_believes( 9 , f.f_and({ f.f_prop({"first"}), f.f_prop({"second"})}));
+			Assert::AreEqual(f.to_string({}), std::string("Believes_9(And(first();second()))"));
 		}
 
 		TEST_METHOD(Everyone_Believes_String) {
 			Formula f;
-			f.f_everyone_Believes(f.f_and({ f.f_prop({"first",{"a"}}), f.f_prop({"second",{"a"}}) }));
-			Assert::AreEqual(f.to_string(), std::string("Everyone_Believes(And(first(a);second(a)))"));
+			f.f_everyone_Believes(f.f_and({ f.f_prop({"first"}), f.f_prop({"second"}) }));
+			Assert::AreEqual(f.to_string({}), std::string("Everyone_Believes(And(first();second()))"));
 		}
 
 		TEST_METHOD(Common_Knowledge_String) {
 			Formula f;
-			f.f_common_Knowledge(f.f_and({ f.f_prop({"first",{"a"}}), f.f_prop({"second",{"a"}}) }));
-			Assert::AreEqual(f.to_string(), std::string("Common_Knowledge(And(first(a);second(a)))"));
+			f.f_common_Knowledge(f.f_and({ f.f_prop({"first"}), f.f_prop({"second"}) }));
+			Assert::AreEqual(f.to_string({}), std::string("Common_Knowledge(And(first();second()))"));
 		}
 	};
 }

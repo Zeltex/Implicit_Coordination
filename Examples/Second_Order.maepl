@@ -30,13 +30,17 @@ _domain Second {
 				(event2 event2) = (TOP)
 			}
 			_rest = {
-				(event0 event0) = (perceives(_rest, agent))
-				(event1 event1) = (perceives(_rest, agent))
+				(event0 event0) = (OR(observes(_rest, agent), perceives(_rest, agent)))
+				(event1 event1) = (OR(observes(_rest, agent), perceives(_rest, agent)))
+
+
+				(event1 event0) = (AND(observes(_rest, agent), NOT(perceives(_rest, agent))))
+				(event0 event1) = (AND(observes(_rest, agent), NOT(perceives(_rest, agent))))
 
 				(event2 event2) = ()
 
-				(event0 event2) = (NOT(perceives(_rest, agent)))
-				(event1 event2) = (NOT(perceives(_rest, agent)))
+				(event0 event2) = (AND(NOT(perceives(_rest, agent)), NOT(observes(_rest, agent))))
+				(event1 event2) = (AND(NOT(perceives(_rest, agent)), NOT(observes(_rest, agent))))
 			}
 		}
 	}
@@ -51,7 +55,7 @@ _problem simple_problem {
 		in(box1, cube_red)
 	]
 	_world world0 [in(box1, cube_red), perceives(A,A), perceives(A,B), perceives(A,C), perceives(B,A), perceives(B,B), perceives(B,C), perceives(C,A), perceives(C,B), perceives(C,C)]
-	_goal = [ ]
+	_goal = [ in(L, cube_red) ]
 	_designated_worlds = [ world0 ]
 	_reflexivity = true
 	_reachability = {

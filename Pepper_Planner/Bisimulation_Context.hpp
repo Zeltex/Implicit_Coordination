@@ -7,6 +7,7 @@
 #include "Types.hpp"
 
 namespace del {
+	class Domain;
 	class Bisimulation_Context {
 	public:
 		Bisimulation_Context(const State& state1, const State& state2) : state1(state1), state2(state2) {}

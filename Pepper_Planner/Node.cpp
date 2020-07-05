@@ -134,7 +134,7 @@ namespace del {
 		return true;
 	}
 
-	std::string Node::to_string() const {
+	std::string Node::to_string(const Domain& domain) const {
 		std::string type_string = type_to_string();
 
 
@@ -155,18 +155,18 @@ namespace del {
 			result += std::to_string(child.id);
 		}
 
-		result += ")\n--- Action from parent\n" +  (type == Node_Type::Or ? "Agent split, no action" : action_from_parent.to_string()) + " \n" + state.to_string();
+		result += ")\n--- Action from parent\n" +  (type == Node_Type::Or ? "Agent split, no action" : action_from_parent.to_string(domain)) + " \n" + state.to_string(domain);
 		return result;
 	}
 
-	std::string Node::to_graph(const std::vector<Agent>& agents, const std::string node_id, const std::string state_id) const {
+	std::string Node::to_graph(const std::vector<Agent>& agents, const std::string node_id, const std::string state_id, const Domain& domain) const {
 		std::string result = "subgraph cluster_" + node_id + " {\nlabel=\"(" + type_to_string() + ")Node " + node_id + "\";\n";
 		if (solved) {
 			result += "pencolor=green;\n";
 		} else if (dead) {
 			result += "pencolor=red;\n";
 		}
-		result += state.to_graph(agents, state_id) + "\n}";
+		result += state.to_graph(agents, state_id, domain) + "\n}";
 		return result;
 	}
 

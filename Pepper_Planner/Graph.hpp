@@ -25,9 +25,9 @@ namespace del {
 		Node& get_node(Node_Id node_id);
 		Node& get_root_node();
 
-		std::string to_string() const;
-		std::string to_graph(const std::vector<Agent>& agents) const;
-		std::string to_partial_graph(const std::vector<Agent>& agents) const;
+		std::string to_string(const Domain& domain) const;
+		std::string to_graph(const std::vector<Agent>& agents, const Domain& domain) const;
+		std::string to_partial_graph(const std::vector<Agent>& agents, const Domain& domain) const;
 	private:
 		Node_Id root;
 		// TODO - Change to Node_Id

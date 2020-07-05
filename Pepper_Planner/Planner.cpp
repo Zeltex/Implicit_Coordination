@@ -3,15 +3,21 @@
 namespace del {
 
 	// TODO - Add option to specify for what person the goal must be fulfilled
-	Policy Planner::find_policy(const Formula& goal_formula, const Action_Library& action_library, const State& initial_state, const std::vector<Agent>& agents) const {
+	Policy Planner::find_policy(const Formula& goal_formula, const Action_Library& action_library, const State& initial_state, const std::vector<Agent>& agents, const Domain& domain) const {
 		Graph graph;
 		Node_Id root_node = graph.create_root_node(initial_state);
 		graph.add_to_frontier(root_node);
+		size_t counter = 0;
 		while (true) {
+			//if (counter > 500) {
+			//	graph.get_root_node().set_dead();
+			//}
+			counter++;
+
 			if (graph.is_frontier_empty()) {
 #ifdef DEBUG_PRINT
-				print_graph_dot(agents, graph);
-				print_graph(graph);
+				print_graph_dot(agents, graph, domain);
+				print_graph(graph, domain);
 #endif
 				return Policy(false);
 			}
@@ -21,8 +27,8 @@ namespace del {
 				propogate_solved_node(graph, current_node);
 				if (graph.get_root_node().is_solved()) {
 #ifdef DEBUG_PRINT
-					print_graph_dot(agents, graph);
-					print_graph(graph);
+					print_graph_dot(agents, graph, domain);
+					print_graph(graph, domain);
 #endif
 					return extract_policy(graph);
 				} else {
@@ -34,15 +40,15 @@ namespace del {
 				propogate_dead_end_node(graph, current_node);
 				if (graph.get_root_node().is_dead()) {
 #ifdef DEBUG_PRINT
-					print_graph_dot(agents, graph);
-					print_graph(graph);
+					print_graph_dot(agents, graph, domain);
+					print_graph(graph, domain);
 #endif
 					return Policy(false);
 				}
 			}
 
 			auto& normal_actions = action_library.get_actions();
-			auto announce_actions = action_library.get_announce_actions(graph.get_node(current_node).get_state());
+			auto announce_actions = action_library.get_announce_actions(graph.get_node(current_node).get_state(), domain);
 
 			bool found_applicable_action = false;
 			size_t counter = 0;
@@ -75,14 +81,14 @@ namespace del {
 				propogate_dead_end_node(graph, current_node);
 				if (graph.get_root_node().is_dead()) {
 #ifdef DEBUG_PRINT
-					print_graph_dot(agents, graph);
-					print_graph(graph);
+					print_graph_dot(agents, graph, domain);
+					print_graph(graph, domain);
 #endif
 					return Policy(false);
 				}
 			}
 		}
-		print_graph_dot(agents, graph);
+		print_graph_dot(agents, graph, domain);
 		return Policy(false);
 	}
 
@@ -114,7 +120,6 @@ namespace del {
 	}
 
 	Policy Planner::extract_policy(Graph& graph) const {
-		print_graph(graph);
 		Policy policy(true);
 
 		std::deque<Node_Id> frontier;
@@ -202,7 +207,7 @@ namespace del {
 		return domain.get_agents();
 	}
 
-	void Planner::print_graph(const Graph& graph) const {
+	void Planner::print_graph(const Graph& graph, const Domain& domain) const {
 		std::string path;
 #ifdef DEBUG_PRINT_PATH
 		path = DEBUG_PRINT_PATH;
@@ -211,12 +216,12 @@ namespace del {
 #endif
 		std::ofstream myfile;
 		myfile.open(path + "Graph.log");
-		myfile << graph.to_string();
+		myfile << graph.to_string(domain);
 		myfile.close();
 		//std::cout << graph.to_string() << "\n\n\n\n\n" << std::endl;;
 	}
 
-	void Planner::print_graph_dot(const std::vector<Agent>& agents, const Graph& graph) const {
+	void Planner::print_graph_dot(const std::vector<Agent>& agents, const Graph& graph, const Domain& domain) const {
 		std::ofstream myfile;
 		std::string path;
 #ifdef DEBUG_PRINT_PATH
@@ -226,9 +231,9 @@ namespace del {
 #endif
 		myfile.open(path + "Graph.dot");
 #ifdef PRINT_PARTIAL
-		myfile << graph.to_partial_graph(agents);
+		myfile << graph.to_partial_graph(agents, domain);
 #else
-		myfile << graph.to_graph(agents);
+		myfile << graph.to_graph(agents, domain);
 #endif
 		myfile.close();
 	}

@@ -12,14 +12,14 @@ namespace del {
 
 
 		const char delim = ';';
-		std::string to_string(const std::vector<Formula_Component>& all_formulas) const;
+		std::string to_string(const std::vector<Formula_Component>& all_formulas, const std::unordered_map<size_t, std::string>& id_to_atom) const;
 		bool valuate(const  std::vector<Proposition_Instance>& propositions, const std::vector<Formula_Component>& all_formulas) const;
 
-		std::string get_string_component(const std::vector<Formula_Id>& formulas, const std::vector<Formula_Component>& all_formulas) const;
+		std::string get_string_component(const std::vector<Formula_Id>& formulas, const std::vector<Formula_Component>& all_formulas, const std::unordered_map<size_t, std::string>& id_to_atom) const;
 
 		Formula_Component() = default;
 
-		Formula_Component(const Formula_Component& other, const std::unordered_map<std::string, std::string>& input_to_atom);
+		Formula_Component(const Formula_Component& other, const std::unordered_map<size_t, Atom_Id>& input_to_atom);
 
 		// Top, Bot
 		Formula_Component(Formula_Types type):

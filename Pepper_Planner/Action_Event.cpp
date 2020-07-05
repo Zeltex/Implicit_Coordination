@@ -1,4 +1,5 @@
 #include "Action_Event.hpp"
+#include "Domain.hpp"
 
 namespace del {
 
@@ -22,14 +23,14 @@ namespace del {
 		return name;
 	}
 
-	std::string Action_Event::to_string() const {
-		std::string result = "Event " + std::to_string(id.id) + ": (Preconditions: " + precondition.to_string() + ") (Add list";
+	std::string Action_Event::to_string(const Domain& domain) const {
+		std::string result = "Event " + std::to_string(id.id) + ": (Preconditions: " + precondition.to_string(domain.get_id_to_atom()) + ") (Add list";
 		for (auto add : proposition_add) {
-			result += ", " + add.to_string();
+			result += ", " + add.to_string(domain.get_id_to_atom());
 		}
 		result += ") (Delete list, ";
 		for (auto delete_entry : proposition_delete) {
-			result += ", " + delete_entry.to_string();
+			result += ", " + delete_entry.to_string(domain.get_id_to_atom());
 		}
 		result += ")";
 		return result;

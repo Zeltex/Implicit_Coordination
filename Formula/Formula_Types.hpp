@@ -4,6 +4,8 @@
 #include <vector>
 #include <unordered_map>
 
+#include "Formula_Core.hpp"
+
 struct Formula_Id {
 	size_t id;
 	Formula_Id() = default;
@@ -27,36 +29,93 @@ enum class Formula_Types {
 	Common_Knowledge
 };
 
-struct Proposition_Instance {
-	Proposition_Instance() : name(), arguments() {}
-	Proposition_Instance(std::string name, std::vector<std::string> arguments) :
-		name(name), arguments(arguments) {}
+struct Atom_Id {
+	size_t id;
+	Atom_Id() = default;
+	Atom_Id(size_t id) : id(id) {}
 
-	Proposition_Instance(const Proposition_Instance& other, const std::unordered_map<std::string, std::string>& input_to_atom) :
+	bool operator==(const Atom_Id& other) const {
+		return this->id == other.id;
+	}
+	bool operator!=(const Atom_Id& other) const {
+		return this->id != other.id;
+		//return !(this->id == other.id);
+	}
+};
+
+struct Proposition_Instance {
+	Proposition_Instance() : name(), arguments() {
+		for (auto& entry : arguments) {
+			entry = EMPTY_INDEX;
+		}
+	}
+	Proposition_Instance(const std::string& name) : name(name), arguments() {
+		for (auto& entry : arguments) {
+			entry = EMPTY_INDEX;
+		}
+	}
+
+	Proposition_Instance(const std::string& name, const std::vector<Atom_Id>& input):
+		name(name) {
+		size_t counter;
+		for (counter = 0; counter < input.size(); counter++) {
+			arguments[counter] = input[counter];
+		}
+		while (counter < PROPOSITION_LENGTH) {
+			arguments[counter] = EMPTY_INDEX;
+			counter++;
+		}
+	}
+
+	// So far removed so that non-used argument entries can be flooded with EMPTY_INDEX
+	//Proposition_Instance(const std::string& name, const prop_array& arguments) :
+	//	name(name), arguments(arguments) {
+	//}
+
+	Proposition_Instance(const Proposition_Instance& other, const std::unordered_map<size_t, Atom_Id>& input_to_atom) :
 		name(other.name), arguments() {
+		size_t counter = 0;
 		for (auto& entry : other.arguments) {
-			auto it = input_to_atom.find(entry);
+			auto it = input_to_atom.find(entry.id);
 			if (it == input_to_atom.end()) {
-				arguments.push_back(entry);
+				arguments[counter] = entry;
 			} else {
-				arguments.push_back(it->second);
+				arguments[counter] = it->second;
 			}
+			counter++;
 		}
 	}
 
 	std::string name;
-	std::vector<std::string> arguments;
+	prop_array arguments;
+	//std::vector<std::string> arguments;
 
-	std::string to_string() const {
+	std::string to_string(const std::unordered_map<size_t, std::string>& id_to_atom) const {
 		std::string result = name + "(";
 		bool first = true;
 		for (auto entry : arguments) {
+			if (entry == EMPTY_INDEX) continue;
 			if (first) {
 				first = false;
 			} else {
 				result += ", ";
 			}
-			result += entry;
+			result += id_to_atom.at(entry.id);
+		}
+		return result + ")";
+	}
+
+	std::string to_simple_string() const{
+		std::string result = name + "(";
+		bool first = true;
+		for (auto entry : arguments) {
+			if (entry == EMPTY_INDEX) continue;
+			if (first) {
+				first = false;
+			} else {
+				result += ", ";
+			}
+			result += std::to_string(entry.id);
 		}
 		return result + ")";
 	}

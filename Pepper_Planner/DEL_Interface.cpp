@@ -40,7 +40,7 @@ namespace del {
 		system(command.c_str());
 		std::ofstream state_file;
 		state_file.open(path + "dot/State0.dot");
-		state_file << "digraph {subgraph cluster_0 {" << this->domain.get_current_state().to_graph(this->domain.get_agents(), "s0") << "}}";
+		state_file << "digraph {subgraph cluster_0 {" << this->domain.get_current_state().to_graph(this->domain.get_agents(), "s0", this->domain) << "}}";
 		state_file.close();
 #endif
 
@@ -54,7 +54,7 @@ namespace del {
 				if (action.get_owner() == pepper_id) {
 					auto& events = action.get_events();
 					if (events.size() > 0) {
-						announce_string = events[0].get_preconditions().to_string();
+						announce_string = events[0].get_preconditions().to_string(domain.get_id_to_atom());
 					}
 				}
 				return Interface_DTO(action, announce_string);
@@ -68,20 +68,63 @@ namespace del {
 		domain.perform_do(i, add, del);
 	}
 
-	void DEL_Interface::perform_oc(const Agent_Id i, std::vector<Proposition_Instance>&& add, std::vector<Proposition_Instance>&& del) {
-		domain.perform_oc(i, std::move(add), std::move(del));
+	void DEL_Interface::perform_oc(const Agent_Id i, std::vector<std::vector<std::string>>&& add, std::vector<std::vector<std::string>>&& del) {
+		std::vector<Proposition_Instance> add_list;
+		add_list.reserve(add.size());
+		for (auto& entry : add) {
+			if (entry.size() < 1) continue;
+			std::vector<Atom_Id> temp_atoms;
+			bool first = true;
+
+			for (auto& atom : entry) {
+				if (first) {
+					first = false;
+				} else {
+					temp_atoms.emplace_back(domain.get_atom_id(atom));
+				}
+			}
+
+			add_list.emplace_back(entry[0], temp_atoms);
+		}
+
+		std::vector<Proposition_Instance> del_list;
+		del_list.reserve(del.size());
+		for (auto& entry : del) {
+			if (entry.size() < 1) continue;
+			std::vector<Atom_Id> temp_atoms;
+			bool first = true;
+
+			for (auto& atom : entry) {
+				if (first) {
+					first = false;
+				} else {
+					temp_atoms.emplace_back(domain.get_atom_id(atom));
+				}
+			}
+			del_list.emplace_back(entry[0], temp_atoms);
+		}
+
+		domain.perform_oc(i, std::move(add_list), std::move(del_list));
 	}
 
-	void DEL_Interface::perform_oc(const std::string owner_name, std::vector<Proposition_Instance>&& add, std::vector<Proposition_Instance>&& del) {
-		return domain.perform_oc(domain.get_agent(owner_name).get_id(), std::move(add), std::move(del));
+	void DEL_Interface::perform_oc(const std::string owner_name, std::vector<std::vector<std::string>>&& add, std::vector<std::vector<std::string>>&& del) {
+
+		return perform_oc(domain.get_agent(owner_name).get_id(), std::move(add), std::move(del));
 	}
 	
 	void DEL_Interface::perform_action(Action action) {
 		domain.perform_action(action);
 	}
 
-	void DEL_Interface::perform_action(std::string name, std::string owner, std::vector<std::string> arguments) {
-		auto action = action_library.get_general_action(name).create_action(owner, arguments, domain);
+	void DEL_Interface::perform_action(const std::string& name, const std::string& owner, const std::vector<std::string>& arguments) {
+		std::vector<Atom_Id> temp_arguments;
+		temp_arguments.reserve(arguments.size());
+		for (auto& argument : arguments) {
+			temp_arguments.push_back(domain.get_atom_id(argument));
+		}
+
+
+		auto action = action_library.get_general_action(name).create_action(domain.get_atom_id(owner), std::move(temp_arguments), domain);
 		domain.perform_action(action);
 
 	}
@@ -92,7 +135,7 @@ namespace del {
 	}
 
 	bool DEL_Interface::create_policy() {
-		policy = planner.find_policy(this->goal, action_library, domain.get_current_state(), domain.get_agents());
+		policy = planner.find_policy(this->goal, action_library, domain.get_current_state(), domain.get_agents(), domain);
 
 #ifdef DEBUG_PRINT
 		std::string path;
@@ -103,7 +146,7 @@ namespace del {
 #endif
 		std::ofstream state_file;
 		state_file.open(path + "Policy.dot");
-		state_file << "digraph {\ncompound = true;\n" << policy.to_graph(domain.get_agents()) << "}";
+		state_file << "digraph {\ncompound = true;\n" << policy.to_graph(domain.get_agents(), domain) << "}";
 		state_file.close();
 #endif
 

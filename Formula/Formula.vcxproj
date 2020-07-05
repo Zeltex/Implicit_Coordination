@@ -22,6 +22,7 @@
     <ClInclude Include="Formula.hpp" />
     <ClInclude Include="Formula_Component.hpp" />
     <ClInclude Include="Formula_Converter.hpp" />
+    <ClInclude Include="Formula_Core.hpp" />
     <ClInclude Include="Formula_Types.hpp" />
   </ItemGroup>
   <ItemGroup>

@@ -65,12 +65,29 @@ namespace del {
 	}
 
 	void Domain_Interface_Implementation::set_action_input(std::vector<std::pair<std::string, std::string>> inputs) {
-		current_action.set_action_input(inputs);
+		std::vector<std::pair<std::string, Atom_Id>> result;
+		result.reserve(inputs.size());
+		for (auto& entry : inputs) {
+			auto it = atom_to_id.find(entry.second);
+			if (it == atom_to_id.end()) {
+				atom_to_id[entry.second] = atom_to_id.size();
+			}
+			result.emplace_back(entry.first, atom_to_id[entry.second]);
+		}
+		atom_to_id[REST_KEYWORD] = REST_INDEX;
+
+		current_action.set_action_input(std::move(result));
 	}
 
 	void Domain_Interface_Implementation::set_action_owner(std::string type, std::string name) {
 		std::cout << "Action owner " << type << " " << name << std::endl;
-		current_action.set_owner(type, name);
+
+		auto it = atom_to_id.find(name);
+		if (it == atom_to_id.end()) {
+			atom_to_id[name] = atom_to_id.size();
+		}
+
+		current_action.set_owner(type, atom_to_id[name]);
 	}
 
 	void Domain_Interface_Implementation::create_event(std::string name, Formula&& preconditions, std::vector<Proposition_Instance> add_list, std::vector<Proposition_Instance> delete_list) {
@@ -82,11 +99,11 @@ namespace del {
 		current_action.set_designated_events(designated_events);
 	}
 
-	void Domain_Interface_Implementation::set_types(std::unordered_set<std::string> types) {
+	void Domain_Interface_Implementation::set_types(const std::unordered_set<std::string>& types) {
 		domain.set_atom_types(types);
 	}
 
-	void Domain_Interface_Implementation::add_proposition(std::string name, std::vector<std::pair<std::string, std::string>> inputs) {
+	void Domain_Interface_Implementation::add_proposition(std::string name, const std::vector<std::pair<std::string, std::string>>& inputs) {
 		propositions.emplace_back(name, inputs);
 	}
 
@@ -96,27 +113,41 @@ namespace del {
 		domain.set_amount_of_agents(amount_of_agents);
 		library.set_amount_of_agents(amount_of_agents);
 
+		domain.set_objects(objects);
 		for (auto entry : objects["agent"]) {
 			domain.create_agent(entry);
 		}
-		domain.set_objects(objects);
 	}
 
 	void Domain_Interface_Implementation::set_domain(std::string domain_name) {
 		// TODO - problem using domain: domain_name
 	}
 
-	void Domain_Interface_Implementation::set_initial_propositions(std::vector<Proposition_Instance> propositions) {
+	void Domain_Interface_Implementation::set_initial_propositions(const std::vector<Proposition_Instance>& propositions) {
 		this->initial_propositions = propositions;
 	}
 
-	void Domain_Interface_Implementation::create_world(std::string name, std::vector<Proposition_Instance> propositions) {
+	void Domain_Interface_Implementation::create_world(std::string name, const std::vector<Proposition_Instance>& propositions, const std::unordered_map<std::string, Atom_Id>& atom_to_id) {
 		auto& world = initial_state.create_world();
-		world.add_true_propositions(propositions);
+
+		std::unordered_map<size_t, Atom_Id> converter;
+		converter.reserve(atom_to_id.size());
+		for (auto& entry : atom_to_id) {
+			converter[entry.second.id] = domain.get_atom_id(entry.first);
+		}
+
+		std::vector<Proposition_Instance> result;
+		result.reserve(propositions.size());
+		for (auto& proposition : propositions) {
+			result.emplace_back(proposition, converter);
+		}
+
+
+		world.add_true_propositions(result);
 		world_name_to_id[name] = world.get_id();
 	}
 
-	void Domain_Interface_Implementation::set_designated_worlds(std::unordered_set<std::string> designated_worlds) {
+	void Domain_Interface_Implementation::set_designated_worlds(const std::unordered_set<std::string>& designated_worlds) {
 		for (auto& entry : designated_worlds) {
 			initial_state.add_designated_world(world_name_to_id[entry]);
 		}
@@ -134,7 +165,7 @@ namespace del {
 		}
 	}
 
-	void Domain_Interface_Implementation::add_reachability(std::string name, std::vector<std::pair<std::string, std::string>> reachables) {
+	void Domain_Interface_Implementation::add_reachability(std::string name, const std::vector<std::pair<std::string, std::string>>& reachables) {
 		for (auto& entry : reachables) {
 			initial_state.add_indistinguishability_relation(domain.get_agent_id(name), world_name_to_id[entry.first], world_name_to_id[entry.second]);
 		}
@@ -148,25 +179,32 @@ namespace del {
 		library.set_announce_enabled();
 	}
 
-	void Domain_Interface_Implementation::set_goal(Formula&& goal) {
-		this->goal = std::move(goal);
+	void Domain_Interface_Implementation::set_goal(Formula&& goal, const std::unordered_map<std::string, Atom_Id>& atom_to_id) {
+
+		std::unordered_map<size_t, Atom_Id> converter;
+		converter.reserve(atom_to_id.size());
+		for (auto& entry : atom_to_id) {
+			converter[entry.second.id] = domain.get_atom_id(entry.first);
+		}
+
+		this->goal = Formula(goal, converter);
 	}
 
-	void Domain_Interface_Implementation::add_edge_condition(std::string agent, std::vector< std::tuple<std::string, std::string, Formula>> edge_conditions) {
+	void Domain_Interface_Implementation::add_edge_condition(std::string agent, std::vector< std::tuple<std::string, std::string, Formula>>&& edge_conditions) {
 
 		std::vector<Edge_Condition> temp;
 		temp.reserve(edge_conditions.size());
 		for (auto&[event_from, event_to, condition] : edge_conditions) {
 			temp.emplace_back(std::move(event_from), std::move(event_to), std::move(condition));
 		}
-		current_action.add_edge_condition(agent, std::move(temp));
+		current_action.add_edge_condition(atom_to_id.at(agent), std::move(temp));
 	}
 
-	void Domain_Interface_Implementation::add_observability(std::string observer, std::vector<std::string> agents) {
+	void Domain_Interface_Implementation::add_observability(std::string observer, const std::vector<std::string>& agents) {
 		observability[observer] = agents;
 	}
 	
-	void Domain_Interface_Implementation::add_perceivability(std::string perceiver, std::vector<std::string> agents) {
+	void Domain_Interface_Implementation::add_perceivability(std::string perceiver, const std::vector<std::string>& agents) {
 		perceivability[perceiver] = agents;
 	}
 }

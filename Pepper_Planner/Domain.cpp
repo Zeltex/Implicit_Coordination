@@ -31,12 +31,15 @@ namespace del {
 	void Domain::perform_oc(const Agent_Id owner, std::vector<Proposition_Instance>&& add_list, std::vector<Proposition_Instance>&& delete_list, std::string perceivability_proposition, std::string observability_proposition) {
 		std::unordered_set<size_t> obs;
 
+
 		Action action(owner, amount_of_agents);
 		action.add_event("oc", {0}, {}, std::move(add_list), std::move(delete_list));
-		action.add_event("nothign", {1}, {}, {}, {});
+		action.add_event("nothing", {1}, {}, {}, {});
 		action.add_designated_event({ 0 });
 
 		for (auto& agent : agents) {
+			Atom_Id agent_atom_id = get_atom_id(agent.get_name());
+
 			Formula condition00;
 			std::vector<Formula_Id> proposition_ids00;
 			proposition_ids00.reserve(obs.size());
@@ -47,9 +50,9 @@ namespace del {
 				std::vector<Formula_Id> proposition_ids01;
 				proposition_ids01.reserve(obs.size());
 				for (auto& obs_id : obs) {
-					auto obs_name = get_agent(Agent_Id{ obs_id }).get_name();
-					proposition_ids00.push_back(condition00.f_prop({ perceivability_proposition, { agent.get_name(), obs_name} }));
-					proposition_ids01.push_back(condition01.f_not(condition01.f_prop({ perceivability_proposition, { agent.get_name(), obs_name } })));
+					auto obs_atom_id = get_atom_id(get_agent(Agent_Id{ obs_id }).get_name());
+					proposition_ids00.push_back(condition00.f_prop({ perceivability_proposition, { agent_atom_id, obs_atom_id} }));
+					proposition_ids01.push_back(condition01.f_not(condition01.f_prop({ perceivability_proposition, { agent_atom_id, obs_atom_id} })));
 				}
 				condition00.f_or(proposition_ids00);
 				condition01.f_and(proposition_ids01);
@@ -66,18 +69,20 @@ namespace del {
 	std::unordered_set<size_t> Domain::get_obs_set(const Agent_Id& owner, const std::vector<Proposition_Instance>& add_list, const std::vector<Proposition_Instance>& delete_list) {
 		std::unordered_set<size_t> obs;
 		auto owner_name = get_agent(owner).get_name();
+		auto owner_atom_id = get_atom_id(owner_name);
+
 		bool owner_found = false;
 		for (auto proposition : add_list) {
-			if (!owner_found && proposition.arguments.at(0) == owner_name) {
+			if (!owner_found && proposition.arguments.at(0) == owner_atom_id) {
 				owner_found = true;
 			}
-			obs.insert(get_agent(proposition.arguments.at(0)).get_id().id);
+			obs.insert(get_agent_from_atom(proposition.arguments.at(0)).get_id().id);
 		}
 		for (auto proposition : delete_list) {
-			if (!owner_found && proposition.arguments.at(0) == owner_name) {
+			if (!owner_found && proposition.arguments.at(0) == owner_atom_id) {
 				owner_found = true;
 			}
-			obs.insert(get_agent(proposition.arguments.at(0)).get_id().id);
+			obs.insert(get_agent_from_atom(proposition.arguments.at(0)).get_id().id);
 		}
 
 		if (!owner_found) {
@@ -98,11 +103,11 @@ namespace del {
 #endif
 		std::ofstream action_file;
 		action_file.open(path + "dot/Action" + std::to_string(debug_counter++) + ".dot");
-		action_file << "digraph G {\n" << action.to_graph(get_agents(), "a") << "}";
+		action_file << "digraph G {\n" << action.to_graph(get_agents(), "a", *(this)) << "}";
 		action_file.close();
 		std::ofstream state_file;
 		state_file.open(path + "dot/State" + std::to_string(debug_counter) + ".dot");
-		state_file << "digraph {subgraph cluster_0 {" << get_current_state().to_graph(get_agents(), "s0") << "}}";
+		state_file << "digraph {subgraph cluster_0 {" << get_current_state().to_graph(get_agents(), "s0", *(this)) << "}}";
 		state_file.close();
 #endif
 	}
@@ -148,6 +153,10 @@ namespace del {
 		}
 	}
 
+	const Agent& Domain::get_agent_from_atom(const Atom_Id& id) const {
+		return get_agent(get_atom_name(id));
+	}
+
 	// TODO - Optimise
 	Agent_Id Domain::get_agent_id(std::string name) const {
 		for (auto& entry : agents) {
@@ -160,9 +169,21 @@ namespace del {
 		exit(-1);
 	}
 
+	Agent_Id Domain::get_agent_id(Atom_Id atom_id) const {
+		auto name = get_atom_name(atom_id);
+		for (auto& entry : agents) {
+			if (entry.get_name() == name) {
+				return entry.get_id();
+			}
+		}
+		// TODO - Handle this
+		std::cerr << "No agent with name: " << name << "\n";
+		exit(-1);
+	}
+
 	Agent_Id Domain::create_agent(std::string name) {
 		Agent_Id id = Agent_Id{ agents.size() };
-		agents.emplace_back(id, name);
+		agents.emplace_back(id, get_atom_id(name), name);
 		return id;
 	}
 
@@ -174,20 +195,47 @@ namespace del {
 		return atom_types;
 	}
 
-	const std::unordered_set<std::string>& Domain::get_all_atoms_of_type(std::string type) const {
+	const std::unordered_set<size_t>& Domain::get_all_atoms_of_type(std::string type) const {
 		if (objects.find(type) == objects.end()) {
 			std::cerr << "No objects of type: " << type << "\n";
-			throw;
+			exit(-1);
 		}
 		return objects.at(type);
 	}
 
 	void Domain::set_objects(std::unordered_map<std::string, std::unordered_set<std::string>> objects) {
-		this->objects = objects;
+		this->objects.clear();
+		this->objects.reserve(objects.size());
+
+		size_t counter = 0;
+		for (auto& type : objects) {
+			this->objects[type.first].reserve(type.second.size());
+			for (auto& atom : type.second) {
+				if (atom_to_id.find(atom) == atom_to_id.end()) {
+					id_to_atom[counter] = atom;
+					atom_to_id[atom] = counter;
+				}
+				this->objects[type.first].insert(atom_to_id.at(atom).id);
+				counter++;
+			}
+		}
 	}
 
 	void Domain::set_initial_state(State&& state) {
 		states = {};
 		states.push_back(state);
+	}
+
+
+	std::string Domain::get_atom_name(Atom_Id atom_id) const {
+		return id_to_atom.at(atom_id.id);
+	}
+
+	Atom_Id Domain::get_atom_id(std::string atom_name) const {
+		return atom_to_id.at(atom_name);
+	}
+
+	const std::unordered_map<size_t, std::string>& Domain::get_id_to_atom() const {
+		return id_to_atom;
 	}
 }

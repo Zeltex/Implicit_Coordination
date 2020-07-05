@@ -167,6 +167,7 @@
     <ClCompile Include="Node.cpp" />
     <ClCompile Include="Policy.cpp" />
     <ClCompile Include="State.cpp" />
+    <ClCompile Include="Types.cpp" />
     <ClCompile Include="World.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -175,6 +176,7 @@
     <ClInclude Include="Action_Library.hpp" />
     <ClInclude Include="Agent.hpp" />
     <ClInclude Include="Bisimulation_Context.hpp" />
+    <ClInclude Include="Core.hpp" />
     <ClInclude Include="DEL_Operations.hpp" />
     <ClInclude Include="Domain.hpp" />
     <ClInclude Include="Domain_Interface_Implementation.h" />

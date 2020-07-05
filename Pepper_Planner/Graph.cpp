@@ -46,25 +46,25 @@ namespace del {
 		return nodes[root.id];
 	}
 
-	std::string Graph::to_string() const {
+	std::string Graph::to_string(const Domain& domain) const {
 		std::string result = "Graph: (root, " + std::to_string(root.id) + ") (frontier";
 		for (auto node_id : frontier) {
 			result += ", " + std::to_string(node_id);
 		}
 		result += ")";
 		for (auto node : nodes) {
-			result += "\n\n\n" + node.to_string();
+			result += "\n\n\n" + node.to_string(domain);
 		}
 		return result;
 	}
 
-	std::string Graph::to_graph(const std::vector<Agent>& agents) const {
+	std::string Graph::to_graph(const std::vector<Agent>& agents, const Domain& domain) const {
 		std::string result = "digraph G {\ncompound=true;";
 		std::string connections;
 
 		size_t counter = 0;
 		for (auto& node : nodes) {
-			result += "\n" + node.to_graph(agents, std::to_string(counter), "s" + std::to_string(counter));
+			result += "\n" + node.to_graph(agents, std::to_string(counter), "s" + std::to_string(counter), domain);
 			
 			for (auto& child : node.get_children()) {
 				std::string left = "s" + std::to_string(counter) + "0";
@@ -73,7 +73,7 @@ namespace del {
 				connections += "\n" + left + " -> " + right + "[ltail=cluster_" + std::to_string(counter) + ", lhead=cluster_" + std::to_string(child.id);
 
 				if (nodes[child.id].get_type() == Node_Type::And) {
-					connections += ",label=\"" + nodes[child.id].get_parent_action().to_compact_string() + "\"";
+					connections += ",label=\"" + nodes[child.id].get_parent_action().to_compact_string(domain) + "\"";
 				}
 					
 				connections += "];";
@@ -86,7 +86,7 @@ namespace del {
 		return result;
 	}
 
-	std::string Graph::to_partial_graph(const std::vector<Agent>& agents) const {
+	std::string Graph::to_partial_graph(const std::vector<Agent>& agents, const Domain& domain) const {
 		std::string result = "digraph G {\ncompound=true;";
 		std::string connections;
 
@@ -98,7 +98,7 @@ namespace del {
 			auto& node = nodes.at(node_id);
 			counter = node_id;
 			frontier.pop_front();
-			result += "\n" + node.to_graph(agents, std::to_string(counter), "s" + std::to_string(counter));
+			result += "\n" + node.to_graph(agents, std::to_string(counter), "s" + std::to_string(counter), domain);
 
 			if (node.is_solved()) {
 				for (auto& child : node.get_children()) {
@@ -111,7 +111,7 @@ namespace del {
 					connections += "\n" + left + " -> " + right + "[ltail=cluster_" + std::to_string(counter) + ", lhead=cluster_" + std::to_string(child.id);
 
 					if (nodes[child.id].get_type() == Node_Type::And) {
-						connections += ",label=\"" + nodes[child.id].get_parent_action().to_compact_string() + "\"";
+						connections += ",label=\"" + nodes[child.id].get_parent_action().to_compact_string(domain) + "\"";
 					}
 
 					connections += "];";

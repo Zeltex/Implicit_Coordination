@@ -1,4 +1,5 @@
 #include "World.hpp"
+#include "Domain.hpp"
 
 namespace del {
 
@@ -33,7 +34,7 @@ namespace del {
 		return true_propositions;
 	}
 
-	std::string World::to_string() const{
+	std::string World::to_string(const Domain& domain) const{
 		std::string result = "World " + std::to_string(id.id) + ": ";
 		bool first = true;
 		for (auto proposition : true_propositions) {
@@ -42,7 +43,7 @@ namespace del {
 			} else {
 				result += ";";
 			}
-			result += proposition.to_string();
+			result += proposition.to_string(domain.get_id_to_atom());
 		}
 		return result;
 	}
