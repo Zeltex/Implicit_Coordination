@@ -8,10 +8,14 @@
 
 namespace del {
 	class Domain;
-	class State {
+	class State : public Formula_Input_Interface {
 	public:
 		State();
 		State(size_t amount_of_agents);
+
+		virtual const std::vector<Proposition_Instance>& get_true_propositions(size_t world_id) const;
+		virtual std::vector<size_t> get_reachable_worlds(size_t agent_id, size_t world_id) const;
+
 		void set_amount_of_agents(size_t amount_of_agents);
 		bool valuate(const Formula& formula) const;
 		bool is_world_designated(World_Id world) const;
@@ -29,9 +33,9 @@ namespace del {
 		void add_indistinguishability_relation(Agent_Id agent, World_Id world_from, World_Id world_to);
 		void add_observability(Agent_Id observer, std::vector<Agent_Id> agents);
 		void add_perceivability(Agent_Id perceiver, std::vector<Agent_Id> agents);
+		void add_true_propositions(World_Id world, std::vector<Proposition_Instance> propositions);
 		void remove_observability(Agent_Id observer, std::vector<Agent_Id> agents);
 		void remove_perceivability(Agent_Id perceiver, std::vector<Agent_Id> agents);
-		void add_true_propositions(World_Id world, std::vector<Proposition_Instance> propositions);
 		void remove_unreachable_worlds();
 
 
@@ -53,8 +57,6 @@ namespace del {
 		std::string to_graph(const std::vector<Agent>& agents, const std::string node_id, const Domain& domain) const;
 
 	private:
-		bool valuate_world(const Formula& formula, const Formula_Id& formula_id, const World_Id world) const;
-
 		size_t number_of_agents;
 		std::vector<World> worlds;
 		std::vector<World_Id> designated_worlds;

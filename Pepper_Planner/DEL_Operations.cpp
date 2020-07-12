@@ -9,7 +9,7 @@ namespace del {
 
 		for (auto& world : state.get_worlds()) {
 			for (const auto& event : action.get_events()) {
-				if (world.valuate(event.get_preconditions())) {
+				if (event.get_preconditions().valuate(world.get_id().id, &state)) {
 					// TODO - Maybe handle unreachable worlds here
 
 					World& updated_world = result.create_world();
@@ -31,7 +31,7 @@ namespace del {
 				for (size_t i = 0; i < state.get_number_of_agents(); i++) {
 					Agent_Id agent = Agent_Id{ i };
 					if (state.is_one_reachable(agent, world1.old_world, world2.old_world) &&
-						action.is_condition_fulfilled(agent, world1.old_event, world2.old_event, state.get_world(world1.old_world))) {
+						action.is_condition_fulfilled(agent, world1.old_event, world2.old_event, state, world1.old_world)) {
 						result.add_indistinguishability_relation(agent, world1.new_world, world2.new_world);
 					}
 				}
@@ -90,10 +90,9 @@ namespace del {
 		auto worlds = state.get_designated_world_reachables(action.get_owner());
 
 		for (auto& world_id : worlds) {
-			auto& world = state.get_world(world_id);
 			bool found_applicable_event = false;
 			for (auto event : action.get_events()) {
-				if (world.valuate(event.get_preconditions())) {
+				if (event.get_preconditions().valuate(world_id.id, &state)) {
 					found_applicable_event = true;
 				}
 			}
@@ -101,7 +100,7 @@ namespace del {
 				return false;
 			}
 		}
-		return true;
+		return !worlds.empty();
 	}
 
 	bool are_states_bisimilar(const State& state1, const State& state2) {

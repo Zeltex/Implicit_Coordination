@@ -26,11 +26,7 @@ namespace del {
 		}
 	}
 
-	bool World::valuate(const Formula& formula) const {
-		return formula.valuate(true_propositions);
-	}
-
-	const std::vector<Proposition_Instance> World::get_true_propositions() const {
+	const std::vector<Proposition_Instance>& World::get_true_propositions() const {
 		return true_propositions;
 	}
 

@@ -16,6 +16,7 @@
 
 namespace del {
 	class World;
+	class State;
 	class Action {
 	public:
 		Action() {}
@@ -33,7 +34,7 @@ namespace del {
 		std::string get_name() const;
 		bool is_event_designated(Event_Id event) const;
 
-		bool is_condition_fulfilled(Agent_Id agent, Event_Id event_from, Event_Id event_to, const World& world) const;
+		bool is_condition_fulfilled(Agent_Id agent, Event_Id event_from, Event_Id event_to, const State& state, const World_Id world) const;
 
 		void add_designated_event(Event_Id event);
 

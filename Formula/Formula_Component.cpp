@@ -52,11 +52,9 @@ namespace del {
     }
 
     bool Formula_Component::valuate(
-            const std::vector<Proposition_Instance>& propositions, 
-            const std::vector<Formula_Component>& all_formulas
-        //, 
-        //    std::vector<std::pair<size_t, std::vector<Proposition_Instance>>> (get_reachables)(size_t agent, size_t world),
-        //    size_t world
+            const std::vector<Formula_Component>& all_formulas,
+            const size_t world_id,
+            const Formula_Input_Interface* input_interface
     ) const
     {
         switch (type) {
@@ -70,16 +68,18 @@ namespace del {
         };
         case Formula_Types::Prop:
         {
+            if (input_interface == nullptr) return false;
+            auto& propositions = input_interface->get_true_propositions(world_id);
             return find(propositions.begin(), propositions.end(), prop) != propositions.end();
         }
         case Formula_Types::Not:
         {
-            return !all_formulas[formula.id].valuate(propositions, all_formulas);
+            return !all_formulas[formula.id].valuate(all_formulas, world_id, input_interface);
         }
         case Formula_Types::And:
         {
             for (auto formula : formulas) {
-                if (!all_formulas[formula.id].valuate(propositions, all_formulas)) {
+                if (!all_formulas[formula.id].valuate(all_formulas, world_id, input_interface)) {
                     return false;
                 }
             }
@@ -88,7 +88,7 @@ namespace del {
         case Formula_Types::Or:
         {
             for (auto formula : formulas) {
-                if (all_formulas[formula.id].valuate(propositions, all_formulas)) {
+                if (all_formulas[formula.id].valuate(all_formulas, world_id, input_interface)) {
                     return true;
                 }
             }
@@ -96,15 +96,14 @@ namespace del {
         }
         case Formula_Types::Believes:
         {
-            // TODO
-            //auto reachables = get_reachables(agent, world);
-            //for (auto entry : reachables) {
-            //    if (!all_formulas.at(formula.id).valuate(entry.second, all_formulas, get_reachables, entry.first)) {
-            //        return false;
-            //    }
-            //}
-            //return !reachables.empty();
-            return false;
+            if (input_interface == nullptr) return false;
+            std::vector<size_t> reachables = input_interface->get_reachable_worlds(agent, world_id);
+            for (auto reachable_world : reachables) {
+                if (!all_formulas[formula.id].valuate(all_formulas, reachable_world, input_interface)) {
+                    return false;
+                }
+            }
+            return !reachables.empty();
         }
         case Formula_Types::Everyone_Believes:
         {

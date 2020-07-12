@@ -16,14 +16,12 @@ namespace del {
 			id(id), true_propositions(true_propositions) {}
 
 		World_Id get_id() const;
-		//void add_true_propositions(const std::vector<std::string> propositions);
 		void add_true_propositions(const std::vector<Proposition_Instance> propositions);
 		void remove_true_propositions(const std::vector<Proposition_Instance> propositions);
 
-		bool valuate(const Formula& formula) const;
 		World create_copy(World_Id id) const;
 		
-		const std::vector<Proposition_Instance> get_true_propositions() const;
+		const std::vector<Proposition_Instance>& get_true_propositions() const;
 
 		std::string to_string(const Domain& domain) const;
 		void set_id(World_Id id);

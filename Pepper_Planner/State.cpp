@@ -12,6 +12,28 @@ namespace del {
 		set_amount_of_agents(number_of_agents);
 	}
 
+	const std::vector<Proposition_Instance>& State::get_true_propositions(size_t world_id) const {
+		return worlds[world_id].get_true_propositions();
+	}
+
+	std::vector<size_t> State::get_reachable_worlds(size_t agent_id, size_t world_id) const {
+		std::vector<size_t> frontier = { { world_id } };
+		std::vector<size_t> visited;
+		while (!frontier.empty()) {
+			auto current = frontier.back();
+			frontier.pop_back();
+			for (auto relation : indistinguishability_relation[agent_id]) {
+				if (relation.world_from.id == current &&
+					std::find(visited.begin(), visited.end(), relation.world_to.id) == visited.end()) {
+
+					frontier.push_back(relation.world_to.id);
+					visited.push_back(relation.world_to.id);
+				}
+			}
+		}
+		return std::move(visited);
+	}
+
 	void State::set_amount_of_agents(size_t number_of_agents) {
 		this->number_of_agents = number_of_agents;
 		indistinguishability_relation.reserve(number_of_agents);
@@ -26,73 +48,11 @@ namespace del {
 
 	bool State::valuate(const Formula& formula) const {
 		for (auto world : designated_worlds) {
-			if (!valuate_world(formula, formula.get_root(), world)) {
+			if (!formula.valuate(world.id, this)) {
 				return false;
 			}
 		}
 		return true;
-	}
-
-	bool State::valuate_world(const Formula& formula, const Formula_Id& formula_id, const World_Id world) const {
-		const Formula_Component& component = formula.get_component(formula_id);
-		switch (component.get_type()) {
-		case Formula_Types::Top:
-		{
-			return true;
-		}
-		case Formula_Types::Bot:
-		{
-			return false;
-		};
-		case Formula_Types::Prop:
-		{
-			const auto& propositions = worlds[world.id].get_true_propositions();
-			return find(propositions.begin(), propositions.end(), component.get_proposition()) != propositions.end();
-		}
-		case Formula_Types::Not:
-		{
-			return !valuate_world(formula, component.formula, world);
-		}
-		case Formula_Types::And:
-		{
-			for (auto formula_entry : component.formulas) {
-				if (!valuate_world(formula, formula_entry, world)) {
-					return false;
-				}
-			}
-			return component.formulas.size() > 0;
-		}
-		case Formula_Types::Or:
-		{
-			for (auto formula_entry : component.formulas) {
-				if (valuate_world(formula, formula_entry, world)) {
-					return true;
-				}
-			}
-			return false;
-		}
-		case Formula_Types::Believes:
-		{
-			auto reachables = get_reachables({ component.agent }, world);
-			for (auto reachable_world : reachables) {
-				if (!valuate_world(formula, component.formula, reachable_world)) {
-					return false;
-				}
-			}
-			return !reachables.empty();
-		}
-		case Formula_Types::Everyone_Believes:
-		{
-			// TODO - Implement
-			return false;
-		}
-		case Formula_Types::Common_Knowledge:
-		{
-			// TODO - implement
-			return false;
-		}
-		}
-		return false;
 	}
 
 	std::vector<World_Id> State::get_reachables(Agent_Id agent, World_Id world) const {

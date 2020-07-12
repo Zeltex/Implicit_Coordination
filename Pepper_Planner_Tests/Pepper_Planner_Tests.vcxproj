@@ -160,6 +160,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Action_Tests.cpp" />
     <ClCompile Include="Bisimulation_Context_Tests.cpp" />
     <ClCompile Include="DEL_Operations_Perspective_Shift_Tests.cpp" />
     <ClCompile Include="DEL_Operations_Product_Update_Tests.cpp" />
@@ -174,7 +175,6 @@
     </ClCompile>
     <ClCompile Include="Graph_Tests.cpp" />
     <ClCompile Include="Source_Files.cpp" />
-    <ClCompile Include="World_Valuation_Tests.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />

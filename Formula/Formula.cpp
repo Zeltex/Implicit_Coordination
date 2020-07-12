@@ -17,11 +17,11 @@ namespace del {
         }
     }
 
-	bool Formula::valuate(const std::vector<Proposition_Instance> propositions) const {
+	bool Formula::valuate(const size_t world_id, const Formula_Input_Interface* input_interface) const {
         if (formulas.empty()) {
             return true;
         } else {
-            return formulas[root.id].valuate(propositions, formulas);
+            return formulas[root.id].valuate(formulas, world_id, input_interface);
         }
 	}
 

@@ -1,9 +1,11 @@
 #pragma once
 
-#include "Formula_Types.hpp"
 #include <string>
 #include <vector>
 #include <unordered_set>
+
+#include "Formula_Types.hpp"
+#include "Formula_Input_Interface.hpp"
 
 namespace del {
 	struct Formula_Component {
@@ -13,13 +15,7 @@ namespace del {
 
 		const char delim = ';';
 		std::string to_string(const std::vector<Formula_Component>& all_formulas, const std::unordered_map<size_t, std::string>& id_to_atom) const;
-		bool valuate(
-				const std::vector<Proposition_Instance>& propositions, 
-				const std::vector<Formula_Component>& all_formulas
-			//,
-			//	std::vector<std::pair<size_t, std::vector<Proposition_Instance>>>(get_reachables)(size_t agent, size_t world),
-			//	size_t world
-		) const;
+		bool valuate(const std::vector<Formula_Component>& all_formulas, const size_t world_id, const Formula_Input_Interface* input_interface) const;
 
 		std::string get_string_component(const std::vector<Formula_Id>& formulas, const std::vector<Formula_Component>& all_formulas, const std::unordered_map<size_t, std::string>& id_to_atom) const;
 		Formula_Types get_type() const;
