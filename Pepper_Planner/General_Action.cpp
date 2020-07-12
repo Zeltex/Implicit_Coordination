@@ -1,10 +1,14 @@
 #include "General_Action.hpp"
 #include "Action.hpp"
 #include "Domain.hpp"
+#include "Formula_Core.hpp"
 
 namespace del {
-#define AGENT_STRING "agent"
-#define REST_KEYWORD "_rest"
+
+	void General_Action::set_cost(size_t cost) {
+		this->cost = cost;
+	}
+
 	void General_Action::set_owner(std::string type, Atom_Id name) {
 		owner = { type, name };
 	}
@@ -32,6 +36,11 @@ namespace del {
 	void General_Action::set_amount_of_agents(size_t amount_of_agents) {
 		//TODO - Might not be needed anymore
 	}
+
+	size_t General_Action::get_cost() const {
+		return cost;
+	}
+
 
 	const std::vector<std::pair<std::string, Atom_Id>>& General_Action::get_inputs() const {
 		return inputs;

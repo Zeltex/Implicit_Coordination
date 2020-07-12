@@ -18,6 +18,7 @@ public:
 	virtual void finish_problem								() = 0;
 
 
+	virtual void set_action_cost							(size_t cost) = 0;
 	virtual void set_action_input							(std::vector<std::pair<std::string, std::string>> inputs) = 0;
 	virtual void set_action_owner							(std::string type, std::string name) = 0;
 	virtual void set_announce_enabled						() = 0;

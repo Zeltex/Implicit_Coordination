@@ -24,6 +24,7 @@ namespace del {
 		virtual void finish_action() override;
 
 
+		virtual void set_action_cost(size_t cost) override;
 		virtual void set_action_input(std::vector<std::pair<std::string, std::string>> inputs) override;
 		virtual void set_action_owner(std::string type, std::string name) override;
 		virtual void set_announce_enabled() override;

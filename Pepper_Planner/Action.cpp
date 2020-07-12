@@ -5,7 +5,7 @@
 namespace del {
 
 	// TODO - Check if this constructor is used/should be used anymore. Seems the constructor based on General_Action should be default
-	Action::Action(Agent_Id owner, size_t number_of_agents) : owner(owner), name("Unknown") {
+	Action::Action(Agent_Id owner, size_t number_of_agents) : cost((size_t)-1), owner(owner), name("Unknown") {
 		for (size_t i = 0; i < number_of_agents; i++) {
 			edge_conditions.emplace_back(number_of_agents);
 		}
@@ -16,7 +16,7 @@ namespace del {
 					Agent_Id owner, 
 					const std::unordered_map<size_t, Atom_Id>& input_to_atom,
 					const std::unordered_map<size_t, std::vector<Agent>>& condition_owner_to_agent)
-			:owner(owner), name(general_action.get_name()), events(),designated_events(){
+			: cost(general_action.get_cost()), owner(owner), name(general_action.get_name()), events(),designated_events(){
 
 		//for (auto& entry : condition_owner_to_agent) {
 		//	for (auto& agent : entry.second) {
@@ -193,5 +193,13 @@ namespace del {
 			result += proposition.to_string(domain.get_id_to_atom());
 		}
 		return result;
+	}
+
+	void Action::set_cost(size_t cost) {
+		this->cost = cost;
+	}
+
+	size_t Action::get_cost() const {
+		return cost;
 	}
 }

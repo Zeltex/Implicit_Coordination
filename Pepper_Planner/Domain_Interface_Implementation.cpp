@@ -64,6 +64,11 @@ namespace del {
 		current_action = {};
 	}
 
+
+	void Domain_Interface_Implementation::set_action_cost(size_t cost) {
+		current_action.set_cost(cost);
+	}
+
 	void Domain_Interface_Implementation::set_action_input(std::vector<std::pair<std::string, std::string>> inputs) {
 		std::vector<std::pair<std::string, Atom_Id>> result;
 		result.reserve(inputs.size());

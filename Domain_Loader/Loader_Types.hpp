@@ -11,9 +11,11 @@ struct Proposition {
 };
 
 struct val {
-	val(bool b) : bval(b) {}
-	val(std::string s) : sval(s), bval(false) {}
-
+	val(size_t i) : ival(i), bval(false) {}
+	val(bool b) : ival(0), bval(b) {}
+	val(std::string s) : ival(0), sval(s), bval(false) {}
+	
+	size_t ival;
 	bool bval;
 	std::string sval;
 };
@@ -21,6 +23,7 @@ struct val {
 enum class Token {
 	ACTION_DEF,
 	ANNOUNCE_DEF,
+	COST_DEF,
 	DEFINE_DEF,
 	DESIGNATED_EVENTS_DEF,
 	DESIGNATED_WORLDS_DEF,
@@ -51,6 +54,7 @@ enum class Token {
 	NOT,
 	TOP,
 
+	INTEGER,
 	NAME,
 	TRUTH,
 

@@ -39,6 +39,13 @@ void Custom_Lexer::lex(std::ifstream& file) {
 					values.insert({ tokens.size() - 1, line.substr(pointer, end_of_name - pointer) });
 					pointer = end_of_name;
 					break;
+				} else if (c >= '0' && c <= '9') {
+					size_t end_of_integer = get_end_of_integer(line, pointer);
+					add_token(Token::INTEGER);
+					val ival = { static_cast<size_t>(std::stoul(line.substr(pointer, end_of_integer - pointer), nullptr, 0)) };
+					values.insert({ tokens.size() - 1, ival });
+					pointer = end_of_integer;
+					break;
 				}
 				std::cerr << "Unknown token at line " << line_number << ": " << line.substr(pointer);
 				exit(-1);
@@ -64,6 +71,7 @@ void Custom_Lexer::handle_def(const std::string& line, size_t& pointer) {
 
 	if (token == "action")				{add_token(Token:: ACTION_DEF);				return;}
 	if (token == "announce_enabled")	{add_token(Token:: ANNOUNCE_DEF);			return;}
+	if (token == "cost")				{add_token(Token:: COST_DEF);				return;}
 	if (token == "designated_events")	{add_token(Token:: DESIGNATED_EVENTS_DEF);	return;}
 	if (token == "designated_worlds")	{add_token(Token:: DESIGNATED_WORLDS_DEF);	return;}
 	if (token == "domain")				{add_token(Token:: DOMAIN_DEF);				return;}
@@ -94,6 +102,17 @@ size_t Custom_Lexer::get_end_of_name(const std::string& line, const size_t& poin
 	size_t result = pointer + 1;
 	char c = line[result];
 	while ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9') || c == '_') {
+		result++;
+		if (result >= line.size()) break;
+		c = line[result];
+	}
+	return result;
+}
+
+size_t Custom_Lexer::get_end_of_integer(const std::string& line, const size_t& pointer) const {
+	size_t result = pointer + 1;
+	char c = line[result];
+	while (c >= '0' && c <= '9') {
 		result++;
 		if (result >= line.size()) break;
 		c = line[result];

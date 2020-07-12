@@ -37,6 +37,10 @@ bool Custom_Parser::must_match(const std::vector<Token>& pattern) {
 	}
 }
 
+size_t Custom_Parser::get_ivalue(size_t argument_index) {
+	return lexer->values.at(value_pointer + argument_index).ival;
+}
+
 std::string Custom_Parser::get_svalue(size_t argument_index) {
 	return lexer->values.at(value_pointer + argument_index).sval;
 }
@@ -49,6 +53,7 @@ std::string Custom_Parser::token_to_string(Token token) {
 	switch (token) {
 		case Token::ACTION_DEF				: return "_action";
 		case Token::ANNOUNCE_DEF			: return "_announce";
+		case Token::COST_DEF				: return "_announce";
 		case Token::DESIGNATED_EVENTS_DEF	: return "_designated_events";
 		case Token::DESIGNATED_WORLDS_DEF	: return "_designated_worlds";
 		case Token::DOMAIN_DEF				: return "_domain";
@@ -76,6 +81,7 @@ std::string Custom_Parser::token_to_string(Token token) {
 		case Token::NOT						: return "NOT";
 		case Token::TOP						: return "TOP";
 		case Token::NAME					: return "NAME";
+		case Token::INTEGER					: return "INTEGER";
 		case Token::TRUTH					: return "true|false";
 		case Token::EQUALS					: return "=";
 	}
@@ -295,6 +301,11 @@ void Custom_Parser::action_body() {
 
 		// TODO -- If _rest not defined, add empty entry, important for agent size later on
 		if (!must_match({ Token::RBRACK })) return;
+		return action_body();
+	}
+
+	if (try_match({ Token::COST_DEF, Token::EQUALS, Token::INTEGER })) {
+		domain->set_action_cost(get_ivalue(2));
 		return action_body();
 	}
 }

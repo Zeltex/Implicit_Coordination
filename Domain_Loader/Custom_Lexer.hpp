@@ -20,6 +20,7 @@ private:
 	void handle_def(const std::string& line, size_t& pointer);
 	bool matches_pattern(const std::string& line, size_t& pointer);
 	size_t get_end_of_name(const std::string& line, const size_t& pointer) const;
+	size_t get_end_of_integer(const std::string& line, const size_t& pointer) const;
 	void add_token(const Token& token);
 
 };

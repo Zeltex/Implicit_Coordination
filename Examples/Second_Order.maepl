@@ -6,6 +6,7 @@ _domain Second {
 	]
 
 	_action transfer (container from, container to, object o) {
+		_cost = 100
 		_owner = agent agent
 		_designated_events = [event0, event1]
 		_event event0 { 

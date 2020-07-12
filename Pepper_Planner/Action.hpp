@@ -25,18 +25,21 @@ namespace del {
 				Agent_Id owner, 
 				const std::unordered_map<size_t, Atom_Id>& input_to_atom,
 				const std::unordered_map<size_t, std::vector<Agent>>& condition_owner_to_agent);
+
+		void add_designated_event(Event_Id event);
 		void add_event(const Action_Event& event);
 		void add_event(std::string name, Event_Id id, Formula&& precondition, std::vector<Proposition_Instance>&& proposition_add, std::vector<Proposition_Instance>&& proposition_delete);
 		void add_reachability(Agent_Id owner, Event_Id event_from, Event_Id event_to, Formula&& condition);
+		void set_cost(size_t cost);
 
-		const std::vector<Action_Event>& get_events() const;
-		Agent_Id get_owner() const;
-		std::string get_name() const;
+		size_t								get_cost() const;
+		const std::vector<Action_Event>&	get_events() const;
+		std::string							get_name() const;
+		Agent_Id							get_owner() const;
+
 		bool is_event_designated(Event_Id event) const;
-
 		bool is_condition_fulfilled(Agent_Id agent, Event_Id event_from, Event_Id event_to, const State& state, const World_Id world) const;
 
-		void add_designated_event(Event_Id event);
 
 		std::string to_string(const Domain& domain) const;
 		std::string to_string(size_t indentation, const Domain& domain) const;
@@ -50,6 +53,7 @@ namespace del {
 
 		std::string get_string(const std::vector<Proposition_Instance>& propositions, const Domain& domain) const;
 
+		size_t cost;
 		std::vector<Action_Event> events;
 		std::vector<Event_Id> designated_events;
 		Agent_Id owner;
