@@ -6,6 +6,7 @@ _domain Pepper {
 	]
 
 	_action pickup (container from, container to, object o) {
+		_cost = 100
 		_owner = agent to
 		_designated_events = [event0, event1]
 		_event event0 { 
@@ -41,6 +42,7 @@ _domain Pepper {
 	}
 
 	_action perceive (container c, object o) {
+		_cost = 100
 		_owner = perceivable agent
 		_designated_events = [event0, event1]
 		_event event0 { 

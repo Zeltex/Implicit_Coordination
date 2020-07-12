@@ -3,6 +3,7 @@ namespace del {
 
 #define PERCEIVES "perceives"
 #define OBSERVES "observes"
+#define ANNOUNCE_COST 100
 
 #ifndef DEBUG_PRINT_PATH
 #define DEBUG_PRINT_PATH "../Debug_Output/"
@@ -38,6 +39,7 @@ namespace del {
 		#define PRINT_GRAPH_DOT(graph, domain) print_graph_dot(graph,domain)
 	#endif
 #else
+	#define PRINT_POLICY(policy, domain) 
 	#define PRINT_ACTION(action, domain, counter) 
 	#define PRINT_STATE(state, domain, counter)
 	#define PRINT_GRAPH_DOT(graph, domain)

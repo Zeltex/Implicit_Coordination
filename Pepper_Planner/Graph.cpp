@@ -2,8 +2,8 @@
 
 namespace del {
 	Node_Id Graph::get_next_from_frontier() {
-		Node_Id node_id = nodes[frontier.front()].get_id();
-		frontier.pop_front();
+		Node_Id node_id = frontier.top().id;
+		frontier.pop();
 		return node_id;
 	}
 
@@ -35,7 +35,7 @@ namespace del {
 		if (node_id.id < size_t{ 0 } || node_id.id >= size_t{ nodes.size() }) {
 			throw;
 		}
-		frontier.push_back(node_id.id);
+		frontier.emplace(node_id, nodes.at(node_id.id).get_cost());
 	}
 
 	Node& Graph::get_node(Node_Id node_id) {
@@ -48,9 +48,9 @@ namespace del {
 
 	std::string Graph::to_string(const Domain& domain) const {
 		std::string result = "Graph: (root, " + std::to_string(root.id) + ") (frontier";
-		for (auto node_id : frontier) {
-			result += ", " + std::to_string(node_id);
-		}
+		//for (auto node_id : frontier) {
+		//	result += ", " + std::to_string(node_id);
+		//}
 		result += ")";
 		for (auto node : nodes) {
 			result += "\n\n\n" + node.to_string(domain);

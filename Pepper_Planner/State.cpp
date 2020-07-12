@@ -4,11 +4,11 @@
 namespace del {
 
 	State::State():
-		number_of_agents(0), worlds(), designated_worlds(), indistinguishability_relation(){
+		cost(0), number_of_agents(0), worlds(), designated_worlds(), indistinguishability_relation(){
 	}
 
 	State::State(size_t number_of_agents) :
-		number_of_agents(0), worlds(), designated_worlds(), indistinguishability_relation() {
+		cost(0), number_of_agents(0), worlds(), designated_worlds(), indistinguishability_relation() {
 		set_amount_of_agents(number_of_agents);
 	}
 
@@ -178,6 +178,14 @@ namespace del {
 
 	const World& State::get_world(World_Id world) const {
 		return worlds[world.id];
+	}
+
+	size_t State::get_cost() const {
+		return cost;
+	}
+
+	void State::set_cost(size_t cost) {
+		this->cost = cost;
 	}
 
 	void State::set_single_designated_world(World_Id world) {

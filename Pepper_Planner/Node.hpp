@@ -24,13 +24,14 @@ namespace del {
 		void set_dead();
 		void set_solved();
 
-		const State& get_state()const ;
-		Action get_action();
-		Node_Id get_id();
-		Node_Id get_parent();
-		Node_Type get_type() const;
-		const Action& get_parent_action() const;
+		Action						get_action();
 		const std::vector<Node_Id>& get_children() const;
+		size_t						get_cost() const;
+		Node_Id						get_id();
+		Node_Id						get_parent();
+		const Action&				get_parent_action() const;
+		const State&				get_state()const ;
+		Node_Type					get_type() const;
 
 		bool is_root_node() const;
 		bool is_dead() const;

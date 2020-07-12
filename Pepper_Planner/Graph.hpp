@@ -10,7 +10,8 @@ namespace del {
 	class Graph {
 	public:
 
-		Graph(): frontier(), nodes(std::vector<Node>()) {};
+		Graph() : frontier(), nodes(std::vector<Node>()) {};
+		Graph(std::vector<Node_Entry> frontier_reserve, std::vector<Node> nodes_reserve) : frontier(Node_Entry_Comparator(), std::move(frontier_reserve)), nodes(std::move(nodes_reserve)) {};
 
 
 		Node_Id get_next_from_frontier();
@@ -30,8 +31,7 @@ namespace del {
 		std::string to_partial_graph(const Domain& domain) const;
 	private:
 		Node_Id root;
-		// TODO - Change to Node_Id
-		std::deque<int> frontier;
+		std::priority_queue < Node_Entry, std::vector<Node_Entry>, Node_Entry_Comparator> frontier;
 		std::vector<Node> nodes;
 	};
 }

@@ -4,15 +4,20 @@ namespace del {
 
 	// TODO - Add option to specify for what person the goal must be fulfilled
 	Policy Planner::find_policy(const Formula& goal_formula, const Action_Library& action_library, const State& initial_state, const std::vector<Agent>& agents, const Domain& domain) const {
-		Graph graph;
+		std::vector<Node_Entry> frontier_reserve;
+		frontier_reserve.reserve(300000);
+		std::vector<Node> nodes_reserve;
+		nodes_reserve.reserve(300000);
+		Graph graph(std::move(frontier_reserve), std::move(nodes_reserve));
+		//Graph graph;
 		Node_Id root_node = graph.create_root_node(initial_state);
 		graph.add_to_frontier(root_node);
-		size_t counter = 0;
+		size_t round_counter = 0;
 		while (true) {
 			//if (counter > 500) {
 			//	graph.get_root_node().set_dead();
 			//}
-			counter++;
+			round_counter++;
 
 			if (graph.is_frontier_empty()) {
 				PRINT_GRAPH_DOT(graph, domain);
@@ -53,14 +58,9 @@ namespace del {
 				if (!is_action_applicable(temp_perspective_shift, action)) {
 					continue;
 				}
+				found_applicable_action = true;
 
 				State temp_product_update = perform_product_update(temp_perspective_shift, action, agents);
-				if (!is_valid_state(temp_product_update)) {
-					continue;
-				}
-				else {
-					found_applicable_action = true;
-				}
 				Node_Id action_node = graph.create_and_node(temp_product_update, current_node, action);
 
 				std::vector<State> global_states = split_into_global_states(temp_product_update, action.get_owner());

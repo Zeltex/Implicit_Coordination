@@ -27,6 +27,7 @@ namespace del {
 		void create_worlds(size_t amount_to_create);	
 		void set_designated_worlds(std::vector<World_Id> worlds);
 		void copy_perceivability_and_observability(const State& other);
+		void set_cost(size_t cost);
 
 
 		void add_designated_world(World_Id world);
@@ -39,6 +40,7 @@ namespace del {
 		void remove_unreachable_worlds();
 
 
+		size_t								get_cost() const;
 		std::vector<World_Id>				get_designated_world_reachables(Agent_Id agent) const;
 		const std::vector<World_Id>&		get_designated_worlds() const;
 		size_t								get_designated_worlds_count() const;
@@ -57,6 +59,7 @@ namespace del {
 		std::string to_graph(const std::string node_id, const Domain& domain) const;
 
 	private:
+		size_t cost;
 		size_t number_of_agents;
 		std::vector<World> worlds;
 		std::vector<World_Id> designated_worlds;

@@ -87,4 +87,15 @@ namespace del {
 		size_t current_size;
 	};
 
+	class Node;
+	struct Node_Entry {
+		Node_Entry(Node_Id id, size_t cost): id(id), cost(cost){}
+		Node_Id id;
+		size_t cost;
+
+	};
+	struct Node_Entry_Comparator {
+		bool operator()(const Node_Entry& lhs, const Node_Entry& rhs);
+	};
+
 }

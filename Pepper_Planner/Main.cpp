@@ -46,20 +46,26 @@ void find_and_execute_policy() {
 	std::cout << ".maepl load time " << (elapsed1.count() / 1000000) << "ms\n";
 	std::cout << "planning execution time " << (elapsed2.count() / 1000000) << "ms\n";
 
+	bool failed = false;
 	while (!del_interface.is_solved()) {
 		Interface_DTO dto = del_interface.get_next_action();
 		if (dto.has_action()) {
 
 			del_interface.perform_action(dto.get_action());
+			std::cout << "Performed action" << std::endl;
 		}
 		else {
 			std::cerr << "NO APPLIABLE ACTION" << std::endl;
+			std::cout << "-=-=- Fail -=-=-";
+			failed = true;
 			break;
 		}
 		if (dto.get_announce_string() != "") {
 			std::cout << "ANNOUNCING: " << dto.get_announce_string() << std::endl;
 		}
-
+	}
+	if (!failed) {
+		std::cout << "-=-=- Success -=-=-" << std::endl;
 	}
 }
 
@@ -102,11 +108,11 @@ void execute_second_order_seeing_is_believing() {
 }
 
 int main(int argc, char* argv[]) {
-	execute_second_order();
+	//execute_second_order();
 	//execute_test_case();
 
 
-	//find_and_execute_policy();
+	find_and_execute_policy();
 
 
 	return 0;

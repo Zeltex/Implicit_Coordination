@@ -6,6 +6,7 @@ namespace del {
 	State perform_product_update(const State& state, const Action& action, const std::vector<Agent>& agents) {
 		std::vector<World_Entry> new_worlds;
 		State result(state.get_number_of_agents());
+		result.set_cost(state.get_cost() + action.get_cost());
 
 		for (auto& world : state.get_worlds()) {
 			for (const auto& event : action.get_events()) {
@@ -94,6 +95,7 @@ namespace del {
 			for (auto event : action.get_events()) {
 				if (event.get_preconditions().valuate(world_id.id, &state)) {
 					found_applicable_event = true;
+					break;
 				}
 			}
 			if (!found_applicable_event) {

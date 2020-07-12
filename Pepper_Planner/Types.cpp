@@ -1,5 +1,6 @@
 #include "Types.hpp"
 #include "Domain.hpp"
+#include "Node.hpp"
 
 namespace del {
 	void Agent_Edges::insert(Event_Id event_from, Event_Id event_to, Formula&& condition) {
@@ -33,5 +34,9 @@ namespace del {
 			}
 		}
 		return std::move(result);
+	}
+
+	bool Node_Entry_Comparator::operator()(const Node_Entry& lhs, const Node_Entry& rhs) {
+		return lhs.cost > rhs.cost;
 	}
 }

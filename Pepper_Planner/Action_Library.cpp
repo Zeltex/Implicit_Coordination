@@ -69,6 +69,8 @@ namespace del {
 
 		Action action(owner, amount_of_agents);
 
+		action.set_cost(ANNOUNCE_COST);
+
 
 		Formula f1;
 		f1.f_prop(proposition);

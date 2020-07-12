@@ -134,6 +134,10 @@ namespace del {
 		return true;
 	}
 
+	size_t Node::get_cost() const {
+		return state.get_cost();
+	}
+
 	std::string Node::to_string(const Domain& domain) const {
 		std::string type_string = type_to_string();
 
