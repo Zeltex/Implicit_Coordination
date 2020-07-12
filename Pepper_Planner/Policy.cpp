@@ -18,7 +18,7 @@ namespace del {
 		}
 		return { Action({ 0 }, 0), false };
 	}
-	std::string Policy::to_graph(const std::vector<Agent>& agents, const Domain& domain) const {
+	std::string Policy::to_graph(const Domain& domain) const {
 		std::string result;
 		size_t counter = 0;
 		for (auto& entry : policy) {
@@ -30,13 +30,13 @@ namespace del {
 				+ "\";\nsubgraph cluster_s"
 				+ counter_s
 				+ "{"
-				+ entry.first.to_graph(agents, "s" + counter_s, domain)
+				+ entry.first.to_graph("s" + counter_s, domain)
 				+ "} subgraph cluster_a"
 				+ counter_s
 				+ "{label=\""
 				+ entry.second.get_name()
 				+ "\"\n"
-				+ entry.second.to_graph(agents, "a" + counter_s, domain)
+				+ entry.second.to_graph("a" + counter_s, domain)
 				+ "}"
 				+ "s" 
 				+ counter_s

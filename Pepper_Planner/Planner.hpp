@@ -30,8 +30,6 @@ namespace del {
 		bool is_valid_state(const State& state) const;
 		bool is_bisimilar_on_path(Graph& graph, Node_Id node) const;
 		const std::vector<Agent>& get_all_agents(const Domain& domain) const;
-		void print_graph(const Graph& graph, const Domain& domain) const;
-		void print_graph_dot(const std::vector<Agent>& agents, const Graph& graph, const Domain& domain) const;
 		const Action& get_next_action(const std::vector<Action>& normal_actions, const std::vector<Action>& announce_actions, size_t counter) const;
 
 	};

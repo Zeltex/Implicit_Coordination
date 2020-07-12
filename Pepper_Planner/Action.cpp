@@ -160,7 +160,7 @@ namespace del {
 		return result;
 	}
 
-	std::string Action::to_graph(const std::vector<Agent>& agents, const std::string& base_id, const Domain& domain) const {
+	std::string Action::to_graph(const std::string& base_id, const Domain& domain) const {
 		std::string result;
 		for (auto& event : events) {
 			result += base_id + std::to_string(event.get_id().id) + "[label=\"" + event.get_name() + "\n<"
@@ -175,7 +175,7 @@ namespace del {
 
 		size_t agent = 0;
 		for (const auto& agent_relations : edge_conditions) {
-			result += agent_relations.to_graph(agents.at(agent).get_name(), base_id, domain);
+			result += agent_relations.to_graph(domain.get_agent(Agent_Id{ agent }).get_name(), base_id, domain);
 			agent++;
 		}
 		return result;

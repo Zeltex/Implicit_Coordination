@@ -54,7 +54,7 @@ namespace del {
 
 		std::string to_string(const Domain& domain) const;
 		std::string to_string(size_t indentation, const Domain& domain) const;
-		std::string to_graph(const std::vector<Agent>& agents, const std::string node_id, const Domain& domain) const;
+		std::string to_graph(const std::string node_id, const Domain& domain) const;
 
 	private:
 		size_t number_of_agents;

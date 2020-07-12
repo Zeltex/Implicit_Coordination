@@ -152,6 +152,7 @@
     <ClCompile Include="Action_Library.cpp" />
     <ClCompile Include="Agent.cpp" />
     <ClCompile Include="Bisimulation_Context.cpp" />
+    <ClCompile Include="Core.cpp" />
     <ClCompile Include="DEL_Operations.cpp" />
     <ClCompile Include="Domain.cpp" />
     <ClCompile Include="Domain_Interface_Implementation.cpp" />

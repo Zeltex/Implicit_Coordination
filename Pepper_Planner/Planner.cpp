@@ -15,10 +15,8 @@ namespace del {
 			counter++;
 
 			if (graph.is_frontier_empty()) {
-#ifdef DEBUG_PRINT
-				print_graph_dot(agents, graph, domain);
-				print_graph(graph, domain);
-#endif
+				PRINT_GRAPH_DOT(graph, domain);
+				PRINT_GRAPH(graph, domain);
 				return Policy(false);
 			}
 
@@ -26,10 +24,8 @@ namespace del {
 			if (is_goal_node(graph.get_node(current_node), goal_formula)) {
 				propogate_solved_node(graph, current_node);
 				if (graph.get_root_node().is_solved()) {
-#ifdef DEBUG_PRINT
-					print_graph_dot(agents, graph, domain);
-					print_graph(graph, domain);
-#endif
+					PRINT_GRAPH_DOT(graph, domain);
+					PRINT_GRAPH(graph, domain);
 					return extract_policy(graph);
 				} else {
 					continue;
@@ -39,10 +35,8 @@ namespace del {
 			if (is_bisimilar_on_path(graph, current_node)) {
 				propogate_dead_end_node(graph, current_node);
 				if (graph.get_root_node().is_dead()) {
-#ifdef DEBUG_PRINT
-					print_graph_dot(agents, graph, domain);
-					print_graph(graph, domain);
-#endif
+					PRINT_GRAPH_DOT(graph, domain);
+					PRINT_GRAPH(graph, domain);
 					return Policy(false);
 				}
 			}
@@ -80,15 +74,13 @@ namespace del {
 			if (!found_applicable_action) {
 				propogate_dead_end_node(graph, current_node);
 				if (graph.get_root_node().is_dead()) {
-#ifdef DEBUG_PRINT
-					print_graph_dot(agents, graph, domain);
-					print_graph(graph, domain);
-#endif
+					PRINT_GRAPH_DOT(graph, domain);
+					PRINT_GRAPH(graph, domain);
 					return Policy(false);
 				}
 			}
 		}
-		print_graph_dot(agents, graph, domain);
+		PRINT_GRAPH_DOT(graph, domain);
 		return Policy(false);
 	}
 
@@ -205,36 +197,5 @@ namespace del {
 
 	const std::vector<Agent>& Planner::get_all_agents(const Domain& domain) const {
 		return domain.get_agents();
-	}
-
-	void Planner::print_graph(const Graph& graph, const Domain& domain) const {
-		std::string path;
-#ifdef DEBUG_PRINT_PATH
-		path = DEBUG_PRINT_PATH;
-#else
-		path = "../Debug_Output/";
-#endif
-		std::ofstream myfile;
-		myfile.open(path + "Graph.log");
-		myfile << graph.to_string(domain);
-		myfile.close();
-		//std::cout << graph.to_string() << "\n\n\n\n\n" << std::endl;;
-	}
-
-	void Planner::print_graph_dot(const std::vector<Agent>& agents, const Graph& graph, const Domain& domain) const {
-		std::ofstream myfile;
-		std::string path;
-#ifdef DEBUG_PRINT_PATH
-		path = DEBUG_PRINT_PATH;
-#else
-		path = "../Debug_Output/";
-#endif
-		myfile.open(path + "Graph.dot");
-#ifdef PRINT_PARTIAL
-		myfile << graph.to_partial_graph(agents, domain);
-#else
-		myfile << graph.to_graph(agents, domain);
-#endif
-		myfile.close();
 	}
 }

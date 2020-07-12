@@ -159,14 +159,14 @@ namespace del {
 		return result;
 	}
 
-	std::string Node::to_graph(const std::vector<Agent>& agents, const std::string node_id, const std::string state_id, const Domain& domain) const {
+	std::string Node::to_graph(const std::string node_id, const std::string state_id, const Domain& domain) const {
 		std::string result = "subgraph cluster_" + node_id + " {\nlabel=\"(" + type_to_string() + ")Node " + node_id + "\";\n";
 		if (solved) {
 			result += "pencolor=green;\n";
 		} else if (dead) {
 			result += "pencolor=red;\n";
 		}
-		result += state.to_graph(agents, state_id, domain) + "\n}";
+		result += state.to_graph(state_id, domain) + "\n}";
 		return result;
 	}
 

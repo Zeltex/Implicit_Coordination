@@ -357,7 +357,7 @@ namespace del {
 		return result;
 	}
 
-	std::string State::to_graph(const std::vector<Agent>& agents, const std::string node_id, const Domain& domain) const {
+	std::string State::to_graph(const std::string node_id, const Domain& domain) const {
 		std::string result;
 		for (auto& world : worlds) {
 			std::string propositions;
@@ -386,7 +386,7 @@ namespace del {
 					+ node_id
 					+ std::to_string(relation.world_to.id) 
 					+ "[label=\"" 
-					+ agents[agent_id].get_name()
+					+ domain.get_agent(Agent_Id{ agent_id }).get_name()
 					+ "\"];\n";
 			}
 			agent_id++;

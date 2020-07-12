@@ -94,22 +94,8 @@ namespace del {
 	void Domain::perform_action(Action action) {
 		const State& current_state = states.back();
 		states.push_back(perform_product_update(current_state, action, agents));
-#ifdef DEBUG_PRINT
-		std::string path;
-#ifdef DEBUG_PRINT_PATH
-		path = DEBUG_PRINT_PATH;
-#else
-		path = "../Debug_Output/";
-#endif
-		std::ofstream action_file;
-		action_file.open(path + "dot/Action" + std::to_string(debug_counter++) + ".dot");
-		action_file << "digraph G {\n" << action.to_graph(get_agents(), "a", *(this)) << "}";
-		action_file.close();
-		std::ofstream state_file;
-		state_file.open(path + "dot/State" + std::to_string(debug_counter) + ".dot");
-		state_file << "digraph {subgraph cluster_0 {" << get_current_state().to_graph(get_agents(), "s0", *(this)) << "}}";
-		state_file.close();
-#endif
+		PRINT_ACTION(action, *(this), debug_counter++);
+		PRINT_STATE(get_current_state(), *(this), debug_counter);
 	}
 
 	State Domain::get_current_state() const {

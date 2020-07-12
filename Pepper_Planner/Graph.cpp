@@ -58,13 +58,13 @@ namespace del {
 		return result;
 	}
 
-	std::string Graph::to_graph(const std::vector<Agent>& agents, const Domain& domain) const {
+	std::string Graph::to_graph(const Domain& domain) const {
 		std::string result = "digraph G {\ncompound=true;";
 		std::string connections;
 
 		size_t counter = 0;
 		for (auto& node : nodes) {
-			result += "\n" + node.to_graph(agents, std::to_string(counter), "s" + std::to_string(counter), domain);
+			result += "\n" + node.to_graph(std::to_string(counter), "s" + std::to_string(counter), domain);
 			
 			for (auto& child : node.get_children()) {
 				std::string left = "s" + std::to_string(counter) + "0";
@@ -86,7 +86,7 @@ namespace del {
 		return result;
 	}
 
-	std::string Graph::to_partial_graph(const std::vector<Agent>& agents, const Domain& domain) const {
+	std::string Graph::to_partial_graph(const Domain& domain) const {
 		std::string result = "digraph G {\ncompound=true;";
 		std::string connections;
 
@@ -98,7 +98,7 @@ namespace del {
 			auto& node = nodes.at(node_id);
 			counter = node_id;
 			frontier.pop_front();
-			result += "\n" + node.to_graph(agents, std::to_string(counter), "s" + std::to_string(counter), domain);
+			result += "\n" + node.to_graph(std::to_string(counter), "s" + std::to_string(counter), domain);
 
 			if (node.is_solved()) {
 				for (auto& child : node.get_children()) {

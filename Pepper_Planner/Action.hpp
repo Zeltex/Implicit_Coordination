@@ -44,7 +44,7 @@ namespace del {
 		std::string to_string(const Domain& domain) const;
 		std::string to_string(size_t indentation, const Domain& domain) const;
 		std::string to_compact_string(const Domain& domain) const;
-		std::string to_graph(const std::vector<Agent>& agents, const std::string& base_id, const Domain& domain) const;
+		std::string to_graph(const std::string& base_id, const Domain& domain) const;
 
 	private:
 		void copy_and_instantiate_edge_conditions(const General_Action& general_action, const std::unordered_map<size_t, std::vector<Agent>>& condition_owner_to_id, const std::unordered_map<std::string, Event_Id>& event_name_to_id, std::unordered_map<size_t, Atom_Id> input_to_atom);

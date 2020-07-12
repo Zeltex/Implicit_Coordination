@@ -27,22 +27,8 @@ namespace del {
 		this->action_library = std::move(library);
 		this->goal = std::move(goal);
 
-#ifdef DEBUG_PRINT
-		std::string path;
-#ifdef DEBUG_PRINT_PATH
-		path = DEBUG_PRINT_PATH;
-#else
-		path = "../Debug_Output/";
-#endif
-		std::string command = "rm -r " + path + "dot/*";
-		system(command.c_str());
-		command = "rm -r " + path + "png/*";
-		system(command.c_str());
-		std::ofstream state_file;
-		state_file.open(path + "dot/State0.dot");
-		state_file << "digraph {subgraph cluster_0 {" << this->domain.get_current_state().to_graph(this->domain.get_agents(), "s0", this->domain) << "}}";
-		state_file.close();
-#endif
+		CLEAR_ACTION_STATE_DIR();
+		PRINT_STATE(this->domain.get_current_state(), this->domain, 0);
 
 	}
 	
@@ -140,20 +126,7 @@ namespace del {
 
 	bool DEL_Interface::create_policy() {
 		policy = planner.find_policy(this->goal, action_library, domain.get_current_state(), domain.get_agents(), domain);
-
-#ifdef DEBUG_PRINT
-		std::string path;
-#ifdef DEBUG_PRINT_PATH
-		path = DEBUG_PRINT_PATH;
-#else
-		path = "../Debug_Output/";
-#endif
-		std::ofstream state_file;
-		state_file.open(path + "Policy.dot");
-		state_file << "digraph {\ncompound = true;\n" << policy.to_graph(domain.get_agents(), domain) << "}";
-		state_file.close();
-#endif
-
+		PRINT_POLICY(policy, domain);
 		has_policy = policy.is_solved();
 		return policy.is_solved();
 	}

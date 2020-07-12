@@ -9,6 +9,7 @@
 #include "Action_Event.hpp"
 #include "Action.hpp"
 #include "DEL_Operations.hpp"
+#include "Core.hpp"
 
 namespace del {
 	class Domain {
