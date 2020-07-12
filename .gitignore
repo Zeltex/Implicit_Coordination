@@ -4,6 +4,7 @@ Debug_Output/dot/*.dot
 Debug_Output/*.png
 Debug_Output/*.dot
 Debug_Output/*.svg
+Debug_Output/*.log
 */Debug/
 */Release/
 Release/
