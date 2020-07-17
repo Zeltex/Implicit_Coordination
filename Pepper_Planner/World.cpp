@@ -46,4 +46,19 @@ namespace del {
 	void World::set_id(World_Id id) {
 		this->id = std::move(id);
 	}
+
+	bool World::operator!=(const World& other) const {
+		if (true_propositions.size() != other.true_propositions.size()) return true;
+		for (size_t i = 0; i < true_propositions.size(); i++) {
+			if (true_propositions[i] != other.true_propositions[i]) return true;
+		}
+		return false;
+	}
+	std::string World::to_hash() const {
+		std::string hash;
+		for (auto& prop : true_propositions) {
+			hash += prop.to_hash();
+		}
+		return hash;
+	}
 }

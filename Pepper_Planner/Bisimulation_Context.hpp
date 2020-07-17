@@ -2,6 +2,7 @@
 
 #include <unordered_map>
 #include <algorithm>
+#include <deque>
 
 #include "State.hpp"
 #include "Types.hpp"
@@ -16,9 +17,13 @@ namespace del {
 		void create_merged_relations_list();
 		void partition_into_valuation_blocks();
 		void partition_into_relations_blocks();
+		void partition_into_relations_blocks_contraction(const std::unordered_map <size_t, std::vector<std::vector<size_t>>>& relations);
 		bool are_relations_equal(std::vector<size_t> original_relations1, std::vector<size_t> original_relations2);
 		void move_worlds_to_new_block(const std::vector<World_Id>& worlds_to_be_moved);
 		bool is_bisimilar();
+
+		State to_bisimulation_contraction(const State& state, size_t k = 0);
+
 		std::string convert_propositions_to_string(const std::vector<Proposition_Instance>& propositions);
 	private:
 		State state1;

@@ -50,6 +50,8 @@ namespace del {
 			world_from(world_from), world_to(world_to) {}
 		World_Id world_from;
 		World_Id world_to;
+		bool operator!=(const World_Relation& other) const { return (world_from.id != other.world_from.id || world_to.id != other.world_to.id); }
+		std::string to_hash() const { return std::to_string(world_from.id) + std::to_string(world_to.id); }
 	};
 
 	struct Event_Relation {
@@ -96,6 +98,11 @@ namespace del {
 	};
 	struct Node_Entry_Comparator {
 		bool operator()(const Node_Entry& lhs, const Node_Entry& rhs);
+	};
+
+	class State;
+	struct State_Hasher {
+		std::size_t operator()(const State& state) const;
 	};
 
 }

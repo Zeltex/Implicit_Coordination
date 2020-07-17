@@ -162,6 +162,7 @@
   <ItemGroup>
     <ClCompile Include="Action_Tests.cpp" />
     <ClCompile Include="Bisimulation_Context_Tests.cpp" />
+    <ClCompile Include="DEL_Operations_Bisimilar_Contraction_Tests.cpp" />
     <ClCompile Include="DEL_Operations_Perspective_Shift_Tests.cpp" />
     <ClCompile Include="DEL_Operations_Product_Update_Tests.cpp" />
     <ClCompile Include="DEL_Operations_Split_Into_Globals_Tests.cpp" />

@@ -40,23 +40,27 @@ namespace del {
 		void remove_unreachable_worlds();
 
 
-		size_t								get_cost() const;
-		std::vector<World_Id>				get_designated_world_reachables(Agent_Id agent) const;
-		const std::vector<World_Id>&		get_designated_worlds() const;
-		size_t								get_designated_worlds_count() const;
-		const std::vector<World_Relation>&	get_indistinguishability_relations(Agent_Id agent) const;
-		size_t								get_number_of_agents() const;
-		const std::vector<Agent_Id>&		get_observables(Agent_Id agent) const;
-		const std::vector<Agent_Id>&		get_perceivables(Agent_Id agent) const;
-		std::vector<World_Id>				get_reachables(Agent_Id agent, World_Id world) const;
-		const World&						get_world(World_Id world) const;
-		const std::vector<World>&			get_worlds() const;
-		size_t								get_worlds_count() const;
+		size_t											get_cost() const;
+		std::vector<World_Id>							get_designated_world_reachables(Agent_Id agent) const;
+		const std::vector<World_Id>&					get_designated_worlds() const;
+		size_t											get_designated_worlds_count() const;
+		const std::vector<World_Relation>&				get_indistinguishability_relations(Agent_Id agent) const;
+		const std::vector<std::vector<World_Relation>>& get_indistinguishability_relations() const;
+		size_t											get_number_of_agents() const;
+		const std::vector<Agent_Id>&					get_observables(Agent_Id agent) const;
+		const std::vector<Agent_Id>&					get_perceivables(Agent_Id agent) const;
+		std::vector<World_Id>							get_reachables(Agent_Id agent, World_Id world) const;
+		const World&									get_world(World_Id world) const;
+		const std::vector<World>&						get_worlds() const;
+		size_t											get_worlds_count() const;
 
 
 		std::string to_string(const Domain& domain) const;
 		std::string to_string(size_t indentation, const Domain& domain) const;
 		std::string to_graph(const std::string node_id, const Domain& domain) const;
+
+		bool operator==(const State& other) const;
+		size_t to_hash() const;
 
 	private:
 		size_t cost;
@@ -65,6 +69,7 @@ namespace del {
 		std::vector<World_Id> designated_worlds;
 		std::vector<std::vector<World_Relation>> indistinguishability_relation;
 
+		// TODO - These are not used anymore, need to remove all references to them (they were replaced by normal propositions)
 		std::vector<std::vector<Agent_Id>> observability;
 		std::vector<std::vector<Agent_Id>> perceivability;
 	};

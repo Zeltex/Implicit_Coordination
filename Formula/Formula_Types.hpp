@@ -137,4 +137,15 @@ struct Proposition_Instance {
 		}
 		return true;
 	}
+	bool operator!=(const Proposition_Instance& other) const {
+		return !(*this == other);
+	}
+
+	std::string to_hash() const {
+		std::string hash = name;
+		for (auto& arg : arguments) {
+			if (arg != EMPTY_INDEX) hash += std::to_string(arg.id);
+		}
+		return hash;
+	}
 };

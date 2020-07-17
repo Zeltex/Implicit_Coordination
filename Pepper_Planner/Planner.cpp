@@ -4,6 +4,9 @@ namespace del {
 
 	// TODO - Add option to specify for what person the goal must be fulfilled
 	Policy Planner::find_policy(const Formula& goal_formula, const Action_Library& action_library, const State& initial_state, const std::vector<Agent>& agents, const Domain& domain) const {
+
+		std::unordered_map<size_t, State> visited;
+
 		std::vector<Node_Entry> frontier_reserve;
 		frontier_reserve.reserve(300000);
 		std::vector<Node> nodes_reserve;
@@ -13,6 +16,7 @@ namespace del {
 		Node_Id root_node = graph.create_root_node(initial_state);
 		graph.add_to_frontier(root_node);
 		size_t round_counter = 0;
+		std::vector<size_t> layer_size(10);
 		while (true) {
 			//if (counter > 500) {
 			//	graph.get_root_node().set_dead();
@@ -61,13 +65,31 @@ namespace del {
 				found_applicable_action = true;
 
 				State temp_product_update = perform_product_update(temp_perspective_shift, action, agents);
+
+
+				auto temp_hash = temp_product_update.to_hash();
+				if (visited.find(temp_hash) == visited.end()) {
+					visited.insert({ temp_hash, temp_product_update });
+				} else {
+					continue;
+				}
+
 				Node_Id action_node = graph.create_and_node(temp_product_update, current_node, action);
 
 				std::vector<State> global_states = split_into_global_states(temp_product_update, action.get_owner());
 
 				for (State state : global_states) {
+					layer_size[state.get_cost() / 100] ++;
 					Node_Id global_agent_node = graph.create_or_node(state, action_node);
 					graph.add_to_frontier(global_agent_node);
+
+
+					//if (visited.find(temp_hash) != visited.end()) {
+					//	size_t debug = 0;
+					//} else {
+					//	visited.insert({ temp_hash, state });
+					//}
+
 				}
 
 			}

@@ -25,7 +25,8 @@ namespace del {
 
 		std::string to_string(const Domain& domain) const;
 		void set_id(World_Id id);
-
+		bool operator!=(const World& other) const;
+		std::string to_hash() const;
 	private:
 
 		World_Id id;

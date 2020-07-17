@@ -1,6 +1,7 @@
 #include "Types.hpp"
 #include "Domain.hpp"
 #include "Node.hpp"
+#include "State.hpp"
 
 namespace del {
 	void Agent_Edges::insert(Event_Id event_from, Event_Id event_to, Formula&& condition) {
@@ -38,5 +39,11 @@ namespace del {
 
 	bool Node_Entry_Comparator::operator()(const Node_Entry& lhs, const Node_Entry& rhs) {
 		return lhs.cost > rhs.cost;
+	}
+
+	std::size_t State_Hasher::operator()(const State& state) const
+	{
+		//return std::hash<std::string>()(state.to_hash());
+		return state.to_hash();
 	}
 }

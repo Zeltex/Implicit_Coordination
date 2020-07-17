@@ -172,6 +172,10 @@ namespace del {
 		return indistinguishability_relation[agent.id];
 	}
 
+	const std::vector<std::vector<World_Relation>>& State::get_indistinguishability_relations() const {
+		return indistinguishability_relation;
+	}
+
 	const std::vector<World_Id>& State::get_designated_worlds() const {
 		return designated_worlds;
 	}
@@ -321,6 +325,45 @@ namespace del {
 		designated_worlds = std::move(new_designated_worlds);
 	}
 
+	bool State::operator==(const State& other) const {
+		if (cost != other.cost
+			|| number_of_agents != other.number_of_agents
+			|| worlds.size() != other.worlds.size()
+			|| designated_worlds.size() != other.designated_worlds.size()
+			|| indistinguishability_relation.size() != other.indistinguishability_relation.size()) return false;
+		for (size_t i = 0; i < worlds.size(); i++) {
+			if (worlds[i] != other.worlds[i]) return false;
+		}
+		for (size_t i = 0; i < designated_worlds.size(); i++) {
+			if (designated_worlds[i].id != other.designated_worlds[i].id) return false;
+		}
+		for (size_t i = 0; i < indistinguishability_relation.size(); i++) {
+			if (indistinguishability_relation[i].size() != other.indistinguishability_relation[i].size()) return false;
+			for (size_t j = 0; j < indistinguishability_relation[i].size(); j++) {
+				if (indistinguishability_relation[i][j] != other.indistinguishability_relation[i][j]) return false;
+			}
+		}
+		return true;
+	}
+
+	size_t State::to_hash() const {
+		std::string hash;
+		for (auto& world : worlds) {
+			hash += world.to_hash();
+		}
+		for (auto& designated_world : designated_worlds) {
+			hash += std::to_string(designated_world.id);
+		}
+		size_t agent = 0;
+		for (auto& agent_relation : indistinguishability_relation) {
+			for (auto& relation : agent_relation) {
+				hash += std::to_string(agent) + relation.to_hash();
+			}
+			agent++;
+		}
+		return std::hash<std::string>()(hash);
+	}
+
 	std::string State::to_string(const Domain& domain) const {
 		return to_string(3, domain);
 	}
@@ -374,7 +417,7 @@ namespace del {
 				if (first) {
 					first = false;
 				} else {
-					propositions += ", ";
+					propositions += ", \n";
 				}
 				propositions += proposition.to_string(domain.get_id_to_atom());
 			}
