@@ -45,9 +45,9 @@ namespace del {
 				}
 				return Interface_DTO(action, announce_string);
 			}
-		} else {
-			return Interface_DTO();
 		}
+		return Interface_DTO();
+		
 	}
 
 	bool DEL_Interface::query(const Formula& query) {

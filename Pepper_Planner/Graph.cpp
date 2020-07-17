@@ -73,7 +73,7 @@ namespace del {
 				connections += "\n" + left + " -> " + right + "[ltail=cluster_" + std::to_string(counter) + ", lhead=cluster_" + std::to_string(child.id);
 
 				if (nodes[child.id].get_type() == Node_Type::And) {
-					connections += ",label=\"" + nodes[child.id].get_parent_action().to_compact_string(domain) + "\"";
+					connections += ",label=\"" + nodes[child.id].get_parent_action(node.get_id()).to_compact_string(domain) + "\"";
 				}
 					
 				connections += "];";
@@ -111,7 +111,7 @@ namespace del {
 					connections += "\n" + left + " -> " + right + "[ltail=cluster_" + std::to_string(counter) + ", lhead=cluster_" + std::to_string(child.id);
 
 					if (nodes[child.id].get_type() == Node_Type::And) {
-						connections += ",label=\"" + nodes[child.id].get_parent_action().to_compact_string(domain) + "\"";
+						connections += ",label=\"" + nodes[child.id].get_parent_action(node.get_id()).to_compact_string(domain) + "\"";
 					}
 
 					connections += "];";

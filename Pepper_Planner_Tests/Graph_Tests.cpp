@@ -41,7 +41,7 @@ namespace PepperPlannerTests
 			Node_Id node1 = graph.create_root_node(state1);
 			Node_Id node2 = graph.create_or_node(state2, node1);
 
-			Assert::AreEqual(graph.get_node(node2).get_parent().id, node1.id);
+			Assert::AreEqual(graph.get_node(node2).get_parents()[0].first.id, node1.id);
 		}
 
 		TEST_METHOD(Node_Child_Is_Set_Correctly) {

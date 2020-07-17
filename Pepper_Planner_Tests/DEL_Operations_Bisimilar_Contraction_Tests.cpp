@@ -46,8 +46,8 @@ namespace PepperPlannerTests
 			auto h1 = state.to_hash();
 			auto h2 = bisim.to_hash();
 
-			auto hash1 = std::hash<std::string>()(h1);
-			auto hash2 = std::hash<std::string>()(h2);
+			//auto hash1 = std::hash<std::string>()(h1);
+			//auto hash2 = std::hash<std::string>()(h2);
 
 			size_t debug = 0;
 		}

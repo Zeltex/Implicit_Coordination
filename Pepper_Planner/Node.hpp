@@ -14,24 +14,26 @@ namespace del {
 	public:
 		Node() = delete;
 		Node(State state, Node_Id id, Node_Id parent, Action action_from_parent, bool root) :
-			state(state), id(id), parent(parent), action_from_parent(action_from_parent), root(root), type(Node_Type::And),
-			dead(false), solved(false) {};
+			state(state), id(id), parents({ {parent, action_from_parent } }), root(root), type(Node_Type::And),
+			dead(false), solved(false), has_hash(false), hash(0) {};
 		// TODO - Don't create dummy action (though it won't get used)
 		Node(State state, Node_Id id, Node_Id parent, bool root) :
-			state(state), id(id), parent(parent), root(root), type(Node_Type::Or),
-			dead(false), solved(false) {};
+			state(state), id(id), parents({ {parent, {} } }), root(root), type(Node_Type::Or),
+			dead(false), solved(false), has_hash(false), hash(0) {};
 		void add_child(Node_Id node);
+		void add_parent(Node_Id node, Action action);
+		void add_parent(Node_Id node);
 		void set_dead();
 		void set_solved();
 
-		Action						get_action();
-		const std::vector<Node_Id>& get_children() const;
-		size_t						get_cost() const;
-		Node_Id						get_id();
-		Node_Id						get_parent();
-		const Action&				get_parent_action() const;
-		const State&				get_state()const ;
-		Node_Type					get_type() const;
+		const std::vector<Node_Id>&						get_children() const;
+		size_t											get_cost() const;
+		size_t											get_hash();
+		Node_Id											get_id() const;
+		const Action&									get_parent_action(Node_Id parent) const;
+		const std::vector<std::pair<Node_Id, Action>>&	get_parents();
+		const State&									get_state()const ;
+		Node_Type										get_type() const;
 
 		bool is_root_node() const;
 		bool is_dead() const;
@@ -39,7 +41,7 @@ namespace del {
 		bool check_if_dead(Graph& graph);
 		bool check_if_solved(Graph& graph);
 		bool valuate(const Formula& formula) const;
-
+		
 		std::string to_string(const Domain& domain) const;
 		std::string to_graph(const std::string node_id, const std::string state_id, const Domain& domain) const;
 		std::string type_to_string() const;
@@ -54,11 +56,12 @@ namespace del {
 		Node_Type type;
 		State state;
 		Node_Id id;
-		Node_Id parent;
-		Action action_from_parent;
+		std::vector<std::pair<Node_Id, Action>> parents;
 		bool root;
 		bool dead;
 		bool solved;
 		std::vector<Node_Id> children;
+		size_t hash;
+		bool has_hash;
 	};
 }

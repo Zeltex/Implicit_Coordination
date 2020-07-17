@@ -6,20 +6,43 @@ namespace del {
 		return state;;
 	}
 
-	Action Node::get_action() {
-		return action_from_parent;
-	}
-
-	Node_Id Node::get_id() {
+	Node_Id Node::get_id() const {
 		return id;
 	}
 
 	void Node::add_child(Node_Id node) {
+		for (auto& child : children) {
+			if (child == node) return;
+		}
 		children.push_back(node);
 	}
 
-	Node_Id Node::get_parent() {
-		return parent;
+	void Node::add_parent(Node_Id node, Action action) {
+		// TODO - Should maybe prioritise the parent with lowest action cost
+		for (auto& parent : parents) {
+			if (parent.first == node) return;
+		}
+		parents.emplace_back(node, action);
+	}
+
+	void Node::add_parent(Node_Id node) {
+		// TODO - Should maybe prioritise the parent with lowest action cost
+		for (auto& parent : parents) {
+			if (parent.first == node) return;
+		}
+		parents.emplace_back(node, Action());
+	}
+
+	size_t Node::get_hash() {
+		if (!has_hash) {
+			hash = state.to_hash();
+			has_hash = true;
+		}
+		return hash;
+	}
+
+	const std::vector<std::pair<Node_Id, Action>>& Node::get_parents() {
+		return parents;
 	}
 
 	const std::vector<Node_Id>& Node::get_children() const {
@@ -30,8 +53,11 @@ namespace del {
 		return type;
 	}
 
-	const Action& Node::get_parent_action() const {
-		return action_from_parent;
+	const Action& Node::get_parent_action(Node_Id parent) const {
+		for (auto& parent_entry : parents) {
+			if (parent_entry.first == parent) return parent_entry.second;
+		}
+		return {};
 	}
 
 	bool Node::is_root_node() const {
@@ -130,8 +156,8 @@ namespace del {
 				return false;
 			}
 		}
-		solved = true;
-		return true;
+		solved = !children.empty();
+		return solved;
 	}
 
 	size_t Node::get_cost() const {
@@ -140,16 +166,26 @@ namespace del {
 
 	std::string Node::to_string(const Domain& domain) const {
 		std::string type_string = type_to_string();
+		std::string parents_string;
+		bool first = true;
+		for (auto& parent : parents) {
+			if (first) {
+				first = false;
+			} else {
+				parents_string += ", ";
+			}
+			parents_string += std::to_string(parent.first.id);
+		}
 
 
 		std::string result = "---- Node " + std::to_string(id.id)
 			+ ": (Type, " + type_string
-			+ ") (Parent, " + std::to_string(parent.id)
+			+ ") (Parent, " + parents_string
 			+ ") (Root, " + (root ? "True" : "False")
 			+ ") (Dead, " + (dead ? "True" : "False")
 			+ ") (Solved, " + (solved ? "True" : "False")
 			+ ") (Children, ";
-		bool first = true;
+		first = true;
 		for (auto child : children) {
 			if (first) {
 				first = false;
@@ -159,7 +195,11 @@ namespace del {
 			result += std::to_string(child.id);
 		}
 
-		result += ")\n--- Action from parent\n" +  (type == Node_Type::Or ? "Agent split, no action" : action_from_parent.to_string(domain)) + " \n" + state.to_string(domain);
+		result += ")";
+		for (auto& parent : parents) {
+			result += "\n--- Action from parent " + std::to_string(parent.first.id) + "\n" + (type == Node_Type::Or ? "Agent split, no action" : parent.second.to_string(domain)) + " \n";
+		}
+		result += state.to_string(domain);
 		return result;
 	}
 
