@@ -2,11 +2,31 @@
 
 namespace del {
 
-	Action_Library::Action_Library(): announce_enabled(false), actions() {
+	Action_Library::Action_Library(): action_counter(0), announce_enabled(false), actions() {
 	}
 
-	Action_Library::Action_Library(size_t amount_of_agents) : announce_enabled(false), actions() {
+	Action_Library::Action_Library(size_t amount_of_agents) : action_counter(0), announce_enabled(false), actions() {
 		set_amount_of_agents(amount_of_agents);
+	}
+
+
+	void Action_Library::load_actions(const State& state, const Domain& domain) {
+		// TODO - These actions should be saved in a map so that each action is only generated once
+		announce_actions = std::move(get_announce_actions(state, domain));
+		action_counter = 0;
+	}
+
+	bool Action_Library::has_action() const {
+		return action_counter < actions.size() + announce_actions.size();
+	}
+
+	const Action& Action_Library::get_next_action() {
+		size_t temp_counter = action_counter++;
+		if (temp_counter < actions.size()) {
+			return actions.at(temp_counter);
+		} else {
+			return announce_actions.at(temp_counter - actions.size());
+		}
 	}
 
 	void Action_Library::set_amount_of_agents(size_t amount_of_agents) {
@@ -17,11 +37,11 @@ namespace del {
 		return actions;
 	}
 
-	const General_Action& Action_Library::get_general_action(std::string name) const {
+	const General_Action& Action_Library::get_general_action(const std::string& name) const {
 		return general_actions.at(general_action_name_to_id.at(name));
 	}
 
-	const std::vector<Action> Action_Library::get_announce_actions(State state, const Domain& domain) const {
+	std::vector<Action> Action_Library::get_announce_actions(const State& state, const Domain& domain) const {
 		std::vector<Action> result;
 		
 		if (!announce_enabled) {
@@ -60,7 +80,7 @@ namespace del {
 		
 	}
 
-	Action Action_Library::create_announce_action(Agent_Id owner, Proposition_Instance proposition, size_t amount_of_agents, const Domain& domain) const {
+	Action Action_Library::create_announce_action(Agent_Id owner, const Proposition_Instance& proposition, size_t amount_of_agents, const Domain& domain) const {
 		// TODO - Figure out how to handle announce actions
 
 		// TODO - Could probably optimise by checking if observers/unaware sets are empty

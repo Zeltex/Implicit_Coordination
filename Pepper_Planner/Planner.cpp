@@ -3,7 +3,7 @@
 namespace del {
 
 	// TODO - Add option to specify for what person the goal must be fulfilled
-	Policy Planner::find_policy(const Formula& goal_formula, const Action_Library& action_library, const State& initial_state, const std::vector<Agent>& agents, const Domain& domain) const {
+	Policy Planner::find_policy(const Formula& goal_formula, Action_Library& action_library, const State& initial_state, const std::vector<Agent>& agents, const Domain& domain) const {
 
 		std::unordered_map<size_t, Node_Id> visited_and;
 		std::unordered_map<size_t, Node_Id> visited_or;
@@ -13,110 +13,55 @@ namespace del {
 		std::vector<Node> nodes_reserve;
 		nodes_reserve.reserve(100);
 		Graph graph(std::move(frontier_reserve), std::move(nodes_reserve));
-		//Graph graph;
-		Node_Id root_node = graph.create_root_node(initial_state);
-		graph.add_to_frontier(root_node);
-		size_t round_counter = 0;
-		std::vector<size_t> layer_size(10);
+		graph.add_to_frontier(graph.create_root_node(initial_state));
+		std::vector<size_t> debug_layer_size(10);
+
 		while (true) {
-			//if (counter > 500) {
-			//	graph.get_root_node().set_dead();
-			//}
-			round_counter++;
-
-			if (graph.is_frontier_empty()) {
-				PRINT_GRAPH_DOT(graph, domain);
-				PRINT_GRAPH(graph, domain);
-				return Policy(false);
-			}
-
 			Node_Id current_node = graph.get_next_from_frontier();
-			if (is_goal_node(graph.get_node(current_node), goal_formula)) {
-				propogate_solved_node(graph, current_node);
-				if (graph.get_root_node().is_solved()) {
-					PRINT_GRAPH_DOT(graph, domain);
-					PRINT_GRAPH(graph, domain);
-					return extract_policy(graph);
-				} else {
-					continue;
-				}
-			}
-
-
-			auto& normal_actions = action_library.get_actions();
-			auto announce_actions = action_library.get_announce_actions(graph.get_node(current_node).get_state(), domain);
-
+			action_library.load_actions(graph.get_node(current_node).get_state(), domain);
 			bool found_applicable_action = false;
-			size_t counter = 0;
-			while (counter < normal_actions.size() + announce_actions.size()) {
-				const Action& action = get_next_action(normal_actions, announce_actions, counter);
-				counter++;
-				State temp_perspective_shift = perform_perspective_shift(graph.get_node(current_node).get_state(), action.get_owner());
-				if (!is_action_applicable(temp_perspective_shift, action)) {
+
+			while (action_library.has_action()) {
+				const Action& action = action_library.get_next_action();
+				State state_perspective_shift = perform_perspective_shift(graph.get_node(current_node).get_state(), action.get_owner());
+				if (!is_action_applicable(state_perspective_shift, action)) {
 					continue;
 				}
-				State temp_product_update = perform_product_update(temp_perspective_shift, action, agents);
+				State state_product_update = perform_product_update(state_perspective_shift, action, agents);
 
-				Node_Id dummy_node;
-				auto [bisim_exists, action_applicable] = does_bisimilar_exist(graph, temp_product_update, visited_and, current_node, dummy_node, action);
+				auto [bisim_exists, action_applicable] = does_bisimilar_exist(graph, state_product_update, visited_and, current_node, Node_Id(), action);
 				found_applicable_action |= action_applicable;
-				Node_Id action_node;
 				if (bisim_exists) continue;
-				//if (graph.get_root_node().is_dead()) {
-				//	PRINT_GRAPH_DOT(graph, domain);
-				//	PRINT_GRAPH(graph, domain);
-				//	return Policy(false);
-				//}
-				//if (graph.get_root_node().is_solved()) {
-				//	PRINT_GRAPH_DOT(graph, domain);
-				//	PRINT_GRAPH(graph, domain);
-				//	return extract_policy(graph);
-				//}
-				action_node = graph.create_and_node(temp_product_update, current_node, action);
+				Node_Id action_node = graph.create_and_node(state_product_update, current_node, action);
 				visited_and.insert({ graph.get_node(action_node).get_hash(), action_node });
-				
 				found_applicable_action = true;
-				
+				std::vector<State> global_states = split_into_global_states(state_product_update, action.get_owner());
 
-
-				std::vector<State> global_states = split_into_global_states(temp_product_update, action.get_owner());
-
-				for (State state : global_states) {
-					Action dummy;
-					auto [bisim_exists, action_applicable] = does_bisimilar_exist(graph, state, visited_or, action_node, current_node, dummy);
+				for (State global_state : global_states) {
+					auto [bisim_exists, action_applicable] = does_bisimilar_exist(graph, global_state, visited_or, action_node, current_node, Action());
 					if (bisim_exists) continue;
 
 
-					layer_size[state.get_cost() / 100] ++;
-					Node_Id global_agent_node = graph.create_or_node(state, action_node);
-					graph.add_to_frontier(global_agent_node);
+					debug_layer_size[global_state.get_cost() / 100] ++;
+					Node_Id global_agent_node = graph.create_or_node(global_state, action_node);
+					if (is_goal_node(graph.get_node(global_agent_node), goal_formula)) {
+						graph.get_node(global_agent_node).set_solved();
+					} else {
+						graph.add_to_frontier(global_agent_node);
+					}
 					visited_or.insert({ graph.get_node(global_agent_node).get_hash(), global_agent_node });
 				}
 				if (graph.get_node(action_node).check_if_solved(graph)) {
 					propogate_solved_node(graph, action_node);
-					if (graph.get_root_node().is_solved()) {
-						PRINT_GRAPH_DOT(graph, domain);
-						PRINT_GRAPH(graph, domain);
-						return extract_policy(graph);
-					}
 				}
 
 			}
 			if (!found_applicable_action) {
 				propogate_dead_end_node(graph, current_node);
-				if (graph.get_root_node().is_dead()) {
-					PRINT_GRAPH_DOT(graph, domain);
-					PRINT_GRAPH(graph, domain);
-					return Policy(false);
-				}
 			} else if (graph.get_node(current_node).check_if_solved(graph)) {
 				propogate_solved_node(graph, current_node);
-				if (graph.get_root_node().is_solved()) {
-					PRINT_GRAPH_DOT(graph, domain);
-					PRINT_GRAPH(graph, domain);
-					return extract_policy(graph);
-				}
 			}
+
 			if (graph.get_root_node().is_dead()) {
 				PRINT_GRAPH_DOT(graph, domain);
 				PRINT_GRAPH(graph, domain);
@@ -128,6 +73,7 @@ namespace del {
 				return extract_policy(graph);
 			}
 		}
+		PRINT_GRAPH(graph, domain);
 		PRINT_GRAPH_DOT(graph, domain);
 		return Policy(false);
 	}
@@ -160,8 +106,6 @@ namespace del {
 			} else {
 				child_node.add_parent(current_node_id);
 			}
-			//if (child_node.is_dead()) propogate_dead_end_node(graph, child_node.get_id());
-			//if (child_node.is_solved()) propogate_solved_node(graph, child_node.get_id());
 			return { true, true };
 		}
 	}
@@ -203,25 +147,6 @@ namespace del {
 		return false;
 	}
 
-	//bool Planner::is_bisimilar_on_path(Graph& graph, Node_Id node_id) const {
-	//	auto& node = graph.get_node(node_id);
-	//	if (node.is_root_node()) {
-	//		return false;
-	//	}
-	//	auto current_node_id = node.get_parent();
-	//	while (true) {
-	//		auto& current_node = graph.get_node(current_node_id);
-	//		if (current_node.get_type() == Node_Type::Or && are_states_bisimilar(node.get_state(), current_node.get_state())) {
-	//			return true;
-	//		} else if (current_node.is_root_node()) {
-	//			return false;
-	//		} else {
-	//			current_node_id = current_node.get_parent();
-	//		}
-	//	}
-	//	return false;
-	//}
-
 	Policy Planner::extract_policy(Graph& graph) const {
 		Policy policy(true);
 		Node_Id temp2 = { 0 };
@@ -231,30 +156,6 @@ namespace del {
 				policy.add_policy_entry(entry.first, entry.second);
 			}
 		}
-
-		//// {current_node, parent_node}
-		//std::deque<std::pair<Node_Id, Node_Id>> frontier;
-		//frontier.push_back({ graph.get_root_node().get_id(), {0} });
-		//while (!frontier.empty()) {
-		//	auto[current_node_id, parent_node_id] = frontier.back();
-		//	frontier.pop_back();
-		//	auto& current_node = graph.get_node(current_node_id);
-
-		//	if (current_node.get_type() == Node_Type::And) {
-		//		auto& parent = graph.get_node(parent_node_id);
-		//		policy.add_policy_entry(parent.get_state(), current_node.get_parent_action(parent_node_id));
-		//	}
-		//	for (auto child_id : current_node.get_children()) {
-
-		//		auto& child = graph.get_node(child_id);
-		//		if (child.is_solved()) {
-		//			frontier.push_back({ child_id, current_node_id });
-		//			if (current_node.get_type() == Node_Type::Or) {
-		//				break;
-		//			}
-		//		}
-		//	}
-		//}
 
 		return policy;
 	}
