@@ -16,7 +16,7 @@ namespace del {
 		graph.add_to_frontier(graph.create_root_node(initial_state));
 		std::vector<size_t> debug_layer_size(10);
 
-		while (true) {
+		while (!graph.is_frontier_empty()) {
 			Node_Id current_node = graph.get_next_from_frontier();
 			action_library.load_actions(graph.get_node(current_node).get_state(), domain);
 			bool found_applicable_action = false;
