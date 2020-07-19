@@ -109,4 +109,12 @@ namespace del {
 		Bisimulation_Context bisimulation_context(state1, state2);
 		return bisimulation_context.is_bisimilar();
 	}
+
+
+	State perform_k_bisimilar_contraction(const State& state, size_t depth) {
+		State temp1;
+		State temp2;
+		Bisimulation_Context bisimulation_context(temp1, temp2);
+		return bisimulation_context.to_bisimulation_contraction(state, depth);
+	}
 }

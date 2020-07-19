@@ -28,6 +28,7 @@ namespace del {
 					continue;
 				}
 				State state_product_update = perform_product_update(state_perspective_shift, action, agents);
+				state_product_update = std::move(perform_k_bisimilar_contraction(state_product_update, BISIMILAR_DEPTH));
 
 				auto [bisim_exists, action_applicable] = does_bisimilar_exist(graph, state_product_update, visited_and, current_node, Node_Id(), action);
 				found_applicable_action |= action_applicable;

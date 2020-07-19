@@ -4,6 +4,7 @@ namespace del {
 #define PERCEIVES "perceives"
 #define OBSERVES "observes"
 #define ANNOUNCE_COST 100
+#define BISIMILAR_DEPTH 5
 
 #ifndef DEBUG_PRINT_PATH
 #define DEBUG_PRINT_PATH "../Debug_Output/"
