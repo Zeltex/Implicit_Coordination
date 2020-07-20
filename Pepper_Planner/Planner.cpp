@@ -19,7 +19,6 @@ namespace del {
 		while (!graph.is_frontier_empty()) {
 			Node_Id current_node = graph.get_next_from_frontier();
 			action_library.load_actions(graph.get_node(current_node).get_state(), domain);
-			bool found_applicable_action = false;
 
 			while (action_library.has_action()) {
 				const Action& action = action_library.get_next_action();
@@ -30,16 +29,14 @@ namespace del {
 				State state_product_update = perform_product_update(state_perspective_shift, action, agents);
 				state_product_update = std::move(perform_k_bisimilar_contraction(state_product_update, BISIMILAR_DEPTH));
 
-				auto [bisim_exists, action_applicable] = does_bisimilar_exist(graph, state_product_update, visited_and, current_node, Node_Id(), action);
-				found_applicable_action |= action_applicable;
+				bool bisim_exists = does_bisimilar_exist(graph, state_product_update, visited_and, current_node, Node_Id(), action);
 				if (bisim_exists) continue;
 				Node_Id action_node = graph.create_and_node(state_product_update, current_node, action);
 				visited_and.insert({ graph.get_node(action_node).get_hash(), action_node });
-				found_applicable_action = true;
 				std::vector<State> global_states = split_into_global_states(state_product_update, action.get_owner());
 
-				for (State global_state : global_states) {
-					auto [bisim_exists, action_applicable] = does_bisimilar_exist(graph, global_state, visited_or, action_node, current_node, Action());
+				for (State& global_state : global_states) {
+					bool bisim_exists = does_bisimilar_exist(graph, global_state, visited_or, action_node, current_node, Action());
 					if (bisim_exists) continue;
 
 
@@ -57,7 +54,7 @@ namespace del {
 				}
 
 			}
-			if (!found_applicable_action) {
+			if (graph.get_node(current_node).check_if_dead(graph)) {
 				propogate_dead_end_node(graph, current_node);
 			} else if (graph.get_node(current_node).check_if_solved(graph)) {
 				propogate_solved_node(graph, current_node);
@@ -79,11 +76,11 @@ namespace del {
 		return Policy(false);
 	}
 
-	std::pair<bool, bool> Planner::does_bisimilar_exist(Graph& graph, const State& state, std::unordered_map<size_t, Node_Id>& visited, const Node_Id& current_node_id, const Node_Id& parent_node_id, const Action& action) const{
+	bool Planner::does_bisimilar_exist(Graph& graph, const State& state, std::unordered_map<size_t, Node_Id>& visited, const Node_Id& current_node_id, const Node_Id& parent_node_id, const Action& action) const{
 		auto temp_hash = state.to_hash();
 		auto bisim_nodes = visited.find(temp_hash);
 		if (bisim_nodes == visited.end()) {
-			return { false, true };
+			return false;
 		} else {
 			if (!are_states_bisimilar(state, graph.get_node((*bisim_nodes).second).get_state())) {
 				size_t debug = 1;
@@ -91,11 +88,11 @@ namespace del {
 			auto& current_node = graph.get_node(current_node_id);
 			if (current_node.get_type() == Node_Type::Or) {
 				if (is_bisimilar_on_path(graph, current_node_id, state)) {
-					return { true, false };
+					return true;
 				}
 			} else {
 				if (is_bisimilar_on_path(graph, parent_node_id, state)) {
-					return { true, false };
+					return true;
 				}
 			}
 
@@ -107,7 +104,7 @@ namespace del {
 			} else {
 				child_node.add_parent(current_node_id);
 			}
-			return { true, true };
+			return true;
 		}
 	}
 
