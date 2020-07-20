@@ -149,16 +149,12 @@ namespace del {
 	}
 
 	Policy Planner::extract_policy(Graph& graph) const {
-		Policy policy(true);
 		Node_Id temp2 = { 0 };
 		auto temp = extract_policy_inner(graph, graph.get_root_node().get_id(), temp2);
 		if (temp.has_value()) {
-			for (auto& entry : temp.value()) {
-				policy.add_policy_entry(entry.first, entry.second);
-			}
+			return Policy(true, std::move(temp.value()));
 		}
-
-		return policy;
+		return Policy(false);
 	}
 
 	std::optional< std::vector<std::pair<State, Action>>> Planner::extract_policy_inner(Graph& graph, const Node_Id& current_node_id, const Node_Id& parent_node_id) const {
@@ -176,7 +172,12 @@ namespace del {
 					result.insert(result.begin(), policy.value().begin(), policy.value().end());
 				}
 			}
-			result.emplace_back(graph.get_node(parent_node_id).get_state(), current_node.get_parent_action(parent_node_id));
+			const auto& state = graph.get_node(parent_node_id).get_state();
+			const auto& action = current_node.get_parent_action(parent_node_id);
+			const auto perspective_shifted = perform_perspective_shift(state, action.get_owner());
+			for (auto global : split_into_global_states(perspective_shifted, action.get_owner())) {
+				result.emplace_back(global, action);
+			}
 			return result;
 		} else {
 			for (auto& child : current_node.get_children()) {

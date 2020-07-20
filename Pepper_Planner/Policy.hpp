@@ -13,6 +13,7 @@ namespace del {
 	public:
 
 		Policy(bool solved) : solved(solved) {}
+		Policy(bool solved, std::vector<std::pair<State, Action>>&& policy) : solved(solved) { this->policy = std::move(policy); }
 		bool is_solved() const;
 		void add_policy_entry(State state, Action action);
 		std::tuple<Action, bool> get_action(State state);
