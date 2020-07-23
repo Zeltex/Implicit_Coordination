@@ -124,12 +124,21 @@ namespace del {
 		}
 
 		std::deque<Node_Id> frontier = { node_id };
+		// TODO - This should have better handling for false positives
+		std::unordered_set<size_t> visited;
 
+		bool first = true;
 		while (!frontier.empty()) {
 			Node_Id current_node_id = frontier.front();
 			frontier.pop_front();
 
 			auto& current_node = graph.get_node(current_node_id);
+			if (!first && visited.find(current_node.get_hash()) != visited.end()) {
+				continue;
+			} else {
+				first = false;
+			}
+			visited.insert(current_node.get_hash());
 			if (current_node.get_hash() == state_hash) {
 				return true;
 			} else {

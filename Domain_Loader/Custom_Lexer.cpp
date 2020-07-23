@@ -123,12 +123,13 @@ size_t Custom_Lexer::get_end_of_integer(const std::string& line, const size_t& p
 
 
 bool Custom_Lexer::matches_pattern(const std::string& line, size_t& pointer) {
-	size_t line_size = line.size();
-	if (line_size >= pointer + 4 && line.substr(pointer, 4) == "true")	{ add_token(Token::TRUTH);	pointer += 4; values.insert({ tokens.size() - 1, { true } });	return true; }
-	if (line_size >= pointer + 5 && line.substr(pointer, 5) == "false") { add_token(Token::TRUTH);	pointer += 5; values.insert({ tokens.size() - 1, { false } });	return true; }
-	if (line_size >= pointer + 3 && line.substr(pointer, 3) == "AND")	{ add_token(Token::AND);	pointer += 3; return true; }
-	if (line_size >= pointer + 2 && line.substr(pointer, 2) == "OR")	{ add_token(Token::OR);		pointer += 2; return true; }
-	if (line_size >= pointer + 3 && line.substr(pointer, 3) == "NOT")	{ add_token(Token::NOT);	pointer += 3; return true; }
-	if (line_size >= pointer + 3 && line.substr(pointer, 3) == "TOP")	{ add_token(Token::TOP);	pointer += 3; return true; }
+	size_t line_size = line.size(); 
+	if (line_size >= pointer + 8 && line.substr(pointer, 8) == "BELIEVES")	{ add_token(Token::BELIEVES);	pointer += 8; return true; }
+	if (line_size >= pointer + 4 && line.substr(pointer, 4) == "true")		{ add_token(Token::TRUTH);		pointer += 4; values.insert({ tokens.size() - 1, { true } });	return true; }
+	if (line_size >= pointer + 5 && line.substr(pointer, 5) == "false")		{ add_token(Token::TRUTH);		pointer += 5; values.insert({ tokens.size() - 1, { false } });	return true; }
+	if (line_size >= pointer + 3 && line.substr(pointer, 3) == "AND")		{ add_token(Token::AND);		pointer += 3; return true; }
+	if (line_size >= pointer + 2 && line.substr(pointer, 2) == "OR")		{ add_token(Token::OR);			pointer += 2; return true; }
+	if (line_size >= pointer + 3 && line.substr(pointer, 3) == "NOT")		{ add_token(Token::NOT);		pointer += 3; return true; }
+	if (line_size >= pointer + 3 && line.substr(pointer, 3) == "TOP")		{ add_token(Token::TOP);		pointer += 3; return true; }
 	return false;
 }

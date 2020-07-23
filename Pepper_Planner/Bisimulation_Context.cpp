@@ -186,13 +186,13 @@ namespace del {
 		partition_into_valuation_blocks();
 		partition_into_relations_blocks();
 
-		for (auto& block : blocks) {
+		for (const auto& block : blocks) {
 			bool contains_world_from_state1 = false;
 			bool contains_world_from_state2 = false;
 			bool contains_designated_from_state1 = false;
 			bool contains_designated_from_state2 = false;
 
-			for (auto& world : block) {
+			for (const auto& world : block) {
 				if (is_world_from_state1[world.id]) {
 					contains_world_from_state1 = true;
 					if (is_world_designated[world.id]) {
@@ -337,23 +337,22 @@ namespace del {
 
 	void Bisimulation_Context::partition_into_relations_blocks_contraction(const std::unordered_map <size_t, std::vector<std::vector<size_t>>>& relations) {
 		bool blocks_changed = false;
-		std::vector<World_Id> worlds_to_be_moved;
-		std::vector<size_t> index_to_be_erased;
-		for (auto& block : blocks) {
-			worlds_to_be_moved.clear();
-			index_to_be_erased.clear();
+		std::vector<std::vector<World_Id>> worlds_to_be_moved(this->blocks.size());
+		std::vector<std::vector<size_t>> index_to_be_erased(this->blocks.size());
+		size_t block_counter = 0;
+		for (auto& block : this->blocks) {
 			size_t base_world = block[0].id;
-			size_t counter = 0;
+			size_t counter_entry = 0;
 			for (auto& block_entry : block) {
-				if (counter != 0) {
+				if (counter_entry != 0) {
 					size_t agent = 0;
 					auto agent_entries = relations.find(block_entry.id);
 
 					// TODO - Is skipping empty entries, but should probably check those too
 					for (auto& agent_entry : (*agent_entries).second) {
 						if (!are_relations_equal(relations.at(base_world)[agent], agent_entry)) {
-							worlds_to_be_moved.push_back(block_entry);
-							index_to_be_erased.push_back(counter);
+							worlds_to_be_moved[block_counter].push_back(block_entry);
+							index_to_be_erased[block_counter].push_back(counter_entry);
 							blocks_changed = true;
 							break;
 
@@ -361,13 +360,16 @@ namespace del {
 						agent++;
 					}
 				}
-				counter++;
+				counter_entry++;
 			}
-			for (auto i = index_to_be_erased.rbegin(); i != index_to_be_erased.rend(); i++) {
-				block.erase(block.begin() + *i);
+			block_counter++;
+		}
+		for (size_t i = 0; i < index_to_be_erased.size(); i++) {
+			for (auto j = index_to_be_erased[i].rbegin(); j != index_to_be_erased[i].rend(); j++) {
+				this->blocks[i].erase(this->blocks[i].begin() + *j);
 			}
-			if (!worlds_to_be_moved.empty()) {
-				move_worlds_to_new_block(worlds_to_be_moved);
+			if (!worlds_to_be_moved[i].empty()) {
+				move_worlds_to_new_block(worlds_to_be_moved[i]);
 			}
 		}
 		if (blocks_changed) {

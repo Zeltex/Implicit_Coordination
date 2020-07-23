@@ -53,6 +53,9 @@ namespace del {
 
 		std::string get_string(const std::vector<Proposition_Instance>& propositions, const Domain& domain) const;
 
+		// Args is mainly debug
+		std::unordered_map<size_t, Atom_Id> args;
+
 		size_t cost;
 		std::vector<Action_Event> events;
 		std::vector<Event_Id> designated_events;

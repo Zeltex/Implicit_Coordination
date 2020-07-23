@@ -1,0 +1,195 @@
+_domain Pepper {
+	_announce_enabled = false
+	_types = [container, object, agent, agent_moveable]
+	_propositions = [
+		in(container c, object o)
+		perceives(agent a1, agent a2)
+	]
+
+	_action pickup (container from, container agent, object o) {
+	_cost = 100
+		_owner = agent_moveable agent
+		_designated_events = [event0, event1]
+		_event event0 { 
+			_preconditions = ( in(from, o) )
+			_effect_add = [in(agent, o)]
+			_effect_delete = [in(from, o)]
+		}
+		_event event1 { 
+			_preconditions = ( NOT(in(from, o)) )
+			_effect_add = [ ]
+			_effect_delete = [ ]
+		}
+		_event event2 {
+			_preconditions = ()
+			_effect_add = [ ]
+			_effect_delete = [ ]
+		}
+		_reachability = {
+			agent = {
+				(event0 event0) = (TOP)
+				(event1 event1) = (TOP)
+				(event2 event2) = (TOP)
+			}
+			_rest = {
+				(event0 event0) = (OR(observes(_rest, agent), perceives(_rest, agent)))
+				(event1 event1) = (OR(observes(_rest, agent), perceives(_rest, agent)))
+
+
+				(event1 event0) = (AND(observes(_rest, agent), NOT(perceives(_rest, agent))))
+				(event0 event1) = (AND(observes(_rest, agent), NOT(perceives(_rest, agent))))
+
+				(event2 event2) = ()
+
+				(event0 event2) = (AND(NOT(perceives(_rest, agent)), NOT(observes(_rest, agent))))
+				(event1 event2) = (AND(NOT(perceives(_rest, agent)), NOT(observes(_rest, agent))))
+			}
+		}
+	}
+
+	_action put (container agent, container to, object o) {
+	_cost = 100
+		_owner = agent agent
+		_designated_events = [event0, event1]
+		_event event0 { 
+			_preconditions = ( in(agent, o) )
+			_effect_add = [in(to, o)]
+			_effect_delete = [in(agent, o)]
+		}
+		_event event1 { 
+			_preconditions = ( NOT(in(agent, o)) )
+			_effect_add = [ ]
+			_effect_delete = [ ]
+		}
+		_event event2 {
+			_preconditions = ()
+			_effect_add = [ ]
+			_effect_delete = [ ]
+		}
+		_reachability = {
+			agent = {
+				(event0 event0) = (TOP)
+				(event1 event1) = (TOP)
+				(event2 event2) = (TOP)
+			}
+			_rest = {
+				(event0 event0) = (OR(observes(_rest, agent), perceives(_rest, agent)))
+				(event1 event1) = (OR(observes(_rest, agent), perceives(_rest, agent)))
+
+
+				(event1 event0) = (AND(observes(_rest, agent), NOT(perceives(_rest, agent))))
+				(event0 event1) = (AND(observes(_rest, agent), NOT(perceives(_rest, agent))))
+
+				(event2 event2) = ()
+
+				(event0 event2) = (AND(NOT(perceives(_rest, agent)), NOT(observes(_rest, agent))))
+				(event1 event2) = (AND(NOT(perceives(_rest, agent)), NOT(observes(_rest, agent))))
+			}
+		}
+	}
+	_action perceive (container c, object o) {
+	_cost = 100
+		_owner = agent agent
+		_designated_events = [event0, event1]
+		_event event0 { 
+			_preconditions = ( in(c, o) )
+			_effect_add = []
+			_effect_delete = []
+		}
+		_event event1 { 
+			_preconditions = ( NOT(in(c, o)) )
+			_effect_add = [ ]
+			_effect_delete = [ ]
+		}
+		_event event2 {
+			_preconditions = ()
+			_effect_add = [ ]
+			_effect_delete = [ ]
+		}
+		_reachability = {
+			agent = {
+				(event0 event0) = (TOP)
+				(event1 event1) = (TOP)
+				(event2 event2) = (TOP)
+			}
+			_rest = {
+				(event0 event0) = (OR(observes(_rest, agent), perceives(_rest, agent)))
+				(event1 event1) = (OR(observes(_rest, agent), perceives(_rest, agent)))
+
+
+				(event1 event0) = (AND(observes(_rest, agent), NOT(perceives(_rest, agent))))
+				(event0 event1) = (AND(observes(_rest, agent), NOT(perceives(_rest, agent))))
+
+				(event2 event2) = ()
+
+				(event0 event2) = (AND(NOT(perceives(_rest, agent)), NOT(observes(_rest, agent))))
+				(event1 event2) = (AND(NOT(perceives(_rest, agent)), NOT(observes(_rest, agent))))
+			}
+		}
+	}
+	_action deceive (agent fool) {
+	_cost = 100
+		_owner = agent agent
+		_designated_events = [event0]
+		_event event0 { 
+			_preconditions = ( TOP )
+			_effect_add = []
+			_effect_delete = [perceives(fool, agent), perceives(agent, fool), observes(fool, agent), observes(agent, fool)]
+		}
+		_event event2 {
+			_preconditions = ()
+			_effect_add = [ ]
+			_effect_delete = [ ]
+		}
+		_reachability = {
+			agent = {
+				(event0 event0) = (TOP)
+				(event2 event2) = (TOP)
+			}
+			_rest = {
+				(event0 event0) = (OR(observes(_rest, agent), perceives(_rest, agent)))
+				(event2 event2) = (TOP)
+				(event0 event2) = (AND(NOT(perceives(_rest, agent)), NOT(observes(_rest, agent))))
+			}
+		}
+	}
+}
+_problem False_Belief_Synthesis {
+	_objects = {
+		container = [P, L, b1, b2, b3, b4]
+		object = [red]
+		agent = [P, L, N]
+		agent_moveable = [P, L]
+	}
+	_initial_state = [
+	]
+	_world w0 [in(red, b1), perceives(P, P), perceives(P, L), perceives(P, N), perceives(L, P), perceives(L, L), perceives(L, N), perceives(N, P), perceives(N, L), perceives(N, N)]
+	_world w1 [in(red, b2), perceives(P, P), perceives(P, L), perceives(P, N), perceives(L, P), perceives(L, L), perceives(L, N), perceives(N, P), perceives(N, L), perceives(N, N)]
+	_world w2 [in(red, b3), perceives(P, P), perceives(P, L), perceives(P, N), perceives(L, P), perceives(L, L), perceives(L, N), perceives(N, P), perceives(N, L), perceives(N, N)]
+	_world w3 [in(red, b4), perceives(P, P), perceives(P, L), perceives(P, N), perceives(L, P), perceives(L, L), perceives(L, N), perceives(N, P), perceives(N, L), perceives(N, N)]
+	_goal = [ AND(in(red, b1), BELIEVES(N, NOT(in(red, b1)))) ]
+	_designated_worlds = [ w0, w1, w2, w3 ]
+	_reflexivity = false
+	_reachability = {
+		P = {
+		 (w0, w0) (w1, w0) (w2, w0) (w3, w0) 
+		 (w0, w1) (w1, w1) (w2, w1) (w3, w1) 
+		 (w0, w2) (w1, w2) (w2, w2) (w3, w2) 
+		 (w0, w3) (w1, w3) (w2, w3) (w3, w3)
+		 }
+		L = {
+		 (w0, w0) (w1, w0) (w2, w0) (w3, w0) 
+		 (w0, w1) (w1, w1) (w2, w1) (w3, w1) 
+		 (w0, w2) (w1, w2) (w2, w2) (w3, w2) 
+		 (w0, w3) (w1, w3) (w2, w3) (w3, w3)
+		 }
+		N = {
+		 (w0, w0) (w1, w0) (w2, w0) (w3, w0) 
+		 (w0, w1) (w1, w1) (w2, w1) (w3, w1) 
+		 (w0, w2) (w1, w2) (w2, w2) (w3, w2) 
+		 (w0, w3) (w1, w3) (w2, w3) (w3, w3)
+		 }
+	}
+}
+
+

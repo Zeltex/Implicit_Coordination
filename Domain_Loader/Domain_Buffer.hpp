@@ -56,11 +56,13 @@ public:
 	void push_pop_formula(std::string type);
 	void push_formula(std::string type);
 	void pop_formula();
+	void pop_formula(const std::string& input);
 
 	void set_object_type(std::string type);
 	void set_state_reflexivity(bool val);
 	bool is_state_reflexive();
 private:
+	std::tuple<Formula_Types, std::vector<Formula_Id>> pop_formula_info();
 
 	std::unordered_set<std::string> types;
 	std::unordered_set<std::string> variable_list;

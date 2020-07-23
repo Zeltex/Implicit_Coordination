@@ -76,6 +76,7 @@ std::string Custom_Parser::token_to_string(Token token) {
 		case Token::WORLD_DEF				: return "_world";
 		case Token::LBRACK					: return "(|[|{";
 		case Token::RBRACK					: return ")|]|}";
+		case Token::BELIEVES				: return "BELIEF";
 		case Token::AND						: return "AND";
 		case Token::OR						: return "OR";
 		case Token::NOT						: return "NOT";
@@ -410,6 +411,14 @@ void Custom_Parser::formula() {
 		return formula();
 	}
 
+	if (try_match({ Token::BELIEVES, Token::LBRACK, Token::NAME })) {
+		auto agent = get_svalue(2);
+		buffer->push_formula("Believes");
+		formula_single();
+		if (!must_match({ Token::RBRACK })) return;
+		buffer->pop_formula(agent);
+		return formula();
+	}
 
 	return;
 }
@@ -449,6 +458,14 @@ void Custom_Parser::formula_single() {
 		return;
 	}
 
+	if (try_match({ Token::BELIEVES, Token::LBRACK, Token::NAME })) {
+		auto agent = get_svalue(2);
+		buffer->push_formula("Believes");
+		formula_single();
+		if (!must_match({ Token::RBRACK })) return;
+		buffer->pop_formula(agent);
+		return formula();
+	}
 
 	return;
 }

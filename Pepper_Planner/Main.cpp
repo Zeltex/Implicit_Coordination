@@ -21,31 +21,7 @@
 
 using namespace del;
 
-void find_and_execute_policy() {
-
-
-	auto time1 = std::chrono::high_resolution_clock::now();
-
-	DEL_Interface del_interface("../examples/simple.maepl");
-	//DEL_Interface del_interface("../examples/simple_transfer.maepl");
-	//DEL_Interface del_interface("../examples/Second_Order.maepl");
-	//del_interface.print_current_state_to_graph("../State_Before.dot");
-//del_interface.perform_action("perceive", "L", { "box1", "red_cube" });
-//del_interface.print_current_state_to_graph("../State_After.dot");
-
-	auto time2 = std::chrono::high_resolution_clock::now();
-	del_interface.create_policy();
-	// Some computation here
-	auto time3 = std::chrono::high_resolution_clock::now();
-
-	auto elapsed1 = time2 - time1;
-	auto elapsed2 = time3 - time2;
-
-	
-
-	std::cout << ".maepl load time " << (elapsed1.count() / 1000000) << "ms\n";
-	std::cout << "planning execution time " << (elapsed2.count() / 1000000) << "ms\n";
-
+void execute(DEL_Interface& del_interface) {
 	bool failed = false;
 	while (!del_interface.is_solved()) {
 		Interface_DTO dto = del_interface.get_next_action();
@@ -53,8 +29,7 @@ void find_and_execute_policy() {
 
 			del_interface.perform_action(dto.get_action());
 			std::cout << "Performed action" << std::endl;
-		}
-		else {
+		} else {
 			std::cerr << "NO APPLIABLE ACTION" << std::endl;
 			std::cout << "-=-=- Fail -=-=-";
 			failed = true;
@@ -67,6 +42,71 @@ void find_and_execute_policy() {
 	if (!failed) {
 		std::cout << "-=-=- Success -=-=-" << std::endl;
 	}
+}
+
+void false_belief_synthesis() {
+	auto time1 = std::chrono::high_resolution_clock::now();
+
+	DEL_Interface del_interface("../examples/False_Belief_Synthesis.maepl");
+
+	auto time2 = std::chrono::high_resolution_clock::now();
+	del_interface.create_policy();
+	auto time3 = std::chrono::high_resolution_clock::now();
+
+	auto elapsed1 = time2 - time1;
+	auto elapsed2 = time3 - time2;
+
+
+
+	std::cout << ".maepl load time " << (elapsed1.count() / 1000000) << "ms\n";
+	std::cout << "planning execution time " << (elapsed2.count() / 1000000) << "ms\n";
+
+	execute(del_interface);
+}
+
+void find_and_execute_policy_stack() {
+
+
+	auto time1 = std::chrono::high_resolution_clock::now();
+
+	DEL_Interface del_interface("../examples/stack.maepl");
+
+	auto time2 = std::chrono::high_resolution_clock::now();
+	del_interface.create_policy();
+	auto time3 = std::chrono::high_resolution_clock::now();
+
+	auto elapsed1 = time2 - time1;
+	auto elapsed2 = time3 - time2;
+
+
+
+	std::cout << ".maepl load time " << (elapsed1.count() / 1000000) << "ms\n";
+	std::cout << "planning execution time " << (elapsed2.count() / 1000000) << "ms\n";
+
+	execute(del_interface);
+}
+
+void find_and_execute_policy() {
+
+
+	auto time1 = std::chrono::high_resolution_clock::now();
+
+	DEL_Interface del_interface("../examples/simple.maepl");
+	
+	auto time2 = std::chrono::high_resolution_clock::now();
+	del_interface.create_policy();
+	auto time3 = std::chrono::high_resolution_clock::now();
+
+	auto elapsed1 = time2 - time1;
+	auto elapsed2 = time3 - time2;
+
+	
+
+	std::cout << ".maepl load time " << (elapsed1.count() / 1000000) << "ms\n";
+	std::cout << "planning execution time " << (elapsed2.count() / 1000000) << "ms\n";
+
+
+	execute(del_interface);
 }
 
 void execute_test_case() {
@@ -112,7 +152,10 @@ int main(int argc, char* argv[]) {
 	//execute_test_case();
 
 
-	find_and_execute_policy();
+	//find_and_execute_policy();
+	//find_and_execute_policy_stack();
+	false_belief_synthesis();
+	
 
 
 	return 0;

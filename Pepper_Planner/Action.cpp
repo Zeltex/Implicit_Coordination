@@ -16,7 +16,7 @@ namespace del {
 					Agent_Id owner, 
 					const std::unordered_map<size_t, Atom_Id>& input_to_atom,
 					const std::unordered_map<size_t, std::vector<Agent>>& condition_owner_to_agent)
-			: cost(general_action.get_cost()), owner(owner), name(general_action.get_name()), events(),designated_events(){
+			: args(input_to_atom), cost(general_action.get_cost()), owner(owner), name(general_action.get_name()), events(),designated_events(){
 
 		//for (auto& entry : condition_owner_to_agent) {
 		//	for (auto& agent : entry.second) {

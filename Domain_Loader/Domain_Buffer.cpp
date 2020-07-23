@@ -176,13 +176,42 @@ void Domain_Buffer::push_formula(std::string type) {
 	formula_buffer_type.emplace_back(formula_type);
 }
 
-void Domain_Buffer::pop_formula() {
-	auto type = formula_buffer_type.back();
-    Formula_Id id;
-    std::vector<Formula_Id> formula_args = std::move(formula_buffer.back());
-
+std::tuple<Formula_Types, std::vector<Formula_Id>> Domain_Buffer::pop_formula_info() {
+    auto type = formula_buffer_type.back();
+    auto args = std::move(formula_buffer.back());
     formula_buffer_type.pop_back();
     formula_buffer.pop_back();
+    return { type, args };
+}
+
+void Domain_Buffer::pop_formula(const std::string& input) {
+    Formula_Id id;
+    auto [type, formula_args] = pop_formula_info();
+
+    if (formula_args.empty()) {
+        formula_args.push_back(formula.f_top());
+    }
+
+    if (input == REST_KEYWORD) {
+        atom_to_id[REST_KEYWORD] = REST_INDEX;
+    } else {
+        auto it = atom_to_id.find(input);
+        if (it == atom_to_id.end()) {
+            atom_to_id[input] = atom_to_id.size();
+        }
+    }
+
+    switch (type) {
+    case Formula_Types::Believes: id = formula.f_believes(atom_to_id[input].id, formula_args[0]); break;
+    }
+    if (!formula_buffer.empty()) {
+        formula_buffer.back().push_back(id);
+    }
+}
+
+void Domain_Buffer::pop_formula() {
+    Formula_Id id;
+    auto [type, formula_args] = pop_formula_info();
 
     if (formula_args.empty()) {
         formula_args.push_back(formula.f_top());

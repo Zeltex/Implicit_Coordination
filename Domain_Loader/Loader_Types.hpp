@@ -53,6 +53,7 @@ enum class Token {
 	OR,
 	NOT,
 	TOP,
+	BELIEVES,
 
 	INTEGER,
 	NAME,
