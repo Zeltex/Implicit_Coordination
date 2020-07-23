@@ -1,4 +1,7 @@
 #include "General_Action.hpp"
+
+#include <algorithm>
+
 #include "Action.hpp"
 #include "Domain.hpp"
 #include "Formula_Core.hpp"
@@ -106,7 +109,7 @@ namespace del {
 	
 	bool General_Action::is_correct_type(const std::string& type, const Atom_Id& object, const Domain& domain) const {
 		auto type_atoms = domain.get_all_atoms_of_type(type);
-		return (find(type_atoms.begin(), type_atoms.end(), object.id) != type_atoms.end());
+		return (std::find(type_atoms.begin(), type_atoms.end(), object.id) != type_atoms.end());
 	}
 
 	// Copying agents as const Agent& does not seem to play nice with condition_owner_to_agent

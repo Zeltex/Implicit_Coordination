@@ -1,5 +1,7 @@
 #include "Formula_Component.hpp"
 
+#include <algorithm>
+
 namespace del {
 
     Formula_Types Formula_Component::get_type() const {

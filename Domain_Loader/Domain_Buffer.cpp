@@ -1,5 +1,7 @@
 #include "Domain_Buffer.hpp"
 
+#include <algorithm>
+
 void Domain_Buffer::set_event_name(std::string name) {
     event_name = name;
 }

@@ -27,7 +27,8 @@ namespace del {
 
 	Node_Id Graph::create_root_node(State state) {
 		Node_Id node_id = Node_Id{ nodes.size() };
-		nodes.emplace_back(state, node_id, Node_Id{ 0 }, true);
+        root = node_id;
+        nodes.emplace_back(state, node_id, Node_Id{ 0 }, true);
 		return node_id;
 	}
 

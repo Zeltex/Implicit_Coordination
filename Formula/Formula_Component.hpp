@@ -13,7 +13,7 @@ namespace del {
 
 
 
-		const char delim = ';';
+		static const char delim = ';';
 		std::string to_string(const std::vector<Formula_Component>& all_formulas, const std::unordered_map<size_t, std::string>& id_to_atom) const;
 		bool valuate(const std::vector<Formula_Component>& all_formulas, const size_t world_id, const Formula_Input_Interface* input_interface) const;
 
