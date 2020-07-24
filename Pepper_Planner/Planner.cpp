@@ -82,9 +82,6 @@ namespace del {
 		if (bisim_nodes == visited.end()) {
 			return false;
 		} else {
-			if (!are_states_bisimilar(state, graph.get_node((*bisim_nodes).second).get_state())) {
-				size_t debug = 1;
-			}
 			auto& current_node = graph.get_node(current_node_id);
 			if (current_node.get_type() == Node_Type::Or) {
 				if (is_bisimilar_on_path(graph, current_node_id, state)) {
@@ -125,20 +122,25 @@ namespace del {
 
 		std::deque<Node_Id> frontier = { node_id };
 		// TODO - This should have better handling for false positives
-		std::unordered_set<size_t> visited;
+		std::unordered_set<size_t> visited_or;
+		std::unordered_set<size_t> visited_and;
 
-		bool first = true;
 		while (!frontier.empty()) {
 			Node_Id current_node_id = frontier.front();
 			frontier.pop_front();
 
 			auto& current_node = graph.get_node(current_node_id);
-			if (!first && visited.find(current_node.get_hash()) != visited.end()) {
-				continue;
+			if (current_node.get_type() == Node_Type::And) {
+				if (visited_and.find(current_node.get_hash()) != visited_and.end()) {
+					continue;
+				}
+				visited_and.insert(current_node.get_hash());
 			} else {
-				first = false;
+				if (visited_or.find(current_node.get_hash()) != visited_or.end()) {
+					continue;
+				}
+				visited_or.insert(current_node.get_hash());
 			}
-			visited.insert(current_node.get_hash());
 			if (current_node.get_hash() == state_hash) {
 				return true;
 			} else {
@@ -214,7 +216,7 @@ namespace del {
 		}
 
 		Node_Id current_node_id;
-		while (true) {
+		while (!frontier.empty()) {
 			current_node_id = frontier.front();
 			frontier.pop_front();
 
@@ -227,8 +229,6 @@ namespace del {
 				for (auto& parent : parents) {
 					frontier.push_back(parent.first);
 				}
-			} else {
-				break;
 			}
 		}
 	}

@@ -93,10 +93,12 @@ namespace del {
 		}
 
 		if (type == Node_Type::And) {
-			return check_if_dead_and(graph);
+			dead |= check_if_dead_and(graph);
+			return dead;
 		}
 		else if (type == Node_Type::Or) {
-			return check_if_dead_or(graph);
+			dead |= check_if_dead_or(graph);
+			return dead;
 		}
 		else {
 			dead = true;
@@ -131,10 +133,12 @@ namespace del {
 		}
 
 		if (type == Node_Type::And) {
-			return check_if_solved_and(graph);
+			solved |= check_if_solved_and(graph);
+			return solved;
 		}
 		else if (type == Node_Type::Or) {
-			return check_if_solved_or(graph);
+			solved |= check_if_solved_or(graph);
+			return solved;
 		}
 		else {
 			solved = false;
