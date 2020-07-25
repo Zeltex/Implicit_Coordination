@@ -28,6 +28,7 @@ namespace del {
 
 		std::string to_string(const Domain& domain) const;
 		std::string to_graph(const Domain& domain) const;
+		std::string to_graph_simple(const Domain& domain) const;
 		std::string to_partial_graph(const Domain& domain) const;
 	private:
 		Node_Id root;

@@ -23,6 +23,13 @@ namespace del {
 		myfile.close();
 	}
 
+	void print_graph_dot_simple(const Graph& graph, const Domain& domain) {
+		std::ofstream myfile;
+		myfile.open(DEBUG_PRINT_PATH + std::string("Graph_simple.dot"));
+		myfile << graph.to_graph_simple(domain);
+		myfile.close();
+	}
+
 	void print_graph_dot_partial(const Graph& graph, const Domain& domain) {
 		std::ofstream myfile;
 		myfile.open(DEBUG_PRINT_PATH + std::string("Graph.dot"));

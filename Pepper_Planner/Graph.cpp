@@ -86,6 +86,61 @@ namespace del {
 		return result;
 	}
 
+	std::string Graph::to_graph_simple(const Domain& domain) const {
+		std::string result = "digraph G {\ncompound=true;";
+		std::string connections;
+
+		//size_t counter = 0;
+		//for (auto& node : nodes) {
+		//	if (!node.is_solved()) continue;
+		//	result += "\n n" + std::to_string(node.get_id().id) + " [label=" + std::to_string(node.get_id().id) + "];";
+
+		//	for (auto& child : node.get_children()) {
+		//		if (!nodes[child.id].is_solved()) continue;
+		//		connections += "\n n" + std::to_string(node.get_id().id) + " -> n" + std::to_string(child.id) + ";";
+		//	}
+		//}
+		//result += connections + "\n}";
+
+		size_t counter = 0;
+
+		std::deque<size_t> frontier;
+		std::unordered_set<size_t> visited_and;
+		std::unordered_set<size_t> visited_or;
+
+		frontier.push_back(root.id);
+		visited_or.insert(nodes[root.id].get_state().to_hash());
+
+		while (!frontier.empty()) {
+			auto node_id = frontier.front();
+			frontier.pop_front();
+			auto& node = nodes[node_id];
+			auto type_string = node.get_type() == Node_Type::And ? "And\n" : "Or\n";
+			result += "\n n" + std::to_string(node.get_id().id) + " [label=\"" + type_string + std::to_string(node.get_id().id) + "\"];";
+
+			for (auto& child : node.get_children()) {
+				if (!nodes[child.id].is_solved()) continue;
+				connections += "\n n" + std::to_string(node.get_id().id) + " -> n" + std::to_string(child.id) + ";";
+				auto hash = nodes[child.id].get_state().to_hash();
+				if (nodes[child.id].get_type() == Node_Type::And) {
+					if (visited_and.find(hash) == visited_and.end()) {
+						visited_and.insert(hash);
+						frontier.push_back(child.id);
+					}
+				} else {
+					if (visited_or.find(hash) == visited_or.end()) {
+						visited_or.insert(hash);
+						frontier.push_back(child.id);
+					}
+				}
+			}
+		}
+		result += connections + "\n}";
+
+
+		return result;
+	}
+
 	std::string Graph::to_partial_graph(const Domain& domain) const {
 		std::string result = "digraph G {\ncompound=true;";
 		std::string connections;

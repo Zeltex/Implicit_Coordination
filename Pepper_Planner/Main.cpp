@@ -39,9 +39,10 @@ void execute(DEL_Interface& del_interface) {
 			failed = true;
 			break;
 		}
-		if (dto.get_announce_string() != "") {
-			std::cout << "ANNOUNCING: " << dto.get_announce_string() << std::endl;
-		}
+		// This was simply based on Pepper being action owner
+		//if (dto.get_announce_string() != "") {
+		//	std::cout << "ANNOUNCING: " << dto.get_announce_string() << std::endl;
+		//}
 	}
 	if (!failed) {
 		std::cout << "-=-=- Success -=-=-" << std::endl;

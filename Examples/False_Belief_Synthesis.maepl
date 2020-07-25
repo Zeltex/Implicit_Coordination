@@ -9,16 +9,11 @@ _domain Pepper {
 	_action pickup (container from, container agent, object o) {
 	_cost = 100
 		_owner = agent_moveable agent
-		_designated_events = [event0, event1]
+		_designated_events = [event0]
 		_event event0 { 
 			_preconditions = ( in(from, o) )
 			_effect_add = [in(agent, o)]
 			_effect_delete = [in(from, o)]
-		}
-		_event event1 { 
-			_preconditions = ( NOT(in(from, o)) )
-			_effect_add = [ ]
-			_effect_delete = [ ]
 		}
 		_event event2 {
 			_preconditions = ()
@@ -28,21 +23,12 @@ _domain Pepper {
 		_reachability = {
 			agent = {
 				(event0 event0) = (TOP)
-				(event1 event1) = (TOP)
 				(event2 event2) = (TOP)
 			}
 			_rest = {
 				(event0 event0) = (OR(observes(_rest, agent), perceives(_rest, agent)))
-				(event1 event1) = (OR(observes(_rest, agent), perceives(_rest, agent)))
-
-
-				(event1 event0) = (AND(observes(_rest, agent), NOT(perceives(_rest, agent))))
-				(event0 event1) = (AND(observes(_rest, agent), NOT(perceives(_rest, agent))))
-
-				(event2 event2) = ()
-
+				(event2 event2) = (TOP)
 				(event0 event2) = (AND(NOT(perceives(_rest, agent)), NOT(observes(_rest, agent))))
-				(event1 event2) = (AND(NOT(perceives(_rest, agent)), NOT(observes(_rest, agent))))
 			}
 		}
 	}
@@ -50,16 +36,11 @@ _domain Pepper {
 	_action put (container agent, container to, object o) {
 	_cost = 100
 		_owner = agent agent
-		_designated_events = [event0, event1]
+		_designated_events = [event0]
 		_event event0 { 
 			_preconditions = ( in(agent, o) )
 			_effect_add = [in(to, o)]
 			_effect_delete = [in(agent, o)]
-		}
-		_event event1 { 
-			_preconditions = ( NOT(in(agent, o)) )
-			_effect_add = [ ]
-			_effect_delete = [ ]
 		}
 		_event event2 {
 			_preconditions = ()
@@ -69,21 +50,12 @@ _domain Pepper {
 		_reachability = {
 			agent = {
 				(event0 event0) = (TOP)
-				(event1 event1) = (TOP)
 				(event2 event2) = (TOP)
 			}
 			_rest = {
 				(event0 event0) = (OR(observes(_rest, agent), perceives(_rest, agent)))
-				(event1 event1) = (OR(observes(_rest, agent), perceives(_rest, agent)))
-
-
-				(event1 event0) = (AND(observes(_rest, agent), NOT(perceives(_rest, agent))))
-				(event0 event1) = (AND(observes(_rest, agent), NOT(perceives(_rest, agent))))
-
-				(event2 event2) = ()
-
+				(event2 event2) = (TOP)
 				(event0 event2) = (AND(NOT(perceives(_rest, agent)), NOT(observes(_rest, agent))))
-				(event1 event2) = (AND(NOT(perceives(_rest, agent)), NOT(observes(_rest, agent))))
 			}
 		}
 	}

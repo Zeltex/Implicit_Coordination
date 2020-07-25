@@ -21,6 +21,7 @@ namespace del {
 	class State;
 
 	void print_graph_dot(const Graph& graph, const Domain& domain);
+	void print_graph_dot_simple(const Graph& graph, const Domain& domain);
 	void print_graph_dot_partial(const Graph& graph, const Domain& domain);
 	void print_graph(const Graph& graph, const Domain& domain);
 	void print_action(const Action& action, const Domain& domain, size_t counter);
@@ -35,9 +36,10 @@ namespace del {
 	#define CLEAR_ACTION_STATE_DIR() clear_action_state_dir()
 
 	#ifdef PRINT_PARTIAL
-		#define PRINT_GRAPH_DOT(graph, domain) print_graph_dot_partial(graph,domain)
+		//#define PRINT_GRAPH_DOT(graph, domain) print_graph_dot_partial(graph,domain);print_graph_dot_simple(graph,domain)
+		#define PRINT_GRAPH_DOT(graph, domain) print_graph_dot_simple(graph,domain)
 	#else
-		#define PRINT_GRAPH_DOT(graph, domain) print_graph_dot(graph,domain)
+		#define PRINT_GRAPH_DOT(graph, domain) print_graph_dot(graph,domain);print_graph_dot_simple(graph,domain)
 	#endif
 #else
 	#define PRINT_POLICY(policy, domain) 

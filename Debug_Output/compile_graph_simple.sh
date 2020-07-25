@@ -1,0 +1,1 @@
+dot -Tpng Graph_simple.dot > Graph_simple.png

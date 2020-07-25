@@ -93,7 +93,7 @@ namespace del {
 		for (auto& world_id : worlds) {
 			bool found_applicable_event = false;
 			for (auto event : action.get_events()) {
-				if (event.get_preconditions().valuate(world_id.id, &state)) {
+				if (action.is_event_designated(event.get_id().id) && event.get_preconditions().valuate(world_id.id, &state)) {
 					found_applicable_event = true;
 					break;
 				}
