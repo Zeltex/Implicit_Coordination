@@ -73,7 +73,7 @@ namespace del {
 			std::cerr << "Tried to instantiate general_action with owner of wrong type\n";
 			exit(-1);
 		}
-
+		std::unordered_map<size_t, size_t> input_to_agent;
 		std::unordered_map<size_t, Atom_Id> input_to_atom;
 		input_to_atom.insert({ this->owner.second.id, owner });
 
@@ -94,11 +94,15 @@ namespace del {
 				}
 			} else {
 				input_to_atom.insert({ i, argument });
+				auto agent_id = domain.get_agent_id_optional(argument);
+				if (agent_id.has_value()) {
+					input_to_agent[argument.id] = agent_id.value().id;
+				}
 			}
 		}
 		auto condition_owner_to_agent = get_condition_owner_to_agent(domain, input_to_atom);
 
-		return Action(*this, domain.get_agent_id(owner), input_to_atom, condition_owner_to_agent);
+		return Action(*this, domain.get_agent_id(owner), input_to_atom, input_to_agent, condition_owner_to_agent);
 	}
 
 	

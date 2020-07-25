@@ -23,7 +23,8 @@ namespace del {
 		Action(Agent_Id owner, size_t number_of_agents);
 		Action(	General_Action general_action, 
 				Agent_Id owner, 
-				const std::unordered_map<size_t, Atom_Id>& input_to_atom,
+				const std::unordered_map<size_t, Atom_Id>& input_to_atom, 
+			const std::unordered_map<size_t, size_t>& input_to_agent,
 				const std::unordered_map<size_t, std::vector<Agent>>& condition_owner_to_agent);
 
 		void add_designated_event(Event_Id event);
@@ -50,9 +51,9 @@ namespace del {
 		std::unordered_map<size_t, Atom_Id> args;
 
 	private:
-		void copy_and_instantiate_edge_conditions(const General_Action& general_action, const std::unordered_map<size_t, std::vector<Agent>>& condition_owner_to_id, const std::unordered_map<std::string, Event_Id>& event_name_to_id, std::unordered_map<size_t, Atom_Id> input_to_atom);
+		void copy_and_instantiate_edge_conditions(const General_Action& general_action, const std::unordered_map<size_t, std::vector<Agent>>& condition_owner_to_id, const std::unordered_map<std::string, Event_Id>& event_name_to_id, std::unordered_map<size_t, Atom_Id> input_to_atom, const std::unordered_map<size_t, size_t>& input_to_agent);
 		void copy_and_instantiate_designated_events(const General_Action& general_action, const std::unordered_map<std::string, Event_Id>& event_name_to_id);
-		std::unordered_map<std::string, Event_Id> copy_and_instantiate_events(const General_Action& general_action, const std::unordered_map<size_t, Atom_Id>& input_to_atom);
+		std::unordered_map<std::string, Event_Id> copy_and_instantiate_events(const General_Action& general_action, const std::unordered_map<size_t, Atom_Id>& input_to_atom, const std::unordered_map<size_t, size_t>& input_to_agent);
 
 		std::string get_string(const std::vector<Proposition_Instance>& propositions, const Domain& domain) const;
 

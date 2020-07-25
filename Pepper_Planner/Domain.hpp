@@ -16,14 +16,13 @@ namespace del {
 	public:
 
 		Domain() : amount_of_agents(0), states(), name(""), agents(), atom_types() {}
-		Domain(size_t amount_of_agents, State initial_state) : amount_of_agents(amount_of_agents), states({ initial_state }), name(), agents(), atom_types() {}
+		Domain(State initial_state) : states({ initial_state }), name(), agents(), atom_types() {}
 
 		void perform_do(const Agent_Id i, const std::vector<Proposition_Instance>& add, const std::vector<Proposition_Instance>& del);
 		void perform_oc(const Agent_Id i, std::vector<Proposition_Instance>&& add_list, std::vector<Proposition_Instance>&& delete_list, std::string perceivability_proposition = "perceives", std::string observability_proposition = "obeserves");
 		void perform_action(Action action);
 		State get_current_state() const;
 		void set_name(const std::string name);
-		void set_amount_of_agents(size_t amount_of_agents);
 		std::string get_name() const;
 
 		const std::vector<Agent>& get_agents() const;
@@ -40,6 +39,7 @@ namespace del {
 		void set_objects(std::unordered_map<std::string, std::unordered_set<std::string>> objects);
 		void set_initial_state(State&& state);
 
+		std::optional<Agent_Id> get_agent_id_optional(Atom_Id atom_id) const;
 		const std::unordered_map<size_t, std::string>& get_id_to_atom() const;
 		const std::unordered_map<std::string, Atom_Id>& get_atom_to_id() const;
 		std::unordered_map<std::string, size_t> get_agent_to_id() const;
@@ -56,6 +56,7 @@ namespace del {
 		std::unordered_set<std::string> atom_types;
 
 		// Objects and atoms are same thing, one is just sorted on type (need to rename objects to atoms)
+		std::unordered_map<size_t, Agent_Id> atom_to_agent;
 		std::unordered_map<std::string, std::unordered_set<size_t>> objects;
 		std::unordered_map<std::string, Atom_Id> atom_to_id;
 		std::unordered_map<size_t, std::string> id_to_atom;

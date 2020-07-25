@@ -9,7 +9,7 @@ namespace del {
         return prop;
     }
 
-    Formula_Component::Formula_Component(const Formula_Component& other, const std::unordered_map<size_t, Atom_Id>& input_to_atom) : agent(0), formula() {
+    Formula_Component::Formula_Component(const Formula_Component& other, const std::unordered_map<size_t, Atom_Id>& input_to_atom, const std::unordered_map<size_t, size_t>& input_to_agent) : agent(0), formula() {
         this->type = other.type;
         switch (other.type) {
         case Formula_Types::Prop:
@@ -34,6 +34,7 @@ namespace del {
         }
         case Formula_Types::Believes:
         {
+            this->agent = input_to_agent.at(input_to_atom.at(other.agent).id);
             this->formula = other.formula;
             break;
         }

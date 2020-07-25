@@ -11,8 +11,8 @@ namespace del {
 	}
 	
 	DEL_Interface::DEL_Interface(State initial_state, Action_Library library) : 
-			domain(initial_state.get_number_of_agents(), initial_state), has_policy(false), policy(false), action_library(), pepper_id({ 0 }) {
-		domain = Domain(initial_state.get_number_of_agents(), initial_state);
+			domain(initial_state), has_policy(false), policy(false), action_library(), pepper_id({ 0 }) {
+		domain = Domain(initial_state);
 		action_library = std::move(library);
 	}
 

@@ -23,7 +23,7 @@ namespace del {
 
 		Formula_Component() = default;
 
-		Formula_Component(const Formula_Component& other, const std::unordered_map<size_t, Atom_Id>& input_to_atom);
+		Formula_Component(const Formula_Component& other, const std::unordered_map<size_t, Atom_Id>& input_to_atom, const std::unordered_map<size_t, size_t>& input_to_agent);
 
 		// Top, Bot
 		Formula_Component(Formula_Types type):

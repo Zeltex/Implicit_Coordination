@@ -98,7 +98,6 @@ namespace del {
 	void Domain_Interface_Implementation::set_objects(std::unordered_map<std::string, std::unordered_set<std::string>>&& objects) {
 		size_t amount_of_agents = objects["agent"].size();
 		initial_state.set_amount_of_agents(amount_of_agents);
-		domain.set_amount_of_agents(amount_of_agents);
 		library.set_amount_of_agents(amount_of_agents);
 
 		domain.set_objects(objects);
@@ -169,13 +168,19 @@ namespace del {
 
 	void Domain_Interface_Implementation::set_goal(Formula&& goal, const std::unordered_map<std::string, Atom_Id>& atom_to_id) {
 
-		std::unordered_map<size_t, Atom_Id> converter;
-		converter.reserve(atom_to_id.size());
+		std::unordered_map<size_t, Atom_Id> atom_converter;
+		std::unordered_map<size_t, size_t> agent_converter;
+		atom_converter.reserve(atom_to_id.size());
 		for (auto& entry : atom_to_id) {
-			converter[entry.second.id] = domain.get_atom_id(entry.first);
+			auto atom_id = domain.get_atom_id(entry.first);
+			atom_converter[entry.second.id] = atom_id;
+			auto agent = this->domain.get_agent_id_optional(atom_id);
+			if (agent.has_value()) {
+				agent_converter[atom_id.id] = agent.value().id;
+			}
 		}
 
-		this->goal = Formula(goal, converter);
+		this->goal = Formula(goal, atom_converter, agent_converter);
 	}
 
 	void Domain_Interface_Implementation::add_edge_condition(Atom_Id agent, std::vector< std::tuple<std::string, std::string, Formula>>&& edge_conditions) {

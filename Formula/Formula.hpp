@@ -14,7 +14,7 @@ namespace del {
 	class Formula {
 	public:
 		Formula():root(0) {}
-		Formula(const Formula& other, const std::unordered_map<size_t, Atom_Id>& input_to_atom);
+		Formula(const Formula& other, const std::unordered_map<size_t, Atom_Id>& input_to_atom, const std::unordered_map<size_t, size_t>& input_to_agent);
 		std::string to_string(const std::unordered_map<size_t, std::string>& id_to_atom) const;
 		bool valuate(const size_t world_id, const Formula_Input_Interface* input_interface) const;
 		Formula_Id f_top();

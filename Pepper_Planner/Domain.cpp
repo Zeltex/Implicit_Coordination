@@ -109,9 +109,6 @@ namespace del {
 	std::string Domain::get_name() const {
 		return name;
 	}
-	void Domain::set_amount_of_agents(size_t amount_of_agents) {
-		this->amount_of_agents = amount_of_agents;
-	}
 
 	const std::vector<Agent>& Domain::get_agents() const {
 		return agents;
@@ -143,6 +140,14 @@ namespace del {
 		return get_agent(get_atom_name(id));
 	}
 
+	std::optional<Agent_Id> Domain::get_agent_id_optional(Atom_Id atom_id) const {
+		auto it = atom_to_agent.find(atom_id.id);
+		if (it != atom_to_agent.end()) {
+			return { it->second };
+		}
+		return {};
+	}
+
 	// TODO - Optimise
 	Agent_Id Domain::get_agent_id(std::string name) const {
 		for (auto& entry : agents) {
@@ -168,9 +173,13 @@ namespace del {
 	}
 
 	Agent_Id Domain::create_agent(std::string name) {
-		Agent_Id id = Agent_Id{ agents.size() };
-		agents.emplace_back(id, get_atom_id(name), name);
-		return id;
+		Agent_Id agent_id = Agent_Id{ agents.size() };
+		Atom_Id atom_id = get_atom_id(name);
+		agents.emplace_back(agent_id, atom_id, name);
+		atom_to_agent[atom_id.id] = agent_id;
+		amount_of_agents = agents.size();
+
+		return agent_id;
 	}
 
 	void Domain::set_atom_types(std::unordered_set<std::string> types) {

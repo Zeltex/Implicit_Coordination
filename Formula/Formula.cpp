@@ -2,10 +2,10 @@
 
 namespace del {
 
-    Formula::Formula(const Formula& other, const std::unordered_map<size_t, Atom_Id>& input_to_atom) {
+    Formula::Formula(const Formula& other, const std::unordered_map<size_t, Atom_Id>& input_to_atom, const std::unordered_map<size_t, size_t>& input_to_agent) {
         this->root = other.root;
         for (const auto& entry : other.formulas) {
-            this->formulas.emplace_back(entry, input_to_atom);
+            this->formulas.emplace_back(entry, input_to_atom, input_to_agent);
         }
     }
 
