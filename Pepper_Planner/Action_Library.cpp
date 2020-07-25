@@ -2,7 +2,7 @@
 
 namespace del {
 
-	Action_Library::Action_Library(): action_counter(0), announce_enabled(false), actions() {
+	Action_Library::Action_Library(): amount_of_agents(0), action_counter(0), announce_enabled(false), actions() {
 	}
 
 	Action_Library::Action_Library(size_t amount_of_agents) : action_counter(0), announce_enabled(false), actions() {
@@ -173,22 +173,14 @@ namespace del {
 
 
 		std::vector<std::vector<Atom_Id>> atoms;
-		std::vector<Atom_Id> input_names;
 		std::vector<size_t> counters;
 
-		size_t owner_input_index = general_action.get_inputs().size();
+		size_t owner_input_index = action_owner.second.id;
 
-		size_t index = 0;
 		for (auto& entry : general_action.get_inputs()) {
 			auto& temp = domain.get_all_atoms_of_type(entry.first);
 			atoms.emplace_back(temp.begin(), temp.end());
-			input_names.emplace_back(entry.second);
 			counters.emplace_back(0);
-
-			if (entry.second == action_owner.second) {
-				owner_input_index = index;
-			}
-			index++;
 		}
 
 		for (auto& owner : owners) {
@@ -199,11 +191,9 @@ namespace del {
 			bool done = false;
 			while (true) {
 
-				//std::unordered_map<std::string, std::string> input_to_atom;
 				std::vector<Atom_Id> arguments;
 				bool valid_owner_input = true;
 				for (size_t i = 0; i < counters.size(); i++) {
-					//input_to_atom[input_names[i]] = atoms[i][counters[i]];
 					arguments.emplace_back(atoms[i][counters[i]]);
 					if (i == owner_input_index && owner != atoms[i][counters[i]].id) {
 						valid_owner_input = false;
@@ -212,7 +202,6 @@ namespace del {
 				if (valid_owner_input) {
 					auto owner_id = domain.get_agent_id(owner);
 					actions.emplace_back(general_action.create_action(owner, arguments, domain));
-					//actions.emplace_back(general_action, owner_id, input_to_atom);
 				}
 
 				if (!increment_counters_success(counters, atoms)) {

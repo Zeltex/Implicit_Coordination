@@ -41,7 +41,7 @@ size_t Custom_Parser::get_ivalue(size_t argument_index) {
 	return lexer->values.at(value_pointer + argument_index).ival;
 }
 
-std::string Custom_Parser::get_svalue(size_t argument_index) {
+const std::string& Custom_Parser::get_svalue(size_t argument_index) {
 	return lexer->values.at(value_pointer + argument_index).sval;
 }
 
@@ -273,7 +273,7 @@ void Custom_Parser::input() {
 
 void Custom_Parser::action_body() {
 	if (try_match({ Token::OWNER_DEF, Token::EQUALS, Token::NAME, Token::NAME })) {
-		domain->set_action_owner(get_svalue(2), get_svalue(3));
+		domain->set_action_owner(get_svalue(2), get_svalue(3), buffer->translate_atom_to_id(get_svalue(3)));
 		return action_body();
 	}
 
@@ -315,15 +315,14 @@ void Custom_Parser::action_reachability() {
 	if (try_match({ Token::NAME, Token::EQUALS, Token::LBRACK })) {
 		std::string agent_name = get_svalue(0);
 		action_agent_reachability();
-		domain->add_edge_condition(agent_name, buffer->get_edge_conditions());
+		domain->add_edge_condition(buffer->translate_atom_to_id(agent_name), buffer->get_edge_conditions());
 		if (!must_match({ Token::RBRACK })) return;
 		return action_reachability();
 	}
 
 	if (try_match({ Token::REST_DEF, Token::EQUALS, Token::LBRACK })) {
-		std::string rest_def = get_svalue(0);
 		action_agent_reachability();
-		domain->add_edge_condition(rest_def, buffer->get_edge_conditions());
+		domain->add_edge_condition(REST_INDEX, buffer->get_edge_conditions());
 		if (!must_match({ Token::RBRACK })) return;
 		return action_reachability();
 	}

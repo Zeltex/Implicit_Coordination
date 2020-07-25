@@ -21,7 +21,7 @@ namespace del {
 		this->designated_events = designated_events;
 	}
 
-	void General_Action::set_action_input(std::vector<std::pair<std::string, Atom_Id>> inputs) {
+	void General_Action::set_action_input(std::vector<std::pair<std::string, std::string>>&& inputs) {
 		this->inputs = inputs;
 	}
 
@@ -42,7 +42,7 @@ namespace del {
 	}
 
 
-	const std::vector<std::pair<std::string, Atom_Id>>& General_Action::get_inputs() const {
+	const std::vector<std::pair<std::string, std::string>>& General_Action::get_inputs() const {
 		return inputs;
 	}
 
@@ -71,32 +71,30 @@ namespace del {
 		if (!is_correct_type(this->owner.first, owner, domain)) {
 			// TODO - Handle with custom exception
 			std::cerr << "Tried to instantiate general_action with owner of wrong type\n";
-			throw;
+			exit(-1);
 		}
 
 		std::unordered_map<size_t, Atom_Id> input_to_atom;
 		input_to_atom.insert({ this->owner.second.id, owner });
 
-		size_t counter = 0;
-		for (auto& input : inputs) {
-			
-			if (!is_correct_type(input.first, arguments[counter], domain)) {
+		for (size_t i = 0; i < inputs.size(); ++i) {
+			auto& input = inputs[i];
+			auto& argument = arguments[i];
+			if (!is_correct_type(input.first, argument, domain)) {
 				// TODO - Handle with custom exception
 				std::cerr << "Tried to instantiate general_action with argument of wrong type\n";
-				throw;
+				exit(-1);
 			}
 
-			if (input.second == this->owner.second) {
-				if (owner != arguments[counter]) {
+			if (i == this->owner.second.id) {
+				if (owner != argument) {
 					// TODO - Handle with custom exception
 					std::cerr << "Tried to instantiate general_action with owner argument not matching owner\n";
-					throw;
+					exit(-1);
 				}
 			} else {
-				input_to_atom.insert({ input.second.id, arguments[counter] });
+				input_to_atom.insert({ i, argument });
 			}
-			counter++;
-
 		}
 		auto condition_owner_to_agent = get_condition_owner_to_agent(domain, input_to_atom);
 

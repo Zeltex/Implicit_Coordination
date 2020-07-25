@@ -57,7 +57,7 @@ namespace del {
 		for (auto& parent_entry : parents) {
 			if (parent_entry.first == parent) return parent_entry.second;
 		}
-		return {};
+		exit(-1);
 	}
 
 	bool Node::is_root_node() const {

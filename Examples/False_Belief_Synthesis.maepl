@@ -163,12 +163,12 @@ _problem False_Belief_Synthesis {
 	}
 	_initial_state = [
 	]
-	_world w0 [in(red, b1), perceives(P, P), perceives(P, L), perceives(P, N), perceives(L, P), perceives(L, L), perceives(L, N), perceives(N, P), perceives(N, L), perceives(N, N)]
-	_world w1 [in(red, b2), perceives(P, P), perceives(P, L), perceives(P, N), perceives(L, P), perceives(L, L), perceives(L, N), perceives(N, P), perceives(N, L), perceives(N, N)]
-	_world w2 [in(red, b3), perceives(P, P), perceives(P, L), perceives(P, N), perceives(L, P), perceives(L, L), perceives(L, N), perceives(N, P), perceives(N, L), perceives(N, N)]
-	_world w3 [in(red, b4), perceives(P, P), perceives(P, L), perceives(P, N), perceives(L, P), perceives(L, L), perceives(L, N), perceives(N, P), perceives(N, L), perceives(N, N)]
-	_goal = [ AND(in(red, b1), BELIEVES(N, NOT(in(red, b1)))) ]
-	_designated_worlds = [ w0, w1, w2, w3 ]
+	_world w0 [in(b1, red), perceives(P, P), perceives(P, L), perceives(P, N), perceives(L, P), perceives(L, L), perceives(L, N), perceives(N, P), perceives(N, L), perceives(N, N)]
+	_world w1 [in(b2, red), perceives(P, P), perceives(P, L), perceives(P, N), perceives(L, P), perceives(L, L), perceives(L, N), perceives(N, P), perceives(N, L), perceives(N, N)]
+	_world w2 [in(b3, red), perceives(P, P), perceives(P, L), perceives(P, N), perceives(L, P), perceives(L, L), perceives(L, N), perceives(N, P), perceives(N, L), perceives(N, N)]
+	_world w3 [in(b4, red), perceives(P, P), perceives(P, L), perceives(P, N), perceives(L, P), perceives(L, L), perceives(L, N), perceives(N, P), perceives(N, L), perceives(N, N)]
+	_goal = [ AND(in(b1, red), BELIEVES(N, NOT(in(b1, red)))) ]
+	_designated_worlds = [ w1 ]
 	_reflexivity = false
 	_reachability = {
 		P = {

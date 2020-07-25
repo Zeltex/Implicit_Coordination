@@ -15,8 +15,13 @@ namespace del {
 		Graph graph(std::move(frontier_reserve), std::move(nodes_reserve));
 		graph.add_to_frontier(graph.create_root_node(initial_state));
 		std::vector<size_t> debug_layer_size(10);
-
+		size_t debug_counter = 0;
 		while (!graph.is_frontier_empty()) {
+			if (debug_counter > 1000) {
+				break;
+			}
+			++debug_counter;
+
 			Node_Id current_node = graph.get_next_from_frontier();
 			action_library.load_actions(graph.get_node(current_node).get_state(), domain);
 

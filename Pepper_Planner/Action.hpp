@@ -46,15 +46,15 @@ namespace del {
 		std::string to_compact_string(const Domain& domain) const;
 		std::string to_graph(const std::string& base_id, const Domain& domain) const;
 
+		// Args is mainly debug
+		std::unordered_map<size_t, Atom_Id> args;
+
 	private:
 		void copy_and_instantiate_edge_conditions(const General_Action& general_action, const std::unordered_map<size_t, std::vector<Agent>>& condition_owner_to_id, const std::unordered_map<std::string, Event_Id>& event_name_to_id, std::unordered_map<size_t, Atom_Id> input_to_atom);
 		void copy_and_instantiate_designated_events(const General_Action& general_action, const std::unordered_map<std::string, Event_Id>& event_name_to_id);
 		std::unordered_map<std::string, Event_Id> copy_and_instantiate_events(const General_Action& general_action, const std::unordered_map<size_t, Atom_Id>& input_to_atom);
 
 		std::string get_string(const std::vector<Proposition_Instance>& propositions, const Domain& domain) const;
-
-		// Args is mainly debug
-		std::unordered_map<size_t, Atom_Id> args;
 
 		size_t cost;
 		std::vector<Action_Event> events;

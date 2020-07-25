@@ -41,6 +41,7 @@ public:
 	std::unordered_set<std::string>										get_variables();
 	std::vector<Proposition_Instance>									get_proposition_instances();
 	std::vector<std::string>											get_missing_perceivables();
+	Atom_Id																translate_atom_to_id(const std::string& type);
 
 	void add_variable(std::string variable); 
 	void clear_seen_atoms();

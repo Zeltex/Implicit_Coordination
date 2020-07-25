@@ -28,7 +28,11 @@ void execute(DEL_Interface& del_interface) {
 		if (dto.has_action()) {
 
 			del_interface.perform_action(dto.get_action());
-			std::cout << "Performed action" << std::endl;
+			std::cout << "Performed action " << dto.get_action().get_name();
+			for (auto& arg : dto.get_action().args) {
+				std::cout << "(" << arg.first << ":" << arg.second.id << ") ";
+			}
+			std::cout << std::endl;
 		} else {
 			std::cerr << "NO APPLIABLE ACTION" << std::endl;
 			std::cout << "-=-=- Fail -=-=-";

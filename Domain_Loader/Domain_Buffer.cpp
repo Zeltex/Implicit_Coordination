@@ -20,6 +20,13 @@ void Domain_Buffer::add_edge_condition(std::tuple<std::string, std::string, Form
     edge_conditions.emplace_back(std::move(edge_condition));
 }
 
+Atom_Id Domain_Buffer::translate_atom_to_id(const std::string& type) {
+    if (atom_to_id.find(type) == atom_to_id.end()) {
+        atom_to_id[type] = atom_to_id.size();
+    }
+    return atom_to_id[type];
+}
+
 void Domain_Buffer::push_proposition_instance(std::string name) {
     std::vector<Atom_Id> temp_atoms;
     temp_atoms.reserve(ordered_variable_list.size());

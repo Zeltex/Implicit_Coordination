@@ -69,30 +69,13 @@ namespace del {
 		current_action.set_cost(cost);
 	}
 
-	void Domain_Interface_Implementation::set_action_input(std::vector<std::pair<std::string, std::string>> inputs) {
-		std::vector<std::pair<std::string, Atom_Id>> result;
-		result.reserve(inputs.size());
-		for (auto& entry : inputs) {
-			auto it = atom_to_id.find(entry.second);
-			if (it == atom_to_id.end()) {
-				atom_to_id[entry.second] = atom_to_id.size();
-			}
-			result.emplace_back(entry.first, atom_to_id[entry.second]);
-		}
-		atom_to_id[REST_KEYWORD] = REST_INDEX;
-
-		current_action.set_action_input(std::move(result));
+	void Domain_Interface_Implementation::set_action_input(std::vector<std::pair<std::string, std::string>>&& inputs) {
+		current_action.set_action_input(std::move(inputs));
 	}
 
-	void Domain_Interface_Implementation::set_action_owner(std::string type, std::string name) {
+	void Domain_Interface_Implementation::set_action_owner(std::string type, std::string name, Atom_Id id) {
 		std::cout << "Action owner " << type << " " << name << std::endl;
-
-		auto it = atom_to_id.find(name);
-		if (it == atom_to_id.end()) {
-			atom_to_id[name] = atom_to_id.size();
-		}
-
-		current_action.set_owner(type, atom_to_id[name]);
+		current_action.set_owner(type, id);
 	}
 
 	void Domain_Interface_Implementation::create_event(std::string name, Formula&& preconditions, std::vector<Proposition_Instance> add_list, std::vector<Proposition_Instance> delete_list) {
@@ -195,14 +178,14 @@ namespace del {
 		this->goal = Formula(goal, converter);
 	}
 
-	void Domain_Interface_Implementation::add_edge_condition(std::string agent, std::vector< std::tuple<std::string, std::string, Formula>>&& edge_conditions) {
+	void Domain_Interface_Implementation::add_edge_condition(Atom_Id agent, std::vector< std::tuple<std::string, std::string, Formula>>&& edge_conditions) {
 
 		std::vector<Edge_Condition> temp;
 		temp.reserve(edge_conditions.size());
 		for (auto&[event_from, event_to, condition] : edge_conditions) {
 			temp.emplace_back(std::move(event_from), std::move(event_to), std::move(condition));
 		}
-		current_action.add_edge_condition(atom_to_id.at(agent), std::move(temp));
+		current_action.add_edge_condition(agent, std::move(temp));
 	}
 
 	void Domain_Interface_Implementation::add_observability(std::string observer, const std::vector<std::string>& agents) {

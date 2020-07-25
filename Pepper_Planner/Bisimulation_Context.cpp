@@ -96,13 +96,10 @@ namespace del {
 				}
 				counter++;
 			}
-			for (int i = index_to_be_erased.size() - 1; i >= 0; i--) {
-				block.erase(block.begin() + index_to_be_erased[i]);
+			for (auto it = index_to_be_erased.rbegin(); it != index_to_be_erased.rend(); ++it) {
+				block.erase(block.begin() + *it);
 			
 			}
-			//for (auto erase_index : index_to_be_erased) {
-			//	block.erase(block.begin() + erase_index);
-			//}
 			if (!worlds_to_be_moved.empty()) {
 				move_worlds_to_new_block(worlds_to_be_moved);
 			}

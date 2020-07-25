@@ -20,7 +20,7 @@ private:
 	bool must_match(const std::vector<Token>& pattern);
 	bool try_match(const std::vector<Token>& pattern);
 	size_t get_ivalue(size_t argument_index);
-	std::string get_svalue(size_t argument_index);
+	const std::string& get_svalue(size_t argument_index);
 	bool get_bvalue(size_t argument_index);
 	std::string token_to_string(Token token);
 

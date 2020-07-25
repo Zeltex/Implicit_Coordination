@@ -96,7 +96,7 @@ namespace del {
 		std::vector<World_Id> visited;
 		for (auto designated_world : designated_worlds) {
 			frontier.push_back(designated_world);
-			visited.push_back(designated_world);
+			//visited.push_back(designated_world);
 		}
 		while (!frontier.empty()) {
 			auto current = frontier.back();

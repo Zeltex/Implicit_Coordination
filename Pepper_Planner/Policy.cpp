@@ -10,9 +10,27 @@ namespace del {
 		policy.emplace_back(state, action);
 	}
 
-	std::tuple<Action, bool> Policy::get_action(State state) {
+	std::tuple<Action, bool> Policy::get_action(const State& state) {
+		std::vector<size_t> agent_hashes;
+		for (size_t agent = 0; agent < state.get_number_of_agents(); ++agent) {
+			State temp = state;
+			auto reachables = temp.get_designated_world_reachables({ agent });
+			temp.set_designated_worlds({ reachables[0] });
+			agent_hashes.emplace_back(temp.to_hash());
+		}
+
+		std::vector<size_t> hashes;
+		size_t hash = state.to_hash();
 		for (auto& policy_entry : policy) {
+			hashes.emplace_back(policy_entry.first.to_hash());
+
 			if (are_states_bisimilar(policy_entry.first, state)) {
+				return { policy_entry.second, true };
+			}
+
+			auto& agent_hash = agent_hashes[policy_entry.second.get_owner().id];
+			auto state_hash = policy_entry.first.to_hash();
+			if (agent_hash == state_hash) {
 				return { policy_entry.second, true };
 			}
 		}

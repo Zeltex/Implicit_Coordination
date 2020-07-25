@@ -19,8 +19,8 @@ public:
 
 
 	virtual void set_action_cost							(size_t cost) = 0;
-	virtual void set_action_input							(std::vector<std::pair<std::string, std::string>> inputs) = 0;
-	virtual void set_action_owner							(std::string type, std::string name) = 0;
+	virtual void set_action_input							(std::vector<std::pair<std::string, std::string>>&& inputs) = 0;
+	virtual void set_action_owner							(std::string type, std::string name, Atom_Id id) = 0;
 	virtual void set_announce_enabled						() = 0;
 	virtual void set_designated_events						(std::vector<std::string> designated_events) = 0;
 	virtual void set_designated_worlds						(const std::unordered_set<std::string>& designated_worlds) = 0;
@@ -36,7 +36,7 @@ public:
 	virtual void create_action_reflexive_reachables			() = 0;
 	virtual void create_state_reflexive_reachables			() = 0;
 	
-	virtual void add_edge_condition							(std::string agent, std::vector< std::tuple<std::string, std::string, del::Formula>>&& edge_conditions) = 0;
+	virtual void add_edge_condition							(Atom_Id, std::vector< std::tuple<std::string, std::string, del::Formula>>&& edge_conditions) = 0;
 	virtual void add_observability							(std::string observer, const std::vector<std::string>& agents) = 0;
 	virtual void add_perceivability							(std::string perceiver, const std::vector<std::string>& agents) = 0;
 	virtual void add_proposition							(std::string name, const std::vector<std::pair<std::string, std::string>>& inputs) = 0;
