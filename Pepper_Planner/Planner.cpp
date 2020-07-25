@@ -8,6 +8,7 @@ namespace del {
 		std::unordered_map<size_t, Node_Id> visited_and;
 		std::unordered_map<size_t, Node_Id> visited_or;
 
+		// TODO - Hide these reserve structures inside graph
 		std::vector<Node_Entry> frontier_reserve;
 		frontier_reserve.reserve(100);
 		std::vector<Node> nodes_reserve;
@@ -157,49 +158,103 @@ namespace del {
 	}
 
 	Policy Planner::extract_policy(Graph& graph) const {
-		Node_Id temp2 = { 0 };
-		auto temp = extract_policy_inner(graph, graph.get_root_node().get_id(), temp2);
-		if (temp.has_value()) {
-			return Policy(true, std::move(temp.value()));
-		}
-		return Policy(false);
+		auto best_value = calculate_best_value(graph);
+		return calculate_policy(graph, best_value);
 	}
 
-	std::optional< std::vector<std::pair<State, Action>>> Planner::extract_policy_inner(Graph& graph, const Node_Id& current_node_id, const Node_Id& parent_node_id) const {
+	Policy Planner::calculate_policy(Graph& graph, const std::unordered_map<size_t, size_t>& best_value) const{
+		std::deque<Node_Id> frontier = { graph.get_root_node().get_id() };
 		std::vector<std::pair<State, Action>> result;
-		Node& current_node = graph.get_node(current_node_id);
 
-		if (!current_node.is_solved() || current_node.is_dead()) return {};
+		while (!frontier.empty()) {
+			auto node_id = frontier.front();
+			frontier.pop_front();
+			auto& node = graph.get_node(node_id);
 
-		if (current_node.get_type() == Node_Type::And) {
-			for (auto& child : current_node.get_children()) {
-				auto policy = extract_policy_inner(graph, child, current_node_id);
-				if (!policy.has_value()) {
-					return {};
-				} else {
-					result.insert(result.begin(), policy.value().begin(), policy.value().end());
+			if (node.get_children().empty()) {
+				continue;
+			}
+
+			if (node.get_type() == Node_Type::And) {
+				for (auto& child : node.get_children()) {
+					if (!graph.get_node(child).is_solved()) continue;
+
+					frontier.push_back(child);
 				}
+			} else {
+				size_t lowest_value = (size_t)-1;
+				Node_Id lowest_node = { 0 };
+				for (auto& child : node.get_children()) {
+					if (!graph.get_node(child).is_solved()) continue;
+
+					if (best_value.at(child.id) < lowest_value) {
+						lowest_value = best_value.at(child.id);
+						lowest_node = child;
+					}
+				}
+				const auto& entry_state = graph.get_node(node_id).get_state();
+				const auto& entry_action = graph.get_node(lowest_node).get_parent_action(node_id);
+				add_policy_entry(result, entry_state, entry_action);
+				frontier.push_back(lowest_node);
 			}
-			const auto& state = graph.get_node(parent_node_id).get_state();
-			const auto& action = current_node.get_parent_action(parent_node_id);
-			const auto perspective_shifted = perform_perspective_shift(state, action.get_owner());
-			for (auto global : split_into_global_states(perspective_shifted, action.get_owner())) {
-				result.emplace_back(global, action);
+		}
+		return Policy(true, std::move(result));
+	}
+
+	void Planner::add_policy_entry(std::vector<std::pair<State, Action>>& policy_entries, const State& state, const Action& action) const {
+		const auto perspective_shifted = perform_perspective_shift(state, action.get_owner());
+		for (auto global : split_into_global_states(perspective_shifted, action.get_owner())) {
+			policy_entries.emplace_back(global, action);
+		}
+	}
+
+	std::unordered_map<size_t, size_t> Planner::calculate_best_value(Graph& graph) const {
+		std::vector<Node_Entry> frontier_reserve;
+		frontier_reserve.reserve(graph.get_nodes().size());
+		std::priority_queue < Node_Entry, std::vector<Node_Entry>, Node_Entry_Comparator> frontier(Node_Entry_Comparator(), frontier_reserve);
+		std::unordered_map<size_t, size_t> best_value;
+		std::unordered_map<size_t, size_t> children_visited;
+
+		// TODO - Could add these by top down traversal to avoid adding unreachable leafs
+		for (auto& node : graph.get_nodes()) {
+			if (node.get_children().empty()) {
+				frontier.push({ node.get_id(), node.get_cost() });
+				best_value.insert({ node.get_id().id, node.get_cost() });
 			}
-			return result;
-		} else {
-			for (auto& child : current_node.get_children()) {
-				auto policy = extract_policy_inner(graph, child, current_node_id);
-				if (policy.has_value()) {
-					// TODO - Only assign if new policy is better than current
-					if (result.empty() || policy.value().size() < result.size()) {
-						result = std::move(policy.value());
-						return result;
+		}
+
+		while (!frontier.empty()) {
+			auto node_entry = frontier.top();
+			auto& node = graph.get_node(node_entry.id);
+			frontier.pop();
+
+			for (auto& [parent_id, action] : node.get_parents()) {
+				if (!graph.get_node(parent_id).is_solved()) continue;
+
+				++children_visited[parent_id.id];
+				auto& parent = graph.get_node(parent_id);
+				if (parent.get_type() == Node_Type::Or) {
+					if (best_value.find(parent_id.id) == best_value.end()) {
+						best_value.insert({ parent_id.id, node_entry.cost });
+						frontier.push({ parent_id, node_entry.cost });
+					} else if (node_entry.cost < best_value.at(parent_id.id)) {
+						best_value[parent_id.id] = node_entry.cost;
+						frontier.push({ parent_id, node_entry.cost });
+						std::cout << "Found node with better value in incorrect order " << node_entry.id.id << " " << node_entry.cost << std::endl;
+					}
+				} else {
+					if (best_value.find(parent_id.id) == best_value.end()) {
+						best_value.insert({ parent_id.id, node_entry.cost });
+					} else if (node_entry.cost > best_value.at(parent_id.id)) {
+						best_value[parent_id.id] = node_entry.cost;
+					}
+					if (children_visited.at(parent_id.id) == parent.get_children().size()) {
+						frontier.push({ parent_id, best_value[parent_id.id] });
 					}
 				}
 			}
-			return result;
 		}
+		return best_value;
 	}
 	
 

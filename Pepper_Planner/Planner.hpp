@@ -25,6 +25,10 @@ namespace del {
 		bool does_bisimilar_exist(Graph& graph, const State& state, std::unordered_map<size_t, Node_Id>& visited, const Node_Id& current_node, const Node_Id& parent_node_id, const Action& action) const;
 		Policy extract_policy(Graph& graph) const;
 		std::optional< std::vector<std::pair<State, Action>>>  extract_policy_inner(Graph& graph, const Node_Id& current_node_id, const Node_Id& parent_node_id) const;
+		Policy  extract_policy_alternative(Graph& graph) const;
+		void add_policy_entry(std::vector<std::pair<State, Action>>& policy_entries, const State& state, const Action& action) const;
+		std::unordered_map<size_t, size_t> calculate_best_value(Graph& graph) const;
+		Policy calculate_policy(Graph& graph, const std::unordered_map<size_t, size_t>& best_value) const;
 		void propogate_dead_end_node(Graph& graph, Node_Id node) const;
 		void propogate_solved_node(Graph& graph, Node_Id node_id) const;
 		bool is_goal_node(const Node& node, const Formula& goal_formula) const;

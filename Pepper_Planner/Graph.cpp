@@ -7,7 +7,7 @@ namespace del {
 		return node_id;
 	}
 
-	bool Graph::is_frontier_empty() {
+	bool Graph::is_frontier_empty() const {
 		return frontier.size() == 0;
 	}
 
@@ -38,12 +38,16 @@ namespace del {
 		frontier.emplace(node_id, nodes.at(node_id.id).get_cost());
 	}
 
+	std::vector<Node>& Graph::get_nodes() {
+		return nodes;
+	}
+
 	Node& Graph::get_node(Node_Id node_id) {
-		return nodes[node_id.id];
+		return nodes.at(node_id.id);
 	}
 
 	Node& Graph::get_root_node() {
-		return nodes[root.id];
+		return nodes.at(root.id);
 	}
 
 	std::string Graph::to_string(const Domain& domain) const {
