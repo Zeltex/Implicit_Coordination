@@ -49,6 +49,26 @@ void execute(DEL_Interface& del_interface) {
 	}
 }
 
+void find_and_execute(std::string file_name) {
+	auto time1 = std::chrono::high_resolution_clock::now();
+
+	DEL_Interface del_interface("../examples/" + file_name);
+
+	auto time2 = std::chrono::high_resolution_clock::now();
+	del_interface.create_policy();
+	auto time3 = std::chrono::high_resolution_clock::now();
+
+	auto elapsed1 = time2 - time1;
+	auto elapsed2 = time3 - time2;
+
+
+
+	std::cout << ".maepl load time " << (elapsed1.count() / 1000000) << "ms\n";
+	std::cout << "planning execution time " << (elapsed2.count() / 1000000) << "ms\n";
+
+	execute(del_interface);
+}
+
 void false_belief_synthesis() {
 	auto time1 = std::chrono::high_resolution_clock::now();
 
@@ -159,8 +179,9 @@ int main(int argc, char* argv[]) {
 
 	//find_and_execute_policy();
 	//find_and_execute_policy_stack();
-	false_belief_synthesis();
+	//false_belief_synthesis();
 	
+	find_and_execute("Block_Search.maepl");
 
 
 	return 0;

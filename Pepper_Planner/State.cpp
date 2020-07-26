@@ -347,20 +347,29 @@ namespace del {
 	}
 
 	size_t State::to_hash() const {
-		std::string hash;
+		std::vector<std::string> hashes;
+		size_t relations_size = 0;
+		for (auto& relations : indistinguishability_relation) relations_size += relations.size();
+		hashes.reserve(worlds.size() + designated_worlds.size() + relations_size);
+
 		for (auto& world : worlds) {
-			hash += world.to_hash();
+			hashes.emplace_back(std::move(world.to_hash()));
 		}
 		for (auto& designated_world : designated_worlds) {
-			hash += std::to_string(designated_world.id);
+			hashes.emplace_back(std::to_string(designated_world.id));
 		}
 		size_t agent = 0;
 		for (auto& agent_relation : indistinguishability_relation) {
 			for (auto& relation : agent_relation) {
-				hash += std::to_string(agent) + relation.to_hash();
+				hashes.emplace_back(std::to_string(agent) + relation.to_hash());
 			}
 			agent++;
 		}
+		std::sort(hashes.begin(), hashes.end());
+		std::string hash;
+		hash.reserve(hashes.size() * sizeof(size_t));
+		for (const auto& entry : hashes) hash += entry;
+
 		return std::hash<std::string>()(hash);
 	}
 

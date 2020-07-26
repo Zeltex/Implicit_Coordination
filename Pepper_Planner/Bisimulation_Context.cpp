@@ -278,14 +278,14 @@ namespace del {
 		frontier.clear();
 		visited.clear();
 		std::unordered_set<size_t> temp_blocks_visited;
-		for (auto& world : state.get_designated_worlds()) {
-			auto& temp_block = world_to_block[world.id];
+		for (auto& designated_world : state.get_designated_worlds()) {
+			auto& temp_block = world_to_block[designated_world.id];
 			if (visited.find(temp_block) == visited.end()) {
 				frontier.push_back({ temp_block, 0 });
 				visited.insert(temp_block);
 				auto& world = result.create_world();
 				block_to_new_world[temp_block] = world.get_id();
-				world.add_true_propositions(state.get_world( world.get_id() ).get_true_propositions());
+				world.add_true_propositions(state.get_world(designated_world).get_true_propositions());
 			}
 		}
 		while (!frontier.empty()) {

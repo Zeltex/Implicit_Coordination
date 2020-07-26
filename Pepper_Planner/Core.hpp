@@ -36,7 +36,7 @@ namespace del {
 	#define CLEAR_ACTION_STATE_DIR() clear_action_state_dir()
 
 	#ifdef PRINT_PARTIAL
-		//#define PRINT_GRAPH_DOT(graph, domain) print_graph_dot_partial(graph,domain);print_graph_dot_simple(graph,domain)
+		//#define PRINT_GRAPH_DOT(graph, domain) print_graph_dot_simple(graph,domain);print_graph_dot_partial(graph,domain)
 		#define PRINT_GRAPH_DOT(graph, domain) print_graph_dot_simple(graph,domain)
 	#else
 		#define PRINT_GRAPH_DOT(graph, domain) print_graph_dot(graph,domain);print_graph_dot_simple(graph,domain)
