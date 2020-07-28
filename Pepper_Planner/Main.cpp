@@ -52,7 +52,7 @@ void execute(DEL_Interface& del_interface) {
 void find_and_execute(std::string file_name) {
 	auto time1 = std::chrono::high_resolution_clock::now();
 
-	DEL_Interface del_interface("../examples/" + file_name);
+	DEL_Interface del_interface("../Examples/" + file_name);
 
 	auto time2 = std::chrono::high_resolution_clock::now();
 	del_interface.create_policy();

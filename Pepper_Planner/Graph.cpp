@@ -31,6 +31,7 @@ namespace del {
 		Node_Id node_id = Node_Id{ nodes.size() };
 		nodes.emplace_back(state, node_id, Node_Id{ 0 }, true);
 		nodes.back().calculate_hash();
+		root = node_id;
 		return node_id;
 	}
 

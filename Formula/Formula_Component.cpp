@@ -1,4 +1,5 @@
 #include "Formula_Component.hpp"
+#include <algorithm>
 
 namespace del {
 
@@ -71,7 +72,7 @@ namespace del {
         {
             if (input_interface == nullptr) return false;
             auto& propositions = input_interface->get_true_propositions(world_id);
-            return find(propositions.begin(), propositions.end(), prop) != propositions.end();
+            return std::find(propositions.begin(), propositions.end(), prop) != propositions.end();
         }
         case Formula_Types::Not:
         {
