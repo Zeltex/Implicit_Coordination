@@ -33,15 +33,15 @@ namespace del {
 		parents.emplace_back(node, Action());
 	}
 
-	size_t Node::get_hash() {
-		if (!has_hash) {
-			hash = state.to_hash();
-			has_hash = true;
-		}
+	void Node::calculate_hash() {
+		hash = state.to_hash();
+	}
+
+	size_t Node::get_hash() const {
 		return hash;
 	}
 
-	const std::vector<std::pair<Node_Id, Action>>& Node::get_parents() {
+	const std::vector<std::pair<Node_Id, Action>>& Node::get_parents() const {
 		return parents;
 	}
 
@@ -57,6 +57,7 @@ namespace del {
 		for (auto& parent_entry : parents) {
 			if (parent_entry.first == parent) return parent_entry.second;
 		}
+		std::cerr << "Attempted to get parent action of node without parent action" << id.id << std::endl;
 		exit(-1);
 	}
 

@@ -77,31 +77,37 @@ namespace del {
 	// TODO - Could be optimised
 	void Bisimulation_Context::partition_into_relations_blocks() {
 		bool blocks_changed = false;
+		size_t block_counter = 0;
+		std::vector<std::vector<World_Id>> worlds_to_be_moved;
+		std::vector < std::vector<size_t>> index_to_be_erased;
 		for (auto& block : blocks) {
+			worlds_to_be_moved.emplace_back();
+			index_to_be_erased.emplace_back();
 			if (block.empty()) {
 				continue;
 			}
-			std::vector<World_Id> worlds_to_be_moved;
-			std::vector<size_t> index_to_be_erased;
 			size_t base_world = block[0].id;
 			size_t counter = 0;
 			for (auto& block_entry : block) {
 				for (size_t i = 0; i < indistinguishability_relation.size(); i++) {
 					if (!are_relations_equal(indistinguishability_relation[i][base_world], indistinguishability_relation[i][block_entry.id])) {
-						worlds_to_be_moved.push_back(block_entry);
-						index_to_be_erased.push_back(counter);
+						worlds_to_be_moved[block_counter].push_back(block_entry);
+						index_to_be_erased[block_counter].push_back(counter);
 						blocks_changed = true;
 						break;
 					}
 				}
 				counter++;
 			}
-			for (auto it = index_to_be_erased.rbegin(); it != index_to_be_erased.rend(); ++it) {
-				block.erase(block.begin() + *it);
-			
+			block_counter++;
+		}
+		for (size_t i = 0; i < worlds_to_be_moved.size(); ++i) {
+			for (auto it = index_to_be_erased[i].rbegin(); it != index_to_be_erased[i].rend(); ++it) {
+				this->blocks[i].erase(this->blocks[i].begin() + *it);
+
 			}
-			if (!worlds_to_be_moved.empty()) {
-				move_worlds_to_new_block(worlds_to_be_moved);
+			if (!worlds_to_be_moved[i].empty()) {
+				move_worlds_to_new_block(worlds_to_be_moved[i]);
 			}
 		}
 		if (blocks_changed) {

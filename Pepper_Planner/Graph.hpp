@@ -11,12 +11,15 @@ namespace del {
 	public:
 
 		Graph() : frontier(), nodes(std::vector<Node>()) {};
-		Graph(std::vector<Node_Entry> frontier_reserve, std::vector<Node> nodes_reserve) : frontier(Node_Entry_Comparator(), std::move(frontier_reserve)), nodes(std::move(nodes_reserve)) {};
+		Graph(size_t node_size) { nodes.reserve(node_size); };
+		Graph(size_t node_size, const State& state) { nodes.reserve(node_size); add_to_frontier(create_root_node(state)); };
 
 
 		Node_Id get_next_from_frontier();
 		bool is_frontier_empty() const;
 		void add_to_frontier(Node_Id node_id);
+		void set_parent_child(Node_Id parent_id, Node_Id child_id, const Action& action);
+		void set_parent_child(Node_Id parent_id, Node_Id child_id);
 		Node_Id create_and_node(State state, Node_Id parent, Action action_from_parent);
 		Node_Id create_or_node(State state, Node_Id parent);
 		Node_Id create_root_node(State state);
@@ -25,6 +28,7 @@ namespace del {
 		// since the vector may reallocate memory on the heap
 		std::vector<Node>& get_nodes();
 		Node& get_node(Node_Id node_id);
+		const Node& get_const_node(Node_Id node_id) const;
 		Node& get_root_node();
 
 		std::string to_string(const Domain& domain) const;

@@ -9,19 +9,24 @@
 #include "DEL_Operations.hpp"
 
 namespace del {
+	class Node_Comparator;
+	struct Policy_Entry {
+		State state;
+		std::vector<Action> actions;
+	};
 	class Policy {
 	public:
 
 		Policy(bool solved) : solved(solved) {}
-		Policy(bool solved, std::vector<std::pair<State, Action>>&& policy) : solved(solved) { this->policy = std::move(policy); }
+
+		void add_entry(const State& state, const Action& action);
 		bool is_solved() const;
-		void add_policy_entry(State state, Action action);
-		std::tuple<Action, bool> get_action(const State& state);
+		std::optional<Action> get_action(const State& state, Agent_Id preferred_agent = { 0 }) const;
 
 		std::string to_graph(const Domain& domain) const;
 		std::string to_string(const Domain& domain) const;
 	private:
 		bool solved;
-		std::vector<std::pair<State, Action>> policy;
+		std::unordered_map<size_t, Policy_Entry> policy;
 	};
 }

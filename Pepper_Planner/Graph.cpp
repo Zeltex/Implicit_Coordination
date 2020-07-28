@@ -14,6 +14,7 @@ namespace del {
 	Node_Id Graph::create_or_node(State state, Node_Id parent) {
 		Node_Id node_id = Node_Id{ nodes.size() };
 		nodes.emplace_back(state, node_id, parent, false);
+		nodes.back().calculate_hash();
 		nodes[parent.id].add_child(node_id);
 		return node_id;
 	}
@@ -21,6 +22,7 @@ namespace del {
 	Node_Id Graph::create_and_node(State state, Node_Id parent, Action action_from_parent) {
 		Node_Id node_id = Node_Id{ nodes.size() };
 		nodes.emplace_back(state, node_id, parent, action_from_parent, false);
+		nodes.back().calculate_hash();
 		nodes[parent.id].add_child(node_id);
 		return node_id;
 	}
@@ -28,6 +30,7 @@ namespace del {
 	Node_Id Graph::create_root_node(State state) {
 		Node_Id node_id = Node_Id{ nodes.size() };
 		nodes.emplace_back(state, node_id, Node_Id{ 0 }, true);
+		nodes.back().calculate_hash();
 		return node_id;
 	}
 
@@ -38,8 +41,22 @@ namespace del {
 		frontier.emplace(node_id, nodes.at(node_id.id).get_cost());
 	}
 
+	void Graph::set_parent_child(Node_Id parent_id, Node_Id child_id, const Action& action) {
+		get_node(child_id).add_parent(parent_id, action);
+		get_node(parent_id).add_child(child_id);
+	}
+
+	void Graph::set_parent_child(Node_Id parent_id, Node_Id child_id) {
+		get_node(child_id).add_parent(parent_id);
+		get_node(parent_id).add_child(child_id);
+	}
+
 	std::vector<Node>& Graph::get_nodes() {
 		return nodes;
+	}
+
+	const Node& Graph::get_const_node(Node_Id node_id) const {
+		return nodes.at(node_id.id);
 	}
 
 	Node& Graph::get_node(Node_Id node_id) {

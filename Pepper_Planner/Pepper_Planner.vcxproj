@@ -134,7 +134,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;DEBUG_PRINT;PRINT_PARTIAL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;DEBUG_PRINT;PRINT_PARTIAL;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)Domain_Loader;$(SolutionDir)Formula</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
@@ -162,6 +162,7 @@
     <ClCompile Include="General_World.cpp" />
     <ClCompile Include="Interface_DTO.cpp" />
     <ClCompile Include="Misc.cpp" />
+    <ClCompile Include="Node_Comparator.cpp" />
     <ClCompile Include="Planner.cpp" />
     <ClCompile Include="Graph.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -187,6 +188,7 @@
     <ClInclude Include="General_World.hpp" />
     <ClInclude Include="Interface_DTO.hpp" />
     <ClInclude Include="Misc.hpp" />
+    <ClInclude Include="Node_Comparator.hpp" />
     <ClInclude Include="Planner.hpp" />
     <ClInclude Include="Graph.hpp" />
     <ClInclude Include="Node.hpp" />

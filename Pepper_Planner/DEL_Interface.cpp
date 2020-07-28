@@ -34,8 +34,9 @@ namespace del {
 	
 	Interface_DTO DEL_Interface::get_next_action() {
 		if (has_policy) {
-			auto [action, solved] = policy.get_action(domain.get_current_state());
-			if (solved) {
+			auto action_optional = policy.get_action(domain.get_current_state());
+			if (action_optional.has_value()) {
+				auto& action = action_optional.value();
 				std::string announce_string = "";
 				if (action.get_owner() == pepper_id) {
 					auto& events = action.get_events();

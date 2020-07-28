@@ -56,16 +56,13 @@ _problem False_Belief_Synthesis {
 	_world w10 [in(b4, cr), in(b2, ch), perceives(R, H), perceives(H, R), reachable(R, b1), reachable(R, b2), reachable(H, b3), reachable(H, b4)]
 	_world w11 [in(b4, cr), in(b3, ch), perceives(R, H), perceives(H, R), reachable(R, b1), reachable(R, b2), reachable(H, b3), reachable(H, b4)]
 	_goal = [ AND(
-				OR(	BELIEVES(R, in(b1, cr)),
-					BELIEVES(R, in(b2, cr)),
-					BELIEVES(R, in(b3, cr)),
-					BELIEVES(R, in(b4, cr))), 
+				
 				OR(	BELIEVES(H, in(b1, ch)),
 					BELIEVES(H, in(b2, ch)),
 					BELIEVES(H, in(b3, ch)),
 					BELIEVES(H, in(b4, ch)))) ]
 
-	_designated_worlds = [ w6 ]
+	_designated_worlds = [ w7 ]
 	_reflexivity = false
 	_reachability = {
 		R = {

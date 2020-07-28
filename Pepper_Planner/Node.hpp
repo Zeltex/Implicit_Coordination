@@ -15,23 +15,24 @@ namespace del {
 		Node() = delete;
 		Node(State state, Node_Id id, Node_Id parent, Action action_from_parent, bool root) :
 			state(state), id(id), parents({ {parent, action_from_parent } }), root(root), type(Node_Type::And),
-			dead(false), solved(false), has_hash(false), hash(0) {};
+			dead(false), solved(false), hash(0) {};
 		// TODO - Don't create dummy action (though it won't get used)
 		Node(State state, Node_Id id, Node_Id parent, bool root) :
 			state(state), id(id), parents({ {parent, {} } }), root(root), type(Node_Type::Or),
-			dead(false), solved(false), has_hash(false), hash(0) {};
+			dead(false), solved(false), hash(0) {};
 		void add_child(Node_Id node);
 		void add_parent(Node_Id node, Action action);
 		void add_parent(Node_Id node);
+		void calculate_hash();
 		void set_dead();
 		void set_solved();
 
 		const std::vector<Node_Id>&						get_children() const;
 		size_t											get_cost() const;
-		size_t											get_hash();
+		size_t											get_hash() const;
 		Node_Id											get_id() const;
 		const Action&									get_parent_action(Node_Id parent) const;
-		const std::vector<std::pair<Node_Id, Action>>&	get_parents();
+		const std::vector<std::pair<Node_Id, Action>>&	get_parents() const;
 		const State&									get_state()const ;
 		Node_Type										get_type() const;
 
@@ -62,6 +63,5 @@ namespace del {
 		bool solved;
 		std::vector<Node_Id> children;
 		size_t hash;
-		bool has_hash;
 	};
 }

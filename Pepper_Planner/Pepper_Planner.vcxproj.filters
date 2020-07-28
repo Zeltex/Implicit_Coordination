@@ -102,6 +102,9 @@
     <ClCompile Include="Core.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Node_Comparator.cpp">
+      <Filter>Source Files\Planner</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Agent.hpp">
@@ -169,6 +172,9 @@
     </ClInclude>
     <ClInclude Include="Core.hpp">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Node_Comparator.hpp">
+      <Filter>Header Files\Planner</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
