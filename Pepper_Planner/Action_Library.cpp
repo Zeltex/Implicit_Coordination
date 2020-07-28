@@ -90,6 +90,7 @@ namespace del {
 		Action action(owner, amount_of_agents);
 
 		action.set_cost(ANNOUNCE_COST);
+		action.set_name("Announce");
 
 
 		Formula f1;

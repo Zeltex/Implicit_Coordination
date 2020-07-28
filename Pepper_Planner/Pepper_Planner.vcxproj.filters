@@ -161,9 +161,6 @@
     <ClInclude Include="DEL_Interface.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Domain_Interface_Implementation.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="General_Action.hpp">
       <Filter>Header Files\DEL\Action</Filter>
     </ClInclude>
@@ -175,6 +172,9 @@
     </ClInclude>
     <ClInclude Include="Node_Comparator.hpp">
       <Filter>Header Files\Planner</Filter>
+    </ClInclude>
+    <ClInclude Include="Domain_Interface_Implementation.hpp">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

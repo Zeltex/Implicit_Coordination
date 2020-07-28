@@ -181,7 +181,7 @@
     <ClInclude Include="Core.hpp" />
     <ClInclude Include="DEL_Operations.hpp" />
     <ClInclude Include="Domain.hpp" />
-    <ClInclude Include="Domain_Interface_Implementation.h" />
+    <ClInclude Include="Domain_Interface_Implementation.hpp" />
     <ClInclude Include="Environment_Loader.hpp" />
     <ClInclude Include="DEL_Interface.hpp" />
     <ClInclude Include="General_Action.hpp" />

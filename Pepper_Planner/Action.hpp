@@ -32,6 +32,7 @@ namespace del {
 		void add_event(std::string name, Event_Id id, Formula&& precondition, std::vector<Proposition_Instance>&& proposition_add, std::vector<Proposition_Instance>&& proposition_delete);
 		void add_reachability(Agent_Id owner, Event_Id event_from, Event_Id event_to, Formula&& condition);
 		void set_cost(size_t cost);
+		void set_name(const std::string& name);
 
 		size_t								get_cost() const;
 		const std::vector<Action_Event>&	get_events() const;

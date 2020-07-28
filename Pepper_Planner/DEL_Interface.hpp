@@ -10,7 +10,7 @@
 #include "Interface_DTO.hpp"
 #include "Action_Library.hpp"
 #include "Environment_Loader.hpp"
-#include "Domain_Interface_Implementation.h"
+#include "Domain_Interface_Implementation.hpp"
 #include "Loader.hpp"
 #include "Types.hpp"
 

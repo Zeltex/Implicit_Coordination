@@ -16,7 +16,7 @@
 #include "Planner.hpp"
 #include "Domain.hpp"
 #include "DEL_Interface.hpp"
-#include "Domain_Interface_Implementation.h"
+#include "Domain_Interface_Implementation.hpp"
 #include "Loader.hpp"
 
 using namespace del;
@@ -179,10 +179,10 @@ int main(int argc, char* argv[]) {
 
 	//find_and_execute_policy();
 	//find_and_execute_policy_stack();
-	//false_belief_synthesis();
+	false_belief_synthesis();
 
 	//find_and_execute("Block_Search.maepl");
-	find_and_execute("Block_Search_Single.maepl");
+	//find_and_execute("Block_Search_Single.maepl");
 
 
 	return 0;

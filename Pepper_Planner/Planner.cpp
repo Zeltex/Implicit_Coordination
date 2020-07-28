@@ -22,8 +22,8 @@ namespace del {
 				if (!is_action_applicable(state_perspective_shift, action)) {
 					continue;
 				}
-				State state_product_update = perform_product_update(state_perspective_shift, action, agents);
-				state_product_update = std::move(perform_k_bisimilar_contraction(state_product_update, BISIMILAR_DEPTH));
+				State temp_state = perform_product_update(state_perspective_shift, action, agents);
+				State state_product_update = std::move(perform_k_bisimilar_contraction(std::move(temp_state), BISIMILAR_DEPTH));
 
 				auto [bisim_exists, child_node_id] = history.does_bisimilar_exist_and(graph, state_product_update, current_node);
 				if (child_node_id.has_value()) graph.set_parent_child(current_node, child_node_id.value(), action);

@@ -201,6 +201,10 @@ namespace del {
 		this->cost = cost;
 	}
 
+	void Action::set_name(const std::string& name) {
+		this->name = name;
+	}
+
 	size_t Action::get_cost() const {
 		return cost;
 	}

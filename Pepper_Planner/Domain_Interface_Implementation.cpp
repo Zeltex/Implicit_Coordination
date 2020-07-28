@@ -1,4 +1,4 @@
-#include "Domain_Interface_Implementation.h"
+#include "Domain_Interface_Implementation.hpp"
 
 namespace del {
 	void Domain_Interface_Implementation::new_domain(std::string name) {
