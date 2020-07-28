@@ -37,7 +37,13 @@ namespace del {
 
 					auto [bisim_exists, child_node_id] = history.does_bisimilar_exist_or(graph, global_state, action_node);
 					if (child_node_id.has_value()) graph.set_parent_child(action_node, child_node_id.value(), action);
-					if (bisim_exists) continue;
+					if (bisim_exists) {
+						if (!child_node_id.has_value()) {
+							graph.get_node(action_node).set_dead();
+							break;
+						}
+						continue;
+					}
 
 					debug_layer_size[global_state.get_cost() / 100] ++;
 					Node_Id global_agent_node = graph.create_or_node(global_state, action_node);
