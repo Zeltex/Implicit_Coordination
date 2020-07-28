@@ -93,7 +93,9 @@ namespace del {
 
 	void Domain::perform_action(Action action) {
 		const State& current_state = states.back();
-		states.push_back(perform_product_update(current_state, action, agents));
+		auto product_update = perform_product_update(current_state, action, agents);
+		auto bisimilar_contraction = perform_k_bisimilar_contraction(std::move(product_update), BISIMILAR_DEPTH);
+		states.push_back(std::move(bisimilar_contraction));
 		PRINT_ACTION(action, *(this), debug_counter++);
 		PRINT_STATE(get_current_state(), *(this), debug_counter);
 	}

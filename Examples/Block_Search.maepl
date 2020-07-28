@@ -35,7 +35,7 @@ _domain Pepper {
 		}
 	}
 }
-_problem False_Belief_Synthesis {
+_problem Block_Search {
 	_objects = {
 		container = [b1, b2, b3, b4]
 		object = [cr, ch]

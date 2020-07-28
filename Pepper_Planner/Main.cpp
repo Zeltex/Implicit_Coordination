@@ -180,8 +180,9 @@ int main(int argc, char* argv[]) {
 	//find_and_execute_policy();
 	//find_and_execute_policy_stack();
 	//false_belief_synthesis();
-	
-	find_and_execute("Block_Search.maepl");
+
+	//find_and_execute("Block_Search.maepl");
+	find_and_execute("Block_Search_Single.maepl");
 
 
 	return 0;
