@@ -10,8 +10,10 @@
 #include "Custom_Lexer.hpp"
 #include "Custom_Parser.hpp"
 
-class Loader {
-public:
-	void parse(Domain_Interface* domain, std::string file_path);
-private:
-};
+namespace del {
+    class Loader {
+    public:
+        void parse(Domain_Interface* domain, std::string file_path);
+    private:
+    };
+}

@@ -10,6 +10,8 @@
 #define VAR_KEYWORD			"_var"
 #define AGENT_STRING		"agent"
 
-struct Atom_Id;
+namespace del {
+    struct Atom_Id;
 
-using prop_array = std::array<Atom_Id, PROPOSITION_LENGTH>;
+    using prop_array = std::array<Atom_Id, PROPOSITION_LENGTH>;
+}

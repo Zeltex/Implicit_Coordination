@@ -3,61 +3,63 @@
 #include <vector>
 #include <string>
 
-struct Proposition {
-	Proposition(std::string name, std::vector<std::pair<std::string, std::string>> inputs) :
-		name(name), inputs(inputs) {}
-	std::string name;
-	std::vector<std::pair<std::string, std::string>> inputs;
-};
+namespace del {
+    struct Proposition {
+        Proposition(std::string name, std::vector<std::pair<std::string, std::string>> inputs) :
+                name(name), inputs(inputs) {}
+        std::string name;
+        std::vector<std::pair<std::string, std::string>> inputs;
+    };
 
-struct val {
-	val(size_t i) : ival(i), bval(false) {}
-	val(bool b) : ival(0), bval(b) {}
-	val(std::string s) : ival(0), sval(s), bval(false) {}
-	
-	size_t ival;
-	bool bval;
-	std::string sval;
-};
+    struct val {
+        val(size_t i) : ival(i), bval(false) {}
+        val(bool b) : ival(0), bval(b) {}
+        val(std::string s) : ival(0), sval(s), bval(false) {}
 
-enum class Token {
-	ACTION_DEF,
-	ANNOUNCE_DEF,
-	COST_DEF,
-	DEFINE_DEF,
-	DESIGNATED_EVENTS_DEF,
-	DESIGNATED_WORLDS_DEF,
-	DOMAIN_DEF,
-	EFFECT_ADD_DEF,
-	EFFECT_DELETE_DEF,
-	EVENT_DEF,
-	GOAL_DEF,
-	INIT_DEF,
-	OBJECTS_DEF,
-	OBSERVABILITY_DEF,
-	OWNER_DEF,
-	PERCEIVABILITY_DEF,
-	PRECONDITIONS_DEF,
-	PROBLEM_DEF,
-	PROPOSITIONS_DEF,
-	REACHABILITY_DEF,
-	REFLEXIVITY_DEF,
-	REST_DEF,
-	TYPES_DEF,
-	WORLD_DEF,
+        size_t ival;
+        bool bval;
+        std::string sval;
+    };
 
-	LBRACK,
-	RBRACK,
+    enum class Token {
+        ACTION_DEF,
+        ANNOUNCE_DEF,
+        COST_DEF,
+        DEFINE_DEF,
+        DESIGNATED_EVENTS_DEF,
+        DESIGNATED_WORLDS_DEF,
+        DOMAIN_DEF,
+        EFFECT_ADD_DEF,
+        EFFECT_DELETE_DEF,
+        EVENT_DEF,
+        GOAL_DEF,
+        INIT_DEF,
+        OBJECTS_DEF,
+        OBSERVABILITY_DEF,
+        OWNER_DEF,
+        PERCEIVABILITY_DEF,
+        PRECONDITIONS_DEF,
+        PROBLEM_DEF,
+        PROPOSITIONS_DEF,
+        REACHABILITY_DEF,
+        REFLEXIVITY_DEF,
+        REST_DEF,
+        TYPES_DEF,
+        WORLD_DEF,
 
-	AND,
-	OR,
-	NOT,
-	TOP,
-	BELIEVES,
+        LBRACK,
+        RBRACK,
 
-	INTEGER,
-	NAME,
-	TRUTH,
+        AND,
+        OR,
+        NOT,
+        TOP,
+        BELIEVES,
 
-	EQUALS,
-};
+        INTEGER,
+        NAME,
+        TRUTH,
+
+        EQUALS,
+    };
+}
