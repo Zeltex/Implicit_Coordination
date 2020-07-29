@@ -10,9 +10,6 @@ namespace del {
 		Node_Comparator history(graph.get_root_node());
 		std::vector<size_t> debug_layer_size(10);
 		while (!graph.is_frontier_empty()) {
-			if (debug_layer_size[7] > 0) { 
-				break; 
-			}
 			Node_Id current_node = graph.get_next_from_frontier();
 			action_library.load_actions(graph.get_node(current_node).get_state(), domain);
 
@@ -69,11 +66,13 @@ namespace del {
 		if (graph.get_root_node().is_dead()) {
 			PRINT_GRAPH_DOT(graph, domain);
 			PRINT_GRAPH(graph, domain);
+			std::cout << "No policy found\n";
 			return Policy(false);
 		}
 		if (graph.get_root_node().is_solved()) {
 			PRINT_GRAPH_DOT(graph, domain);
 			PRINT_GRAPH(graph, domain);
+			std::cout << "Policy found\n";
 			return extract_policy(graph);
 		}
 		return {};
