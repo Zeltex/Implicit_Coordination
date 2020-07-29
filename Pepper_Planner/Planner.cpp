@@ -54,7 +54,7 @@ namespace del {
 					}
 					history.insert(graph.get_node(global_agent_node));
 				}
-				check_node(graph, action_node);
+				check_node(graph, action_node, false);
 			}
 			check_node(graph, current_node);
 			auto policy = check_root(graph, domain);
@@ -79,8 +79,8 @@ namespace del {
 		return {};
 	}
 
-	void Planner::check_node(Graph& graph, Node_Id node) const {
-		if (graph.get_node(node).check_if_dead(graph)) {
+	void Planner::check_node(Graph& graph, Node_Id node, bool check_dead) const {
+		if (check_dead && graph.get_node(node).check_if_dead(graph)) {
 			propogate_dead_end_node(graph, node);
 		} else if (graph.get_node(node).check_if_solved(graph)) {
 			propogate_solved_node(graph, node);

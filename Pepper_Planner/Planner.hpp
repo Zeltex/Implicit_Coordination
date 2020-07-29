@@ -27,7 +27,7 @@ namespace del {
 		std::unordered_map<size_t, size_t> calculate_best_value(Graph& graph) const;
 		Policy calculate_policy(Graph& graph, const std::unordered_map<size_t, size_t>& best_value) const;
 		std::optional<Policy> check_root(Graph& graph, const Domain& domain) const;
-		void check_node(Graph& graph, Node_Id node) const;
+		void check_node(Graph& graph, Node_Id node, bool check_dead=true) const;
 		void propogate_dead_end_node(Graph& graph, Node_Id node) const;
 		void propogate_solved_node(Graph& graph, Node_Id node_id) const;
 		bool is_goal_node(const Node& node, const Formula& goal_formula) const;
