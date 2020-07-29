@@ -11,6 +11,10 @@ namespace del {
 		bool operator==(const Node_Id& other) const {
 			return this->id == other.id;
 		}
+
+        bool operator!=(const Node_Id& other) const {
+            return this->id != other.id;
+        }
 	};
 
 	struct Agent_Id {
@@ -19,6 +23,10 @@ namespace del {
 		bool operator==(const Agent_Id& other) const {
 			return this->id == other.id;
 		}
+
+        bool operator!=(const Agent_Id& other) const {
+            return this->id != other.id;
+        }
 	};
 
 	struct World_Id {
@@ -27,6 +35,10 @@ namespace del {
 		bool operator==(const World_Id& other) const {
 			return this->id == other.id;
 		}
+
+        bool operator!=(const World_Id& other) const {
+            return this->id != other.id;
+        }
 	};
 
 	struct Event_Id {
@@ -35,6 +47,10 @@ namespace del {
 		bool operator==(const Event_Id& other) const {
 			return this->id == other.id;
 		}
+
+        bool operator!=(const Event_Id& other) const {
+            return this->id != other.id;
+        }
 
 		Event_Id(size_t id) : id(id) {};
 		Event_Id(const Event_Id& other) :id(other.id) {}
