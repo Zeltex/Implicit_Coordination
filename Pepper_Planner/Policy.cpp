@@ -18,7 +18,7 @@ namespace del {
 			agent_states.push_back(std::move(temp));
 		}
 
-		int counter = 0;
+		int agent_counter = 0;
 		for (auto& hash : agent_hashes) {
 			while (true) {
 				auto potential_match = policy.find(hash);
@@ -27,17 +27,16 @@ namespace del {
 				}
 
 				auto& [policy_state, policy_actions] = (*potential_match).second;
-				if (are_states_bisimilar(policy_state, agent_states[counter])) {
+				if (are_states_bisimilar(policy_state, agent_states[agent_counter])) {
 					for (auto& policy_action : policy_actions) {
-						if (policy_action.get_owner() == preferred_agent) {
+						if (policy_action.get_owner().id == agent_counter) {
 							return policy_action;
 						}
 					}
-					return policy_actions.front();
 				}
 				++hash;
 			}
-			++counter;
+			++agent_counter;
 		}
 		return {};
 	}

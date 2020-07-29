@@ -5,6 +5,9 @@ Debug_Output/*.png
 Debug_Output/*.dot
 Debug_Output/*.svg
 Debug_Output/*.log
+Debug_Output/*.txt
+*/x64/
+x64/
 */Debug/
 */Release/
 Release/
