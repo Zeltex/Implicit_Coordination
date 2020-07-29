@@ -131,15 +131,15 @@ namespace del {
 						lowest_node = child;
 						found_node = true;
 					}
+					if (visited_and.find(child.id) != visited_and.end()) continue;
+					visited_and.insert(child.id);
+					frontier.push_back(child);
 				}
 				if (found_node) {
 					const auto& entry_state = graph.get_node(node_id).get_state();
 					const auto& entry_action = graph.get_node(lowest_node).get_parent_action(node_id);
 					add_policy_entry(policy, entry_state, entry_action);
 
-					if (visited_and.find(lowest_node.id) != visited_and.end()) continue;
-					visited_and.insert(lowest_node.id);
-					frontier.push_back(lowest_node);
 				}
 			}
 		}
