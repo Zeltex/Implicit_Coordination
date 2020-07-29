@@ -1,6 +1,7 @@
 #include <string>
 #include <iostream>
 #include <fstream>
+#include <set>
 
 #include "Core.hpp"
 #include "Graph.hpp"
@@ -43,6 +44,24 @@ namespace del {
 		action_file << "digraph G {\n" << action.to_graph("a", domain) << "}";
 		action_file.close();
 	}
+
+	void print_action_to_console(const Action& action, const Domain& domain) {
+		std::cout << "Performed action " << action.get_name() << " (" ;
+		if (action.get_name() == ANNOUNCE_NAME) {
+			std::cout << action.get_events().front().get_preconditions().to_string(domain.get_id_to_atom());
+		} else {
+			std::set<size_t> arg_set;
+			for (auto& entry : action.args) {
+				arg_set.insert(entry.first);
+			}
+			for (auto& entry : arg_set) {
+				std::cout << domain.get_atom_name(action.args.at(entry)) << " ";
+			}
+			std::cout << ")";
+		}
+		std::cout << "\n";
+	}
+
 	void print_state(const State& state, const Domain& domain, size_t counter) {
 		std::ofstream state_file;
 		state_file.open(DEBUG_PRINT_PATH + std::string("dot/State") + std::to_string(counter) + ".dot");

@@ -26,23 +26,13 @@ void execute(DEL_Interface& del_interface) {
 	while (!del_interface.is_solved()) {
 		Interface_DTO dto = del_interface.get_next_action();
 		if (dto.has_action()) {
-
 			del_interface.perform_action(dto.get_action());
-			std::cout << "Performed action " << dto.get_action().get_name();
-			for (auto& arg : dto.get_action().args) {
-				std::cout << "(" << arg.first << ":" << arg.second.id << ") ";
-			}
-			std::cout << std::endl;
 		} else {
 			std::cerr << "NO APPLIABLE ACTION" << std::endl;
 			std::cout << "-=-=- Fail -=-=-";
 			failed = true;
 			break;
 		}
-		// This was simply based on Pepper being action owner
-		//if (dto.get_announce_string() != "") {
-		//	std::cout << "ANNOUNCING: " << dto.get_announce_string() << std::endl;
-		//}
 	}
 	if (!failed) {
 		std::cout << "-=-=- Success -=-=-" << std::endl;
@@ -69,70 +59,6 @@ void find_and_execute(std::string file_name) {
 	execute(del_interface);
 }
 
-void false_belief_synthesis() {
-	auto time1 = std::chrono::high_resolution_clock::now();
-
-	DEL_Interface del_interface("../examples/False_Belief_Synthesis.maepl");
-
-	auto time2 = std::chrono::high_resolution_clock::now();
-	del_interface.create_policy();
-	auto time3 = std::chrono::high_resolution_clock::now();
-
-	auto elapsed1 = time2 - time1;
-	auto elapsed2 = time3 - time2;
-
-
-
-	std::cout << ".maepl load time " << (elapsed1.count() / 1000000) << "ms\n";
-	std::cout << "planning execution time " << (elapsed2.count() / 1000000) << "ms\n";
-
-	execute(del_interface);
-}
-
-void find_and_execute_policy_stack() {
-
-
-	auto time1 = std::chrono::high_resolution_clock::now();
-
-	DEL_Interface del_interface("../examples/stack.maepl");
-
-	auto time2 = std::chrono::high_resolution_clock::now();
-	del_interface.create_policy();
-	auto time3 = std::chrono::high_resolution_clock::now();
-
-	auto elapsed1 = time2 - time1;
-	auto elapsed2 = time3 - time2;
-
-
-
-	std::cout << ".maepl load time " << (elapsed1.count() / 1000000) << "ms\n";
-	std::cout << "planning execution time " << (elapsed2.count() / 1000000) << "ms\n";
-
-	execute(del_interface);
-}
-
-void find_and_execute_policy() {
-
-
-	auto time1 = std::chrono::high_resolution_clock::now();
-
-	DEL_Interface del_interface("../examples/simple.maepl");
-	
-	auto time2 = std::chrono::high_resolution_clock::now();
-	del_interface.create_policy();
-	auto time3 = std::chrono::high_resolution_clock::now();
-
-	auto elapsed1 = time2 - time1;
-	auto elapsed2 = time3 - time2;
-
-	
-
-	std::cout << ".maepl load time " << (elapsed1.count() / 1000000) << "ms\n";
-	std::cout << "planning execution time " << (elapsed2.count() / 1000000) << "ms\n";
-
-
-	execute(del_interface);
-}
 
 void execute_test_case() {
 	DEL_Interface del_interface("../examples/Sally_Anne.maepl");
@@ -168,20 +94,15 @@ void execute_second_order() {
 	}
 }
 
-void execute_second_order_seeing_is_believing() {
-
-}
-
 int main(int argc, char* argv[]) {
 	//execute_second_order();
 	//execute_test_case();
+	
 
-
-	//find_and_execute_policy();
-	//find_and_execute_policy_stack();
-	false_belief_synthesis();
-
-	//find_and_execute("Block_Search.maepl");
+	//find_and_execute("Simple.maepl");
+	//find_and_execute("Stack.maepl");
+	//find_and_execute("False_Belief_Synthesis.maepl");
+	find_and_execute("Block_Search.maepl");
 	//find_and_execute("Block_Search_Single.maepl");
 
 

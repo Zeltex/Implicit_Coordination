@@ -4,6 +4,7 @@ namespace del {
 #define PERCEIVES "perceives"
 #define OBSERVES "observes"
 #define ANNOUNCE_COST 100
+#define ANNOUNCE_NAME "Announce"
 #define BISIMILAR_DEPTH 5
 
 #ifndef DEBUG_PRINT_PATH
@@ -25,6 +26,7 @@ namespace del {
 	void print_graph_dot_partial(const Graph& graph, const Domain& domain);
 	void print_graph(const Graph& graph, const Domain& domain);
 	void print_action(const Action& action, const Domain& domain, size_t counter);
+	void print_action_to_console(const Action& action, const Domain& domain);
 	void print_state(const State& state, const Domain& domain, size_t counter);
 	void clear_action_state_dir();
 	void print_policy(const Policy& policy, const Domain& domain);
@@ -32,6 +34,7 @@ namespace del {
 	#define PRINT_POLICY(policy, domain) print_policy(policy, domain)
 	#define PRINT_GRAPH(graph, domain) print_graph(graph,domain)
 	#define PRINT_ACTION(action, domain, counter) print_action(action, domain, counter)
+	#define PRINT_ACTION_TO_CONSOLE(action, domain) print_action_to_console(action, domain)
 	#define PRINT_STATE(state, domain, counter) print_state(state, domain, counter)
 	#define CLEAR_ACTION_STATE_DIR() clear_action_state_dir()
 
