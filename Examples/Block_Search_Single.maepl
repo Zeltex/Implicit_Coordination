@@ -47,12 +47,12 @@ _problem Block_Search {
 	_world w1 [in(b2, ch), perceives(R, H), perceives(H, R), reachable(R, b1), reachable(R, b2), reachable(H, b3), reachable(H, b4)]
 	_world w2 [in(b3, ch), perceives(R, H), perceives(H, R), reachable(R, b1), reachable(R, b2), reachable(H, b3), reachable(H, b4)]
 	_world w3 [in(b4, ch), perceives(R, H), perceives(H, R), reachable(R, b1), reachable(R, b2), reachable(H, b3), reachable(H, b4)]
-	_goal = [ OR(	BELIEVES(H, in(b1, ch)),
-					BELIEVES(H, in(b2, ch)),
-					BELIEVES(H, in(b3, ch)),
-					BELIEVES(H, in(b4, ch))) ]
+	_goal = [ OR(	AND(in(b1,ch), BELIEVES(H, in(b1, ch))),
+					AND(in(b2,ch), BELIEVES(H, in(b2, ch))),
+					AND(in(b3,ch), BELIEVES(H, in(b3, ch))),
+					AND(in(b4,ch), BELIEVES(H, in(b4, ch)))) ]
 
-	_designated_worlds = [ w0 ]
+	_designated_worlds = [ w0, w1, w2, w3 ]
 	_reflexivity = false
 	_reachability = {
 		R = {

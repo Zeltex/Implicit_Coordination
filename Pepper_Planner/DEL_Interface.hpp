@@ -35,6 +35,9 @@ namespace del {
 
 		const std::unordered_map<std::string, Atom_Id>& get_proposition_context();
 		std::unordered_map<std::string, size_t> get_belief_context();
+
+        //TODO Temporary access to domain
+        Domain* get_domain() { return &domain; }
 	private:
 		Domain domain;
 		Planner planner;

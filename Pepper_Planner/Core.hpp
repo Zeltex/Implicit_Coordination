@@ -47,6 +47,7 @@ namespace del {
 #else
 	#define PRINT_POLICY(policy, domain) 
 	#define PRINT_ACTION(action, domain, counter) 
+	#define PRINT_ACTION_TO_CONSOLE(action, domain)
 	#define PRINT_STATE(state, domain, counter)
 	#define PRINT_GRAPH_DOT(graph, domain)
 	#define PRINT_GRAPH(graph, domain)

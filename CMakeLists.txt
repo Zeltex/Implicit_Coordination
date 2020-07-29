@@ -2,6 +2,7 @@ cmake_minimum_required (VERSION 2.8.11)
 project (PEPPER_PLANNER)
 
 set(CMAKE_CXX_STANDARD 17)
+add_definitions(-DDEBUG_PRINT -DPRINT_PARTIAL)
 
 
 file(GLOB PLANNER_SRCS Pepper_Planner/*.cpp)
