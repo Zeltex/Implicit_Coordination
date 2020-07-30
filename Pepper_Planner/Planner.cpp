@@ -233,9 +233,11 @@ namespace del {
 		}
 
 		std::deque<Node_Id> frontier;
+		std::unordered_set<size_t> visited;
 		auto& parents = node.get_parents();
 		for (auto& parent : parents) {
 			frontier.push_back(parent.first);
+			visited.insert(parent.first.id);
 		}
 
 		Node_Id current_node_id;
@@ -250,7 +252,10 @@ namespace del {
 				}
 				auto& parents = current_node.get_parents();
 				for (auto& parent : parents) {
-					frontier.push_back(parent.first);
+					if (visited.find(parent.first.id) == visited.end()) {
+						frontier.push_back(parent.first);
+						visited.insert(parent.first.id);
+					}
 				}
 			}
 		}
@@ -266,10 +271,13 @@ namespace del {
 		}
 
 		std::deque<Node_Id> frontier;
+		std::unordered_set<size_t> visited;
 		auto& parents = node.get_parents();
 		for (auto& parent : parents) {
 			frontier.push_back(parent.first);
+			visited.insert(parent.first.id);
 		}
+
 
 		Node_Id current_node_id;
 		while (!frontier.empty()) {
@@ -282,7 +290,10 @@ namespace del {
 				}
 				auto& parents = current_node.get_parents();
 				for (auto& parent : parents) {
-					frontier.push_back(parent.first);
+					if (visited.find(parent.first.id) == visited.end()) {
+						frontier.push_back(parent.first);
+						visited.insert(parent.first.id);
+					}
 				}
 			}
 		}
