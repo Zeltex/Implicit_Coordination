@@ -1,6 +1,6 @@
 _domain Pepper {
 	_announce_enabled = false
-	_types = [container, object, agent, agent_moveable]
+	_types = [container, object, agent, agent_moveable, agent_deceiver]
 	_propositions = [
 		in(container c, object o)
 		perceives(agent a1, agent a2)
@@ -99,14 +99,14 @@ _domain Pepper {
 			}
 		}
 	}
-	_action deceive (agent fool) {
+	_action deceive (agent fool, agent bystander) {
 	_cost = 100
-		_owner = agent agent
+		_owner = agent_deceiver agent
 		_designated_events = [event0]
 		_event event0 { 
 			_preconditions = ( TOP )
 			_effect_add = []
-			_effect_delete = [perceives(fool, agent), perceives(agent, fool), observes(fool, agent), observes(agent, fool)]
+			_effect_delete = [perceives(fool, agent), perceives(agent, fool), observes(fool, agent), observes(agent, fool), perceives(fool, bystander), perceives(bystander, fool), observes(fool, bystander), observes(bystander, fool)]
 		}
 		_event event2 {
 			_preconditions = ()
@@ -131,35 +131,24 @@ _problem False_Belief_Synthesis {
 		container = [P, L, b1, b2, b3, b4]
 		object = [red]
 		agent = [P, L, N]
-		agent_moveable = [P, L]
+		agent_moveable = [L]
+		agent_deceiver = [P]
 	}
 	_initial_state = [
 	]
 	_world w0 [in(b1, red), perceives(P, P), perceives(P, L), perceives(P, N), perceives(L, P), perceives(L, L), perceives(L, N), perceives(N, P), perceives(N, L), perceives(N, N)]
-	_world w1 [in(b2, red), perceives(P, P), perceives(P, L), perceives(P, N), perceives(L, P), perceives(L, L), perceives(L, N), perceives(N, P), perceives(N, L), perceives(N, N)]
-	_world w2 [in(b3, red), perceives(P, P), perceives(P, L), perceives(P, N), perceives(L, P), perceives(L, L), perceives(L, N), perceives(N, P), perceives(N, L), perceives(N, N)]
-	_world w3 [in(b4, red), perceives(P, P), perceives(P, L), perceives(P, N), perceives(L, P), perceives(L, L), perceives(L, N), perceives(N, P), perceives(N, L), perceives(N, N)]
-	_goal = [ AND(NOT(in(b1, red)), BELIEVES(N, in(b1, red))) ]
+	_goal = [ AND(in(b2, red), BELIEVES(N, in(b1, red))) ]
 	_designated_worlds = [ w1 ]
 	_reflexivity = false
 	_reachability = {
 		P = {
-		 (w0, w0) (w1, w0) (w2, w0) (w3, w0) 
-		 (w0, w1) (w1, w1) (w2, w1) (w3, w1) 
-		 (w0, w2) (w1, w2) (w2, w2) (w3, w2) 
-		 (w0, w3) (w1, w3) (w2, w3) (w3, w3)
+		 (w0, w0)
 		 }
 		L = {
-		 (w0, w0) (w1, w0) (w2, w0) (w3, w0) 
-		 (w0, w1) (w1, w1) (w2, w1) (w3, w1) 
-		 (w0, w2) (w1, w2) (w2, w2) (w3, w2) 
-		 (w0, w3) (w1, w3) (w2, w3) (w3, w3)
+		 (w0, w0)
 		 }
 		N = {
-		 (w0, w0) (w1, w0) (w2, w0) (w3, w0) 
-		 (w0, w1) (w1, w1) (w2, w1) (w3, w1) 
-		 (w0, w2) (w1, w2) (w2, w2) (w3, w2) 
-		 (w0, w3) (w1, w3) (w2, w3) (w3, w3)
+		 (w0, w0)
 		 }
 	}
 }
