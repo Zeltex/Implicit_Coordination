@@ -163,7 +163,7 @@ namespace del {
 				if (found_node) {
 					const auto& entry_state = graph.get_node(node_id).get_state();
 					const auto& entry_action = graph.get_node(lowest_node).get_parent_action(node_id);
-					add_policy_entry(policy, entry_state, entry_action);
+					add_policy_entry(policy, entry_state, entry_action, lowest_node);
 
 				}
 			}
@@ -171,10 +171,10 @@ namespace del {
 		return policy;
 	}
 
-	void Planner::add_policy_entry(Policy& policy, const State& state, const Action& action) const {
+	void Planner::add_policy_entry(Policy& policy, const State& state, const Action& action, const Node_Id& node_id) const {
 		const auto perspective_shifted = perform_perspective_shift(state, action.get_owner());
 		for (auto global : split_into_global_states(perspective_shifted, action.get_owner())) {
-			policy.add_entry(global, action);
+			policy.add_entry(global, action, node_id);
 		}
 	}
 

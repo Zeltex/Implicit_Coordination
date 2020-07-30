@@ -28,7 +28,7 @@ namespace del {
 
 				auto& [policy_state, policy_actions] = (*potential_match).second;
 				if (are_states_bisimilar(policy_state, agent_states[agent_counter])) {
-					for (auto& policy_action : policy_actions) {
+					for (auto& [policy_action, policy_node] : policy_actions) {
 						if (policy_action.get_owner().id == agent_counter) {
 							return policy_action;
 						}
@@ -41,18 +41,18 @@ namespace del {
 		return {};
 	}
 
-	void Policy::add_entry(const State& state, const Action& action) {
+	void Policy::add_entry(const State& state, const Action& action, const Node_Id& node_id) {
 		auto hash = state.to_hash();
 		while (true) {
 			auto potential_match = policy.find(hash);
 			if (potential_match == policy.end()) {
-				policy.insert({ hash, Policy_Entry{state, {action}} });
+				policy.insert({ hash, Policy_Entry{state, {{action, node_id}}} });
 				return;
 			}
 
 			auto& [policy_state, policy_actions] = (*potential_match).second;
 			if (are_states_bisimilar(policy_state, state)) {
-				policy_actions.push_back(action);
+				policy_actions.emplace_back(action, node_id);
 				return;
 			}
 			++hash;

@@ -66,7 +66,7 @@ _problem Block_Search {
 					BELIEVES(R, in(b3, cr)),
 					BELIEVES(R, in(b4, cr)))) ]
 
-	_designated_worlds = [ w11 ]
+	_designated_worlds = [ w0 ]
 	_reflexivity = false
 	_reachability = {
 		R = {
