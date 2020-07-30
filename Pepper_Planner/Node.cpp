@@ -201,7 +201,8 @@ namespace del {
 		}
 
 		result += ")";
-		result += "\n --- hash: " + std::to_string(hash);
+		result += "\n--- hash: " + std::to_string(hash);
+		result += "\n--- cost: " + std::to_string(state.get_cost());
 		for (auto& parent : parents) {
 			result += "\n--- Action from parent " + std::to_string(parent.first.id) + "\n" + (type == Node_Type::Or ? "Agent split, no action" : parent.second.to_string(domain)) + " \n";
 		}

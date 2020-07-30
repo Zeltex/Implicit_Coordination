@@ -35,6 +35,7 @@ namespace del {
 		bool is_valid_state(const State& state) const;
 		const std::vector<Agent>& get_all_agents(const Domain& domain) const;
 		const Action& get_next_action(const std::vector<Action>& normal_actions, const std::vector<Action>& announce_actions, size_t counter) const;
+		void print_debug_layer(const std::vector<size_t>& debug_or_layer_size, const std::vector<size_t>& debug_and_layer_size) const;
 
 	};
 }

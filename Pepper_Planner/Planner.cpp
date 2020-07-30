@@ -11,12 +11,8 @@ namespace del {
 		std::vector<size_t> debug_or_layer_size(15);
 		std::vector<size_t> debug_and_layer_size(15);
 		while (!graph.is_frontier_empty()) {
-#if DEBUG_PRINT == 1
-			std::string debug_print;
-			for (size_t i = 0; i < debug_or_layer_size.size(); ++i) {
-				debug_print += std::to_string(i) + "(" + std::to_string(debug_and_layer_size.at(i)) + ", " + std::to_string(debug_or_layer_size.at(i)) + ") ";
-			}
-			std::cout << debug_print << "\n";
+#if DEBUG_PRINT == 1 && PRINT_PARTIAL == 0
+			print_debug_layer(debug_or_layer_size, debug_and_layer_size);
 #endif
 
 			Node_Id current_node = graph.get_next_from_frontier();
@@ -68,11 +64,27 @@ namespace del {
 			}
 			check_node(graph, current_node);
 			auto policy = check_root(graph, domain);
-			if (policy.has_value()) return policy.value();
+			if (policy.has_value()) {
+#if DEBUG_PRINT == 1
+				print_debug_layer(debug_or_layer_size, debug_and_layer_size);
+#endif
+				return policy.value();
+			}
 		}
+#if DEBUG_PRINT == 1
+		print_debug_layer(debug_or_layer_size, debug_and_layer_size);
+#endif
 		PRINT_GRAPH(graph, domain);
 		PRINT_GRAPH_DOT(graph, domain);
 		return Policy(false);
+	}
+
+	void Planner::print_debug_layer(const std::vector<size_t>& debug_or_layer_size, const std::vector<size_t>& debug_and_layer_size) const {
+		std::string debug_print;
+		for (size_t i = 0; i < debug_or_layer_size.size(); ++i) {
+			debug_print += std::to_string(i) + "(" + std::to_string(debug_and_layer_size.at(i)) + ", " + std::to_string(debug_or_layer_size.at(i)) + ") ";
+		}
+		std::cout << debug_print << "\n";
 	}
 
 	std::optional<Policy> Planner::check_root(Graph& graph, const Domain& domain) const {
@@ -176,14 +188,14 @@ namespace del {
 		// TODO - Could add these by top down traversal to avoid adding unreachable leafs
 		for (auto& node : graph.get_nodes()) {
 			if (node.get_children().empty()) {
-				frontier.push({ node.get_id(), node.get_cost() });
-				best_value.insert({ node.get_id().id, node.get_cost() });
+				frontier.push({ node.get_id(), 0 });
+				best_value.insert({ node.get_id().id, 0 });
 			}
 		}
 
 		while (!frontier.empty()) {
-			auto node_entry = frontier.top();
-			auto& node = graph.get_node(node_entry.id);
+			auto& [node_id, node_cost] = frontier.top();
+			auto& node = graph.get_node(node_id);
 			frontier.pop();
 
 			for (auto& [parent_id, action] : node.get_parents()) {
@@ -192,19 +204,20 @@ namespace del {
 				++children_visited[parent_id.id];
 				auto& parent = graph.get_node(parent_id);
 				if (parent.get_type() == Node_Type::Or) {
+					auto new_node_cost = node_cost + action.get_cost();
 					if (best_value.find(parent_id.id) == best_value.end()) {
-						best_value.insert({ parent_id.id, node_entry.cost });
-						frontier.push({ parent_id, node_entry.cost });
-					} else if (node_entry.cost < best_value.at(parent_id.id)) {
-						best_value[parent_id.id] = node_entry.cost;
-						frontier.push({ parent_id, node_entry.cost });
-						std::cerr << "Found node with better value in incorrect order " << node_entry.id.id << " " << node_entry.cost << std::endl;
+						best_value.insert({ parent_id.id, new_node_cost });
+						frontier.push({ parent_id, new_node_cost });
+					} else if (new_node_cost < best_value.at(parent_id.id)) {
+						best_value[parent_id.id] = new_node_cost;
+						frontier.push({ parent_id, new_node_cost });
+						std::cerr << "Found node with better value in incorrect order " << node_id.id << " " << new_node_cost << std::endl;
 					}
 				} else {
 					if (best_value.find(parent_id.id) == best_value.end()) {
-						best_value.insert({ parent_id.id, node_entry.cost });
-					} else if (node_entry.cost > best_value.at(parent_id.id)) {
-						best_value[parent_id.id] = node_entry.cost;
+						best_value.insert({ parent_id.id, node_cost });
+					} else if (node_cost > best_value.at(parent_id.id)) {
+						best_value[parent_id.id] = node_cost;
 					}
 					if (children_visited.at(parent_id.id) == parent.get_children().size()) {
 						frontier.push({ parent_id, best_value[parent_id.id] });
