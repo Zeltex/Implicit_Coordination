@@ -60,7 +60,7 @@ namespace del {
 		std::unordered_map<std::string, std::unordered_set<size_t>> objects;
 		std::unordered_map<std::string, Atom_Id> atom_to_id;
 		std::unordered_map<size_t, std::string> id_to_atom;
-#ifdef DEBUG_PRINT
+#if DEBUG_PRINT == 1
 		size_t debug_counter = 0;
 #endif
 	};

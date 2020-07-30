@@ -8,8 +8,17 @@ namespace del {
 		constexpr size_t initial_node_size = 10000;
 		Graph graph(initial_node_size, initial_state);
 		Node_Comparator history(graph.get_root_node());
-		std::vector<size_t> debug_layer_size(10);
+		std::vector<size_t> debug_or_layer_size(15);
+		std::vector<size_t> debug_and_layer_size(15);
 		while (!graph.is_frontier_empty()) {
+#if DEBUG_PRINT == 1
+			std::string debug_print;
+			for (size_t i = 0; i < debug_or_layer_size.size(); ++i) {
+				debug_print += std::to_string(i) + "(" + std::to_string(debug_and_layer_size.at(i)) + ", " + std::to_string(debug_or_layer_size.at(i)) + ") ";
+			}
+			std::cout << debug_print << "\n";
+#endif
+
 			Node_Id current_node = graph.get_next_from_frontier();
 			action_library.load_actions(graph.get_node(current_node).get_state(), domain);
 
@@ -19,19 +28,23 @@ namespace del {
 				if (!is_action_applicable(state_perspective_shift, action)) {
 					continue;
 				}
-				State temp_state = perform_product_update(state_perspective_shift, action, agents);
-				State state_product_update = std::move(perform_k_bisimilar_contraction(std::move(temp_state), BISIMILAR_DEPTH));
-
+				State state_product_update = perform_product_update(state_perspective_shift, action, agents);
+#if BISIM_CONTRACTION_ENABLED == 1
+				state_product_update = std::move(perform_k_bisimilar_contraction(std::move(state_product_update), BISIMILAR_DEPTH));
+#endif
+#if BISIM_COMPARISON_ENABLED == 1
 				auto [bisim_exists, child_node_id] = history.does_bisimilar_exist_and(graph, state_product_update, current_node);
 				if (child_node_id.has_value()) graph.set_parent_child(current_node, child_node_id.value(), action);
 				if (bisim_exists) continue;
-				
+#endif
 				Node_Id action_node = graph.create_and_node(state_product_update, current_node, action);
 				history.insert(graph.get_node(action_node));
 				std::vector<State> global_states = split_into_global_states(state_product_update, action.get_owner());
+				debug_and_layer_size[state_product_update.get_cost() / 100] ++;
 
 				for (State& global_state : global_states) {
 
+#if BISIM_COMPARISON_ENABLED == 1
 					auto [bisim_exists, child_node_id] = history.does_bisimilar_exist_or(graph, global_state, action_node);
 					if (child_node_id.has_value()) graph.set_parent_child(action_node, child_node_id.value(), action);
 					if (bisim_exists) {
@@ -41,8 +54,8 @@ namespace del {
 						}
 						continue;
 					}
-
-					debug_layer_size[global_state.get_cost() / 100] ++;
+#endif
+					debug_or_layer_size[global_state.get_cost() / 100] ++;
 					Node_Id global_agent_node = graph.create_or_node(global_state, action_node);
 					if (is_goal_node(graph.get_node(global_agent_node), goal_formula)) {
 						graph.get_node(global_agent_node).set_solved();
@@ -185,7 +198,7 @@ namespace del {
 					} else if (node_entry.cost < best_value.at(parent_id.id)) {
 						best_value[parent_id.id] = node_entry.cost;
 						frontier.push({ parent_id, node_entry.cost });
-						std::cout << "Found node with better value in incorrect order " << node_entry.id.id << " " << node_entry.cost << std::endl;
+						std::cerr << "Found node with better value in incorrect order " << node_entry.id.id << " " << node_entry.cost << std::endl;
 					}
 				} else {
 					if (best_value.find(parent_id.id) == best_value.end()) {

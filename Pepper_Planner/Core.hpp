@@ -1,6 +1,21 @@
 #pragma once
 namespace del {
 
+
+// Planner options
+#ifndef BISIM_COMPARISON_ENABLED 
+	#define BISIM_COMPARISON_ENABLED 1 
+#endif
+#ifndef BISIM_CONTRACTION_ENABLED
+	#define BISIM_CONTRACTION_ENABLED 1
+#endif
+#ifndef DEBUG_PRINT 
+	#define DEBUG_PRINT 1
+#endif
+#ifndef PRINT_PARTIAL
+	#define PRINT_PARTIAL 1
+#endif
+
 #define PERCEIVES "perceives"
 #define OBSERVES "observes"
 #define ANNOUNCE_COST 100
@@ -12,7 +27,7 @@ namespace del {
 #endif
 
 
-#ifdef DEBUG_PRINT
+#if DEBUG_PRINT == 1
 
 	class Action;
 	class Agent;
@@ -38,7 +53,7 @@ namespace del {
 	#define PRINT_STATE(state, domain, counter) print_state(state, domain, counter)
 	#define CLEAR_ACTION_STATE_DIR() clear_action_state_dir()
 
-	#ifdef PRINT_PARTIAL
+	#if PRINT_PARTIAL == 1
 		//#define PRINT_GRAPH_DOT(graph, domain) print_graph_dot_simple(graph,domain);print_graph_dot_partial(graph,domain)
 		#define PRINT_GRAPH_DOT(graph, domain) print_graph_dot_simple(graph,domain)
 	#else
@@ -47,6 +62,7 @@ namespace del {
 #else
 	#define PRINT_POLICY(policy, domain) 
 	#define PRINT_ACTION(action, domain, counter) 
+	#define PRINT_ACTION_TO_CONSOLE(action, domain)
 	#define PRINT_STATE(state, domain, counter)
 	#define PRINT_GRAPH_DOT(graph, domain)
 	#define PRINT_GRAPH(graph, domain)
