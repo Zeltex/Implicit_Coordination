@@ -3,6 +3,7 @@
 #include "DEL_Operations.hpp"
 #include "Graph.hpp"
 #include "Node.hpp"
+#include "Core.hpp"
 
 namespace del {
 
@@ -11,13 +12,25 @@ namespace del {
 	}
 
 	std::pair<bool, std::optional<Node_Id>> Node_Comparator::does_bisimilar_exist_and(const Graph& graph, const State& state, Node_Id parent_id) const {
+#if ON_PATH_ENABLED == 1
 		if (is_bisimilar_on_path(graph, parent_id, state)) return { true, {} };
+#endif
+#if BISIM_COMPARISON_ENABLED == 1
 		return does_bisimilar_exist(graph, state, visited_and);
+#else
+		return { false, {} };
+#endif
 	}
 
 	std::pair<bool, std::optional<Node_Id>> Node_Comparator::does_bisimilar_exist_or(const Graph& graph, const State& state, Node_Id parent_id) const{
+#if ON_PATH_ENABLED == 1
 		if (is_bisimilar_on_path(graph, parent_id, state)) return { true, {} };
+#endif
+#if BISIM_COMPARISON_ENABLED == 1
 		return does_bisimilar_exist(graph, state, visited_or);
+#else
+		return { false, {} };
+#endif
 	}
 
 	std::pair<bool, std::optional<Node_Id>> Node_Comparator::does_bisimilar_exist(const Graph& graph, const State& state, const std::unordered_map<size_t, Node_Id>& visited) const {

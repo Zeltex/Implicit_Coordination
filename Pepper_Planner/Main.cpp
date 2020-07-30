@@ -102,8 +102,8 @@ int main(int argc, char* argv[]) {
 	//find_and_execute("Simple.maepl");
 	//find_and_execute("Stack.maepl");
 	//find_and_execute("False_Belief_Synthesis.maepl");
-	//find_and_execute("Block_Search.maepl");
-	find_and_execute("Block_Search_Single.maepl");
+	find_and_execute("Block_Search.maepl");
+	//find_and_execute("Block_Search_Single.maepl");
 
 
 	return 0;
