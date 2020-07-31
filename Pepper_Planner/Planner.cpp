@@ -182,6 +182,7 @@ namespace del {
 		std::unordered_map<size_t, size_t> children_visited;
 
 		// TODO - Could add these by top down traversal to avoid adding unreachable leafs
+		// This would also allow to only add an or-node to frontier when all its children have been visited
 		for (auto& node : graph.get_nodes()) {
 			if (node.get_children().empty()) {
 				frontier.push({ node.get_id(), 0 });

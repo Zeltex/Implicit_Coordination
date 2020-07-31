@@ -257,38 +257,14 @@ namespace del {
 			++block_counter;
 		}
 
-		// Initialise frontier
-		std::unordered_set<size_t> visited;
-		visited.reserve(state.get_worlds_count());
-		std::deque<std::pair<size_t, size_t>> frontier;
-		for (const auto& world : state.get_designated_worlds()) {
-			frontier.push_back({ world.id, 0});
-			visited.insert(world.id);
-		}
-		
-		// Get valuation partitions
-		while (!frontier.empty()) {
-
-			// Handle frontier/visited
-			auto [current_world, depth] = frontier.front();
-			frontier.pop_front();
-
+		for (const auto& world : state.get_worlds()) {
 			// Set block/world mapping
-			std::string valuation = convert_propositions_to_string(state.get_world({ current_world }).get_true_propositions());
-			blocks[valuation_to_block[valuation]].push_back({ current_world });
-			world_to_block[current_world] = valuation_to_block[valuation];
-
-			// Add children to frontier
-			for (auto& agent_entry : relations[current_world]) {
-				for (auto& world_to : agent_entry) {
-					if (visited.find(world_to) == visited.end()) {
-						frontier.push_back({ world_to, depth + 1 });
-						visited.insert(world_to);
-					}
-				}
-			}
-
+			std::string valuation = convert_propositions_to_string(world.get_true_propositions());
+			blocks[valuation_to_block[valuation]].push_back(world.get_id());
+			world_to_block[world.get_id().id] = valuation_to_block[valuation];
 		}
+
+
 		partition_into_relations_blocks_contraction(relations);
 
 
@@ -296,57 +272,36 @@ namespace del {
 		result.set_cost(state.get_cost());
 		std::unordered_map<size_t, World_Id> block_to_new_world;
 
-		// Limit to k depth
-		frontier.clear();
-		visited.clear();
-		std::unordered_set<size_t> temp_blocks_visited;
-		std::vector<std::vector<std::set<size_t>>> new_relations(state.get_number_of_agents(), std::vector<std::set<size_t>>(state.get_worlds_count()));
-		for (auto& designated_world : state.get_designated_worlds()) {
-			auto& temp_block = world_to_block[designated_world.id];
-			if (visited.find(temp_block) == visited.end()) {
-				visited.insert(temp_block);
-				frontier.push_back({ temp_block, 0 });
-			}
-		}
-		while (!frontier.empty()) {
+		std::vector<std::vector<std::set<size_t>>> block_relations(state.get_number_of_agents(), std::vector<std::set<size_t>>(state.get_worlds_count()));
 
-			// Handle frontier/visited
-			auto [current_block, depth] = frontier.front();
-			frontier.pop_front();
-			const auto& current_old_world = blocks[current_block][0];
-
-			// Add children to frontier
-			if (depth < k) {
-				size_t agent = 0;
-				for (auto& agent_entry : relations[current_old_world.id]) {
-					for (auto& old_world_to : agent_entry) {
-						auto block_to = world_to_block[old_world_to];
-						if (visited.find(block_to) == visited.end()) {
-							frontier.push_back({ block_to, depth + 1 });
-							visited.insert(block_to);
-						}
-						new_relations[agent][current_block].insert(block_to);
-					}
-					agent++;
+		// Create block relations
+		size_t old_world = 0;
+		for (auto& old_world_entry : relations) {
+			size_t agent = 0;
+			size_t block_from = world_to_block[old_world];
+			for (auto& agent_entry : old_world_entry.second) {
+				for (auto& old_world_to : agent_entry) {
+					auto block_to = world_to_block[old_world_to];
+					block_relations[agent][block_from].insert(block_to);
 				}
+				++agent;
 			}
+			++old_world;
 		}
 
 		// Create new worlds
-		std::vector<size_t> visited_vector(visited.begin(), visited.end());
-		std::sort(visited_vector.begin(), visited_vector.end());
-		for (auto& block : visited_vector) {
+		for (size_t block = 0; block < this->blocks.size(); ++block) {
 			auto& world = result.create_world();
 			block_to_new_world[block] = world.get_id();
 			world.add_true_propositions(state.get_world(blocks[block][0]).get_true_propositions());
 		}
 
-		// Create new relations
-		size_t agent_size = new_relations.size();
+		// Create new world relations
+		size_t agent_size = block_relations.size();
 		for (size_t agent = 0; agent < agent_size; ++agent) {
-			size_t from_size = new_relations[agent].size();
+			size_t from_size = block_relations[agent].size();
 			for (size_t block_from = 0; block_from < from_size; ++block_from) {
-				for (auto& block_to : new_relations[agent][block_from]) {
+				for (auto& block_to : block_relations[agent][block_from]) {
 					auto& world_from = block_to_new_world[block_from];
 					auto& world_to = block_to_new_world[block_to];
 
@@ -356,7 +311,8 @@ namespace del {
 		}
 
 		// Set designated worlds
-		visited.clear();
+		std::unordered_set<size_t> visited;
+		visited.reserve(state.get_designated_worlds_count());
 		for (auto& designated_world : state.get_designated_worlds()) {
 			auto& block = world_to_block[designated_world.id];
 			auto& world = block_to_new_world[block];
