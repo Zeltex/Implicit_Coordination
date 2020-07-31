@@ -225,6 +225,9 @@ namespace del {
 
 		// [world_from][agent][world_to]
 		std::unordered_map <size_t, std::vector<std::vector<size_t>>> relations;
+		for (size_t i = 0; i < state.get_worlds_count(); ++i) {
+			relations[i] = std::vector < std::vector<size_t>>(state.get_number_of_agents());
+		}
 		size_t agent = 0;
 		for (auto& relation : state.get_indistinguishability_relations()) {
 			for (auto& entry : relation) {
