@@ -83,7 +83,9 @@ namespace del {
 		for (auto designated_world : state.get_designated_worlds()) {
 			State new_state = State(state);
 			new_state.set_single_designated_world(designated_world);
+#if REMOVE_UNREACHABLE_WORLDS_ENABLED == 1
 			new_state.remove_unreachable_worlds();
+#endif
 			result.push_back(std::move(new_state));
 		}
 		return result;
