@@ -3,6 +3,7 @@ namespace del {
 
 
 #if 0
+#define REMOVE_UNREACHABLE_WORLDS_ENABLED 1
 #define ON_PATH_ENABLED 1
 #define BISIM_COMPARISON_ENABLED 1
 #define BISIM_CONTRACTION_ENABLED 1
@@ -11,20 +12,23 @@ namespace del {
 #endif
 
 // Planner options
+#ifndef REMOVE_UNREACHABLE_WORLDS_ENABLED
+#define REMOVE_UNREACHABLE_WORLDS_ENABLED 1
+#endif
 #ifndef ON_PATH_ENABLED
-	#define ON_PATH_ENABLED 1
+#define ON_PATH_ENABLED 0
 #endif
 #ifndef BISIM_COMPARISON_ENABLED 
-	#define BISIM_COMPARISON_ENABLED 0 
+#define BISIM_COMPARISON_ENABLED 1
 #endif
 #ifndef BISIM_CONTRACTION_ENABLED
-	#define BISIM_CONTRACTION_ENABLED 0
+#define BISIM_CONTRACTION_ENABLED 0
 #endif
 #ifndef DEBUG_PRINT 
-	#define DEBUG_PRINT 1
+#define DEBUG_PRINT 1
 #endif
 #ifndef PRINT_PARTIAL
-	#define PRINT_PARTIAL 0
+#define PRINT_PARTIAL 0
 #endif
 
 #define PERCEIVES "perceives"

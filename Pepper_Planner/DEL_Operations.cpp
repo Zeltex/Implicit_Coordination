@@ -1,4 +1,5 @@
 #include "DEL_Operations.hpp"
+#include "Core.hpp"
 
 namespace del {
 
@@ -39,7 +40,9 @@ namespace del {
 			}
 		}
 		result.copy_perceivability_and_observability(state);
+#if REMOVE_UNREACHABLE_WORLDS_ENABLED == 1
 		result.remove_unreachable_worlds();
+#endif
 		return std::move(result);
 	}
 	// Using definition: All states reachable by 'agent' from any designated world, 
