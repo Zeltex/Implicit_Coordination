@@ -28,7 +28,7 @@ namespace del {
 		const std::vector<Agent>& get_agents() const;
 		const std::unordered_set<std::string>& get_atom_types() const;
 		const std::unordered_set<size_t>& get_all_atoms_of_type(std::string type) const;
-		Agent_Id get_agent_id(std::string name) const;
+		Agent_Id get_agent_id(const std::string& name) const;
 		Agent_Id get_agent_id(Atom_Id atom_id) const;
 		const Agent& get_agent(const std::string& name) const;
 		const Agent& get_agent(const Agent_Id& id) const;

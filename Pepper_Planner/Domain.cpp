@@ -135,7 +135,7 @@ namespace del {
 	const Agent& Domain::get_agent(const Agent_Id& id) const {
 		if (id.id > agents.size()) {
 		// TODO - Handle this
-			std::cerr << "No agent with name: " << name << "\n";
+			std::cerr << "No agent with id: " << id.id << "\n";
 			exit(-1);
 		} else {
 			return agents[id.id];
@@ -155,7 +155,7 @@ namespace del {
 	}
 
 	// TODO - Optimise
-	Agent_Id Domain::get_agent_id(std::string name) const {
+	Agent_Id Domain::get_agent_id(const std::string& name) const {
 		for (auto& entry : agents) {
 			if (entry.get_name() == name) {
 				return entry.get_id();
