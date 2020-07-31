@@ -1,5 +1,6 @@
 #include "Planner.hpp"
 #include "Node_Comparator.hpp"
+#include "Memory.hpp"
 
 namespace del {
 
@@ -62,12 +63,14 @@ namespace del {
 			auto policy = check_root(graph, domain);
 			if (policy.has_value()) {
 #if DEBUG_PRINT == 1
+				report_memory_usage();
 				print_debug_layer(debug_or_layer_size, debug_and_layer_size);
 #endif
 				return policy.value();
 			}
 		}
 #if DEBUG_PRINT == 1
+		report_memory_usage();
 		print_debug_layer(debug_or_layer_size, debug_and_layer_size);
 #endif
 		PRINT_GRAPH(graph, domain);
