@@ -278,10 +278,9 @@ namespace del {
 		std::vector<std::vector<std::set<size_t>>> block_relations(state.get_number_of_agents(), std::vector<std::set<size_t>>(state.get_worlds_count()));
 
 		// Create block relations
-		size_t old_world = 0;
 		for (auto& old_world_entry : relations) {
 			size_t agent = 0;
-			size_t block_from = world_to_block[old_world];
+			size_t block_from = world_to_block[old_world_entry.first];
 			for (auto& agent_entry : old_world_entry.second) {
 				for (auto& old_world_to : agent_entry) {
 					auto block_to = world_to_block[old_world_to];
@@ -289,7 +288,6 @@ namespace del {
 				}
 				++agent;
 			}
-			++old_world;
 		}
 
 		// Create new worlds
