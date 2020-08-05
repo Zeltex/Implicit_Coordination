@@ -348,7 +348,7 @@ namespace del {
 					new_block.emplace_back(signature);
 				} else {
 					blocks_to_be_created.push_back(std::move(new_block));
-					new_block = {};
+					new_block = { signature };
 				}
 			}
 			++block_counter;
