@@ -11,8 +11,8 @@
 namespace del {
 
 	struct Signature {
-		Signature(const size_t& index_in_block, const World_Id& world, const std::vector<std::vector<size_t>>& relations, size_t agents_size, size_t worlds_size):
-			world(world), data(agents_size* worlds_size, 0), index_in_block(index_in_block) {
+		Signature(const size_t& index_of_block, const size_t& index_in_block, const World_Id& world, const std::vector<std::vector<size_t>>& relations, size_t agents_size, size_t worlds_size):
+			index_of_block(index_of_block), world(world), data(agents_size* worlds_size, 0), index_in_block(index_in_block) {
 			if (relations.empty()) return;
 			for (size_t i = 0; i < relations.size(); ++i) {
 				for (auto& world_entry : relations.at(i)) {
@@ -20,6 +20,27 @@ namespace del {
 				}
 			}
 		}
+
+		bool operator==(const Signature& other) {
+			if (this->data.size() != other.data.size()) return false;
+			for (size_t i = 0; i < this->data.size(); ++i) {
+				if (this->data.at(i) != other.data.at(i)) return false;
+			}
+			return true;
+		}
+
+		bool operator<(const Signature& other) {
+			if (this->data.size() < other.data.size()) return true;
+			else if (this->data.size() > other.data.size()) return false;
+
+			for (size_t i = 0; i < this->data.size(); ++i) {
+				if (this->data.at(i) && !other.data.at(i)) return false;
+				if (!this->data.at(i) && other.data.at(i)) return true;
+			}
+			return false;
+		}
+
+		size_t index_of_block;
 		size_t index_in_block;
 		World_Id world;
 		std::vector<bool> data;
@@ -34,7 +55,7 @@ namespace del {
 		void create_merged_relations_list();
 		void partition_into_valuation_blocks();
 		void partition_into_relations_blocks();
-		void partition_into_relations_blocks_contraction(const std::unordered_map <size_t, std::vector<std::vector<size_t>>>& relations);
+		void partition_into_relations_blocks_contraction(const std::unordered_map <size_t, std::vector<std::vector<size_t>>>& relations, size_t agents_size, size_t worlds_size);
 		bool are_relations_equal(std::vector<size_t> original_relations1, std::vector<size_t> original_relations2);
 		void move_worlds_to_new_block(const std::vector<World_Id>& worlds_to_be_moved);
 		bool is_bisimilar();

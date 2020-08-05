@@ -268,7 +268,7 @@ namespace del {
 		}
 
 
-		partition_into_relations_blocks_contraction(relations);
+		partition_into_relations_blocks_contraction(relations, state.get_number_of_agents(), state.get_worlds_count());
 
 
 		State result(state.get_number_of_agents());
@@ -325,52 +325,55 @@ namespace del {
 		return result;
 	}
 
-	void Bisimulation_Context::partition_into_relations_blocks_contraction(const std::unordered_map <size_t, std::vector<std::vector<size_t>>>& relations) {
-		bool blocks_changed = false;
-		std::vector<std::vector<World_Id>> worlds_to_be_moved(this->blocks.size());
-		std::vector<std::vector<size_t>> index_to_be_erased(this->blocks.size());
+	void Bisimulation_Context::partition_into_relations_blocks_contraction(const std::unordered_map <size_t, std::vector<std::vector<size_t>>>& relations, size_t agents_size, size_t worlds_size) {
 		size_t block_counter = 0;
+		std::vector<std::vector<Signature>> blocks_to_be_created;
 
-		std::vector<std::vector<World_Id>> blocks_to_be_created;
-
-		// todo
-		size_t agents_size = 0;
-		size_t worlds_size = 0;
 
 		for (auto& block : this->blocks) {
+
+			// Record signatures
 			std::vector<Signature> signatures;
 			size_t counter_entry = 0;
 			for (auto& block_entry : block) {
-				signatures.emplace_back(counter_entry, block_entry.id, (*relations.find(block_entry.id)).second, agents_size, worlds_size);
-				if (counter_entry != 0) {
-					size_t agent = 0;
-
-					// TODO - Is skipping empty entries, but should probably check those too
-					for (auto& agent_entry : (*agent_entries).second) {
-						if (!are_relations_equal(relations.at(base_world)[agent], agent_entry)) {
-							worlds_to_be_moved[block_counter].push_back(block_entry);
-							index_to_be_erased[block_counter].push_back(counter_entry);
-							blocks_changed = true;
-							break;
-
-						}
-						agent++;
-					}
-				}
+				signatures.emplace_back(block_counter, counter_entry, block_entry, (*relations.find(block_entry.id)).second, agents_size, worlds_size);
 				counter_entry++;
 			}
-			block_counter++;
-		}
-		for (size_t i = 0; i < index_to_be_erased.size(); i++) {
-			for (auto j = index_to_be_erased[i].rbegin(); j != index_to_be_erased[i].rend(); j++) {
-				this->blocks[i].erase(this->blocks[i].begin() + *j);
+			std::sort(signatures.begin(), signatures.end());
+
+			// Note blocks to be created
+			std::vector<Signature> new_block;
+			for (auto& signature : signatures) {
+				if (new_block.empty() || new_block.at(0) == signature) {
+					new_block.emplace_back(signature);
+				} else {
+					blocks_to_be_created.push_back(std::move(new_block));
+					new_block = {};
+				}
 			}
-			if (!worlds_to_be_moved[i].empty()) {
-				move_worlds_to_new_block(worlds_to_be_moved[i]);
+			++block_counter;
+		}
+
+		// Erase worlds from existing blocks
+		for (auto block_it = blocks_to_be_created.rbegin(); block_it != blocks_to_be_created.rend(); ++block_it) {
+			for (auto block_entry_it = (*block_it).rbegin(); block_entry_it != (*block_it).rend(); ++block_entry_it) {
+				auto& temp_block = this->blocks.at((*block_entry_it).index_of_block);
+				temp_block.erase(temp_block.begin() + (*block_entry_it).index_in_block);
 			}
 		}
-		if (blocks_changed) {
-			partition_into_relations_blocks_contraction(relations);
+
+		// Create new blocks
+		for (auto& block : blocks_to_be_created) {
+			this->blocks.emplace_back();
+			for (auto& block_entry : block) {
+				blocks.back().push_back(block_entry.world);
+				world_to_block[block_entry.world.id] = blocks.size() - 1;
+			}
+		}
+
+		// Recurse
+		if (!blocks_to_be_created.empty()) {
+			partition_into_relations_blocks_contraction(relations, agents_size, worlds_size);
 		}
 	}
 
