@@ -330,13 +330,20 @@ namespace del {
 		std::vector<std::vector<World_Id>> worlds_to_be_moved(this->blocks.size());
 		std::vector<std::vector<size_t>> index_to_be_erased(this->blocks.size());
 		size_t block_counter = 0;
+
+		std::vector<std::vector<World_Id>> blocks_to_be_created;
+
+		// todo
+		size_t agents_size = 0;
+		size_t worlds_size = 0;
+
 		for (auto& block : this->blocks) {
-			size_t base_world = block[0].id;
+			std::vector<Signature> signatures;
 			size_t counter_entry = 0;
 			for (auto& block_entry : block) {
+				signatures.emplace_back(counter_entry, block_entry.id, (*relations.find(block_entry.id)).second, agents_size, worlds_size);
 				if (counter_entry != 0) {
 					size_t agent = 0;
-					auto agent_entries = relations.find(block_entry.id);
 
 					// TODO - Is skipping empty entries, but should probably check those too
 					for (auto& agent_entry : (*agent_entries).second) {

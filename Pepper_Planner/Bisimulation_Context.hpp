@@ -9,6 +9,22 @@
 #include "Types.hpp"
 
 namespace del {
+
+	struct Signature {
+		Signature(const size_t& index_in_block, const World_Id& world, const std::vector<std::vector<size_t>>& relations, size_t agents_size, size_t worlds_size):
+			world(world), data(agents_size* worlds_size, 0), index_in_block(index_in_block) {
+			if (relations.empty()) return;
+			for (size_t i = 0; i < relations.size(); ++i) {
+				for (auto& world_entry : relations.at(i)) {
+					data.at(i * worlds_size + world_entry) = true;
+				}
+			}
+		}
+		size_t index_in_block;
+		World_Id world;
+		std::vector<bool> data;
+	};
+
 	class Domain;
 	class Bisimulation_Context {
 	public:
