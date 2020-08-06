@@ -27,6 +27,7 @@ namespace del {
 		// The reference returned may become invalid if a new node is created 
 		// since the vector may reallocate memory on the heap
 		std::vector<Node>& get_nodes();
+		const std::vector<Node>& get_const_nodes() const;
 		Node& get_node(Node_Id node_id);
 		const Node& get_const_node(Node_Id node_id) const;
 		Node& get_root_node();

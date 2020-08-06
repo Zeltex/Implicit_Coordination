@@ -52,6 +52,10 @@ namespace del {
 		get_node(parent_id).add_child(child_id);
 	}
 
+	const std::vector<Node>& Graph::get_const_nodes() const {
+		return nodes;
+	}
+
 	std::vector<Node>& Graph::get_nodes() {
 		return nodes;
 	}
