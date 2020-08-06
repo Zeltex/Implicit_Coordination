@@ -3,6 +3,7 @@ namespace del {
 
 
 #if 0
+#define BISIMILAR_USE_HASH_ENABLED 1
 #define REMOVE_UNREACHABLE_WORLDS_ENABLED 1
 #define ON_PATH_ENABLED 1
 #define BISIM_COMPARISON_ENABLED 1
@@ -12,6 +13,9 @@ namespace del {
 #endif
 
 // Planner options
+#ifndef BISIMILAR_USE_HASH_ENABLED
+#define BISIMILAR_USE_HASH_ENABLED 1
+#endif
 #ifndef REMOVE_UNREACHABLE_WORLDS_ENABLED
 #define REMOVE_UNREACHABLE_WORLDS_ENABLED 1
 #endif
