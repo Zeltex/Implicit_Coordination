@@ -330,6 +330,7 @@ namespace del {
 		std::vector<std::vector<Signature>> blocks_to_be_created;
 
 
+		std::vector<std::set<size_t>> blocks_to_be_deleted(this->blocks.size());
 		for (auto& block : this->blocks) {
 
 			// Record signatures
@@ -347,20 +348,33 @@ namespace del {
 				if (new_block.empty() || new_block.at(0) == signature) {
 					new_block.emplace_back(signature);
 				} else {
+					for (auto& entry : new_block) {
+						blocks_to_be_deleted[block_counter].insert(entry.index_in_block);
+					}
 					blocks_to_be_created.push_back(std::move(new_block));
-					new_block = {};
+					new_block = { signature };
 				}
 			}
 			++block_counter;
 		}
 
 		// Erase worlds from existing blocks
-		for (auto block_it = blocks_to_be_created.rbegin(); block_it != blocks_to_be_created.rend(); ++block_it) {
-			for (auto block_entry_it = (*block_it).rbegin(); block_entry_it != (*block_it).rend(); ++block_entry_it) {
-				auto& temp_block = this->blocks.at((*block_entry_it).index_of_block);
-				temp_block.erase(temp_block.begin() + (*block_entry_it).index_in_block);
+		for (size_t i = 0; i < blocks_to_be_deleted.size(); ++i) {
+			auto& block = blocks_to_be_deleted.at(i);
+			for (auto entry = block.rbegin(); entry != block.rend(); ++entry) {
+				auto& temp_block = this->blocks.at(*entry);
+				temp_block.erase(temp_block.begin() + *entry);
 			}
 		}
+
+
+		//// Erase worlds from existing blocks
+		//for (auto block_it = blocks_to_be_created.rbegin(); block_it != blocks_to_be_created.rend(); ++block_it) {
+		//	for (auto block_entry_it = (*block_it).rbegin(); block_entry_it != (*block_it).rend(); ++block_entry_it) {
+		//		auto& temp_block = this->blocks.at((*block_entry_it).index_of_block);
+		//		temp_block.erase(temp_block.begin() + (*block_entry_it).index_in_block);
+		//	}
+		//}
 
 		// Create new blocks
 		for (auto& block : blocks_to_be_created) {
