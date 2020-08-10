@@ -99,11 +99,11 @@ int main(int argc, char* argv[]) {
 	//execute_test_case();
 	
 
-	//find_and_execute("Simple.maepl");
-	//find_and_execute("Stack.maepl");
-	//find_and_execute("False_Belief_Synthesis.maepl");
+	//find_and_execute("Simple.maepl", "Pepper");
+	//find_and_execute("Stack.maepl", "P");
+	//find_and_execute("False_Belief_Synthesis.maepl", "P");
 	find_and_execute("Block_Search.maepl", "R");
-	//find_and_execute("Block_Search_Single.maepl");
+	//find_and_execute("Block_Search_Single.maepl", "R");
 
 
 	return 0;
