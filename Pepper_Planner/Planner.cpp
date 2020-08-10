@@ -179,7 +179,10 @@ namespace del {
 	void Planner::add_policy_entry(Policy& policy, const State& state, const Action& action, const Node_Id& node_id) const {
 		const auto perspective_shifted = perform_perspective_shift(state, action.get_owner());
 		for (auto global : split_into_global_states(perspective_shifted, action.get_owner())) {
-			policy.add_entry(global, action, node_id);
+			auto local = std::move(perform_perspective_shift(global, action.get_owner()));
+			local = std::move(perform_k_bisimilar_contraction(local, BISIMILAR_DEPTH));
+			local.remove_unreachable_worlds();
+			policy.add_entry(local, action, node_id);
 		}
 	}
 

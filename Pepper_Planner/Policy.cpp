@@ -1,5 +1,6 @@
 #include "Policy.hpp"
 #include "Node_Comparator.hpp"
+#include "Core.hpp"
 
 namespace del {
 
@@ -12,8 +13,9 @@ namespace del {
 		std::vector<State> agent_states;
 		for (size_t agent = 0; agent < state.get_number_of_agents(); ++agent) {
 			State temp = state;
-			auto reachables = temp.get_designated_world_reachables({ agent });
-			temp.set_designated_worlds({ reachables[0] });
+			temp = std::move(perform_perspective_shift(temp, { agent }));
+			temp = std::move(perform_k_bisimilar_contraction(temp, BISIMILAR_DEPTH));
+			temp.remove_unreachable_worlds();
 			agent_hashes.emplace_back(temp.to_hash());
 			agent_states.push_back(std::move(temp));
 		}
@@ -50,6 +52,7 @@ namespace del {
 				return;
 			}
 
+			// TODO - Need to not add duplicates
 			auto& [policy_state, policy_actions] = (*potential_match).second;
 			if (are_states_bisimilar(policy_state, state)) {
 				policy_actions.emplace_back(action, node_id);
