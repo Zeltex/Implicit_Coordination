@@ -39,11 +39,11 @@ namespace del {
 				debug_and_layer_size[state_product_update.get_cost() / 100] ++;
 
 				for (State& global_state : global_states) {
-#if BISIM_CONTRACTION_ENABLED == 1
-					global_state = std::move(perform_k_bisimilar_contraction(std::move(global_state), BISIMILAR_DEPTH));
-#endif
 #if REMOVE_UNREACHABLE_WORLDS_ENABLED == 1
 					global_state.remove_unreachable_worlds();
+#endif
+#if BISIM_CONTRACTION_ENABLED == 1
+					global_state = std::move(perform_k_bisimilar_contraction(std::move(global_state), BISIMILAR_DEPTH));
 #endif
 					auto [bisim_exists, child_node_id] = history.does_bisimilar_exist_or(graph, global_state, action_node);
 					if (child_node_id.has_value()) graph.set_parent_child(action_node, child_node_id.value(), action);
@@ -180,8 +180,8 @@ namespace del {
 		const auto perspective_shifted = perform_perspective_shift(state, action.get_owner());
 		for (auto global : split_into_global_states(perspective_shifted, action.get_owner())) {
 			auto local = std::move(perform_perspective_shift(global, action.get_owner()));
-			local = std::move(perform_k_bisimilar_contraction(local, BISIMILAR_DEPTH));
 			local.remove_unreachable_worlds();
+			local = std::move(perform_k_bisimilar_contraction(local, BISIMILAR_DEPTH));
 			policy.add_entry(local, action, node_id);
 		}
 	}
