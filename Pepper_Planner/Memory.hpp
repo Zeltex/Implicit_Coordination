@@ -6,6 +6,7 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <assert.h>
 
 void report_memory_usage() {
 
@@ -13,8 +14,10 @@ void report_memory_usage() {
 
         char buffer[256];
 
-        sprintf(buffer, "pmap %d | tail -n 1 | grep -oh '\\w*K\\w*' > memory_usage.txt", pid);
+        sprintf(buffer, "pmap %d | tail -n 1 | grep -oh '\\w*K\\w*' | tee memory_usage.txt", pid);
 
+	printf("Memory usage: ");
+	fflush(stdout);
 	system(buffer);
 }
 
