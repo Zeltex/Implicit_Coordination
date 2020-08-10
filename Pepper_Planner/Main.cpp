@@ -39,13 +39,13 @@ void execute(DEL_Interface& del_interface) {
 	}
 }
 
-void find_and_execute(std::string file_name) {
+void find_and_execute(std::string file_name, const std::string& planning_agent) {
 	auto time1 = std::chrono::high_resolution_clock::now();
 
 	DEL_Interface del_interface("../Examples/" + file_name);
 
 	auto time2 = std::chrono::high_resolution_clock::now();
-	del_interface.create_policy();
+	del_interface.create_policy(planning_agent);
 	auto time3 = std::chrono::high_resolution_clock::now();
 
 	auto elapsed1 = time2 - time1;
@@ -102,7 +102,7 @@ int main(int argc, char* argv[]) {
 	//find_and_execute("Simple.maepl");
 	//find_and_execute("Stack.maepl");
 	//find_and_execute("False_Belief_Synthesis.maepl");
-	find_and_execute("Block_Search.maepl");
+	find_and_execute("Block_Search.maepl", "R");
 	//find_and_execute("Block_Search_Single.maepl");
 
 

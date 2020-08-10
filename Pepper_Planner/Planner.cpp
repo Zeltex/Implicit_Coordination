@@ -5,10 +5,10 @@
 namespace del {
 
 	// TODO - Add option to specify for what person the goal must be fulfilled
-	Policy Planner::find_policy(const Formula& goal_formula, Action_Library& action_library, const State& initial_state, const std::vector<Agent>& agents, const Domain& domain) const {
+	Policy Planner::find_policy(const Formula& goal_formula, Action_Library& action_library, const State& initial_state, const std::vector<Agent>& agents, const Domain& domain, Agent_Id planning_agent) const {
 		constexpr size_t initial_node_size = 10000;
-		Graph graph(initial_node_size, initial_state);
-		Node_Comparator history(graph.get_root_node());
+		Node_Comparator history;
+		Graph graph(initial_node_size, initial_state, history, planning_agent);
 		std::vector<size_t> debug_or_layer_size(15);
 		std::vector<size_t> debug_and_layer_size(15);
 		while (!graph.is_frontier_empty()) {

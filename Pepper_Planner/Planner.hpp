@@ -20,7 +20,7 @@ namespace del {
 
 	class Planner {
 	public:
-		Policy find_policy(const Formula& formula, Action_Library& action_library, const State& initial_state, const std::vector<Agent>& agents, const Domain& domain) const;
+		Policy find_policy(const Formula& formula, Action_Library& action_library, const State& initial_state, const std::vector<Agent>& agents, const Domain& domain, Agent_Id planning_agent) const;
 	private:
 		Policy extract_policy(Graph& graph) const;
 		void add_policy_entry(Policy& policy, const State& state, const Action& action, const Node_Id& node_id) const;

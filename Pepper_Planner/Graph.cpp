@@ -1,6 +1,28 @@
 #include "Graph.hpp"
+#include "Node_Comparator.hpp"
+#include "DEL_Operations.hpp"
+#include "Core.hpp"
 
 namespace del {
+
+
+	Graph::Graph(size_t node_size, const State& state, Node_Comparator& history, Agent_Id planning_agent) {
+		nodes.reserve(node_size); 
+		auto root = create_root_node(state);
+		history.insert(nodes.at(root.id));
+		for (auto global : split_into_global_states(state, planning_agent)) {
+			auto local = std::move(perform_perspective_shift(global, planning_agent));
+			local = std::move(perform_k_bisimilar_contraction(local, BISIMILAR_DEPTH));
+			local.remove_unreachable_worlds();
+
+			auto node = create_or_node(std::move(local), root);
+			if (state.get_designated_worlds_count() > 1) {
+				history.insert(nodes.at(node.id));
+			}
+			add_to_frontier(node);
+		}
+	}
+
 	Node_Id Graph::get_next_from_frontier() {
 		Node_Id node_id = frontier.top().id;
 		frontier.pop();
@@ -29,7 +51,8 @@ namespace del {
 
 	Node_Id Graph::create_root_node(State state) {
 		Node_Id node_id = Node_Id{ nodes.size() };
-		nodes.emplace_back(state, node_id, Node_Id{ 0 }, true);
+		// The dummy action makes sure root is and-node
+		nodes.emplace_back(state, node_id, Node_Id{ 0 }, Action{ }, true);
 		nodes.back().calculate_hash();
 		root = node_id;
 		return node_id;

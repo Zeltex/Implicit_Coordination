@@ -7,12 +7,13 @@
 
 namespace del {
 
+	class Node_Comparator;
 	class Graph {
 	public:
 
 		Graph() : frontier(), nodes(std::vector<Node>()) {};
 		Graph(size_t node_size) { nodes.reserve(node_size); };
-		Graph(size_t node_size, const State& state) { nodes.reserve(node_size); add_to_frontier(create_root_node(state)); };
+		Graph(size_t node_size, const State& state, Node_Comparator& history, Agent_Id planning_agent);
 
 
 		Node_Id get_next_from_frontier();
