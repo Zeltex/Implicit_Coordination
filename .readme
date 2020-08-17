@@ -1,9 +1,0 @@
-### Domain Loader
-
-The parser does not care which of '()' '{}' '[]' are used.
-
-The _problem -> _objects tag must define an 'agent' category, and must be the first tag in _problem
-
-_perceivability defines the agents' whose action result will be known, e.g. 
-
-_perceivability {agent1=[agent2]} Defines that the result of any action performed by agent2 will be known to agent1. An agent always perceives its own actions.
