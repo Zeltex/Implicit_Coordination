@@ -13,10 +13,11 @@ The Pepper_Planner/Core.hpp file contains flags for enabling various settings in
 
 ## Dependencies
 
+Minimum c++ 17.
 The project is split into 3 parts; Domain_Loader, Formula and Pepper_Planner, of which Pepper_Planner/Main.cpp is the main file. 
-The project does not have any external dependencies, however optionally debug information can be printed to a file (set in Pepper_Planner/Core.hpp) and manually compiled with [GraphViz](https://graphviz.org/download/) via the scripts Compile_*.sh in Debug_Output 
+The project does not have any external dependencies, however optionally debug information can be printed to a file (set in Pepper_Planner/Core.hpp) and manually compiled with [GraphViz](https://graphviz.org/download/) via the scripts Compile_*.sh in Debug_Output.
 
 
 ## Scenarios
 
-The Examples folder contains the block search and false belief synthesis tasks, which are setup to be run through the Pepper_Planner/Main.cpp file
+The Examples folder contains the block search and false belief synthesis tasks, which are setup to be run through the Pepper_Planner/Main.cpp file.
