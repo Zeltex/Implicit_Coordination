@@ -1,4 +1,5 @@
 .vs/
+Benchmarks/*.csv
 Debug_Output/png/*.png
 Debug_Output/dot/*.dot
 Debug_Output/*.png

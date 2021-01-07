@@ -1,0 +1,116 @@
+_domain Pepper {
+	_announce_enabled = false
+	_types = [dice, number, agent, n1, n2, n3]
+	_propositions = [
+		eye(dice d, number n)
+	]
+
+	_action roll (dice d, n0 n0, n1 n1, n2 n2) {
+		_cost = 100
+		_owner = agent agent
+		_designated_events = [event0, event1, event2]
+		_event event0 { 
+			_preconditions = ( TOP )
+			_effect_add = [ eye(d, n0) ]
+			_effect_delete = [eye(d, n1), eye(d, n2)]
+		}
+		_event event1 { 
+			_preconditions = ( TOP )
+			_effect_add = [ eye(d, n1) ]
+			_effect_delete = [eye(d, n0), eye(d, n2)]
+		}
+		_event event2 { 
+			_preconditions = ( TOP )
+			_effect_add = [ eye(d, n2) ]
+			_effect_delete = [eye(d, n1), eye(d, n0)]
+		}
+		_reachability = {
+			agent = {
+				(event0 event0) = (TOP)
+				(event1 event1) = (TOP)
+				(event2 event2) = (TOP)
+				(event0 event1) = (TOP)
+				(event1 event0) = (TOP)
+				(event0 event2) = (TOP)
+				(event1 event2) = (TOP)
+				(event2 event1) = (TOP)
+				(event2 event0) = (TOP)
+			}
+			_rest = {
+				(event0 event0) = (TOP)
+				(event1 event1) = (TOP)
+				(event2 event2) = (TOP)
+				(event0 event1) = (TOP)
+				(event1 event0) = (TOP)
+				(event0 event2) = (TOP)
+				(event1 event2) = (TOP)
+				(event2 event1) = (TOP)
+				(event2 event0) = (TOP)
+			}
+		}
+	}
+
+	_action peak (dice d, n0 n0, n1 n1, n2 n2) {
+		_cost = 100
+		_owner = agent agent
+		_designated_events = [event0, event1, event2]
+		_event event0 { 
+			_preconditions = ( eye(d, n0) )
+			_effect_add = [  ]
+			_effect_delete = [ ]
+		}
+		_event event1 { 
+			_preconditions = ( eye(d, n1) )
+			_effect_add = [  ]
+			_effect_delete = [ ]
+		}
+		_event event2 { 
+			_preconditions = ( eye(d, n2) )
+			_effect_add = [  ]
+			_effect_delete = [ ]
+		}
+		_reachability = {
+			agent = {
+				(event0 event0) = (TOP)
+				(event1 event1) = (TOP)
+				(event2 event2) = (TOP)
+			}
+			_rest = {
+				(event0 event0) = (TOP)
+				(event1 event1) = (TOP)
+				(event2 event2) = (TOP)
+			}
+		}
+	}
+}
+_problem Block_Search {
+	_objects = {
+		dice = [d0, d1, d2, d3, d4]
+		number = [n0, n1, n2]
+		agent = [R]
+		n0 = [n0]
+		n1 = [n1]
+		n2 = [n2]
+	}
+	_initial_state = [
+	]
+	_world w0 [ ]
+	_goal = [ AND(
+				
+				OR(	BELIEVES(R, eye(d0, n0)),
+					BELIEVES(R, eye(d0, n1)),
+					BELIEVES(R, eye(d0, n2))),
+				OR(	BELIEVES(R, eye(d1, n0)),
+					BELIEVES(R, eye(d1, n1)),
+					BELIEVES(R, eye(d1, n2)))) ]
+
+	_designated_worlds = [ w0 ]
+	_reflexivity = false
+	_reachability = {
+		R = {
+		 (w0, w0)
+		 }
+	}
+}
+
+

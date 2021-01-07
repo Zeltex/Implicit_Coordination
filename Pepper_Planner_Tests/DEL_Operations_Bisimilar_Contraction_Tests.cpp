@@ -51,5 +51,54 @@ namespace PepperPlannerTests
 
 			//size_t debug = 0;
 		}
+
+		TEST_METHOD(Contraction_Makes_Hash_Match) {
+			State state(1);
+			state.create_worlds(2);
+			state.add_designated_world({ 0 });
+			state.add_indistinguishability_relation({ 0 }, { 0 }, { 1 });
+			state.add_indistinguishability_relation({ 0 }, { 1 }, { 0 });
+			state.add_indistinguishability_relation({ 0 }, { 0 }, { 0 });
+			state.add_indistinguishability_relation({ 0 }, { 1 }, { 1 });
+			state.add_true_propositions({ 0 }, { {"p"} });
+			state.add_true_propositions({ 1 }, { {"q"} });
+
+
+			State state2(1);
+			state2.create_worlds(2);
+			state2.add_designated_world({ 1 });
+			state2.add_indistinguishability_relation({ 0 }, { 0 }, { 1 });
+			state2.add_indistinguishability_relation({ 0 }, { 1 }, { 0 });
+			state2.add_indistinguishability_relation({ 0 }, { 0 }, { 0 });
+			state2.add_indistinguishability_relation({ 0 }, { 1 }, { 1 });
+			state2.add_true_propositions({ 0 }, { {"q"} });
+			state2.add_true_propositions({ 1 }, { {"p"} });
+
+			std::cout << state.to_hash() << std::endl;
+			std::cout << state2.to_hash() << std::endl;
+
+
+			Assert::AreNotEqual(state.to_hash(), state2.to_hash());
+
+
+			Bisimulation_Context context = { state, state };
+			State bisim = context.to_bisimulation_contraction(state, 2);
+
+			Bisimulation_Context context2 = { state2, state2 };
+			State bisim2 = context2.to_bisimulation_contraction(state2, 2);
+
+			Assert::AreEqual(bisim.to_hash(), bisim2.to_hash());
+
+			//Assert::AreEqual({ 2 }, bisim.get_worlds_count());
+			//Assert::AreEqual({ 2 }, bisim.get_indistinguishability_relations()[0].size());
+
+			//auto h1 = state.to_hash();
+			//auto h2 = bisim.to_hash();
+
+			////auto hash1 = std::hash<std::string>()(h1);
+			////auto hash2 = std::hash<std::string>()(h2);
+
+			//size_t debug = 0;
+		}
 	};
 }

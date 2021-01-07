@@ -1,0 +1,6 @@
+Using Block_Search and False_Belief_Synthesis the bisimilar contraction did not make a difference at all
+Using Dice it did (Used 14 gb memory)
+1 : 15 -> 15
+2 : 240 -> 225
+3 : 3840 -> 3210
+4 : 61440 -> 43875

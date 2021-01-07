@@ -365,7 +365,7 @@ namespace del {
 			}
 			agent++;
 		}
-		std::sort(hashes.begin(), hashes.end());
+		//std::sort(hashes.begin(), hashes.end());
 		std::string hash;
 		hash.reserve(hashes.size() * sizeof(size_t));
 		for (const auto& entry : hashes) hash += entry;
