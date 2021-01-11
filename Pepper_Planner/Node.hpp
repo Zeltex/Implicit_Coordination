@@ -41,7 +41,7 @@ namespace del {
 		bool is_solved() const;
 		bool check_if_dead(Graph& graph);
 		bool check_if_solved(Graph& graph);
-		bool valuate(const Formula& formula) const;
+		bool valuate(const Formula& formula, const Domain& domain) const;
 		
 		std::string to_string(const Domain& domain) const;
 		std::string to_graph(const std::string node_id, const std::string state_id, const Domain& domain) const;

@@ -1,5 +1,6 @@
 #include "State.hpp"
 #include "Domain.hpp"
+#include "Formula_Input_Impl.hpp"
 
 namespace del {
 
@@ -46,9 +47,10 @@ namespace del {
 		}
 	}
 
-	bool State::valuate(const Formula& formula) const {
+	bool State::valuate(const Formula& formula, const Domain& domain) const {
+		Formula_Input_Impl input = { this, &domain };
 		for (auto world : designated_worlds) {
-			if (!formula.valuate(world.id, this)) {
+			if (!formula.valuate(world.id, &input)) {
 				return false;
 			}
 		}

@@ -25,10 +25,10 @@ namespace del {
 			while (action_library.has_action()) {
 				const Action& action = action_library.get_next_action();
 				State state_perspective_shift = perform_perspective_shift(graph.get_node(current_node).get_state(), action.get_owner());
-				if (!is_action_applicable(state_perspective_shift, action)) {
+				if (!is_action_applicable(state_perspective_shift, action, domain)) {
 					continue;
 				}
-				State state_product_update = perform_product_update(state_perspective_shift, action, agents);
+				State state_product_update = perform_product_update(state_perspective_shift, action, agents, domain);
 #if BISIM_CONTRACTION_ENABLED == 1
 				state_product_update = std::move(perform_k_bisimilar_contraction(std::move(state_product_update), BISIMILAR_DEPTH));
 #endif
@@ -54,7 +54,7 @@ namespace del {
 
 					debug_or_layer_size[global_state.get_cost() / 100] ++;
 					Node_Id global_agent_node = graph.create_or_node(global_state, action_node);
-					if (is_goal_node(graph.get_node(global_agent_node), goal_formula)) {
+					if (is_goal_node(graph.get_node(global_agent_node), goal_formula, domain)) {
 						graph.get_node(global_agent_node).set_solved();
 					} else {
 						graph.add_to_frontier(global_agent_node);
@@ -310,8 +310,8 @@ namespace del {
 		}
 	}
 
-	bool Planner::is_goal_node(const Node& node, const Formula& goal_formula) const {
-		return node.valuate(goal_formula);
+	bool Planner::is_goal_node(const Node& node, const Formula& goal_formula, const Domain& domain) const {
+		return node.valuate(goal_formula, domain);
 	}
 
 	bool Planner::is_valid_state(const State& state) const {

@@ -158,6 +158,7 @@
     <ClCompile Include="Domain_Interface_Implementation.cpp" />
     <ClCompile Include="Environment_Loader.cpp" />
     <ClCompile Include="DEL_Interface.cpp" />
+    <ClCompile Include="Formula_Input_Impl.cpp" />
     <ClCompile Include="General_Action.cpp" />
     <ClCompile Include="General_World.cpp" />
     <ClCompile Include="Interface_DTO.cpp" />
@@ -184,6 +185,7 @@
     <ClInclude Include="Domain_Interface_Implementation.hpp" />
     <ClInclude Include="Environment_Loader.hpp" />
     <ClInclude Include="DEL_Interface.hpp" />
+    <ClInclude Include="Formula_Input_Impl.hpp" />
     <ClInclude Include="General_Action.hpp" />
     <ClInclude Include="General_World.hpp" />
     <ClInclude Include="Interface_DTO.hpp" />

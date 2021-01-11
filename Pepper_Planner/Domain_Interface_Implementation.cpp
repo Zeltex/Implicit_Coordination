@@ -110,8 +110,21 @@ namespace del {
 		// TODO - problem using domain: domain_name
 	}
 
-	void Domain_Interface_Implementation::set_initial_propositions(const std::vector<Proposition_Instance>& propositions) {
-		this->initial_propositions = propositions;
+	void Domain_Interface_Implementation::set_initial_propositions(const std::vector<Proposition_Instance>& propositions, const std::unordered_map<std::string, Atom_Id>& atom_to_id) {
+		
+		std::unordered_map<size_t, Atom_Id> converter;
+		converter.reserve(atom_to_id.size());
+		for (auto& entry : atom_to_id) {
+			converter[entry.second.id] = domain.get_atom_id(entry.first);
+		}
+
+		std::vector<Proposition_Instance> result;
+		result.reserve(propositions.size());
+		for (auto& proposition : propositions) {
+			result.emplace_back(proposition, converter);
+		}
+
+		domain.set_rigid_atoms(result);
 	}
 
 	void Domain_Interface_Implementation::create_world(std::string name, const std::vector<Proposition_Instance>& propositions, const std::unordered_map<std::string, Atom_Id>& atom_to_id) {

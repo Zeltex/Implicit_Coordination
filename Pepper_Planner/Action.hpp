@@ -40,7 +40,7 @@ namespace del {
 		Agent_Id							get_owner() const;
 
 		bool is_event_designated(Event_Id event) const;
-		bool is_condition_fulfilled(Agent_Id agent, Event_Id event_from, Event_Id event_to, const State& state, const World_Id world) const;
+		bool is_condition_fulfilled(Agent_Id agent, Event_Id event_from, Event_Id event_to, const State& state, const World_Id world, const Domain& domain) const;
 
 
 		std::string to_string(const Domain& domain) const;

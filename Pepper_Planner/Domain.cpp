@@ -25,7 +25,7 @@ namespace del {
 		action.add_event(event);
 
 		const State& current_state = states.back();
-		states.push_back(perform_product_update(current_state, action, agents));
+		states.push_back(perform_product_update(current_state, action, agents, *this));
 
 	}
 	
@@ -94,7 +94,7 @@ namespace del {
 
 	void Domain::perform_action(Action action) {
 		const State& current_state = states.back();
-		auto product_update = perform_product_update(current_state, action, agents);
+		auto product_update = perform_product_update(current_state, action, agents, *this);
 #if BISIM_CONTRACTION_ENABLED == 1
 		product_update = perform_k_bisimilar_contraction(std::move(product_update), BISIMILAR_DEPTH);
 #endif
@@ -250,5 +250,13 @@ namespace del {
 			result[agent.get_name()] = agent.get_id().id;
 		}
 		return result;
+	}
+
+	void Domain::set_rigid_atoms(std::vector<Proposition_Instance> rigid_atoms) {
+		this->rigid_atoms = std::move(rigid_atoms);
+	}
+
+	const std::vector<Proposition_Instance>	Domain::get_atom_rigids() const {
+		return rigid_atoms;
 	}
 }

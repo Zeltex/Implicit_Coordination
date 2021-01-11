@@ -6,6 +6,7 @@
 #include "Types.hpp"
 #include "DEL_Operations.hpp"
 #include "Bisimulation_Context.hpp"
+#include "Domain.hpp"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -42,8 +43,8 @@ namespace PepperPlannerTests
 
 			state.set_designated_worlds({ {0} });
 
-
-			Assert::AreEqual(pass, is_action_applicable(state, action));
+			Domain domain;
+			Assert::AreEqual(pass, is_action_applicable(state, action, domain));
 		}
 		TEST_METHOD(Test_Action_Applicability_One_Reachable_True) {
 			Formula f1;

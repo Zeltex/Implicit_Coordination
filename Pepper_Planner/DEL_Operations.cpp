@@ -1,17 +1,19 @@
 #include "DEL_Operations.hpp"
 #include "Core.hpp"
+#include "Formula_Input_Impl.hpp"
 
 namespace del {
 
 	// TODO - Check definition of applicable, does there have to be at least one designated world left?
-	State perform_product_update(const State& state, const Action& action, const std::vector<Agent>& agents) {
+	State perform_product_update(const State& state, const Action& action, const std::vector<Agent>& agents, const Domain& domain) {
 		std::vector<World_Entry> new_worlds;
 		State result(state.get_number_of_agents());
 		result.set_cost(state.get_cost() + action.get_cost());
+		Formula_Input_Impl input = { &state, &domain };
 
 		for (auto& world : state.get_worlds()) {
 			for (const auto& event : action.get_events()) {
-				if (event.get_preconditions().valuate(world.get_id().id, &state)) {
+				if (event.get_preconditions().valuate(world.get_id().id, &input)) {
 					// TODO - Maybe handle unreachable worlds here
 
 					World& updated_world = result.create_world();
@@ -33,7 +35,7 @@ namespace del {
 				for (size_t i = 0; i < state.get_number_of_agents(); i++) {
 					Agent_Id agent = Agent_Id{ i };
 					if (state.is_one_reachable(agent, world1.old_world, world2.old_world) &&
-						action.is_condition_fulfilled(agent, world1.old_event, world2.old_event, state, world1.old_world)) {
+						action.is_condition_fulfilled(agent, world1.old_event, world2.old_event, state, world1.old_world, domain)) {
 						result.add_indistinguishability_relation(agent, world1.new_world, world2.new_world);
 					}
 				}
@@ -92,13 +94,14 @@ namespace del {
 	}
 
 
-	bool is_action_applicable(const State& state, const Action& action) {
+	bool is_action_applicable(const State& state, const Action& action, const Domain& domain) {
 		auto worlds = state.get_designated_world_reachables(action.get_owner());
+		Formula_Input_Impl input = { &state, &domain };
 
 		for (auto& world_id : worlds) {
 			bool found_applicable_event = false;
 			for (auto event : action.get_events()) {
-				if (action.is_event_designated(event.get_id().id) && event.get_preconditions().valuate(world_id.id, &state)) {
+				if (action.is_event_designated(event.get_id().id) && event.get_preconditions().valuate(world_id.id, &input)) {
 					found_applicable_event = true;
 					break;
 				}

@@ -52,13 +52,18 @@ _objects = {
 	agent = [a0, a1]
 	pos = [c0, c1, c2, x1]
 }
-_world w0 [adj(c0, c1), adj(c1, c0), adj(c1, c2), adj(c2, c1), adj(c1, x1), adj(x1, c1), free(c0), at(a1, c1), at(a0, c2), free(x1), goal(a0, c0), goal(a1, c1)]
 
-_world w1 [adj(c0, c1), adj(c1, c0), adj(c1, c2), adj(c2, c1), adj(c1, x1), adj(x1, c1), free(c0), at(a1, c1), at(a0, c2), free(x1), goal(a0, x1), goal(a1, c1)]
+_initial_state = [
+	adj(c0, c1), adj(c1, c0), adj(c1, c2), adj(c2, c1), adj(c1, x1), adj(x1, c1)
+]
 
-_world w2 [adj(c0, c1), adj(c1, c0), adj(c1, c2), adj(c2, c1), adj(c1, x1), adj(x1, c1), free(c0), at(a1, c1), at(a0, c2), free(x1), goal(a0, c0), goal(a1, c2)]
+_world w0 [free(c0), at(a1, c1), at(a0, c2), free(x1), goal(a0, c0), goal(a1, c1)]
 
-_world w3 [adj(c0, c1), adj(c1, c0), adj(c1, c2), adj(c2, c1), adj(c1, x1), adj(x1, c1), free(c0), at(a1, c1), at(a0, c2), free(x1), goal(a0, x1), goal(a1, c2)]
+_world w1 [free(c0), at(a1, c1), at(a0, c2), free(x1), goal(a0, x1), goal(a1, c1)]
+
+_world w2 [free(c0), at(a1, c1), at(a0, c2), free(x1), goal(a0, c0), goal(a1, c2)]
+
+_world w3 [free(c0), at(a1, c1), at(a0, c2), free(x1), goal(a0, x1), goal(a1, c2)]
 
 _goal = [ OR( 
 	AND( goal(a0, c0), at(a0, c0), goal(a1, c1), at(a1, c1)), 
@@ -66,20 +71,21 @@ _goal = [ OR(
 	AND( goal(a0, c0), at(a0, c0), goal(a1, c2), at(a1, c2)), 
 	AND( goal(a0, x1), at(a0, x1), goal(a1, c2), at(a1, c2)) )] 
 
-	_designated_worlds = [ w0 ]
-	_reflexivity = false
-	_reachability = {
-		a0 = {
-		 (w0, w0), (w0, w2),
-		 (w1, w1), (w1, w3),
-		 (w2, w0), (w2, w2),
-		 (w3, w1), (w3, w3), 
-		 }
-		a1 = {
-		 (w0, w0), (w0, w1),
-		 (w1, w0), (w1, w1),
-		 (w2, w2), (w2, w3),
-		 (w3, w2), (w3, w3), 
-		 }
+		_designated_worlds = [ w0 ]
+		_reflexivity = false
+		_reachability = {
+			a0 = {
+			 (w0, w0), (w0, w2),
+			 (w1, w1), (w1, w3),
+			 (w2, w0), (w2, w2),
+			 (w3, w1), (w3, w3), 
+			 }
+			a1 = {
+			 (w0, w0), (w0, w1),
+			 (w1, w0), (w1, w1),
+			 (w2, w2), (w2, w3),
+			 (w3, w2), (w3, w3), 
+			 }
+		}
 	}
-}
+	

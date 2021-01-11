@@ -16,7 +16,7 @@ namespace del {
 	class Domain_Interface_Implementation : public Domain_Interface {
 	public:
 		Domain_Interface_Implementation(): 
-			actions(), current_action(), initial_state(), library(), domain(), initial_propositions(), propositions(), world_name_to_id(), action_reflexivity(false){}
+			actions(), current_action(), initial_state(), library(), domain(), propositions(), world_name_to_id(), action_reflexivity(false){}
 		virtual void new_domain(std::string name) override;
 		virtual void finish_domain() override;
 		virtual void finish_problem() override;
@@ -32,7 +32,7 @@ namespace del {
 		virtual void set_designated_worlds(const std::unordered_set<std::string>& designated_worlds) override;
 		virtual void set_domain(std::string domain_name) override;
 		virtual void set_goal(del::Formula&& goal, const std::unordered_map<std::string, Atom_Id>& atom_to_id) override;
-		virtual void set_initial_propositions(const std::vector<Proposition_Instance>& propositions) override;
+		virtual void set_initial_propositions(const std::vector<Proposition_Instance>& propositions, const std::unordered_map<std::string, Atom_Id>& atom_to_id) override;
 		virtual void set_objects(std::unordered_map<std::string, std::unordered_set<std::string>>&& objects) override;
 		virtual void set_types(const std::unordered_set<std::string>& types) override;
 
@@ -56,7 +56,6 @@ namespace del {
 		Domain domain;
 		Formula goal;
 		bool action_reflexivity;
-		std::vector<Proposition_Instance> initial_propositions;
 		std::vector<Proposition> propositions;
 		std::unordered_map<std::string, World_Id> world_name_to_id;
 		std::unordered_map<std::string, std::vector<std::string>> observability;

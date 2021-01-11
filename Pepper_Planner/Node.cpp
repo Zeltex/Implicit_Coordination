@@ -65,8 +65,8 @@ namespace del {
 		return root;
 	}
 
-	bool Node::valuate(const Formula& formula) const {
-		return state.valuate(formula);
+	bool Node::valuate(const Formula& formula, const Domain& domain) const {
+		return state.valuate(formula, domain);
 	}
 
 	bool Node::is_dead() const {

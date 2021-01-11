@@ -1,6 +1,7 @@
 #include "Action.hpp"
 #include "World.hpp"
 #include "Domain.hpp"
+#include "Formula_Input_Impl.hpp"
 
 namespace del {
 
@@ -121,10 +122,11 @@ namespace del {
 		return find(designated_events.begin(), designated_events.end(), event) != designated_events.end();
 	}
 
-	bool Action::is_condition_fulfilled(Agent_Id agent, Event_Id event_from, Event_Id event_to, const State& state, const World_Id world) const {
+	bool Action::is_condition_fulfilled(Agent_Id agent, Event_Id event_from, Event_Id event_to, const State& state, const World_Id world, const Domain& domain) const {
 		auto condition = edge_conditions.at(agent.id).get_condition(event_from, event_to);
 		if (condition.has_value()) {
-			return (*condition.value()).valuate(world.id, &state);
+			Formula_Input_Impl input = { &state, &domain };
+			return (*condition.value()).valuate(world.id, &input);
 		} else {
 			return false;
 		}

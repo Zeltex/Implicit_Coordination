@@ -70,9 +70,7 @@ namespace del {
         };
         case Formula_Types::Prop:
         {
-            if (input_interface == nullptr) return false;
-            auto& propositions = input_interface->get_true_propositions(world_id);
-            return std::find(propositions.begin(), propositions.end(), prop) != propositions.end();
+            return input_interface->valuate_prop(prop, world_id);
         }
         case Formula_Types::Not:
         {
@@ -98,7 +96,6 @@ namespace del {
         }
         case Formula_Types::Believes:
         {
-            if (input_interface == nullptr) return false;
             std::vector<size_t> reachables = input_interface->get_reachable_worlds(agent, world_id);
             for (auto reachable_world : reachables) {
                 if (!all_formulas[formula.id].valuate(all_formulas, reachable_world, input_interface)) {

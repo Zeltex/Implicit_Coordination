@@ -12,6 +12,7 @@
 #include "DEL_Operations.hpp"
 #include "Types.hpp"
 #include "DEL_Operations.hpp"
+#include "Domain.hpp"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -55,7 +56,9 @@ namespace PepperPlannerTests
 			Action_Event event = Action_Event(Event_Id{ 0 }, std::move(f), std::vector<Proposition_Instance>(), std::vector<Proposition_Instance>());
 			action.add_event(event);
 			action.add_designated_event({ 0 });
-			State& new_state = perform_product_update(state, action, { {{0}, {atom_to_id.size()}, "Pepper"}, {{1}, {atom_to_id.size()+1}, "L"} });
+
+			Domain domain;
+			State& new_state = perform_product_update(state, action, { {{0}, {atom_to_id.size()}, "Pepper"}, {{1}, {atom_to_id.size()+1}, "L"} }, domain);
 			
 			auto& worlds = new_state.get_worlds();
 			Assert::AreEqual(size_t{ 1 }, worlds.size());
@@ -117,7 +120,8 @@ namespace PepperPlannerTests
 			action.add_reachability(Agent_Id{ 0 }, id2, id2, Formula());
 			action.add_designated_event(id);
 
-			State& new_state = perform_product_update(state, action, { {{0}, {atom_to_id.size()}, "Pepper"}, {{1}, {atom_to_id.size()+1}, "L"} });
+			Domain domain;
+			State& new_state = perform_product_update(state, action, { {{0}, {atom_to_id.size()}, "Pepper"}, {{1}, {atom_to_id.size()+1}, "L"} }, domain);
 
 			// Correct amount of worlds
 			auto& worlds = new_state.get_worlds();
@@ -194,9 +198,8 @@ namespace PepperPlannerTests
 			action.add_designated_event(id2);
 
 
-			State& new_state = perform_product_update(state, action, { {{0}, {atom_to_id.size()}, "Pepper"}, {{1}, {atom_to_id.size()+1}, "L"} });
-
-			// TODO
+			Domain domain;
+			State& new_state = perform_product_update(state, action, { {{0}, {atom_to_id.size()}, "Pepper"}, {{1}, {atom_to_id.size()+1}, "L"} }, domain);
 		}
 	};
 }

@@ -20,7 +20,9 @@ namespace del {
 	bool Formula::valuate(const size_t world_id, const Formula_Input_Interface* input_interface) const {
         if (formulas.empty()) {
             return true;
-        } else {
+        } else if (input_interface == nullptr) {
+            return false;
+        }  else {
             return formulas[root.id].valuate(formulas, world_id, input_interface);
         }
 	}

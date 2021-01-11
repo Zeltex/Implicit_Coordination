@@ -16,7 +16,12 @@ namespace PepperPlannerTests
 	class Input : public Formula_Input_Interface {
 	public:
 		Input(std::unordered_map<size_t, std::vector<Proposition_Instance>> propositions) : propositions(propositions) {}
-		virtual const std::vector<Proposition_Instance>& get_true_propositions(size_t world_id) const { return propositions.at(world_id); }
+		bool valuate_prop(Proposition_Instance prop, const size_t world_id) const { 
+			auto& prop_list = propositions.at(world_id);
+
+			return std::find(prop_list.begin(), prop_list.end(), prop) != prop_list.end(); 
+		
+		}
 		virtual std::vector<size_t> get_reachable_worlds(size_t agent_id, size_t world_id) const { return std::vector<size_t>(worlds.at(world_id)); };
 		std::unordered_map<size_t, std::vector<Proposition_Instance>> propositions;
 		std::unordered_map<size_t, std::vector<size_t>> worlds;

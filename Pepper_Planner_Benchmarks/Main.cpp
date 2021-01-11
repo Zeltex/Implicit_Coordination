@@ -116,10 +116,10 @@ std::vector<State> get_states(const std::string file_path, const int action_dept
 			while (action_library.has_action()) {
 				const Action& action = action_library.get_next_action();
 				State state_perspective_shift = perform_perspective_shift(current_state, action.get_owner());
-				if (!is_action_applicable(state_perspective_shift, action)) {
+				if (!is_action_applicable(state_perspective_shift, action, domain)) {
 					continue;
 				}
-				State state_product_update = perform_product_update(state_perspective_shift, action, domain.get_agents());
+				State state_product_update = perform_product_update(state_perspective_shift, action, domain.get_agents(), domain);
 				size_t hash = state_product_update.to_hash();
 				if (hashes.find(hash) == hashes.end()) {
 					hashes.insert(hash);
@@ -166,11 +166,11 @@ std::vector<State> get_states_using_globals_phase_times(const std::vector<State>
 			temp_times[0] = std::chrono::high_resolution_clock::now();
 			State state_perspective_shift = perform_perspective_shift(current_state, action.get_owner());
 			temp_times[1] = std::chrono::high_resolution_clock::now();
-			if (!is_action_applicable(state_perspective_shift, action)) {
+			if (!is_action_applicable(state_perspective_shift, action, domain)) {
 				continue;
 			}
 			temp_times[2] = std::chrono::high_resolution_clock::now();
-			State state_product_update = perform_product_update(state_perspective_shift, action, domain.get_agents());
+			State state_product_update = perform_product_update(state_perspective_shift, action, domain.get_agents(), domain);
 			temp_times[3] = std::chrono::high_resolution_clock::now();
 			auto globals = split_into_global_states(state_product_update, dummy_agent);
 			temp_times[4] = std::chrono::high_resolution_clock::now();
@@ -229,10 +229,10 @@ std::vector<State> get_states_using_globals(const std::vector<State>& states, Ac
 		while (action_library.has_action()) {
 			const Action& action = action_library.get_next_action();
 			State state_perspective_shift = perform_perspective_shift(current_state, action.get_owner());
-			if (!is_action_applicable(state_perspective_shift, action)) {
+			if (!is_action_applicable(state_perspective_shift, action, domain)) {
 				continue;
 			}
-			State state_product_update = perform_product_update(state_perspective_shift, action, domain.get_agents());
+			State state_product_update = perform_product_update(state_perspective_shift, action, domain.get_agents(), domain);
 			auto globals = split_into_global_states(state_product_update, dummy_agent);
 			for (State& state : globals) {
 				if (use_contraction) {

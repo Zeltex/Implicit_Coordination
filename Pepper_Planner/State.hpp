@@ -8,7 +8,7 @@
 
 namespace del {
 	class Domain;
-	class State : public Formula_Input_Interface {
+	class State {
 	public:
 		State();
 		State(size_t amount_of_agents);
@@ -16,18 +16,17 @@ namespace del {
 		virtual const std::vector<Proposition_Instance>& get_true_propositions(size_t world_id) const;
 		virtual std::vector<size_t> get_reachable_worlds(size_t agent_id, size_t world_id) const;
 
-		void set_amount_of_agents(size_t amount_of_agents);
-		bool valuate(const Formula& formula) const;
-		bool is_world_designated(World_Id world) const;
-		bool is_one_reachable(Agent_Id agent, World_Id world1, World_Id world2) const;
-		void remove_true_propositions(World_Id world, std::vector<Proposition_Instance> propositions);
-		void set_single_designated_world(World_Id world);
-		World& create_world();
-		World& create_world(const World& world);
-		void create_worlds(size_t amount_to_create);	
-		void set_designated_worlds(std::vector<World_Id> worlds);
-		void copy_perceivability_and_observability(const State& other);
-		void set_cost(size_t cost);
+		World&	create_world();
+		World&	create_world(const World& world);
+		void	create_worlds(size_t amount_to_create);	
+		void	copy_perceivability_and_observability(const State& other);
+		bool	is_one_reachable(Agent_Id agent, World_Id world1, World_Id world2) const;
+		bool	is_world_designated(World_Id world) const;
+		void	set_amount_of_agents(size_t amount_of_agents);
+		void	set_cost(size_t cost);
+		void	set_designated_worlds(std::vector<World_Id> worlds);
+		void	set_single_designated_world(World_Id world);
+		bool	valuate(const Formula& formula, const Domain& domain) const;
 
 
 		void add_designated_world(World_Id world);
@@ -37,6 +36,7 @@ namespace del {
 		void add_true_propositions(World_Id world, std::vector<Proposition_Instance> propositions);
 		void remove_observability(Agent_Id observer, std::vector<Agent_Id> agents);
 		void remove_perceivability(Agent_Id perceiver, std::vector<Agent_Id> agents);
+		void remove_true_propositions(World_Id world, std::vector<Proposition_Instance> propositions);
 		void remove_unreachable_worlds();
 
 
