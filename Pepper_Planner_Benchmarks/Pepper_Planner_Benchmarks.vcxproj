@@ -144,6 +144,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="MAPF_Benchmark.cpp" />
+    <ClCompile Include="Run_Planner.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Domain_Loader\Domain_Loader.vcxproj">
@@ -155,6 +157,10 @@
     <ProjectReference Include="..\Pepper_Planner\Pepper_Planner.vcxproj">
       <Project>{6bcdcbbf-d555-40e2-bfb6-248428b0d52d}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="MAPF_Benchmark.hpp" />
+    <ClInclude Include="Run_Planner.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

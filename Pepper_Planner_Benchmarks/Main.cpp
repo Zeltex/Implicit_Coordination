@@ -6,12 +6,17 @@
 #include <fstream>
 #include <chrono>
 #include <ctime>    
+#include <numeric>
 
 //#include "../Domain_Loader/Loader.hpp"
 #include "Loader.hpp"
 #include "Domain_Interface_Implementation.hpp"
 #include "Domain.hpp"
 #include "Action_Library.hpp"
+#include "Run_Planner.hpp"
+#include "MAPF_Benchmark.hpp"
+
+
 using namespace del;
 
 std::string get_date_stamp() {
@@ -140,7 +145,7 @@ std::tuple<Loader, Domain, Action_Library, std::vector<State>> get_stuff(const s
 }
 
 //std::vector<State> get_states_using_globals(const std::string file_path, const int action_depth, Logger& logger) {
-std::vector<State> get_states_using_globals_phase_times(const std::vector<State>& states, Action_Library& action_library, Domain& domain, Logger& logger) {
+std::vector<State> get_states_using_globals_phase_times(const std::vector<State>& states, Action_Library& action_library, Domain& domain, Logger& logger, bool use_contraction) {
 
 	Agent_Id dummy_agent = { 0 };
 	Simp_Timer timer;
@@ -170,7 +175,11 @@ std::vector<State> get_states_using_globals_phase_times(const std::vector<State>
 			auto globals = split_into_global_states(state_product_update, dummy_agent);
 			temp_times[4] = std::chrono::high_resolution_clock::now();
 			bool found_new_state = false;
-			for (const auto& state : globals) {
+			for (auto& state : globals) {
+				if (use_contraction) {
+					state.remove_unreachable_worlds();
+					state = perform_k_bisimilar_contraction(std::move(state), BISIMILAR_DEPTH);
+				}
 				size_t hash = state.to_hash();
 				if (hashes.find(hash) == hashes.end()) {
 					hashes.insert(hash);
@@ -191,8 +200,10 @@ std::vector<State> get_states_using_globals_phase_times(const std::vector<State>
 		}
 	}
 	//}
+	long total_time = 0;
+	total_time = std::accumulate(std::begin(total_times), std::end(total_times), total_time);
 	for (size_t i = 0; i < 5; ++i) {
-		std::cout << "Phase " << i << " took 'us: " << total_times[i] << std::endl;
+		std::cout << "Phase " << i << " took 'us: " << total_times[i] << " = " << (100.0 * total_times[i] / total_time) << "%\n";
 	}
 	std::cout << "Spent 'us on new states: " << time_new_state << std::endl;
 	std::cout << "Spent 'us on old states: " << time_old_state << std::endl;
@@ -327,6 +338,22 @@ void benchmark2(const std::string& file_path, const size_t action_depth) {
 	for (size_t i = 1; i <= action_depth; ++i) {
 		std::cout << "Starting " << i << "\n";
 		logger.add_entry("Action depth " + std::to_string(i), 0, 0);
+		normal_states = get_states_using_globals_phase_times(normal_states, action_library, domain, logger, false);
+		contracted_states = get_states_using_globals_phase_times(contracted_states, action_library, domain, logger, true);
+		logger.save();
+	}
+	logger.save();
+}
+
+void benchmark3(const std::string& file_path, const size_t action_depth) {
+	auto [loader, domain, action_library, states] = get_stuff(file_path);
+	auto normal_states = states;
+	auto contracted_states = states;
+
+	Logger logger(file_path);
+	for (size_t i = 1; i <= action_depth; ++i) {
+		std::cout << "Starting " << i << "\n";
+		logger.add_entry("Action depth " + std::to_string(i), 0, 0);
 		normal_states = get_states_using_globals(normal_states, action_library, domain, logger, false);
 		contracted_states = get_states_using_globals(contracted_states, action_library, domain, logger, true);
 		logger.save();
@@ -343,16 +370,28 @@ int main(int argc, char* argv[]) {
 	//auto file_path = "../Examples/Second_Order.maepl";
 	//auto file_path = "../Examples/Sally_Anne.maepl";
 	//auto file_path = "../Examples/False_Belief_Synthesis.maepl";
-	auto file_path = "../Examples/Dice5-3.maepl";
+	//auto file_path = "../Examples/Dice5-3.maepl";
 	//benchmark1(file_path, 3);
-	benchmark2(file_path, 3);
+	//benchmark3(file_path, 3);
 
-	/*std::cout << get_date_stamp();
 
-	Logger logger;
-	logger.add_entry("First", 100, 0.10);
-	logger.add_entry("second", 200, 0.20);
-	logger.save();
-	std::cout << logger.to_string();*/
+
+	//execute_second_order();
+//execute_test_case();
+
+
+//find_and_execute("Simple.maepl", "Pepper");
+//find_and_execute("Stack.maepl", "P");
+//find_and_execute("False_Belief_Synthesis.maepl", "P");
+//find_and_execute("Block_Search.maepl", "R");
+	//find_and_execute("MAPFDU.maepl", "R");
+	//find_and_execute("Block_Search_Single.maepl", "R");
+
+	//find_and_execute("Thorsten_Domains/p01.maepl", "a0");
+	//find_and_execute("Thorsten_Domains/p1.maepl", "a0");
+
+	run_mapf_benchmark();
+
 	__debugbreak;
+	return 0;
 }

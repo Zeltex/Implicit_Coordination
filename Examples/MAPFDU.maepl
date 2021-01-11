@@ -1,0 +1,84 @@
+_domain Pepper {
+	_announce_enabled = false
+	_types = [agent, pos]
+	_propositions = [
+		at(agent a, pos p)
+		con(pos p1, pos p2)
+		goal(agent a, pos p)
+		free(pos p)
+	]
+
+	_action move (pos from, pos to) {
+		_cost = 100
+		_owner = agent agent
+		_designated_events = [event0]
+		_event event0 { 
+			_preconditions = ( AND( at(agent, from), free(to), con(from, to)) )
+			_effect_add = [ at(agent, to), free(from) ]
+			_effect_delete = [ at(agent, from), free(to) ]
+		}
+		_reachability = {
+			agent = {
+				(event0 event0) = (TOP)
+			}
+			_rest = {
+				(event0 event0) = (TOP)
+			}
+		}
+	}
+
+	_action announce (pos p) {
+		_cost = 100
+		_owner = agent agent
+		_designated_events = [event0]
+		_event event0 { 
+			_preconditions = ( AND(at(agent, p), goal(agent, p)) )
+			_effect_add = [  ]
+			_effect_delete = [ ]
+		}
+		_reachability = {
+			agent = {
+				(event0 event0) = (TOP)
+			}
+			_rest = {
+				(event0 event0) = (TOP)
+			}
+		}
+	}
+}
+_problem Block_Search {
+	_objects = {
+		agent = [R, H]
+		pos = [p1, p2, p3, p4]
+	}
+	_initial_state = [
+	]
+	_world w0 [ at(R, p1), at(H, p3), con(p1, p2), con(p2, p1), con(p2, p3), con(p3, p2), con(p2, p4), con(p4, p2), goal(R, p1), goal(H, p3), free(p2), free(p4) ]
+	_world w1 [ at(R, p1), at(H, p3), con(p1, p2), con(p2, p1), con(p2, p3), con(p3, p2), con(p2, p4), con(p4, p2), goal(R, p2), goal(H, p3), free(p2), free(p4) ]
+	_world w2 [ at(R, p1), at(H, p3), con(p1, p2), con(p2, p1), con(p2, p3), con(p3, p2), con(p2, p4), con(p4, p2), goal(R, p1), goal(H, p4), free(p2), free(p4) ]
+	_world w3 [ at(R, p1), at(H, p3), con(p1, p2), con(p2, p1), con(p2, p3), con(p3, p2), con(p2, p4), con(p4, p2), goal(R, p2), goal(H, p4), free(p2), free(p4) ]
+	_goal = [ OR( 
+				AND ( goal(R, p1), at(R, p1), goal(H, p3), at(H, p3) ) 
+				AND ( goal(R, p2), at(R, p2), goal(H, p3), at(H, p3) )
+				AND ( goal(R, p1), at(R, p1), goal(H, p4), at(H, p4) )
+				AND ( goal(R, p2), at(R, p2), goal(H, p4), at(H, p4) ))] 
+
+	_designated_worlds = [ w2 ]
+	_reflexivity = false
+	_reachability = {
+		H = {
+		 (w0, w0), (w0, w1),
+		 (w1, w0), (w1, w1),
+		 (w2, w2), (w2, w3),
+		 (w3, w2), (w3, w3), 
+		 }
+		R = {
+		 (w0, w0), (w0, w2),
+		 (w1, w1), (w1, w3),
+		 (w2, w0), (w2, w2),
+		 (w3, w1), (w3, w3), 
+		 }
+	}
+}
+
+

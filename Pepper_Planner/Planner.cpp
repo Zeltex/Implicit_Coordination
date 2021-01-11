@@ -9,8 +9,11 @@ namespace del {
 		constexpr size_t initial_node_size = 10000;
 		Node_Comparator history;
 		Graph graph(initial_node_size, initial_state, history, planning_agent);
-		std::vector<size_t> debug_or_layer_size(15);
-		std::vector<size_t> debug_and_layer_size(15);
+		std::vector<size_t> debug_or_layer_size(30);
+		std::vector<size_t> debug_and_layer_size(30);
+
+		// TODO - Need to check if states in initial frontier are solved
+
 		while (!graph.is_frontier_empty()) {
 #if DEBUG_PRINT == 1 && PRINT_PARTIAL == 0
 			print_debug_layer(debug_or_layer_size, debug_and_layer_size);
