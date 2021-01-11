@@ -21,14 +21,19 @@ namespace del {
 
 			Node_Id current_node = graph.get_next_from_frontier();
 			action_library.load_actions(graph.get_node(current_node).get_state(), domain);
+			std::vector<State> perspective_shifts;
+			perspective_shifts.reserve(domain.get_agents().size());
+			auto& current_state = graph.get_node(current_node).get_state();
+			for (size_t i = 0; i < domain.get_agents().size(); ++i) {
+				perspective_shifts.push_back(perform_perspective_shift(current_state, { i }));
+			}
 
 			while (action_library.has_action()) {
 				const Action& action = action_library.get_next_action();
-				State state_perspective_shift = perform_perspective_shift(graph.get_node(current_node).get_state(), action.get_owner());
-				if (!is_action_applicable(state_perspective_shift, action, domain)) {
+				if (!is_action_applicable(perspective_shifts.at(action.get_owner().id), action, domain)) {
 					continue;
 				}
-				State state_product_update = perform_product_update(state_perspective_shift, action, agents, domain);
+				State state_product_update = perform_product_update(perspective_shifts.at(action.get_owner().id), action, agents, domain);
 #if BISIM_CONTRACTION_ENABLED == 1
 				state_product_update = std::move(perform_k_bisimilar_contraction(std::move(state_product_update), BISIMILAR_DEPTH));
 #endif
