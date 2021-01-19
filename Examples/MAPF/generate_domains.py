@@ -7,6 +7,7 @@ cc = '}'
 
 def get_domain():
 	result = r"""
+
 _domain Pepper {
 	_announce_enabled = false
 	_types = [agent, pos]
@@ -15,6 +16,7 @@ _domain Pepper {
 		adj(pos p1, pos p2)
 		goal(agent a, pos p)
 		free(pos p)
+		stopped(agent a)
 	]
 
 	_action move (pos from, pos to) {
@@ -22,7 +24,7 @@ _domain Pepper {
 		_owner = agent agent
 		_designated_events = [event0]
 		_event event0 { 
-			_preconditions = ( AND( at(agent, from), free(to), adj(from, to)) )
+			_preconditions = ( AND( at(agent, from), free(to), adj(from, to), NOT(stopped(agent))) )
 			_effect_add = [ at(agent, to), free(from) ]
 			_effect_delete = [ at(agent, from), free(to) ]
 		}
@@ -41,8 +43,8 @@ _domain Pepper {
 		_owner = agent agent
 		_designated_events = [event0]
 		_event event0 { 
-			_preconditions = ( AND(at(agent, p), goal(agent, p)) )
-			_effect_add = [  ]
+			_preconditions = ( AND(at(agent, p), goal(agent, p), NOT(stopped(agent)) ))
+			_effect_add = [ stopped(agent) ]
 			_effect_delete = [ ]
 		}
 		_reachability = {
@@ -92,11 +94,7 @@ def print_1_agent():
 			elif world == 3:
 				output += F"goal(a0, x{i-1}), goal(a1, c{2 * i - 2})]"
 			output += '\n\n'
-		output += '_goal = [ OR( \n'
-		output += F"{t}AND( goal(a0, c0), at(a0, c0), goal(a1, c{i - 1}), at(a1, c{i - 1})), {nl}"
-		output += F"{t}AND( goal(a0, x{i - 1}), at(a0, x{i - 1}), goal(a1, c{i - 1}), at(a1, c{i - 1})), {nl}"
-		output += F"{t}AND( goal(a0, c0), at(a0, c0), goal(a1, c{2 * i - 2}), at(a1, c{2 * i - 2})), {nl}"
-		output += F"{t}AND( goal(a0, x{i - 1}), at(a0, x{i - 1}), goal(a1, c{2 * i - 2}), at(a1, c{2 * i - 2})) )] {nl}"
+		output += F"_goal = [ AND(stopped(a0), stopped(a1))] {nl}"
 		
 		output += r"""
 		_designated_worlds = [ w0 ]

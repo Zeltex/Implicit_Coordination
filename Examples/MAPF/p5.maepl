@@ -1,4 +1,5 @@
 
+
 _domain Pepper {
 	_announce_enabled = false
 	_types = [agent, pos]
@@ -7,6 +8,7 @@ _domain Pepper {
 		adj(pos p1, pos p2)
 		goal(agent a, pos p)
 		free(pos p)
+		stopped(agent a)
 	]
 
 	_action move (pos from, pos to) {
@@ -14,7 +16,7 @@ _domain Pepper {
 		_owner = agent agent
 		_designated_events = [event0]
 		_event event0 { 
-			_preconditions = ( AND( at(agent, from), free(to), adj(from, to)) )
+			_preconditions = ( AND( at(agent, from), free(to), adj(from, to), NOT(stopped(agent))) )
 			_effect_add = [ at(agent, to), free(from) ]
 			_effect_delete = [ at(agent, from), free(to) ]
 		}
@@ -33,8 +35,8 @@ _domain Pepper {
 		_owner = agent agent
 		_designated_events = [event0]
 		_event event0 { 
-			_preconditions = ( AND(at(agent, p), goal(agent, p)) )
-			_effect_add = [  ]
+			_preconditions = ( AND(at(agent, p), goal(agent, p), NOT(stopped(agent)) ))
+			_effect_add = [ stopped(agent) ]
 			_effect_delete = [ ]
 		}
 		_reachability = {
@@ -65,11 +67,7 @@ _world w2 [free(c0), free(c1), free(c2), free(c3), free(c4), at(a1, c5), free(c6
 
 _world w3 [free(c0), free(c1), free(c2), free(c3), free(c4), at(a1, c5), free(c6), free(c7), free(c8), free(c9), at(a0, c10), free(x5), goal(a0, x5), goal(a1, c10)]
 
-_goal = [ OR( 
-	AND( goal(a0, c0), at(a0, c0), goal(a1, c5), at(a1, c5)), 
-	AND( goal(a0, x5), at(a0, x5), goal(a1, c5), at(a1, c5)), 
-	AND( goal(a0, c0), at(a0, c0), goal(a1, c10), at(a1, c10)), 
-	AND( goal(a0, x5), at(a0, x5), goal(a1, c10), at(a1, c10)) )] 
+_goal = [ AND(stopped(a0), stopped(a1))] 
 
 		_designated_worlds = [ w0 ]
 		_reflexivity = false
