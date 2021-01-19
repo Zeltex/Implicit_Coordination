@@ -294,7 +294,9 @@ namespace del {
 		for (size_t block = 0; block < this->blocks.size(); ++block) {
 			auto& world = result.create_world();
 			block_to_new_world[block] = world.get_id();
-			world.add_true_propositions(state.get_world(blocks[block][0]).get_true_propositions());
+			auto props = state.get_world(blocks[block][0]).get_true_propositions();
+			std::sort(props.begin(), props.end());
+			world.add_true_propositions(props);
 		}
 
 		// Create new world relations
@@ -383,15 +385,11 @@ namespace del {
 	}
 
 	std::string Bisimulation_Context::convert_propositions_to_string(const std::vector<Proposition_Instance>& propositions) {
-		std::vector<std::string> vector_propositions;
-		vector_propositions.reserve(propositions.size());
-		for (auto& proposition : propositions) {
-			vector_propositions.push_back(proposition.to_simple_string());
-		}
-		std::sort(vector_propositions.begin(), vector_propositions.end());
+		auto props = propositions;
+		std::sort(props.begin(), props.end());
 		std::string result;
-		for (auto& proposition : vector_propositions) {
-			result += proposition;
+		for (auto& prop : props) {
+			result += prop.to_simple_string();
 		}
 		return result;
 	}

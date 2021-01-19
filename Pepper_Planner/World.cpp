@@ -11,13 +11,13 @@ namespace del {
 		return World(id, true_propositions);
 	}
 
-	void World::add_true_propositions(const std::vector<Proposition_Instance> propositions) {
+	void World::add_true_propositions(const std::vector<Proposition_Instance>& propositions) {
 		for (auto proposition : propositions) {
 			true_propositions.push_back(proposition);
 		}
 	}
 
-	void World::remove_true_propositions(const std::vector<Proposition_Instance> propositions) {
+	void World::remove_true_propositions(const std::vector<Proposition_Instance>& propositions) {
 		for (auto proposition : propositions) {
 			auto result = find(true_propositions.begin(), true_propositions.end(), proposition);
 			if (result != true_propositions.end()) {

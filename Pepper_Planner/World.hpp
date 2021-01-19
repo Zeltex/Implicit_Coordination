@@ -16,8 +16,8 @@ namespace del {
 			id(id), true_propositions(true_propositions) {}
 
 		World_Id get_id() const;
-		void add_true_propositions(const std::vector<Proposition_Instance> propositions);
-		void remove_true_propositions(const std::vector<Proposition_Instance> propositions);
+		void add_true_propositions(const std::vector<Proposition_Instance>& propositions);
+		void remove_true_propositions(const std::vector<Proposition_Instance>& propositions);
 
 		World create_copy(World_Id id) const;
 		
