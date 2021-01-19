@@ -120,14 +120,14 @@ namespace del {
 
 	}
 	
-	bool DEL_Interface::create_policy(Formula goal, const std::string& planning_agent) {
+	bool DEL_Interface::create_policy(Formula goal, const std::string& planning_agent, const bool is_benchmark) {
 		this->goal = std::move(goal);
-		return create_policy(planning_agent);
+		return create_policy(planning_agent, is_benchmark);
 	}
 
-	bool DEL_Interface::create_policy(const std::string& planning_agent) {
+	bool DEL_Interface::create_policy(const std::string& planning_agent, const bool is_benchmark) {
 		auto planning_agent_id = domain.get_agent_id(planning_agent);
-		policy = planner.find_policy(this->goal, action_library, domain.get_current_state(), domain.get_agents(), domain, planning_agent_id);
+		policy = planner.find_policy(this->goal, action_library, domain.get_current_state(), domain.get_agents(), domain, planning_agent_id, is_benchmark);
 		PRINT_POLICY(policy, domain);
 		has_policy = policy.is_solved();
 		return policy.is_solved();

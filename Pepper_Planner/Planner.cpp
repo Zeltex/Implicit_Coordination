@@ -2,24 +2,35 @@
 #include "Node_Comparator.hpp"
 #include "Memory.hpp"
 
+#include <chrono>
+
 namespace del {
 
 	// TODO - Add option to specify for what person the goal must be fulfilled
-	Policy Planner::find_policy(const Formula& goal_formula, Action_Library& action_library, const State& initial_state, const std::vector<Agent>& agents, const Domain& domain, Agent_Id planning_agent) const {
+	Policy Planner::find_policy(const Formula& goal_formula, 
+								Action_Library& action_library, 
+								const State& initial_state, 
+								const std::vector<Agent>& agents, 
+								const Domain& domain, 
+								Agent_Id planning_agent,
+								const bool is_benchmark) const {
 		constexpr size_t initial_node_size = 10000;
 		Node_Comparator history;
 		Graph graph(initial_node_size, initial_state, history, planning_agent);
-		std::vector<size_t> debug_or_layer_size(30);
-		std::vector<size_t> debug_and_layer_size(30);
+		std::vector<size_t> debug_or_layer_size(1);
+		std::vector<size_t> debug_and_layer_size(1);
 
 		// TODO - Need to check if states in initial frontier are solved
-
 		while (!graph.is_frontier_empty()) {
 #if DEBUG_PRINT == 1 && PRINT_PARTIAL == 0
 			print_debug_layer(debug_or_layer_size, debug_and_layer_size);
 #endif
-
+			
 			Node_Id current_node = graph.get_next_from_frontier();
+#if DEBUG_PRINT == 1 && PRINT_NODES == 1
+			std::cout << "\nNode " << current_node.id << "\n";
+			std::cout << graph.get_node(current_node).to_string(domain) << std::endl;;
+#endif
 			action_library.load_actions(graph.get_node(current_node).get_state(), domain);
 			std::vector<State> perspective_shifts;
 			perspective_shifts.reserve(domain.get_agents().size());
@@ -34,6 +45,9 @@ namespace del {
 					continue;
 				}
 				State state_product_update = perform_product_update(perspective_shifts.at(action.get_owner().id), action, agents, domain);
+
+
+
 #if BISIM_CONTRACTION_ENABLED == 1
 				state_product_update = std::move(perform_k_bisimilar_contraction(std::move(state_product_update), BISIMILAR_DEPTH));
 #endif
@@ -42,9 +56,20 @@ namespace del {
 				if (bisim_exists) continue;
 
 				Node_Id action_node = graph.create_and_node(state_product_update, current_node, action);
+
+#if DEBUG_PRINT == 1 && PRINT_NODES == 1
+				std::cout << "\nNode " << action_node.id << " at depth " << graph.get_node(action_node).get_cost() << "\n";
+				std::cout << graph.get_node(action_node).to_string(domain) << std::endl;;
+#endif
 				history.insert(graph.get_node(action_node));
 				std::vector<State> global_states = split_into_global_states(state_product_update, action.get_owner());
-				debug_and_layer_size[state_product_update.get_cost() / 100] ++;
+#if DEBUG_PRINT == 1
+				const size_t debug_cost_and = state_product_update.get_cost() / 100;
+				if (debug_and_layer_size.size() <= debug_cost_and) {
+					debug_and_layer_size.push_back(0);
+				}
+				debug_and_layer_size[debug_cost_and] ++;
+#endif
 
 				for (State& global_state : global_states) {
 #if REMOVE_UNREACHABLE_WORLDS_ENABLED == 1
@@ -57,7 +82,13 @@ namespace del {
 					if (child_node_id.has_value()) graph.set_parent_child(action_node, child_node_id.value(), action);
 					if (bisim_exists) continue;
 
-					debug_or_layer_size[global_state.get_cost() / 100] ++;
+#if DEBUG_PRINT == 1
+					const size_t debug_cost_or = global_state.get_cost() / 100;
+					if (debug_or_layer_size.size() <= debug_cost_or) {
+						debug_or_layer_size.push_back(0);
+					}
+					debug_or_layer_size[debug_cost_or] ++;
+#endif
 					Node_Id global_agent_node = graph.create_or_node(global_state, action_node);
 					if (is_goal_node(graph.get_node(global_agent_node), goal_formula, domain)) {
 						graph.get_node(global_agent_node).set_solved();
@@ -69,7 +100,7 @@ namespace del {
 				check_node(graph, action_node, false);
 			}
 			check_node(graph, current_node);
-			auto policy = check_root(graph, domain);
+			auto policy = check_root(graph, domain, is_benchmark);
 			if (policy.has_value()) {
 #if DEBUG_PRINT == 1
 				report_memory_usage();
@@ -84,6 +115,7 @@ namespace del {
 #endif
 		PRINT_GRAPH(graph, domain);
 		PRINT_GRAPH_DOT(graph, domain);
+		std::cout << "No policy found\n";
 		return Policy(false);
 	}
 
@@ -95,7 +127,7 @@ namespace del {
 		std::cout << debug_print << "\n";
 	}
 
-	std::optional<Policy> Planner::check_root(Graph& graph, const Domain& domain) const {
+	std::optional<Policy> Planner::check_root(Graph& graph, const Domain& domain, const bool is_benchmark) const {
 		if (graph.get_root_node().is_dead()) {
 			PRINT_GRAPH_DOT(graph, domain);
 			PRINT_GRAPH(graph, domain);
@@ -106,7 +138,12 @@ namespace del {
 			PRINT_GRAPH_DOT(graph, domain);
 			PRINT_GRAPH(graph, domain);
 			std::cout << "Policy found\n";
-			return extract_policy(graph);
+			std::cout << "is benchmark " << is_benchmark <<  std::endl;
+			if (is_benchmark) {
+				return Policy(false);
+			} else {
+				return extract_policy(graph);
+			}
 		}
 		return {};
 	}
