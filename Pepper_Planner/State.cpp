@@ -390,6 +390,7 @@ namespace del {
 		std::string result = get_indentation(indentation) + " State\n" + get_indentation(indentation - 1) + " Sizes: (agents, " + std::to_string(number_of_agents) +
 			") (worlds, " + std::to_string(worlds.size()) +
 			") (designated worlds, " + std::to_string(designated_worlds.size()) +
+			") (cost, " + std::to_string(cost) +
 			") (relations, " + std::to_string(relations_size) + ")\n";
 		result += get_indentation(indentation - 1) + " Designated worlds: ";
 		bool first = true;

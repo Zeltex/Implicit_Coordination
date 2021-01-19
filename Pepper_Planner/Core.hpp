@@ -28,7 +28,10 @@ namespace del {
 #define DEBUG_PRINT 0
 #endif
 #ifndef PRINT_PARTIAL
-#define PRINT_PARTIAL 0
+#define PRINT_PARTIAL 1
+#endif
+#ifndef PRINT_NODES
+#define PRINT_NODES 0
 #endif
 
 #define PERCEIVES "perceives"

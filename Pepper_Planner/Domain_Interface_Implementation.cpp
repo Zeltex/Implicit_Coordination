@@ -2,16 +2,16 @@
 
 namespace del {
 	void Domain_Interface_Implementation::new_domain(std::string name) {
-		std::cout << "Starting domain" << std::endl;
+		//std::cout << "Starting domain" << std::endl;
 		domain.set_name(name);
 	}
 
 	void Domain_Interface_Implementation::finish_domain() {
-		std::cout << "Finishing domain" << std::endl;
+		//std::cout << "Finishing domain" << std::endl;
 	}
 
 	void Domain_Interface_Implementation::finish_problem() {
-		std::cout << "Finishing problem" << std::endl;
+		//std::cout << "Finishing problem" << std::endl;
 
 		// Action reachability and reflexivity
 		for (auto& action : actions) {
@@ -59,7 +59,7 @@ namespace del {
 	}
 
 	void Domain_Interface_Implementation::finish_action() {
-		std::cout << "Finishing action" << std::endl;
+		//std::cout << "Finishing action" << std::endl;
 		actions.push_back(std::move(current_action));
 		current_action = {};
 	}
@@ -74,7 +74,7 @@ namespace del {
 	}
 
 	void Domain_Interface_Implementation::set_action_owner(std::string type, std::string name, Atom_Id id) {
-		std::cout << "Action owner " << type << " " << name << std::endl;
+		//std:ction:cout << "Action owner " << type << " " << name << std::endl;
 		current_action.set_owner(type, id);
 	}
 

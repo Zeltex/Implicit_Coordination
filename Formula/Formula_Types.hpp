@@ -142,6 +142,11 @@ namespace del {
             return !(*this == other);
         }
 
+        bool operator < (const Proposition_Instance& other) const
+        {
+            return to_hash().compare(other.to_hash()) < 0;
+        }
+
         std::string to_hash() const {
             std::string hash = name;
             for (auto& arg : arguments) {
