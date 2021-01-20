@@ -2,10 +2,10 @@
 
 namespace del {
 
-    Formula::Formula(const Formula& other, const std::unordered_map<size_t, Atom_Id>& input_to_atom, const std::unordered_map<size_t, size_t>& input_to_agent) {
+    Formula::Formula(const Formula& other, const std::unordered_map<Proposition, Proposition>& general_to_ground) {
         this->root = other.root;
         for (const auto& entry : other.formulas) {
-            this->formulas.emplace_back(entry, input_to_atom, input_to_agent);
+            this->formulas.emplace_back(entry, general_to_ground);
         }
     }
 
@@ -41,7 +41,7 @@ namespace del {
         return Formula_Id{ formulas.size() - 1 };
     }
 
-    Formula_Id Formula::f_prop(Proposition_Instance proposition) 
+    Formula_Id Formula::f_prop(Proposition proposition) 
     {
         formulas.emplace_back(Formula_Types::Prop, proposition);
         root = Formula_Id{ formulas.size() - 1 };

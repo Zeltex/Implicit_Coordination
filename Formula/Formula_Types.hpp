@@ -155,5 +155,31 @@ namespace del {
             return hash;
         }
     };
+
+    struct Proposition {
+    public:
+        Proposition() : id(EMPTY_INDEX) {}
+        Proposition(size_t id) : id(id) {}
+        std::string to_string() const { return std::to_string(id); }
+        size_t to_hash() const { return id; }
+        bool operator==(const Proposition& other) const { return this->id == other.id; }
+        bool operator!=(const Proposition& other) const { return !(*this == other); }
+        bool operator<(const Proposition& other) const { return this->id < other.id; }
+    private:
+        size_t id;
+    };
+
+
 }
 
+namespace std {
+    template<>
+    struct hash<del::Proposition>
+    {
+        size_t
+            operator()(const del::Proposition& obj) const
+        {
+            return hash<size_t>()(obj.to_hash());
+        }
+    };
+}
