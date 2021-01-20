@@ -19,18 +19,18 @@ namespace del {
 
 		std::string get_string_component(const std::vector<Formula_Id>& formulas, const std::vector<Formula_Component>& all_formulas, const std::unordered_map<size_t, std::string>& id_to_atom) const;
 		Formula_Types get_type() const;
-		const Proposition_Instance& get_proposition() const;
+		const Proposition& get_proposition() const;
 
 		Formula_Component() = default;
 
-		Formula_Component(const Formula_Component& other, const std::unordered_map<size_t, Atom_Id>& input_to_atom, const std::unordered_map<size_t, size_t>& input_to_agent);
+		Formula_Component(const Formula_Component& other, const std::unordered_map<Proposition, Proposition>& general_to_ground);
 
 		// Top, Bot
 		Formula_Component(Formula_Types type):
 			type(type), prop(), formula(), formulas(std::vector<Formula_Id>()), agent(size_t{ 9999 }) {};
 
 		// Prop
-		Formula_Component(Formula_Types type, Proposition_Instance prop) :
+		Formula_Component(Formula_Types type, Proposition prop) :
 			type(type), prop(prop), formula(), formulas(std::vector<Formula_Id>()), agent(size_t{ 9999 }) {};
 
 		// And, Or
@@ -45,10 +45,10 @@ namespace del {
 		Formula_Component(Formula_Types type, size_t agent, Formula_Id formula) : 
 			type(type), prop(), formula(formula), formulas(std::vector<Formula_Id>()), agent(agent)  {};
 		Formula_Types type;
-		Proposition_Instance prop;
+		Proposition prop;
 		Formula_Id formula;
 		std::vector<Formula_Id> formulas;
-		size_t agent;
+		Proposition agent;
 	private:
 
 	};
