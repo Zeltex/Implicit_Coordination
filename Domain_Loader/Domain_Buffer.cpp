@@ -73,13 +73,13 @@ namespace del {
         return std::move(temp);
     }
 
-    std::vector<Proposition_Instance> Domain_Buffer::get_event_add_list() {
+    std::vector<Proposition> Domain_Buffer::get_event_add_list() {
         auto temp = std::move(event_add_list);
         event_add_list = {};
         return std::move(temp);
     }
 
-    std::vector<Proposition_Instance> Domain_Buffer::get_event_delete_list() {
+    std::vector<Proposition> Domain_Buffer::get_event_delete_list() {
         auto temp = std::move(event_delete_list);
         event_delete_list = {};
         return std::move(temp);
@@ -136,6 +136,12 @@ namespace del {
     const std::map<Proposition_Instance, Proposition>& Domain_Buffer::get_instance_to_proposition() const {
         return instance_to_proposition;
     }
+    
+    std::map<Proposition_Instance, Proposition>&& Domain_Buffer::get_clear_instance_to_proposition() {
+        auto temp = std::move(instance_to_proposition);
+        instance_to_proposition.clear();
+        return std::move(temp);
+    }
 
     std::vector<std::string> Domain_Buffer::get_missing_perceivables() {
         std::vector<std::string> result;
@@ -168,13 +174,13 @@ namespace del {
     }
 
     void Domain_Buffer::push_event_add_list() {
-        event_add_list = std::move(proposition_instances);
-        proposition_instances = {};
+        event_add_list = std::move(propositions);
+        propositions = {};
     }
 
     void Domain_Buffer::push_event_delete_list() {
-        event_delete_list = std::move(proposition_instances);
-        proposition_instances = {};
+        event_delete_list = std::move(propositions);
+        propositions = {};
     }
     void Domain_Buffer::push_pop_formula(std::string type) {
         if (formula_buffer.empty()) {

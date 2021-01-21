@@ -3,105 +3,105 @@
 
 namespace del {
 
-	void Domain::perform_do(const Agent_Id agent, const std::vector<Proposition_Instance>& add_list, const std::vector<Proposition_Instance>& delete_list) {
+	//void Domain::perform_do(const Agent_Id agent, const std::vector<Proposition_Instance>& add_list, const std::vector<Proposition_Instance>& delete_list) {
 
-		std::vector<Proposition_Instance> add_set;
-		for (const auto& proposition : add_list) {
-			add_set.push_back(proposition);
-		}
+	//	std::vector<Proposition_Instance> add_set;
+	//	for (const auto& proposition : add_list) {
+	//		add_set.push_back(proposition);
+	//	}
 
-		std::vector<Proposition_Instance> delete_set;
-		for (const auto& proposition : delete_list) {
-			delete_set.push_back(proposition);
-		}
+	//	std::vector<Proposition_Instance> delete_set;
+	//	for (const auto& proposition : delete_list) {
+	//		delete_set.push_back(proposition);
+	//	}
 
-		Formula f;
-		f.f_top();
-		Event_Id id = { 0 };
-		Action_Event event = Action_Event(id, std::move(f), add_set, delete_set);
-
-
-		Action action(agent, amount_of_agents);
-		action.add_event(event);
-
-		const State& current_state = states.back();
-		states.push_back(perform_product_update(current_state, action, agents, *this));
-
-	}
-	
-	void Domain::perform_oc(const Agent_Id owner, std::vector<Proposition_Instance>&& add_list, std::vector<Proposition_Instance>&& delete_list, std::string perceivability_proposition, std::string observability_proposition) {
-		std::unordered_set<size_t> obs;
+	//	Formula f;
+	//	f.f_top();
+	//	Event_Id id = { 0 };
+	//	Action_Event event = Action_Event(id, std::move(f), add_set, delete_set);
 
 
-		Action action(owner, amount_of_agents);
-		action.add_event("oc", {0}, {}, std::move(add_list), std::move(delete_list));
-		action.add_event("nothing", {1}, {}, {}, {});
-		action.add_designated_event({ 0 });
+	//	Action action(agent, amount_of_agents);
+	//	action.add_event(event);
 
-		for (auto& agent : agents) {
-			Atom_Id agent_atom_id = get_atom_id(agent.get_name());
+	//	const State& current_state = states.back();
+	//	states.push_back(perform_product_update(current_state, action, agents, *this));
 
-			Formula condition00;
-			std::vector<Formula_Id> proposition_ids00;
-			proposition_ids00.reserve(obs.size());
-			if (std::find(obs.begin(), obs.end(), agent.get_id().id) == obs.end()) {
-				condition00.f_top();
-			} else {
-				Formula condition01;
-				std::vector<Formula_Id> proposition_ids01;
-				proposition_ids01.reserve(obs.size());
-				for (auto& obs_id : obs) {
-					auto obs_atom_id = get_atom_id(get_agent(Agent_Id{ obs_id }).get_name());
-					proposition_ids00.push_back(condition00.f_prop({ perceivability_proposition, { agent_atom_id, obs_atom_id} }));
-					proposition_ids01.push_back(condition01.f_not(condition01.f_prop({ perceivability_proposition, { agent_atom_id, obs_atom_id} })));
-				}
-				condition00.f_or(proposition_ids00);
-				condition01.f_and(proposition_ids01);
-				action.add_reachability(agent.get_id(), { 0 }, { 1 }, std::move(condition01));
-			}
-			action.add_reachability(agent.get_id(), { 0 }, { 0 }, std::move(condition00));
-			action.add_reachability(agent.get_id(), { 1 }, { 1 }, {});
+	//}
+	//
+	//void Domain::perform_oc(const Agent_Id owner, std::vector<Proposition_Instance>&& add_list, std::vector<Proposition_Instance>&& delete_list, std::string perceivability_proposition, std::string observability_proposition) {
+	//	std::unordered_set<size_t> obs;
 
-		}
 
-		perform_action(action);
-	}
+	//	Action action(owner, amount_of_agents);
+	//	action.add_event("oc", {0}, {}, std::move(add_list), std::move(delete_list));
+	//	action.add_event("nothing", {1}, {}, {}, {});
+	//	action.add_designated_event({ 0 });
 
-	std::unordered_set<size_t> Domain::get_obs_set(const Agent_Id& owner, const std::vector<Proposition_Instance>& add_list, const std::vector<Proposition_Instance>& delete_list) {
-		std::unordered_set<size_t> obs;
-		auto owner_name = get_agent(owner).get_name();
-		auto owner_atom_id = get_atom_id(owner_name);
+	//	for (auto& agent : agents) {
+	//		Atom_Id agent_atom_id = get_atom_id(agent.get_name());
 
-		bool owner_found = false;
-		for (auto proposition : add_list) {
-			if (!owner_found && proposition.arguments.at(0) == owner_atom_id) {
-				owner_found = true;
-			}
-			obs.insert(get_agent_from_atom(proposition.arguments.at(0)).get_id().id);
-		}
-		for (auto proposition : delete_list) {
-			if (!owner_found && proposition.arguments.at(0) == owner_atom_id) {
-				owner_found = true;
-			}
-			obs.insert(get_agent_from_atom(proposition.arguments.at(0)).get_id().id);
-		}
+	//		Formula condition00;
+	//		std::vector<Formula_Id> proposition_ids00;
+	//		proposition_ids00.reserve(obs.size());
+	//		if (std::find(obs.begin(), obs.end(), agent.get_id().id) == obs.end()) {
+	//			condition00.f_top();
+	//		} else {
+	//			Formula condition01;
+	//			std::vector<Formula_Id> proposition_ids01;
+	//			proposition_ids01.reserve(obs.size());
+	//			for (auto& obs_id : obs) {
+	//				auto obs_atom_id = get_atom_id(get_agent(Agent_Id{ obs_id }).get_name());
+	//				proposition_ids00.push_back(condition00.f_prop({ perceivability_proposition, { agent_atom_id, obs_atom_id} }));
+	//				proposition_ids01.push_back(condition01.f_not(condition01.f_prop({ perceivability_proposition, { agent_atom_id, obs_atom_id} })));
+	//			}
+	//			condition00.f_or(proposition_ids00);
+	//			condition01.f_and(proposition_ids01);
+	//			action.add_reachability(agent.get_id(), { 0 }, { 1 }, std::move(condition01));
+	//		}
+	//		action.add_reachability(agent.get_id(), { 0 }, { 0 }, std::move(condition00));
+	//		action.add_reachability(agent.get_id(), { 1 }, { 1 }, {});
 
-		if (!owner_found) {
-			obs.insert(get_agent(owner).get_id().id);
-		}
-		return std::move(obs);
-	}
+	//	}
+
+	//	perform_action(action);
+	//}
+
+	//std::unordered_set<size_t> Domain::get_obs_set(const Agent_Id& owner, const std::vector<Proposition_Instance>& add_list, const std::vector<Proposition_Instance>& delete_list) {
+	//	std::unordered_set<size_t> obs;
+	//	auto owner_name = get_agent(owner).get_name();
+	//	auto owner_atom_id = get_atom_id(owner_name);
+
+	//	bool owner_found = false;
+	//	for (auto proposition : add_list) {
+	//		if (!owner_found && proposition.arguments.at(0) == owner_atom_id) {
+	//			owner_found = true;
+	//		}
+	//		obs.insert(get_agent_from_atom(proposition.arguments.at(0)).get_id().id);
+	//	}
+	//	for (auto proposition : delete_list) {
+	//		if (!owner_found && proposition.arguments.at(0) == owner_atom_id) {
+	//			owner_found = true;
+	//		}
+	//		obs.insert(get_agent_from_atom(proposition.arguments.at(0)).get_id().id);
+	//	}
+
+	//	if (!owner_found) {
+	//		obs.insert(get_agent(owner).get_id().id);
+	//	}
+	//	return std::move(obs);
+	//}
 
 	void Domain::perform_action(Action action) {
-		const State& current_state = states.back();
-		auto product_update = perform_product_update(current_state, action, agents, *this);
-#if BISIM_CONTRACTION_ENABLED == 1
-		product_update = perform_k_bisimilar_contraction(std::move(product_update), BISIMILAR_DEPTH);
-#endif
-		states.push_back(std::move(product_update));
-		PRINT_ACTION_TO_CONSOLE(action, *(this));
-		PRINT_ACTION(action, *(this), debug_counter++);
-		PRINT_STATE(get_current_state(), *(this), debug_counter);
+//		const State& current_state = states.back();
+//		auto product_update = perform_product_update(current_state, action, agents, *this);
+//#if BISIM_CONTRACTION_ENABLED == 1
+//		product_update = perform_k_bisimilar_contraction(std::move(product_update), BISIMILAR_DEPTH);
+//#endif
+//		states.push_back(std::move(product_update));
+//		PRINT_ACTION_TO_CONSOLE(action, *(this));
+//		PRINT_ACTION(action, *(this), debug_counter++);
+//		PRINT_STATE(get_current_state(), *(this), debug_counter);
 	}
 
 	State Domain::get_current_state() const {
@@ -181,10 +181,9 @@ namespace del {
 	Agent_Id Domain::create_agent(std::string name) {
 		Agent_Id agent_id = Agent_Id{ agents.size() };
 		Atom_Id atom_id = get_atom_id(name);
-		agents.emplace_back(agent_id, atom_id, name);
+		agents.push_back(Agent(agent_id, atom_id, name));
 		atom_to_agent[atom_id.id] = agent_id;
 		amount_of_agents = agents.size();
-
 		return agent_id;
 	}
 
@@ -196,7 +195,7 @@ namespace del {
 		return atom_types;
 	}
 
-	const std::unordered_set<size_t>& Domain::get_all_atoms_of_type(std::string type) const {
+	const std::vector<Atom_Id>& Domain::get_all_atoms_of_type(const std::string& type) const {
 		if (objects.find(type) == objects.end()) {
 			std::cerr << "No objects of type: " << type << "\n";
 			exit(-1);
@@ -204,7 +203,7 @@ namespace del {
 		return objects.at(type);
 	}
 
-	void Domain::set_objects(std::unordered_map<std::string, std::unordered_set<std::string>> objects) {
+	void Domain::set_objects(const std::unordered_map<std::string, std::unordered_set<std::string>>& objects) {
 		this->objects.clear();
 		this->objects.reserve(objects.size());
 
@@ -217,7 +216,7 @@ namespace del {
 					id_to_atom[atom_id_counter] = atom;
 					atom_to_id[atom] = atom_id_counter;
 				}
-				this->objects[type.first].insert(atom_to_id.at(atom).id);
+				this->objects[type.first].push_back(atom_to_id.at(atom).id);
 				atom_id_counter++;
 			}
 		}
@@ -257,16 +256,24 @@ namespace del {
 		this->rigid_atoms = std::move(rigid_atoms);
 	}
 
-	const std::vector<Proposition>	Domain::get_atom_rigids() const {
+	const std::vector<Proposition> Domain::get_atom_rigids() const {
 		return rigid_atoms;
 	}
 
-	void Domain::set_proposition_instances(std::vector<Proposition_Instance>&& proposition_instances) {
-		this->proposition_instances = std::move(proposition_instances);
+	void Domain::set_proposition_instances(std::map<Proposition_Instance, Proposition>&& instance_to_proposition) {
+		this->instance_to_proposition = std::move(instance_to_proposition);
+		proposition_to_instance.clear();
+		for (const auto& [prop_instance, prop] : instance_to_proposition) {
+			proposition_to_instance[prop] = prop_instance;
+		}
 	}
 
 	const Proposition& Domain::get_proposition(const Proposition_Instance& proposition_instance) const {
 		return instance_to_proposition.at(proposition_instance);
+	}
+
+	const Proposition_Instance& Domain::get_proposition_instance(const Proposition& proposition) const {
+		return proposition_to_instance.at(proposition);
 	}
 
 

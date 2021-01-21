@@ -8,8 +8,8 @@ namespace del {
 	public:
 		Formula_Input_Impl(const State* state, const Domain* domain) : state(state), domain(domain) {}
 		Formula_Input_Impl(const State* state) : state(state), domain(nullptr) {}
-		bool valuate_prop(Proposition_Instance prop, const size_t world_id) const;
-		std::vector<size_t> get_reachable_worlds(size_t agent_id, size_t world_id) const;
+		virtual bool valuate_prop(Proposition prop, const size_t world_id) const override;
+		virtual std::vector<size_t> get_reachable_worlds(Proposition agent_id, size_t world_id) const override;
 
 	private:
 		const State* state;

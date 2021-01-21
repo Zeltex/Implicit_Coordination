@@ -62,7 +62,7 @@ namespace del {
 
 		State to_bisimulation_contraction(const State& state, size_t k = 0);
 
-		std::string convert_propositions_to_string(const std::vector<Proposition_Instance>& propositions);
+		std::string convert_propositions_to_string(const std::vector<Proposition>& propositions);
 	private:
 		State state1;
 		State state2;

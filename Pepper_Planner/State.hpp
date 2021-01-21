@@ -13,7 +13,7 @@ namespace del {
 		State();
 		State(size_t amount_of_agents);
 
-		virtual const std::vector<Proposition_Instance>& get_true_propositions(size_t world_id) const;
+		virtual const std::vector<Proposition>& get_true_propositions(size_t world_id) const;
 		virtual std::vector<size_t> get_reachable_worlds(size_t agent_id, size_t world_id) const;
 
 		World&	create_world();
@@ -24,19 +24,19 @@ namespace del {
 		bool	is_world_designated(World_Id world) const;
 		void	set_amount_of_agents(size_t amount_of_agents);
 		void	set_cost(size_t cost);
-		void	set_designated_worlds(std::vector<World_Id> worlds);
+		void	set_designated_worlds(const std::vector<World_Id>& worlds);
 		void	set_single_designated_world(World_Id world);
 		bool	valuate(const Formula& formula, const Domain& domain) const;
 
 
 		void add_designated_world(World_Id world);
 		void add_indistinguishability_relation(Agent_Id agent, World_Id world_from, World_Id world_to);
-		void add_observability(Agent_Id observer, std::vector<Agent_Id> agents);
-		void add_perceivability(Agent_Id perceiver, std::vector<Agent_Id> agents);
-		void add_true_propositions(World_Id world, std::vector<Proposition_Instance> propositions);
-		void remove_observability(Agent_Id observer, std::vector<Agent_Id> agents);
-		void remove_perceivability(Agent_Id perceiver, std::vector<Agent_Id> agents);
-		void remove_true_propositions(World_Id world, std::vector<Proposition_Instance> propositions);
+		void add_observability(Agent_Id observer, const std::vector<Agent_Id>& agents);
+		void add_perceivability(Agent_Id perceiver, const std::vector<Agent_Id>& agents);
+		void add_true_propositions(World_Id world, const std::vector<Proposition>& propositions);
+		void remove_observability(Agent_Id observer, const std::vector<Agent_Id>& agents);
+		void remove_perceivability(Agent_Id perceiver, const std::vector<Agent_Id>& agents);
+		void remove_true_propositions(World_Id world, const std::vector<Proposition>& propositions);
 		void remove_unreachable_worlds();
 
 

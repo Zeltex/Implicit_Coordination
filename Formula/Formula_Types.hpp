@@ -94,6 +94,15 @@ namespace del {
             }
         }
 
+        Proposition_Instance(const Proposition_Instance& other, const std::vector<Atom_Id>& input_arguments) :
+            name(other.name), arguments() {
+            size_t counter = 0;
+            for (auto& entry : other.arguments) {
+                arguments[counter] = input_arguments[entry.id];
+                counter++;
+            }
+        }
+
         std::string name;
         prop_array arguments;
         //std::vector<std::string> arguments;
@@ -168,8 +177,6 @@ namespace del {
     private:
         size_t id;
     };
-
-
 }
 
 namespace std {

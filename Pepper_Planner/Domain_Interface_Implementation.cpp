@@ -45,7 +45,8 @@ namespace del {
 		current_action.set_name(name);
 	}
 
-	void Domain_Interface_Implementation::finish_action() {
+	void Domain_Interface_Implementation::finish_action(std::map<Proposition_Instance, Proposition>&& instance_to_proposition) {
+		current_action.set_instance_to_proposition(std::move(instance_to_proposition));
 		actions.push_back(std::move(current_action));
 		current_action = {};
 	}
@@ -63,7 +64,7 @@ namespace del {
 		current_action.set_owner(type, id);
 	}
 
-	void Domain_Interface_Implementation::create_event(std::string name, Formula&& preconditions, std::vector<Proposition_Instance> add_list, std::vector<Proposition_Instance> delete_list) {
+	void Domain_Interface_Implementation::create_event(std::string name, Formula&& preconditions, std::vector<Proposition> add_list, std::vector<Proposition> delete_list) {
 		current_action.create_event(name, std::move(preconditions), add_list, delete_list);
 	}
 
@@ -90,7 +91,7 @@ namespace del {
 			domain.create_agent(entry);
 		}
 
-		std::vector<Proposition_Instance> proposition_instances;
+		std::map<Proposition_Instance, Proposition> instance_to_proposition;
 		for (const auto& general_proposition : general_propositions) {
 			const auto& inputs = general_proposition.inputs;
 			std::vector<size_t> indices(inputs.size());
@@ -124,7 +125,7 @@ namespace del {
 					grounded_input.push_back(domain.get_atom_id(atom));
 				}
 
-				proposition_instances.push_back(Proposition_Instance(general_proposition.name, grounded_input));
+				instance_to_proposition.insert(std::pair(Proposition_Instance(general_proposition.name, grounded_input), instance_to_proposition.size()));
 	
 				// Advance indices
 				size_t index = 0;
@@ -134,7 +135,7 @@ namespace del {
 				}				
 			}
 		}
-		domain.set_proposition_instances(std::move(proposition_instances));
+		domain.set_proposition_instances(std::move(instance_to_proposition));
 	}
 
 	void Domain_Interface_Implementation::set_domain(std::string domain_name) {
@@ -153,7 +154,7 @@ namespace del {
 		auto propositions = convert_loader_instances_to_planner_propositions(proposition_instances, converter);
 
 		// TODO - Need to use propositions, just want to make sure loader compiles without this
-		world.add_true_propositions(proposition_instances);
+		world.add_true_propositions(propositions);
 		world_name_to_id[name] = world.get_id();
 	}
 

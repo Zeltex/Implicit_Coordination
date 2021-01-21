@@ -4,7 +4,7 @@
 
 namespace del {
 
-	bool Formula_Input_Impl::valuate_prop(Proposition_Instance prop, const size_t world_id) const {
+	bool Formula_Input_Impl::valuate_prop(Proposition prop, const size_t world_id) const {
 		auto& propositions_state = state->get_true_propositions(world_id);
 		if (std::find(propositions_state.begin(), propositions_state.end(), prop) != propositions_state.end()) return true;
 		if (domain != nullptr) {
@@ -16,8 +16,8 @@ namespace del {
 		return false;
 	}
 	
-	std::vector<size_t> Formula_Input_Impl::get_reachable_worlds(size_t agent_id, size_t world_id) const {
-		return state->get_reachable_worlds(agent_id, world_id);
+	std::vector<size_t> Formula_Input_Impl::get_reachable_worlds(Proposition agent_id, size_t world_id) const {
+		return state->get_reachable_worlds(agent_id.to_hash(), world_id);
 	}
 
 }

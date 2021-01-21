@@ -275,10 +275,11 @@ namespace del {
     }
 
     void Custom_Parser::action_body() {
-        if (try_match({ Token::OWNER_DEF, Token::EQUALS, Token::NAME, Token::NAME })) {
-            domain->set_action_owner(get_svalue(2), get_svalue(3), buffer->translate_atom_to_id(get_svalue(3)));
-            return action_body();
-        }
+        //if (try_match({ Token::OWNER_DEF, Token::EQUALS, Token::NAME, Token::NAME })) {
+        //    buffer->add_owner_to_input(get_svalue(2), get_svalue(3));
+        //    domain->set_action_owner(get_svalue(2), get_svalue(3), buffer->translate_atom_to_id(get_svalue(3)));
+        //    return action_body();
+        //}
 
         if (try_match({ Token::EVENT_DEF, Token::NAME, Token::LBRACK })) {
             buffer->set_event_name(get_svalue(1));
@@ -363,6 +364,7 @@ namespace del {
 
         if (try_match({ Token::EFFECT_DELETE_DEF, Token::EQUALS, Token::LBRACK })) {
             buffer->clear_variable_list();
+            buffer->clear_proposition_instances();
             proposition_instances();
             buffer->push_event_delete_list();
             if (!must_match({ Token::RBRACK })) return;
@@ -371,6 +373,7 @@ namespace del {
 
         if (try_match({ Token::EFFECT_ADD_DEF, Token::EQUALS, Token::LBRACK })) {
             buffer->clear_variable_list();
+            buffer->clear_proposition_instances();
             proposition_instances();
             buffer->push_event_add_list();
             if (!must_match({ Token::RBRACK })) return;
@@ -503,7 +506,7 @@ namespace del {
             domain->set_action_input(buffer->get_inputs());
             if (!must_match({ Token::RBRACK, Token::LBRACK })) return;
             action_body();
-            domain->finish_action();
+            domain->finish_action(buffer->get_clear_instance_to_proposition());
             buffer->clear_proposition_instances();
             buffer->clear_seen_atoms();
             if (!must_match({ Token::RBRACK })) return;

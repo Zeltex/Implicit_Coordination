@@ -55,53 +55,53 @@ namespace del {
 		return domain.get_current_state().valuate(query, domain);
 	}
 	
-	void DEL_Interface::perform_do(const Agent_Id i, const std::vector<Proposition_Instance>& add, const std::vector<Proposition_Instance>& del) {
-		domain.perform_do(i, add, del);
-	}
+	//void DEL_Interface::perform_do(const Agent_Id i, const std::vector<Proposition_Instance>& add, const std::vector<Proposition_Instance>& del) {
+	//	domain.perform_do(i, add, del);
+	//}
 
-	void DEL_Interface::perform_oc(const Agent_Id i, std::vector<std::vector<std::string>>&& add, std::vector<std::vector<std::string>>&& del) {
-		std::vector<Proposition_Instance> add_list;
-		add_list.reserve(add.size());
-		for (auto& entry : add) {
-			if (entry.size() < 1) continue;
-			std::vector<Atom_Id> temp_atoms;
-			bool first = true;
+	//void DEL_Interface::perform_oc(const Agent_Id i, std::vector<std::vector<std::string>>&& add, std::vector<std::vector<std::string>>&& del) {
+	//	std::vector<Proposition_Instance> add_list;
+	//	add_list.reserve(add.size());
+	//	for (auto& entry : add) {
+	//		if (entry.size() < 1) continue;
+	//		std::vector<Atom_Id> temp_atoms;
+	//		bool first = true;
 
-			for (auto& atom : entry) {
-				if (first) {
-					first = false;
-				} else {
-					temp_atoms.emplace_back(domain.get_atom_id(atom));
-				}
-			}
+	//		for (auto& atom : entry) {
+	//			if (first) {
+	//				first = false;
+	//			} else {
+	//				temp_atoms.emplace_back(domain.get_atom_id(atom));
+	//			}
+	//		}
 
-			add_list.emplace_back(entry[0], temp_atoms);
-		}
+	//		add_list.emplace_back(entry[0], temp_atoms);
+	//	}
 
-		std::vector<Proposition_Instance> del_list;
-		del_list.reserve(del.size());
-		for (auto& entry : del) {
-			if (entry.size() < 1) continue;
-			std::vector<Atom_Id> temp_atoms;
-			bool first = true;
+	//	std::vector<Proposition_Instance> del_list;
+	//	del_list.reserve(del.size());
+	//	for (auto& entry : del) {
+	//		if (entry.size() < 1) continue;
+	//		std::vector<Atom_Id> temp_atoms;
+	//		bool first = true;
 
-			for (auto& atom : entry) {
-				if (first) {
-					first = false;
-				} else {
-					temp_atoms.emplace_back(domain.get_atom_id(atom));
-				}
-			}
-			del_list.emplace_back(entry[0], temp_atoms);
-		}
+	//		for (auto& atom : entry) {
+	//			if (first) {
+	//				first = false;
+	//			} else {
+	//				temp_atoms.emplace_back(domain.get_atom_id(atom));
+	//			}
+	//		}
+	//		del_list.emplace_back(entry[0], temp_atoms);
+	//	}
 
-		domain.perform_oc(i, std::move(add_list), std::move(del_list));
-	}
+	//	domain.perform_oc(i, std::move(add_list), std::move(del_list));
+	//}
 
-	void DEL_Interface::perform_oc(const std::string owner_name, std::vector<std::vector<std::string>>&& add, std::vector<std::vector<std::string>>&& del) {
+	//void DEL_Interface::perform_oc(const std::string owner_name, std::vector<std::vector<std::string>>&& add, std::vector<std::vector<std::string>>&& del) {
 
-		return perform_oc(domain.get_agent(owner_name).get_id(), std::move(add), std::move(del));
-	}
+	//	return perform_oc(domain.get_agent(owner_name).get_id(), std::move(add), std::move(del));
+	//}
 	
 	void DEL_Interface::perform_action(Action action) {
 		domain.perform_action(action);
@@ -114,8 +114,7 @@ namespace del {
 			temp_arguments.push_back(domain.get_atom_id(argument));
 		}
 
-
-		auto action = action_library.get_general_action(name).create_action(domain.get_atom_id(owner), std::move(temp_arguments), domain);
+		auto action = Action(action_library.get_general_action(name), domain, temp_arguments);
 		domain.perform_action(action);
 
 	}

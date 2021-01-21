@@ -21,13 +21,13 @@ namespace PepperPlannerTests
 			state1.create_worlds(8);
 
 			state1.add_true_propositions(World_Id{ 0 }, {   });
-			state1.add_true_propositions(World_Id{ 1 }, { {"q", {}}});
-			state1.add_true_propositions(World_Id{ 2 }, { {"p", {}} });
-			state1.add_true_propositions(World_Id{ 3 }, { {"p", {}}, {"q", {}} });
+			state1.add_true_propositions(World_Id{ 1 }, { {1}});
+			state1.add_true_propositions(World_Id{ 2 }, { {0} });
+			state1.add_true_propositions(World_Id{ 3 }, { {0}, {1} });
 			state1.add_true_propositions(World_Id{ 4 }, {   });
-			state1.add_true_propositions(World_Id{ 5 }, { {"q", {}} });
-			state1.add_true_propositions(World_Id{ 6 }, { {"p", {}} });
-			state1.add_true_propositions(World_Id{ 7 }, { {"p", {}}, {"q", {}} });
+			state1.add_true_propositions(World_Id{ 5 }, { {1} });
+			state1.add_true_propositions(World_Id{ 6 }, { {0} });
+			state1.add_true_propositions(World_Id{ 7 }, { {0}, {1} });
 
 			for (size_t i = 1; i < 8; i++) {
 				state1.add_indistinguishability_relation(Agent_Id{ 0 }, World_Id{ 0 }, World_Id{ i });
@@ -43,9 +43,9 @@ namespace PepperPlannerTests
 			state2.create_worlds(5);
 			state2.add_true_propositions(World_Id{ 0 }, {});
 			state2.add_true_propositions(World_Id{ 1 }, {});
-			state2.add_true_propositions(World_Id{ 2 }, { {"q", {}} });
-			state2.add_true_propositions(World_Id{ 3 }, { {"p", {}} });
-			state2.add_true_propositions(World_Id{ 4 }, { {"p", {}}, {"q", {}} });
+			state2.add_true_propositions(World_Id{ 2 }, { {1} });
+			state2.add_true_propositions(World_Id{ 3 }, { {0} });
+			state2.add_true_propositions(World_Id{ 4 }, { {0}, {1} });
 
 			for (size_t i = 1; i < 5; i++) {
 				state2.add_indistinguishability_relation(Agent_Id{ 0 }, World_Id{ 0 }, World_Id{ i });
@@ -67,13 +67,13 @@ namespace PepperPlannerTests
 			state1.create_worlds(8);
 
 			state1.add_true_propositions(World_Id{ 0 }, {   });
-			state1.add_true_propositions(World_Id{ 1 }, { {"q", {}} });
-			state1.add_true_propositions(World_Id{ 2 }, { {"p", {}} });
-			state1.add_true_propositions(World_Id{ 3 }, { {"p", {}}, {"q", {}} });
+			state1.add_true_propositions(World_Id{ 1 }, { {1} });
+			state1.add_true_propositions(World_Id{ 2 }, { {0} });
+			state1.add_true_propositions(World_Id{ 3 }, { {0}, {1} });
 			state1.add_true_propositions(World_Id{ 4 }, {   });
-			state1.add_true_propositions(World_Id{ 5 }, { {"q", {}} });
-			state1.add_true_propositions(World_Id{ 6 }, { {"p", {}} });
-			state1.add_true_propositions(World_Id{ 7 }, { {"p", {}}, {"q", {}} });
+			state1.add_true_propositions(World_Id{ 5 }, { {1} });
+			state1.add_true_propositions(World_Id{ 6 }, { {0} });
+			state1.add_true_propositions(World_Id{ 7 }, { {0}, {1} });
 
 			for (size_t i = 1; i < 8; i++) {
 				state1.add_indistinguishability_relation(Agent_Id{ 0 }, World_Id{ 0 }, World_Id{ i });
@@ -90,9 +90,9 @@ namespace PepperPlannerTests
 			state2.create_worlds(5);
 			state2.add_true_propositions(World_Id{ 0 }, {});
 			state2.add_true_propositions(World_Id{ 1 }, {});
-			state2.add_true_propositions(World_Id{ 2 }, { {"q", {}} });
-			state2.add_true_propositions(World_Id{ 3 }, { {"p", {}} });
-			state2.add_true_propositions(World_Id{ 4 }, { {"p", {}}, {"q", {}} });
+			state2.add_true_propositions(World_Id{ 2 }, { {1} });
+			state2.add_true_propositions(World_Id{ 3 }, { {0} });
+			state2.add_true_propositions(World_Id{ 4 }, { {0}, {1} });
 
 			for (size_t i = 1; i < 5; i++) {
 				state2.add_indistinguishability_relation(Agent_Id{ 0 }, World_Id{ 0 }, World_Id{ i });

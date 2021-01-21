@@ -21,7 +21,7 @@ namespace del {
 		virtual void finish_domain() override;
 		virtual void finish_problem() override;
 		virtual void new_action(std::string name) override;
-		virtual void finish_action() override;
+		virtual void finish_action(std::map<Proposition_Instance, Proposition>&& instance_to_proposition) override;
 
 
 		virtual void set_action_cost(size_t cost) override;
@@ -37,7 +37,7 @@ namespace del {
 		virtual void set_types(const std::unordered_set<std::string>& types) override;
 
 
-		virtual void create_event(std::string name, del::Formula&& preconditions, std::vector<Proposition_Instance> add_list, std::vector<Proposition_Instance> delete_list) override;
+		virtual void create_event(std::string name, del::Formula&& preconditions, std::vector<Proposition> add_list, std::vector<Proposition> delete_list) override;
 		virtual void create_world(std::string name, const std::vector<Proposition_Instance>& propositions, const std::unordered_map<std::string, Atom_Id>& atom_to_id) override;
 		virtual void create_action_reflexive_reachables() override;
 		virtual void create_state_reflexive_reachables() override;

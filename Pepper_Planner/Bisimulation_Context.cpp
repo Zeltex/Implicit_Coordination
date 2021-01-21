@@ -384,12 +384,13 @@ namespace del {
 		}
 	}
 
-	std::string Bisimulation_Context::convert_propositions_to_string(const std::vector<Proposition_Instance>& propositions) {
+	// TODO - Handle this better, since propositions representation changed
+	std::string Bisimulation_Context::convert_propositions_to_string(const std::vector<Proposition>& propositions) {
 		auto props = propositions;
 		std::sort(props.begin(), props.end());
 		std::string result;
 		for (auto& prop : props) {
-			result += prop.to_simple_string();
+			result += prop.to_string();
 		}
 		return result;
 	}

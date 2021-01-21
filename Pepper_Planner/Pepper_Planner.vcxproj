@@ -169,6 +169,8 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Node.cpp" />
     <ClCompile Include="Policy.cpp" />
+    <ClCompile Include="Propositions.cpp" />
+    <ClCompile Include="Propositions.hpp" />
     <ClCompile Include="State.cpp" />
     <ClCompile Include="Types.cpp" />
     <ClCompile Include="World.cpp" />

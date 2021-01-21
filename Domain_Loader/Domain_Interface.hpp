@@ -15,7 +15,7 @@ namespace del {
     public:
         virtual void new_action									(std::string name) = 0;
         virtual void new_domain									(std::string name) = 0;
-        virtual void finish_action								() = 0;
+        virtual void finish_action								(std::map<Proposition_Instance, Proposition>&& instance_to_proposition) = 0;
         virtual void finish_domain								() = 0;
         virtual void finish_problem								() = 0;
 
@@ -33,7 +33,7 @@ namespace del {
         virtual void set_types									(const std::unordered_set<std::string>& types) = 0;
 
 
-        virtual void create_event								(std::string name, del::Formula&& preconditions, std::vector<Proposition_Instance> add_list, std::vector<Proposition_Instance> delete_list) = 0;
+        virtual void create_event								(std::string name, del::Formula&& preconditions, std::vector<Proposition> add_list, std::vector<Proposition> delete_list) = 0;
         virtual void create_world								(std::string name, const std::vector<Proposition_Instance>& propositions, const std::unordered_map<std::string, Atom_Id>& atom_to_id) = 0;
         virtual void create_action_reflexive_reachables			() = 0;
         virtual void create_state_reflexive_reachables			() = 0;

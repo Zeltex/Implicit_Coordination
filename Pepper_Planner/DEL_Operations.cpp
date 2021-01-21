@@ -30,8 +30,8 @@ namespace del {
 			}
 		}
 
-		for (auto world1 : new_worlds) {
-			for (auto world2 : new_worlds) {
+		for (const auto& world1 : new_worlds) {
+			for (const auto& world2 : new_worlds) {
 				for (size_t i = 0; i < state.get_number_of_agents(); i++) {
 					Agent_Id agent = Agent_Id{ i };
 					if (state.is_one_reachable(agent, world1.old_world, world2.old_world) &&
@@ -54,13 +54,13 @@ namespace del {
 		std::vector<World_Id> frontier;
 		// Using size_t instead of World_Id to avoid specifying custom hash function for World_Id
 		std::unordered_set<size_t> visited;
-		for (auto designated_world : state.get_designated_worlds()) {
+		for (const auto& designated_world : state.get_designated_worlds()) {
 			frontier.push_back(designated_world);
 		}
 		while (!frontier.empty()) {
-			auto current = frontier.back();
+			const auto& current = frontier.back();
 			frontier.pop_back();
-			for (auto relation : state.get_indistinguishability_relations(agent_id)) {
+			for (const auto& relation : state.get_indistinguishability_relations(agent_id)) {
 				if (relation.world_from == current &&
 					std::find(visited.begin(), visited.end(), relation.world_to.id) == visited.end()) {
 
@@ -82,7 +82,7 @@ namespace del {
 
 	std::vector<State> split_into_global_states(const State& state, const Agent_Id agent) {
 		std::vector<State> result;
-		for (auto designated_world : state.get_designated_worlds()) {
+		for (const auto& designated_world : state.get_designated_worlds()) {
 			State new_state = State(state);
 			new_state.set_single_designated_world(designated_world);
 #if REMOVE_UNREACHABLE_WORLDS_ENABLED == 1
@@ -100,7 +100,7 @@ namespace del {
 
 		for (auto& world_id : worlds) {
 			bool found_applicable_event = false;
-			for (auto event : action.get_events()) {
+			for (const auto& event : action.get_events()) {
 				if (action.is_event_designated(event.get_id().id) && event.get_preconditions().valuate(world_id.id, &input)) {
 					found_applicable_event = true;
 					break;

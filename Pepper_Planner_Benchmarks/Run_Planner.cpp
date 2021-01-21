@@ -63,35 +63,35 @@ void find_and_execute(std::string file_name, const std::string& planning_agent) 
 
 
 void execute_test_case() {
-	DEL_Interface del_interface("../examples/Sally_Anne.maepl");
+	//DEL_Interface del_interface("../examples/Sally_Anne.maepl");
 
-	del_interface.perform_action("put", "S", { "S", "basket", "marble" });
-	del_interface.perform_oc("S", {  }, { {"perceives", "S", "A"}, {"perceives", "A", "S"} });
-	del_interface.perform_action("pickup", "A", { "basket", "A", "marble" });
-	del_interface.perform_action("put", "A", { "A", "box", "marble" });
+	//del_interface.perform_action("put", "S", { "S", "basket", "marble" });
+	//del_interface.perform_oc("S", {  }, { {"perceives", "S", "A"}, {"perceives", "A", "S"} });
+	//del_interface.perform_action("pickup", "A", { "basket", "A", "marble" });
+	//del_interface.perform_action("put", "A", { "A", "box", "marble" });
 
 }
 
 void execute_second_order() {
-	DEL_Interface del_interface("../examples/Second_Order.maepl");
-	del_interface.perform_oc("A", {  }, { {"perceives", "A", "B"}, {"perceives", "A", "C"}, {"perceives", "B", "A"}, {"perceives", "C", "A"} });
-	del_interface.perform_action("transfer", "B", { "box1", "box2", "cube_red" });
-	del_interface.perform_oc("B", {  }, { {"perceives", "B", "C"}, {"perceives", "C", "B"} });
-	del_interface.perform_action("transfer", "C", { "box2", "box1", "cube_red" });
-	del_interface.perform_oc("A", { {"perceives", "A", "C"}, {"perceives", "C", "A"} }, {  });
-	del_interface.perform_action("transfer", "A", { "box1", "box2", "cube_red" });
-	del_interface.perform_oc("A", {  }, { {"perceives", "A", "C"}, {"perceives", "C", "A"} });
+	//DEL_Interface del_interface("../examples/Second_Order.maepl");
+	//del_interface.perform_oc("A", {  }, { {"perceives", "A", "B"}, {"perceives", "A", "C"}, {"perceives", "B", "A"}, {"perceives", "C", "A"} });
+	//del_interface.perform_action("transfer", "B", { "box1", "box2", "cube_red" });
+	//del_interface.perform_oc("B", {  }, { {"perceives", "B", "C"}, {"perceives", "C", "B"} });
+	//del_interface.perform_action("transfer", "C", { "box2", "box1", "cube_red" });
+	//del_interface.perform_oc("A", { {"perceives", "A", "C"}, {"perceives", "C", "A"} }, {  });
+	//del_interface.perform_action("transfer", "A", { "box1", "box2", "cube_red" });
+	//del_interface.perform_oc("A", {  }, { {"perceives", "A", "C"}, {"perceives", "C", "A"} });
 
-	Formula goal;
-	auto& proposition_context = del_interface.get_proposition_context();
-	auto belief_context = del_interface.get_belief_context();
+	//Formula goal;
+	//auto& proposition_context = del_interface.get_proposition_context();
+	//auto belief_context = del_interface.get_belief_context();
 
-	auto prop = goal.f_prop({ "in", { "box1", "cube_red" }, proposition_context });
-	auto belief1 = goal.f_believes("A", prop, belief_context);
-	auto belief2 = goal.f_believes("B", belief1, belief_context);
-	if (del_interface.query(goal)) {
-		std::cout << "-=-=- Success -=-=-";
-	} else {
-		std::cout << "-=-=- Fail -=-=-";
-	}
+	//auto prop = goal.f_prop({ "in", { "box1", "cube_red" }, proposition_context });
+	//auto belief1 = goal.f_believes("A", prop, belief_context);
+	//auto belief2 = goal.f_believes("B", belief1, belief_context);
+	//if (del_interface.query(goal)) {
+	//	std::cout << "-=-=- Success -=-=-";
+	//} else {
+	//	std::cout << "-=-=- Fail -=-=-";
+	//}
 }
