@@ -98,7 +98,11 @@ namespace del {
             name(other.name), arguments() {
             size_t counter = 0;
             for (auto& entry : other.arguments) {
-                arguments[counter] = input_arguments[entry.id];
+                if (entry == EMPTY_INDEX) {
+                    arguments[counter] = EMPTY_INDEX;
+                } else {
+                    arguments[counter] = input_arguments[entry.id];
+                }
                 counter++;
             }
         }

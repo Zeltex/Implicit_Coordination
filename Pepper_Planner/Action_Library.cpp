@@ -169,10 +169,6 @@ namespace del {
 		general_actions.push_back(general_action);
 		general_action_name_to_id[general_action.get_name()] = general_actions.size() - 1;
 
-		auto [owner_type, owner_index] = general_action.get_owner();
-		auto& owners = domain.get_all_atoms_of_type(owner_type);
-
-
 		std::vector<std::vector<Atom_Id>> atoms;
 		std::vector<size_t> counters;
 
@@ -183,49 +179,22 @@ namespace del {
 			counters.emplace_back(0);
 		}
 
-		// TODO - I do not believe this outer loop is necessary (confirm that owner is always a part of input arguments)
 		// Generate all possible valid inputs
-		for (auto& owner : owners) {
-			for (auto& counter : counters) {
-				counter = 0;
+		bool done = false;
+		while (!done) {
+
+			std::vector<Atom_Id> arguments;
+			for (size_t i = 0; i < counters.size(); i++) {
+				arguments.emplace_back(atoms[i][counters[i]]);
 			}
+			actions.emplace_back(general_action, domain, arguments);
 
-			bool done = false;
-			while (true) {
-
-				std::vector<Atom_Id> arguments;
-				bool valid_owner_input = true;
-				for (size_t i = 0; i < counters.size(); i++) {
-					arguments.emplace_back(atoms[i][counters[i]]);
-					if (i == owner_index.id && owner != atoms[i][counters[i]].id) {
-						valid_owner_input = false;
-					}
-				}
-				if (valid_owner_input) {
-					auto owner_id = domain.get_agent_id(owner);
-					actions.emplace_back(general_action, domain, arguments);
-				}
-
-				if (!increment_counters_success(counters, atoms)) {
-					break;
-				}
+			// Advance indices
+			size_t index = 0;
+			while (!done && ++counters.at(index) >= atoms.at(index).size()) {
+				counters.at(index++) = 0;
+				done = index >= counters.size();
 			}
 		}
-	}
-	// TODO - Better version of this loop used in Domain_Interface_Implementation::set_objects
-	bool Action_Library::increment_counters_success(std::vector<size_t>& counters, std::vector<std::vector<Atom_Id>>& atoms) {
-		counters[0]++;
-		for (size_t i = 0; i < counters.size(); i++) {
-			if (counters[i] >= atoms[i].size()) {
-				if (i == counters.size() - 1) {
-					return false;
-				}
-				counters[i] = 0;
-				counters[i + 1]++;
-			} else {
-				return true;
-			}
-		}
-		return true;
 	}
 }
