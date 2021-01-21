@@ -2,29 +2,17 @@
 
 namespace del {
 	void Domain_Interface_Implementation::new_domain(std::string name) {
-		//std::cout << "Starting domain" << std::endl;
 		domain.set_name(name);
 	}
 
 	void Domain_Interface_Implementation::finish_domain() {
-		//std::cout << "Finishing domain" << std::endl;
 	}
 
 	void Domain_Interface_Implementation::finish_problem() {
-		//std::cout << "Finishing problem" << std::endl;
 
 		// Action reachability and reflexivity
 		for (auto& action : actions) {
 			action.set_amount_of_agents(domain.get_agents().size());
-
-			// TODO - Removed option for implicit action reflexivity, should probably delete soon
-			//if (action_reflexivity) {
-			//	for (auto& agent : domain.get_agents()) {
-			//		for (auto& event : action.get_events()) {
-			//			action.add_reachability_relation(agent.get_id(), event.get_id(), event.get_id());
-			//		}
-			//	}
-			//}
 		}
 
 		// Perceivability
@@ -48,9 +36,8 @@ namespace del {
 		for (auto& action : actions) {
 			library.add_general_action(action, domain);
 		}
-		auto temp = std::move(initial_state);
+		domain.set_initial_state(std::move(initial_state));
 		initial_state = {};
-		domain.set_initial_state(std::move(temp));
 	}
 
 	void Domain_Interface_Implementation::new_action(std::string name) {
@@ -59,7 +46,6 @@ namespace del {
 	}
 
 	void Domain_Interface_Implementation::finish_action() {
-		//std::cout << "Finishing action" << std::endl;
 		actions.push_back(std::move(current_action));
 		current_action = {};
 	}
@@ -74,7 +60,6 @@ namespace del {
 	}
 
 	void Domain_Interface_Implementation::set_action_owner(std::string type, std::string name, Atom_Id id) {
-		//std:ction:cout << "Action owner " << type << " " << name << std::endl;
 		current_action.set_owner(type, id);
 	}
 
@@ -92,7 +77,7 @@ namespace del {
 	}
 
 	void Domain_Interface_Implementation::add_proposition(std::string name, const std::vector<std::pair<std::string, std::string>>& inputs) {
-		propositions.emplace_back(name, inputs);
+		general_propositions.emplace_back(name, inputs);
 	}
 
 	void Domain_Interface_Implementation::set_objects(std::unordered_map<std::string, std::unordered_set<std::string>>&& objects) {
@@ -101,49 +86,74 @@ namespace del {
 		library.set_amount_of_agents(amount_of_agents);
 
 		domain.set_objects(objects);
-		for (auto entry : objects["agent"]) {
+		for (const auto& entry : objects["agent"]) {
 			domain.create_agent(entry);
 		}
+
+		std::vector<Proposition_Instance> proposition_instances;
+		for (const auto& general_proposition : general_propositions) {
+			const auto& inputs = general_proposition.inputs;
+			std::vector<size_t> indices(inputs.size());
+
+			// Check at least one atom of each input type exists
+			bool empty_input = false;
+			for (const auto& input : inputs) {
+				if (objects.at(input.first).empty()) {
+					empty_input = true;
+					break;
+				}
+			}
+			if (empty_input) continue;
+
+			// Convert object set to indicable list
+			std::vector<std::vector<std::string>> list_atoms;
+			for (const auto& input : inputs) {
+				list_atoms.emplace_back();
+				for (const auto& object : objects.at(input.first)) {
+					list_atoms.back().push_back(object);
+				}
+			}
+
+			// Produce all grounded propositions
+			bool done = false;
+			while (!done) {
+				std::vector<Atom_Id> grounded_input;
+				for (size_t i = 0; i < indices.size(); ++i) {
+					const std::string& input_type = inputs.at(i).first;
+					const std::string& atom = list_atoms.at(i).at(indices.at(i));
+					grounded_input.push_back(domain.get_atom_id(atom));
+				}
+
+				proposition_instances.push_back(Proposition_Instance(general_proposition.name, grounded_input));
+	
+				// Advance indices
+				size_t index = 0;
+				while (++indices.at(index) >= list_atoms.at(index).size() && !done) {
+					indices.at(index++) = 0;
+					done = index >= indices.size();
+				}				
+			}
+		}
+		domain.set_proposition_instances(std::move(proposition_instances));
 	}
 
 	void Domain_Interface_Implementation::set_domain(std::string domain_name) {
 		// TODO - problem using domain: domain_name
 	}
 
-	void Domain_Interface_Implementation::set_initial_propositions(const std::vector<Proposition_Instance>& propositions, const std::unordered_map<std::string, Atom_Id>& atom_to_id) {
-		
-		std::unordered_map<size_t, Atom_Id> converter;
-		converter.reserve(atom_to_id.size());
-		for (auto& entry : atom_to_id) {
-			converter[entry.second.id] = domain.get_atom_id(entry.first);
-		}
-
-		std::vector<Proposition_Instance> result;
-		result.reserve(propositions.size());
-		for (auto& proposition : propositions) {
-			result.emplace_back(proposition, converter);
-		}
-
-		domain.set_rigid_atoms(result);
+	void Domain_Interface_Implementation::set_initial_propositions(const std::vector<Proposition_Instance>& proposition_instances, const std::unordered_map<std::string, Atom_Id>& atom_to_id) {
+		auto converter = get_loader_to_planner_converter(atom_to_id);
+		auto propositions = convert_loader_instances_to_planner_propositions(proposition_instances, converter);
+		domain.set_rigid_atoms(propositions);
 	}
 
-	void Domain_Interface_Implementation::create_world(std::string name, const std::vector<Proposition_Instance>& propositions, const std::unordered_map<std::string, Atom_Id>& atom_to_id) {
+	void Domain_Interface_Implementation::create_world(std::string name, const std::vector<Proposition_Instance>& proposition_instances, const std::unordered_map<std::string, Atom_Id>& atom_to_id) {
 		auto& world = initial_state.create_world();
+		auto converter = get_loader_to_planner_converter(atom_to_id);
+		auto propositions = convert_loader_instances_to_planner_propositions(proposition_instances, converter);
 
-		std::unordered_map<size_t, Atom_Id> converter;
-		converter.reserve(atom_to_id.size());
-		for (auto& entry : atom_to_id) {
-			converter[entry.second.id] = domain.get_atom_id(entry.first);
-		}
-
-		std::vector<Proposition_Instance> result;
-		result.reserve(propositions.size());
-		for (auto& proposition : propositions) {
-			result.emplace_back(proposition, converter);
-		}
-
-
-		world.add_true_propositions(result);
+		// TODO - Need to use propositions, just want to make sure loader compiles without this
+		world.add_true_propositions(proposition_instances);
 		world_name_to_id[name] = world.get_id();
 	}
 
@@ -179,21 +189,10 @@ namespace del {
 		library.set_announce_enabled();
 	}
 
-	void Domain_Interface_Implementation::set_goal(Formula&& goal, const std::unordered_map<std::string, Atom_Id>& atom_to_id) {
+	void Domain_Interface_Implementation::set_goal(Formula&& goal, const std::map<Proposition_Instance, Proposition>& instance_to_proposition) {
+		auto converter = get_loader_to_formula_converter(instance_to_proposition);
 
-		std::unordered_map<size_t, Atom_Id> atom_converter;
-		std::unordered_map<size_t, size_t> agent_converter;
-		atom_converter.reserve(atom_to_id.size());
-		for (auto& entry : atom_to_id) {
-			auto atom_id = domain.get_atom_id(entry.first);
-			atom_converter[entry.second.id] = atom_id;
-			auto agent = this->domain.get_agent_id_optional(atom_id);
-			if (agent.has_value()) {
-				agent_converter[atom_id.id] = agent.value().id;
-			}
-		}
-
-		this->goal = Formula(goal, atom_converter, agent_converter);
+		this->goal = Formula(goal, converter);
 	}
 
 	void Domain_Interface_Implementation::add_edge_condition(Atom_Id agent, std::vector< std::tuple<std::string, std::string, Formula>>&& edge_conditions) {
@@ -212,5 +211,36 @@ namespace del {
 	
 	void Domain_Interface_Implementation::add_perceivability(std::string perceiver, const std::vector<std::string>& agents) {
 		perceivability[perceiver] = agents;
+	}
+
+	// Map from domain_loader ids to pepper_planner ids (using size_t and Atom_Id)
+	std::unordered_map<size_t, Atom_Id> Domain_Interface_Implementation::get_loader_to_planner_converter(const std::unordered_map<std::string, Atom_Id>& atom_to_id) const{
+		std::unordered_map<size_t, Atom_Id> converter;
+		converter.reserve(atom_to_id.size());
+		for (const auto& entry : atom_to_id) {
+			converter[entry.second.id] = domain.get_atom_id(entry.first);
+		}
+		return converter;
+	}
+
+	// Map from domain_loader ids to pepper_planner ids (using Proposition)
+	std::unordered_map<Proposition, Proposition> Domain_Interface_Implementation::get_loader_to_formula_converter(const std::map<Proposition_Instance, Proposition>& instance_to_proposition) const {
+		std::unordered_map<Proposition, Proposition> converter;
+		converter.reserve(instance_to_proposition.size());
+		for (const auto& entry : instance_to_proposition) {
+			converter[entry.second] = domain.get_proposition(entry.first);
+		}
+		return converter;
+	}
+
+	std::vector<Proposition> Domain_Interface_Implementation::convert_loader_instances_to_planner_propositions(const std::vector<Proposition_Instance>& proposition_instances, const std::unordered_map<size_t, Atom_Id>& converter) const {
+		std::vector<Proposition> propositions;
+		propositions.reserve(proposition_instances.size());
+		for (const auto& proposition_instance : proposition_instances) {
+			auto converted_instance = Proposition_Instance(proposition_instance, converter);
+			auto& proposition = domain.get_proposition(converted_instance);
+			propositions.push_back(proposition);
+		}
+		return propositions;
 	}
 }

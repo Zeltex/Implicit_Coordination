@@ -6,6 +6,7 @@
 #include <unordered_set>
 #include <unordered_map>
 #include <tuple>
+#include <map>
 
 #include "Formula.hpp"
 #include "Formula_Types.hpp"
@@ -28,19 +29,20 @@ namespace del {
         std::vector<std::string> add_reflexive_perceivability(std::string name, std::vector<std::string> agents);
 
         std::unordered_map<std::string, Atom_Id>							get_atom_to_id();
-        Formula																get_formula();
+        std::vector<std::string>											get_designated_events();
         std::vector<std::tuple<std::string, std::string, Formula>>			get_edge_conditions();
         std::vector<Proposition_Instance>									get_event_add_list();
         std::vector<Proposition_Instance>									get_event_delete_list();
         std::string															get_event_name();
-        std::vector<std::string>											get_designated_events();
+        Formula																get_formula();
         std::vector<std::pair<std::string, std::string>>					get_inputs();
-        std::unordered_set<std::string>										get_types();
+        const std::map<Proposition_Instance, Proposition>&                  get_instance_to_proposition() const;
+        std::vector<std::string>											get_missing_perceivables();
         std::unordered_map<std::string, std::unordered_set<std::string>>	get_objects();
         std::vector<std::string>											get_ordered_variables();
-        std::unordered_set<std::string>										get_variables();
         std::vector<Proposition_Instance>									get_proposition_instances();
-        std::vector<std::string>											get_missing_perceivables();
+        std::unordered_set<std::string>										get_types();
+        std::unordered_set<std::string>										get_variables();
         Atom_Id																translate_atom_to_id(const std::string& type);
 
         void add_variable(std::string variable);
@@ -64,6 +66,7 @@ namespace del {
         bool is_state_reflexive();
     private:
         std::tuple<Formula_Types, std::vector<Formula_Id>> pop_formula_info();
+        Proposition convert_instance_to_proposition(const Proposition_Instance& proposition_instance);
 
         std::unordered_set<std::string> types;
         std::unordered_set<std::string> variable_list;
@@ -72,11 +75,14 @@ namespace del {
         std::vector<std::pair<std::string, std::string>> inputs;
         std::unordered_map<std::string, std::unordered_set<std::string>> objects;
         std::string current_object_type;
-        std::vector<Proposition_Instance> propositions;
+        std::vector<Proposition> propositions;
+        std::vector<Proposition_Instance> proposition_instances;
         bool state_reflexivity;
         bool action_reflexivity;
         std::vector<std::string> seen_perceivability;
         std::vector<std::tuple<std::string, std::string, Formula>> edge_conditions;
+
+        std::map<Proposition_Instance, Proposition> instance_to_proposition;
 
         // Formula stuff
         Formula formula;

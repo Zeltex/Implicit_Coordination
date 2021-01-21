@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <string>
+#include <map>
 
 #include "Types.hpp"
 #include "State.hpp"
@@ -34,19 +35,21 @@ namespace del {
 		Agent_Id									get_agent_id(const std::string& name) const;
 		std::optional<Agent_Id>						get_agent_id_optional(Atom_Id atom_id) const;
 		const std::unordered_set<size_t>&			get_all_atoms_of_type(std::string type) const;
-		Atom_Id										get_atom_id(std::string atom_name) const;
+		Atom_Id										get_atom_id(const std::string& atom_name) const;
 		std::string									get_atom_name(Atom_Id atom_id) const;
 		const std::unordered_set<std::string>&		get_atom_types() const;
 		const std::vector<Proposition_Instance>		get_atom_rigids() const;
+		const Proposition&							get_proposition(const Proposition_Instance& proposition_instance) const;
 
 		void set_atom_types(std::unordered_set<std::string> types);
 		void set_initial_state(State&& state);
 		void set_objects(std::unordered_map<std::string, std::unordered_set<std::string>> objects);
-		void set_rigid_atoms(std::vector<Proposition_Instance> rigid_atoms);
+		void set_rigid_atoms(std::vector<Proposition> rigid_atoms);
+		void set_proposition_instances(std::vector<Proposition_Instance>&& proposition_instances);
 
+		std::unordered_map<std::string, size_t>			get_agent_to_id() const;
 		const std::unordered_map<std::string, Atom_Id>& get_atom_to_id() const;
 		const std::unordered_map<size_t, std::string>&	get_id_to_atom() const;
-		std::unordered_map<std::string, size_t>			get_agent_to_id() const;
 
 	private:
 		std::unordered_set<size_t> get_obs_set(const Agent_Id& owner, const std::vector<Proposition_Instance>& add_list, const std::vector<Proposition_Instance>& delete_list);
@@ -57,7 +60,8 @@ namespace del {
 		std::vector<Agent> agents;
 		std::unordered_set<std::string> atom_types;
 
-		std::vector<Proposition_Instance> rigid_atoms;
+		std::vector<Proposition> rigid_atoms;
+		std::map<Proposition_Instance, Proposition> instance_to_proposition;
 		// Objects and atoms are same thing, one is just sorted on type (need to rename objects to atoms)
 		std::unordered_map<size_t, Agent_Id> atom_to_agent;
 		std::unordered_map<std::string, std::unordered_set<size_t>> objects;

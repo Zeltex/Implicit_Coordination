@@ -33,6 +33,7 @@ namespace del {
         std::vector<Atom_Id> temp_atoms;
         temp_atoms.reserve(ordered_variable_list.size());
 
+        // Variable list to atom id
         for (auto& entry : ordered_variable_list) {
             if (entry == REST_KEYWORD) {
                 atom_to_id[REST_KEYWORD] = REST_INDEX;
@@ -45,7 +46,14 @@ namespace del {
             temp_atoms.emplace_back(atom_to_id[entry]);
         }
 
-        propositions.emplace_back(name, temp_atoms);
+        // Save proposition_instance and create proposition
+        auto proposition_instance = Proposition_Instance(name, temp_atoms);
+        if (instance_to_proposition.find(proposition_instance) == instance_to_proposition.end()) {
+            instance_to_proposition.insert(std::pair(proposition_instance, Proposition(instance_to_proposition.size())));
+        }
+
+        propositions.push_back(instance_to_proposition.at(proposition_instance));
+
         ordered_variable_list = {};
     }
 
@@ -113,8 +121,8 @@ namespace del {
     }
 
     std::vector<Proposition_Instance> Domain_Buffer::get_proposition_instances() {
-        auto temp = std::move(propositions);
-        propositions = {};
+        auto temp = std::move(proposition_instances);
+        proposition_instances = {};
         return std::move(temp);
     }
 
@@ -122,6 +130,11 @@ namespace del {
         auto temp = std::move(atom_to_id);
         atom_to_id = {};
         return std::move(temp);
+    }
+
+
+    const std::map<Proposition_Instance, Proposition>& Domain_Buffer::get_instance_to_proposition() const {
+        return instance_to_proposition;
     }
 
     std::vector<std::string> Domain_Buffer::get_missing_perceivables() {
@@ -155,13 +168,13 @@ namespace del {
     }
 
     void Domain_Buffer::push_event_add_list() {
-        event_add_list = std::move(propositions);
-        propositions = {};
+        event_add_list = std::move(proposition_instances);
+        proposition_instances = {};
     }
 
     void Domain_Buffer::push_event_delete_list() {
-        event_delete_list = std::move(propositions);
-        propositions = {};
+        event_delete_list = std::move(proposition_instances);
+        proposition_instances = {};
     }
     void Domain_Buffer::push_pop_formula(std::string type) {
         if (formula_buffer.empty()) {

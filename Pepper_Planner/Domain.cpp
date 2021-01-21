@@ -208,16 +208,17 @@ namespace del {
 		this->objects.clear();
 		this->objects.reserve(objects.size());
 
-		size_t counter = 0;
+		// Recording all atoms
+		size_t atom_id_counter = 0;
 		for (auto& type : objects) {
 			this->objects[type.first].reserve(type.second.size());
 			for (auto& atom : type.second) {
 				if (atom_to_id.find(atom) == atom_to_id.end()) {
-					id_to_atom[counter] = atom;
-					atom_to_id[atom] = counter;
+					id_to_atom[atom_id_counter] = atom;
+					atom_to_id[atom] = atom_id_counter;
 				}
 				this->objects[type.first].insert(atom_to_id.at(atom).id);
-				counter++;
+				atom_id_counter++;
 			}
 		}
 	}
@@ -232,7 +233,7 @@ namespace del {
 		return id_to_atom.at(atom_id.id);
 	}
 
-	Atom_Id Domain::get_atom_id(std::string atom_name) const {
+	Atom_Id Domain::get_atom_id(const std::string& atom_name) const {
 		return atom_to_id.at(atom_name);
 	}
 
@@ -252,11 +253,21 @@ namespace del {
 		return result;
 	}
 
-	void Domain::set_rigid_atoms(std::vector<Proposition_Instance> rigid_atoms) {
+	void Domain::set_rigid_atoms(std::vector<Proposition> rigid_atoms) {
 		this->rigid_atoms = std::move(rigid_atoms);
 	}
 
-	const std::vector<Proposition_Instance>	Domain::get_atom_rigids() const {
+	const std::vector<Proposition>	Domain::get_atom_rigids() const {
 		return rigid_atoms;
 	}
+
+	void Domain::set_proposition_instances(std::vector<Proposition_Instance>&& proposition_instances) {
+		this->proposition_instances = std::move(proposition_instances);
+	}
+
+	const Proposition& Domain::get_proposition(const Proposition_Instance& proposition_instance) const {
+		return instance_to_proposition.at(proposition_instance);
+	}
+
+
 }

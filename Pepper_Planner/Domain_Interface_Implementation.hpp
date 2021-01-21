@@ -16,7 +16,7 @@ namespace del {
 	class Domain_Interface_Implementation : public Domain_Interface {
 	public:
 		Domain_Interface_Implementation(): 
-			actions(), current_action(), initial_state(), library(), domain(), propositions(), world_name_to_id(), action_reflexivity(false){}
+			actions(), current_action(), initial_state(), library(), domain(), general_propositions(), world_name_to_id(), action_reflexivity(false){}
 		virtual void new_domain(std::string name) override;
 		virtual void finish_domain() override;
 		virtual void finish_problem() override;
@@ -31,7 +31,7 @@ namespace del {
 		virtual void set_designated_events(std::vector<std::string> designated_events) override;
 		virtual void set_designated_worlds(const std::unordered_set<std::string>& designated_worlds) override;
 		virtual void set_domain(std::string domain_name) override;
-		virtual void set_goal(del::Formula&& goal, const std::unordered_map<std::string, Atom_Id>& atom_to_id) override;
+		virtual void set_goal(del::Formula&& goal, const std::map<Proposition_Instance, Proposition>& instance_to_proposition) override;
 		virtual void set_initial_propositions(const std::vector<Proposition_Instance>& propositions, const std::unordered_map<std::string, Atom_Id>& atom_to_id) override;
 		virtual void set_objects(std::unordered_map<std::string, std::unordered_set<std::string>>&& objects) override;
 		virtual void set_types(const std::unordered_set<std::string>& types) override;
@@ -49,6 +49,11 @@ namespace del {
 		virtual void add_reachability(std::string name, const std::vector<std::pair<std::string, std::string>>& reachables) override;
 		std::tuple<Domain, Action_Library, Formula> get_loaded();
 	private:
+
+		std::unordered_map<Proposition, Proposition>	get_loader_to_formula_converter(const std::map<Proposition_Instance, Proposition>& atom_to_id) const;
+		std::unordered_map<size_t, Atom_Id>				get_loader_to_planner_converter(const std::unordered_map<std::string, Atom_Id>& atom_to_id) const;
+		std::vector<Proposition>						convert_loader_instances_to_planner_propositions(const std::vector<Proposition_Instance>& proposition_instances, const std::unordered_map<size_t, Atom_Id>& converter) const;
+
 		std::vector<General_Action> actions;
 		General_Action current_action;
 		State initial_state;
@@ -56,7 +61,7 @@ namespace del {
 		Domain domain;
 		Formula goal;
 		bool action_reflexivity;
-		std::vector<Proposition> propositions;
+		std::vector<General_Proposition> general_propositions;
 		std::unordered_map<std::string, World_Id> world_name_to_id;
 		std::unordered_map<std::string, std::vector<std::string>> observability;
 		std::unordered_map<std::string, std::vector<std::string>> perceivability;

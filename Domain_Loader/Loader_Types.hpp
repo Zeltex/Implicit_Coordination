@@ -4,8 +4,8 @@
 #include <string>
 
 namespace del {
-    struct Proposition {
-        Proposition(std::string name, std::vector<std::pair<std::string, std::string>> inputs) :
+    struct General_Proposition {
+        General_Proposition(std::string name, std::vector<std::pair<std::string, std::string>> inputs) :
                 name(name), inputs(inputs) {}
         std::string name;
         std::vector<std::pair<std::string, std::string>> inputs;

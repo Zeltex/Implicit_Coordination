@@ -125,6 +125,7 @@ namespace del {
 
             if (!must_match({ Token::PROPOSITIONS_DEF, Token::EQUALS, Token::LBRACK })) return;
             propositions();
+            buffer->get_proposition_instances();
             if (!must_match({ Token::RBRACK })) return;
 
             return actions();
@@ -165,7 +166,7 @@ namespace del {
 
         if (try_match({ Token::GOAL_DEF, Token::EQUALS, Token::LBRACK })) {
             formula();
-            domain->set_goal(buffer->get_formula(), buffer->get_atom_to_id());
+            domain->set_goal(buffer->get_formula(), buffer->get_instance_to_proposition());
             if (!must_match({ Token::RBRACK })) return;
             return problem_body();
         }
