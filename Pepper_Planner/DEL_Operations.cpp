@@ -58,7 +58,7 @@ namespace del {
 			frontier.push_back(designated_world);
 		}
 		while (!frontier.empty()) {
-			const auto& current = frontier.back();
+			auto current = frontier.back();
 			frontier.pop_back();
 			for (const auto& relation : state.get_indistinguishability_relations(agent_id)) {
 				if (relation.world_from == current &&

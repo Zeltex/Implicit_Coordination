@@ -15,7 +15,7 @@ namespace del {
     public:
         virtual void new_action									(std::string name) = 0;
         virtual void new_domain									(std::string name) = 0;
-        virtual void finish_action								(std::map<Proposition_Instance, Proposition>&& instance_to_proposition) = 0;
+        virtual void finish_action								(std::map<Proposition_Instance, Proposition> instance_to_proposition) = 0;
         virtual void finish_domain								() = 0;
         virtual void finish_problem								() = 0;
 

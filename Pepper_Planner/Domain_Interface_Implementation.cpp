@@ -45,8 +45,8 @@ namespace del {
 		current_action.set_name(name);
 	}
 
-	void Domain_Interface_Implementation::finish_action(std::map<Proposition_Instance, Proposition>&& instance_to_proposition) {
-		current_action.set_instance_to_proposition(std::move(instance_to_proposition));
+	void Domain_Interface_Implementation::finish_action(std::map<Proposition_Instance, Proposition> instance_to_proposition) {
+		current_action.set_instance_to_proposition(instance_to_proposition);
 		actions.push_back(std::move(current_action));
 		current_action = {};
 	}

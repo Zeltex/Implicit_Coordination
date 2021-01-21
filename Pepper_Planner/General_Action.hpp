@@ -23,7 +23,7 @@ namespace del {
 		void set_amount_of_agents(size_t amount_of_agents);
 		void set_cost(size_t cost);
 		void set_designated_events(std::vector<std::string> designated_events);
-		void set_instance_to_proposition(std::map<Proposition_Instance, Proposition>&& instance_to_proposition);
+		void set_instance_to_proposition(std::map<Proposition_Instance, Proposition> instance_to_proposition);
 		void set_name(std::string name);
 		void set_owner(std::string type, Atom_Id name);
 

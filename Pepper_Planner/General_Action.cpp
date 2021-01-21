@@ -89,7 +89,7 @@ namespace del {
 
 		return std::move(condition_owner_to_agent);
 	}
-	void General_Action::set_instance_to_proposition(std::map<Proposition_Instance, Proposition>&& instance_to_proposition) {
+	void General_Action::set_instance_to_proposition(std::map<Proposition_Instance, Proposition> instance_to_proposition) {
 		input_to_formula = instance_to_proposition;
 	}
 	std::unordered_map<Proposition, Proposition> General_Action::create_converter(const Domain& domain, const std::vector<Atom_Id>& arguments) const{

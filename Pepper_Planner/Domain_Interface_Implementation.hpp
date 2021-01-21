@@ -21,7 +21,7 @@ namespace del {
 		virtual void finish_domain() override;
 		virtual void finish_problem() override;
 		virtual void new_action(std::string name) override;
-		virtual void finish_action(std::map<Proposition_Instance, Proposition>&& instance_to_proposition) override;
+		virtual void finish_action(std::map<Proposition_Instance, Proposition> instance_to_proposition) override;
 
 
 		virtual void set_action_cost(size_t cost) override;
