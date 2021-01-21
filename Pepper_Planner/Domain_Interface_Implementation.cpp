@@ -81,12 +81,12 @@ namespace del {
 		general_propositions.emplace_back(name, inputs);
 	}
 
-	void Domain_Interface_Implementation::set_objects(std::unordered_map<std::string, std::unordered_set<std::string>>&& objects) {
+	void Domain_Interface_Implementation::set_objects(std::unordered_map<std::string, std::unordered_set<std::string>>&& objects, const std::unordered_map<std::string, Atom_Id>& atom_to_id) {
 		size_t amount_of_agents = objects["agent"].size();
 		initial_state.set_amount_of_agents(amount_of_agents);
 		library.set_amount_of_agents(amount_of_agents);
 
-		domain.set_objects(objects);
+		domain.set_objects(objects, atom_to_id);
 		for (const auto& entry : objects["agent"]) {
 			domain.create_agent(entry);
 		}
@@ -129,7 +129,7 @@ namespace del {
 	
 				// Advance indices
 				size_t index = 0;
-				while (++indices.at(index) >= list_atoms.at(index).size() && !done) {
+				while (!done && ++indices.at(index) >= list_atoms.at(index).size()) {
 					indices.at(index++) = 0;
 					done = index >= indices.size();
 				}				
@@ -190,7 +190,7 @@ namespace del {
 		library.set_announce_enabled();
 	}
 
-	void Domain_Interface_Implementation::set_goal(Formula&& goal, const std::map<Proposition_Instance, Proposition>& instance_to_proposition) {
+	void Domain_Interface_Implementation::set_goal(Formula&& goal, const std::map<Proposition_Instance, Proposition>& instance_to_proposition, const std::unordered_map<std::string, Atom_Id>& atom_to_id) {
 		auto converter = get_loader_to_formula_converter(instance_to_proposition);
 
 		this->goal = Formula(goal, converter);

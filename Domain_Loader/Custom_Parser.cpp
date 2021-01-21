@@ -98,6 +98,7 @@ namespace del {
             return maepl();
         }
         if (try_match({ Token::PROBLEM_DEF, Token::NAME, Token::LBRACK })) {
+            buffer->clear_seen_atoms();
             problem_body();
             if (!must_match({ Token::RBRACK })) return;
             if (buffer->is_state_reflexive()) domain->create_state_reflexive_reachables();
@@ -142,7 +143,7 @@ namespace del {
 
         if (try_match({ Token:: OBJECTS_DEF, Token::EQUALS, Token:: LBRACK })) {
             objects();
-            domain->set_objects(buffer->get_objects());
+            domain->set_objects(buffer->get_objects(), buffer->get_atom_to_id());
             if (!must_match({ Token::RBRACK })) return;
             return problem_body();
         }
@@ -166,7 +167,7 @@ namespace del {
 
         if (try_match({ Token::GOAL_DEF, Token::EQUALS, Token::LBRACK })) {
             formula();
-            domain->set_goal(buffer->get_formula(), buffer->get_instance_to_proposition());
+            domain->set_goal(buffer->get_formula(), buffer->get_instance_to_proposition(), buffer->get_atom_to_id());
             if (!must_match({ Token::RBRACK })) return;
             return problem_body();
         }
@@ -364,7 +365,6 @@ namespace del {
 
         if (try_match({ Token::EFFECT_DELETE_DEF, Token::EQUALS, Token::LBRACK })) {
             buffer->clear_variable_list();
-            buffer->clear_proposition_instances();
             proposition_instances();
             buffer->push_event_delete_list();
             if (!must_match({ Token::RBRACK })) return;
@@ -373,7 +373,6 @@ namespace del {
 
         if (try_match({ Token::EFFECT_ADD_DEF, Token::EQUALS, Token::LBRACK })) {
             buffer->clear_variable_list();
-            buffer->clear_proposition_instances();
             proposition_instances();
             buffer->push_event_add_list();
             if (!must_match({ Token::RBRACK })) return;

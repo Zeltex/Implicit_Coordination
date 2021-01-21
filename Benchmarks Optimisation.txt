@@ -1,0 +1,119 @@
+p4 - rigid atoms optimisation
+166s -> 147s
+6gb -> 4gb
+
+-- Original, baseline (e34bfa01387f6096829c45edf91a4da2a4367409)
+
+p1
+p2 72 mb
+p3 604 mb
+p4 5.6 gb
+
+P1: 164 ms
+P2: 1875 ms
+P3: 16862 ms
+P4: 194420 ms
+
+
+-- After rigid atom optimisation (a8d088f51795b632081a981f754fbcdd6b5c9bdc)
+
+p2 56mb (22.2% reduction)
+p3 415mb (31.3% reduction)
+p4 3.8gb (32.1% reduction)
+
+P1: 116 ms  (29.3% reduction)
+P2: 1547 ms  (17.5% reduction)
+P3: 13914 ms  (17.5% reduction)
+P4: 146492 ms  (24.7% reduction)
+
+p5 has 865k nodes so far at 9gb memory
+
+-- After save perspectiveshift optimisation (6187c43cf7b3275dd20e3ff73dbb12a53fac2a4d)
+
+p2 53 mb
+p3 421.8 mb
+p4 3.8 gb
+
+P1: 82 ms
+P2: 1373 ms
+P3: 9894 ms
+P4: 95605 ms (34.7% reduction)
+
+-- Disabling bisim contraction
+P1: 77 ms
+P2: 866 ms
+P3: 7640 ms
+P4: 77030 ms
+
+
+-- Adding the sorting of atoms in bisimilar contraction
+p1
+p2
+p3
+p4: 17.3 mb
+p5: 26.6 mb
+p6: 33 mb
+p7: 101 mb
+p8: 478 mb
+p9: 873 mb
+p10: 1.8 gb
+p11: 4.9 gb
+p12: 8.4 gb
+
+p1: 42 ms
+p2: 83 ms
+p3: 206 ms
+p4: 428 ms
+p5: 718 ms
+p6: 1.05 s
+p7: 3.104 s
+p8: 17.89 s
+p9: 38.391 s
+p10: 98.887 s
+p11: 813.806 s
+p12: 439.179 s
+
+
+-- Correcting the domain to not allow stopped agents to act
+P1: 60 ms
+P2: 61 ms
+P3: 146 ms
+P4: 368 ms
+P5: 555 ms
+P6: 940 ms
+P7: 1676 ms
+P8: 6128 ms
+P9: 15857 ms
+P10: 34216 ms
+P11: 63919 ms
+P12: 205624 ms
+
+
+
+
+
+
+---------------------------------------------------------------------------------
+Using Block_Search and False_Belief_Synthesis the bisimilar contraction did not make a difference at all
+Using Dice5-3 it did (Used 14 gb memory) (the normal states were calculated for 1,2,3 and 4 actions, and then contraction was applied to the resulting states)
+1 : 15 -> 15
+2 : 240 -> 225
+3 : 3840 -> 3210
+4 : 61440 -> 43875
+
+Using Dice5-3 (and hash sort, else same as above) it did (Used 14 gb memory)
+1 : 15 -> 15
+2 : 240 -> 225
+3 : 3840 -> 3210
+4 : 61440 -> 43875
+
+Using Dice5-3, amount of time spent expanding to non-new states
+1 : 0%
+2 : 67.42%
+3 : 88.48%
+
+Using Dice5-3, time to calculate states with and without contraction
+action:without:with
+1 : 0    : 0 
+2 : 0.04 : 0.05
+3 : 4.1  : 8.6

@@ -44,7 +44,7 @@ namespace del {
 
 		void set_atom_types(std::unordered_set<std::string> types);
 		void set_initial_state(State&& state);
-		void set_objects(const std::unordered_map<std::string, std::unordered_set<std::string>>& objects);
+		void set_objects(const std::unordered_map<std::string, std::unordered_set<std::string>>& objects, const std::unordered_map<std::string, Atom_Id>& atom_to_id);
 		void set_rigid_atoms(std::vector<Proposition> rigid_atoms);
 		void set_proposition_instances(std::map<Proposition_Instance, Proposition>&& instance_to_proposition);
 

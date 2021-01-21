@@ -31,9 +31,9 @@ namespace del {
 		virtual void set_designated_events(std::vector<std::string> designated_events) override;
 		virtual void set_designated_worlds(const std::unordered_set<std::string>& designated_worlds) override;
 		virtual void set_domain(std::string domain_name) override;
-		virtual void set_goal(del::Formula&& goal, const std::map<Proposition_Instance, Proposition>& instance_to_proposition) override;
+		virtual void set_goal(del::Formula&& goal, const std::map<Proposition_Instance, Proposition>& instance_to_proposition, const std::unordered_map<std::string, Atom_Id>& atom_to_id) override;
 		virtual void set_initial_propositions(const std::vector<Proposition_Instance>& propositions, const std::unordered_map<std::string, Atom_Id>& atom_to_id) override;
-		virtual void set_objects(std::unordered_map<std::string, std::unordered_set<std::string>>&& objects) override;
+		virtual void set_objects(std::unordered_map<std::string, std::unordered_set<std::string>>&& objects, const std::unordered_map<std::string, Atom_Id>& atom_to_id) override;
 		virtual void set_types(const std::unordered_set<std::string>& types) override;
 
 

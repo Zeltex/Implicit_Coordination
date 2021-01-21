@@ -29,7 +29,7 @@ namespace del {
         std::vector<std::string> add_reflexive_perceivability(std::string name, std::vector<std::string> agents);
 
         std::unordered_map<std::string, Atom_Id>							get_atom_to_id();
-        std::map<Proposition_Instance, Proposition>&&                       get_clear_instance_to_proposition();
+        std::map<Proposition_Instance, Proposition>                         get_clear_instance_to_proposition();
         std::vector<std::string>											get_designated_events();
         std::vector<std::tuple<std::string, std::string, Formula>>			get_edge_conditions();
         std::vector<Proposition>									        get_event_add_list();

@@ -203,21 +203,21 @@ namespace del {
 		return objects.at(type);
 	}
 
-	void Domain::set_objects(const std::unordered_map<std::string, std::unordered_set<std::string>>& objects) {
+	void Domain::set_objects(const std::unordered_map<std::string, std::unordered_set<std::string>>& objects, const std::unordered_map<std::string, Atom_Id>& atom_to_id) {
 		this->objects.clear();
 		this->objects.reserve(objects.size());
+		this->atom_to_id = atom_to_id;
+		this->id_to_atom = {};
 
-		// Recording all atoms
-		size_t atom_id_counter = 0;
+		for (auto& [atom, id] : atom_to_id) {
+			id_to_atom.insert(std::pair(id.id, atom));
+		}
+
+		// Recording all atoms of types
 		for (auto& type : objects) {
 			this->objects[type.first].reserve(type.second.size());
 			for (auto& atom : type.second) {
-				if (atom_to_id.find(atom) == atom_to_id.end()) {
-					id_to_atom[atom_id_counter] = atom;
-					atom_to_id[atom] = atom_id_counter;
-				}
 				this->objects[type.first].push_back(atom_to_id.at(atom).id);
-				atom_id_counter++;
 			}
 		}
 	}
