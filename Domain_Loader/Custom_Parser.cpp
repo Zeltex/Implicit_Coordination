@@ -206,6 +206,7 @@ namespace del {
     void Custom_Parser::reachability_body() {
         if (try_match({ Token::NAME, Token::EQUALS, Token::LBRACK })) {
             auto name = get_svalue(0);
+            buffer->clear_inputs();
             bracketed_input();
             domain->add_reachability(name, buffer->get_inputs());
             if (!must_match({ Token::RBRACK })) return;
