@@ -59,8 +59,8 @@ _world w0 [free(c0), free(c1), free(c2), at(a2, c3), free(c4), free(c5), free(c6
 _world w1 [free(c0), free(c1), free(c2), at(a2, c3), free(c4), free(c5), free(c6), free(c7), at(a1, c8), free(c9), free(c10), at(a0, c11), free(x3), free(x8), goal(a0, x3), goal(a1, c3), goal(a2, c8)]
 _world w2 [free(c0), free(c1), free(c2), at(a2, c3), free(c4), free(c5), free(c6), free(c7), at(a1, c8), free(c9), free(c10), at(a0, c11), free(x3), free(x8), goal(a0, c0), goal(a1, x8), goal(a2, c8)]
 _world w3 [free(c0), free(c1), free(c2), at(a2, c3), free(c4), free(c5), free(c6), free(c7), at(a1, c8), free(c9), free(c10), at(a0, c11), free(x3), free(x8), goal(a0, x3), goal(a1, x8), goal(a2, c8)]
-_world w4 [free(c0), free(c1), free(c2), at(a2, c3), free(c4), free(c5), free(c6), free(c7), at(a1, c8), free(c9), free(c10), at(a0, c11), free(x3), free(x8), goal(a0, c0), goal(a1, c2), goal(a2, c11)]
-_world w5 [free(c0), free(c1), free(c2), at(a2, c3), free(c4), free(c5), free(c6), free(c7), at(a1, c8), free(c9), free(c10), at(a0, c11), free(x3), free(x8), goal(a0, x3), goal(a1, c2), goal(a2, c11)]
+_world w4 [free(c0), free(c1), free(c2), at(a2, c3), free(c4), free(c5), free(c6), free(c7), at(a1, c8), free(c9), free(c10), at(a0, c11), free(x3), free(x8), goal(a0, c0), goal(a1, c3), goal(a2, c11)]
+_world w5 [free(c0), free(c1), free(c2), at(a2, c3), free(c4), free(c5), free(c6), free(c7), at(a1, c8), free(c9), free(c10), at(a0, c11), free(x3), free(x8), goal(a0, x3), goal(a1, c3), goal(a2, c11)]
 _world w6 [free(c0), free(c1), free(c2), at(a2, c3), free(c4), free(c5), free(c6), free(c7), at(a1, c8), free(c9), free(c10), at(a0, c11), free(x3), free(x8), goal(a0, c0), goal(a1, x8), goal(a2, c11)]
 _world w7 [free(c0), free(c1), free(c2), at(a2, c3), free(c4), free(c5), free(c6), free(c7), at(a1, c8), free(c9), free(c10), at(a0, c11), free(x3), free(x8), goal(a0, x3), goal(a1, x8), goal(a2, c11)]
 

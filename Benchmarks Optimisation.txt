@@ -89,7 +89,26 @@ P11: 63919 ms
 P12: 205624 ms
 
 
+-- Changing to global proposition ids (plus fixed p11 def)
+p11: 554 mb
+p12: 1.5 gb
+p13: 4.9 gb
 
+P1: 11 ms
+P2: 43 ms
+P3: 75 ms
+P4: 147 ms
+P5: 218 ms
+P6: 377 ms
+P7: 1021 ms
+P8: 3399 ms
+P9: 8595 ms
+P10: 17592 ms
+P11: 32575 ms
+P12: 142006 ms
+p13: 528,903 ms
+
+p14: ran out of memory at 10.7 gb and 1271 s
 
 
 

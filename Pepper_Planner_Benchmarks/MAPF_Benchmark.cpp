@@ -17,7 +17,7 @@ void run_mapf_benchmark() {
 	//times.push_back(std::chrono::duration_cast<std::chrono::milliseconds>(time_end - time_start).count());
 	//std::cout << "P4 took ms " << times.back() << std::endl;
 
-	for (size_t i = 1; i <= 12; ++i) {
+	for (size_t i = 13; i <= 15; ++i) {
 		std::string file_name = "../Examples/MAPF/p" + std::to_string(i) + ".maepl";
 		DEL_Interface del_interface(file_name);
 		auto time_start = std::chrono::high_resolution_clock::now();
@@ -25,7 +25,7 @@ void run_mapf_benchmark() {
 		auto time_end = std::chrono::high_resolution_clock::now();
 
 		times.push_back(std::chrono::duration_cast<std::chrono::milliseconds>(time_end - time_start).count());
-		std::cout << "P" << i << " took ms " << times.back() << std::endl;
+		std::cout << "P" << i << " took ms " << times.back() << "\n\n";
 
 		std::ofstream output;
 		output.open("../Benchmarks/Benchmarks_mapfdu.csv");
