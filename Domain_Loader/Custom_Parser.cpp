@@ -151,7 +151,7 @@ namespace del {
         if (try_match({ Token:: INIT_DEF, Token:: EQUALS, Token:: LBRACK})) {
             buffer->clear_proposition_instances();
             proposition_instances();
-            domain->set_initial_propositions(buffer->get_proposition_instances(), buffer->get_atom_to_id());
+            domain->set_initial_propositions(buffer->get_proposition_instances());
             if (!must_match({ Token::RBRACK })) return;
             return problem_body();
         }
@@ -160,7 +160,7 @@ namespace del {
             auto world_name = get_svalue(1);
             buffer->clear_proposition_instances();
             proposition_instances();
-            domain->create_world(world_name, buffer->get_proposition_instances(), buffer->get_atom_to_id());
+            domain->create_world(world_name, buffer->get_proposition_instances());
             if (!must_match({ Token::RBRACK })) return;
             return problem_body();
         }

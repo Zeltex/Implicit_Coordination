@@ -261,11 +261,11 @@ namespace del {
 	}
 
 	void Domain::set_proposition_instances(std::map<Proposition_Instance, Proposition>&& instance_to_proposition) {
-		this->instance_to_proposition = std::move(instance_to_proposition);
 		proposition_to_instance.clear();
 		for (const auto& [prop_instance, prop] : instance_to_proposition) {
 			proposition_to_instance[prop] = prop_instance;
 		}
+		this->instance_to_proposition = std::move(instance_to_proposition);
 	}
 
 	const Proposition& Domain::get_proposition(const Proposition_Instance& proposition_instance) const {

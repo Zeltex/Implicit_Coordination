@@ -51,7 +51,7 @@ namespace del {
         if (instance_to_proposition.find(proposition_instance) == instance_to_proposition.end()) {
             instance_to_proposition.insert(std::pair(proposition_instance, Proposition(instance_to_proposition.size())));
         }
-
+        proposition_instances.push_back(proposition_instance);
         propositions.push_back(instance_to_proposition.at(proposition_instance));
 
         ordered_variable_list = {};
@@ -318,6 +318,7 @@ namespace del {
 
     void Domain_Buffer::clear_proposition_instances() {
         propositions = {};
+        proposition_instances = {};
     }
 
     void Domain_Buffer::clear_seen_atoms() {

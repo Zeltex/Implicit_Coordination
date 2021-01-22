@@ -142,18 +142,27 @@ namespace del {
 		// TODO - problem using domain: domain_name
 	}
 
-	void Domain_Interface_Implementation::set_initial_propositions(const std::vector<Proposition_Instance>& proposition_instances, const std::unordered_map<std::string, Atom_Id>& atom_to_id) {
-		auto converter = get_loader_to_planner_converter(atom_to_id);
-		auto propositions = convert_loader_instances_to_planner_propositions(proposition_instances, converter);
+	void Domain_Interface_Implementation::set_initial_propositions(const std::vector<Proposition_Instance>& proposition_instances) {
+		std::vector<Proposition> propositions;
+		propositions.reserve(proposition_instances.size());
+		for (auto& proposition_instance : proposition_instances) {
+			propositions.push_back(domain.get_proposition(proposition_instance));
+		}
+		//auto converter = get_loader_to_planner_converter(atom_to_id);
+		//auto propositions = convert_loader_instances_to_planner_propositions(proposition_instances, converter);
 		domain.set_rigid_atoms(propositions);
 	}
 
-	void Domain_Interface_Implementation::create_world(std::string name, const std::vector<Proposition_Instance>& proposition_instances, const std::unordered_map<std::string, Atom_Id>& atom_to_id) {
+	void Domain_Interface_Implementation::create_world(std::string name, const std::vector<Proposition_Instance>& proposition_instances) {
 		auto& world = initial_state.create_world();
-		auto converter = get_loader_to_planner_converter(atom_to_id);
-		auto propositions = convert_loader_instances_to_planner_propositions(proposition_instances, converter);
+		//auto converter = get_loader_to_planner_converter(atom_to_id);
+		//auto propositions = convert_loader_instances_to_planner_propositions(proposition_instances, converter);
+		std::vector<Proposition> propositions;
+		propositions.reserve(proposition_instances.size());
+		for (auto& proposition_instance : proposition_instances) {
+			propositions.push_back(domain.get_proposition(proposition_instance));
+		}
 
-		// TODO - Need to use propositions, just want to make sure loader compiles without this
 		world.add_true_propositions(propositions);
 		world_name_to_id[name] = world.get_id();
 	}
