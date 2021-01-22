@@ -19,7 +19,7 @@ _domain Pepper {
 		stopped(agent a)
 	]
 
-	_action move (pos from, pos to) {
+	_action move (pos from, pos to, agent agent) {
 		_cost = 100
 		_owner = agent agent
 		_designated_events = [event0]
@@ -38,7 +38,7 @@ _domain Pepper {
 		}
 	}
 
-	_action announce (pos p) {
+	_action announce (pos p, agent agent) {
 		_cost = 100
 		_owner = agent agent
 		_designated_events = [event0]

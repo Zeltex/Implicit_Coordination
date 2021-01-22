@@ -18,47 +18,58 @@ namespace del {
 		auto& owner_atom = arguments.at(general_action.get_owner().second.id);
 		this->owner = domain.get_agent_from_atom(owner_atom).get_id();
 
-		auto condition_owner_to_agent = general_action.get_condition_owner_to_agent(domain, arguments);
 		auto event_name_to_id = copy_and_instantiate_events(general_action, arguments, domain);
 		copy_and_instantiate_designated_events(general_action, event_name_to_id);
-		//copy_and_instantiate_edge_conditions(general_action, condition_owner_to_agent, event_name_to_id, input_to_atom, input_to_agent);
+		copy_and_instantiate_edge_conditions(general_action, event_name_to_id, arguments, domain);
 	}
 
 
 
-	//void Action::copy_and_instantiate_edge_conditions(
-	//			const General_Action& general_action, 
-	//			const std::unordered_map<size_t, std::vector<Agent>>& condition_owner_to_agent,
-	//			const std::unordered_map<std::string, Event_Id>& event_name_to_id,
-	//			const std::vector<Atom_Id>& arguments) {
-	//		
-	//	size_t agents_size = 0;
-	//	edge_conditions = std::vector<Agent_Edges>();
-	//	edge_conditions.reserve(agents_size);
-	//	for (auto& entry : condition_owner_to_agent) {
-	//		agents_size += entry.second.size();
-	//	}
-	//	for (auto& entry : condition_owner_to_agent) {
-	//		for (auto& entry2 : entry.second) {
-	//			edge_conditions.emplace_back(agents_size);
-	//		}
-	//	}
-	//	// TODO - Assumes all agents are present in edge definition (meaning _rest pretty much has to be defined)
+	void Action::copy_and_instantiate_edge_conditions(
+				const General_Action& general_action, 
+				const std::unordered_map<std::string, Event_Id>& event_name_to_id,
+				const std::vector<Atom_Id>& arguments,
+				const Domain& domain) {
+		auto condition_owner_to_agent = general_action.get_condition_owner_to_agent(domain, arguments);
+		std::unordered_map<size_t, Atom_Id> converted_arguments;
+		for (size_t i = 0; i < arguments.size(); ++i) {
+			converted_arguments[i] = arguments[i];
+		}
+			
+		size_t agents_size = 0;
+		edge_conditions = std::vector<Agent_Edges>();
+		for (auto& entry : condition_owner_to_agent) {
+			agents_size += entry.second.size();
+		}
+		edge_conditions.reserve(agents_size);
+		for (auto& entry : condition_owner_to_agent) {
+			for (auto& entry2 : entry.second) {
+				edge_conditions.emplace_back(agents_size);
+			}
+		}
+		// TODO - Assumes all agents are present in edge definition (meaning _rest pretty much has to be defined)
 
-	//	for (auto& agent_edges : general_action.get_edge_conditions()) {
-	//		for (auto& agent : condition_owner_to_agent.at(agent_edges.first)) { // Needed for edge conditions for _rest/(REST_KEYWORD)
+		for (auto& agent_edges : general_action.get_edge_conditions()) {
+			for (auto& agent : condition_owner_to_agent.at(agent_edges.first)) { // Needed for edge conditions for _rest/(REST_KEYWORD)
 
-	//			if (agent_edges.first == REST_INDEX) {
-	//				input_to_atom[REST_INDEX] = agent.get_atom_id();
-	//			}
-	//			for (auto& edge_condition : agent_edges.second) {
-	//				Formula condition = Formula(edge_condition.condition, input_to_atom, input_to_agent);
+				if (agent_edges.first == REST_INDEX) {
+					converted_arguments[REST_INDEX] = { agent.get_atom_id().id }; // TODO - Janky conversion, need a better way to handle agents
 
-	//				edge_conditions.at(agent.get_id().id).insert(event_name_to_id.at(edge_condition.event_from), event_name_to_id.at(edge_condition.event_to), std::move(condition));
-	//			}
-	//		}
-	//	}
-	//}
+					for (auto& edge_condition : agent_edges.second) {
+						auto converter = general_action.create_converter(domain, converted_arguments);
+						Formula condition = Formula(edge_condition.condition, converter);
+						edge_conditions.at(agent.get_id().id).insert(event_name_to_id.at(edge_condition.event_from), event_name_to_id.at(edge_condition.event_to), std::move(condition));
+					}
+				} else {
+					for (auto& edge_condition : agent_edges.second) {
+						auto converter = general_action.create_converter(domain, arguments);
+						Formula condition = Formula(edge_condition.condition, converter);
+						edge_conditions.at(agent.get_id().id).insert(event_name_to_id.at(edge_condition.event_from), event_name_to_id.at(edge_condition.event_to), std::move(condition));
+					}
+				}
+			}
+		}
+	}
 
 	void Action::copy_and_instantiate_designated_events(const General_Action& general_action, const std::unordered_map<std::string, Event_Id>& event_name_to_id) {
 		for (auto& entry : general_action.get_designated_events()) {

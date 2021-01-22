@@ -167,6 +167,15 @@ namespace del {
             }
             return hash;
         }
+
+        bool contains_non_atom_entry() const {
+            for (auto& entry : arguments) {
+                if (entry == REST_INDEX) {
+                    return true;
+                }
+            }
+            return false;
+        }
     };
 
     struct Proposition {

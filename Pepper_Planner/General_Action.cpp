@@ -92,7 +92,7 @@ namespace del {
 	void General_Action::set_instance_to_proposition(std::map<Proposition_Instance, Proposition> instance_to_proposition) {
 		input_to_formula = instance_to_proposition;
 	}
-	std::unordered_map<Proposition, Proposition> General_Action::create_converter(const Domain& domain, const std::vector<Atom_Id>& arguments) const{
+	std::unordered_map<Proposition, Proposition> General_Action::create_converter(const Domain& domain, const std::unordered_map<size_t, Atom_Id>& arguments) const {
 		std::unordered_map<Proposition, Proposition> formula_to_domain;
 		formula_to_domain.reserve(input_to_formula.size());
 		for (auto& [prop_instance, prop] : input_to_formula) {
@@ -101,6 +101,18 @@ namespace del {
 		}
 		return formula_to_domain;
 	}
+	std::unordered_map<Proposition, Proposition> General_Action::create_converter(const Domain& domain, const std::vector<Atom_Id>& arguments) const{
+		std::unordered_map<Proposition, Proposition> formula_to_domain;
+		formula_to_domain.reserve(input_to_formula.size());
+		for (auto& [prop_instance, prop] : input_to_formula) {
+			if (!prop_instance.contains_non_atom_entry()) {
+				auto grounded_prop_instance = Proposition_Instance(prop_instance, arguments);
+				formula_to_domain[prop] = domain.get_proposition(grounded_prop_instance);
+			}
+		}
+		return formula_to_domain;
+	}
+
 
 	const std::unordered_map<Proposition, Proposition>& General_Action::get_converter() const {
 		return formula_to_domain;

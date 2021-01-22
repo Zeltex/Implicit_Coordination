@@ -17,6 +17,7 @@ namespace del {
 		General_Action() : cost((size_t) - 1), converter_generated(false) {}
 		
 		void add_edge_condition(Atom_Id agent, std::vector<Edge_Condition>&& edge_conditions);
+		std::unordered_map<Proposition, Proposition> create_converter(const Domain& domain, const std::unordered_map<size_t, Atom_Id>& arguments) const;
 		std::unordered_map<Proposition, Proposition> create_converter(const Domain& domain, const std::vector<Atom_Id>& arguments) const;
 		void create_event(std::string name, Formula&& preconditions, const std::vector<Proposition>& add_list, const std::vector<Proposition>& delete_list);
 		void set_action_input(std::vector<std::pair<std::string, std::string>>&& inputs);
