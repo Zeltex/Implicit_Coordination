@@ -92,9 +92,7 @@ namespace del {
     }
 
     std::vector<std::pair<std::string, std::string>> Domain_Buffer::get_inputs() {
-        auto temp = std::move(inputs);
-        inputs = {};
-        return std::move(temp);
+        return inputs;
     }
 
     std::unordered_map<std::string, std::unordered_set<std::string>> Domain_Buffer::get_objects() {
@@ -324,5 +322,21 @@ namespace del {
 
     void Domain_Buffer::clear_seen_atoms() {
         atom_to_id = {};
+    }
+
+    void Domain_Buffer::clear_inputs() {
+        inputs = {};
+    }
+
+    Atom_Id Domain_Buffer::get_owner_input_index(const std::string& type, const std::string& name) const {
+        size_t counter = 0;
+        for (const auto& [in_type, in_name] : inputs) {
+            if (in_type == type && in_name == name) {
+                return Atom_Id{ counter };
+            }
+            ++counter;
+        }
+        std::cerr << "Owner " << type << " " << name << " is not a part of input for action\n";
+        exit(-1);
     }
 }

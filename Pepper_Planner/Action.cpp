@@ -13,7 +13,10 @@ namespace del {
 	}
 
 	Action::Action(const General_Action& general_action, const Domain& domain, const std::vector<Atom_Id>& arguments)
-			:args(arguments), cost(general_action.get_cost()), owner(owner), name(general_action.get_name()), events(), designated_events() {
+			:args(arguments), cost(general_action.get_cost()), name(general_action.get_name()), events(), designated_events() {
+
+		auto& owner_atom = arguments.at(general_action.get_owner().second.id);
+		this->owner = domain.get_agent_from_atom(owner_atom).get_id();
 
 		auto condition_owner_to_agent = general_action.get_condition_owner_to_agent(domain, arguments);
 		auto event_name_to_id = copy_and_instantiate_events(general_action, arguments, domain);

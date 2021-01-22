@@ -276,11 +276,10 @@ namespace del {
     }
 
     void Custom_Parser::action_body() {
-        //if (try_match({ Token::OWNER_DEF, Token::EQUALS, Token::NAME, Token::NAME })) {
-        //    buffer->add_owner_to_input(get_svalue(2), get_svalue(3));
-        //    domain->set_action_owner(get_svalue(2), get_svalue(3), buffer->translate_atom_to_id(get_svalue(3)));
-        //    return action_body();
-        //}
+        if (try_match({ Token::OWNER_DEF, Token::EQUALS, Token::NAME, Token::NAME })) {
+            domain->set_action_owner(get_svalue(2), get_svalue(3), buffer->get_owner_input_index(get_svalue(2), get_svalue(3)));
+            return action_body();
+        }
 
         if (try_match({ Token::EVENT_DEF, Token::NAME, Token::LBRACK })) {
             buffer->set_event_name(get_svalue(1));
@@ -488,6 +487,7 @@ namespace del {
     void Custom_Parser::propositions() {
         if (try_match({ Token::NAME, Token::LBRACK })) {
             auto name = get_svalue(0);
+            buffer->clear_inputs();
             input();
             domain->add_proposition(name, buffer->get_inputs());
             if (!must_match({ Token::RBRACK })) return;
@@ -500,6 +500,7 @@ namespace del {
         if (try_match({ Token::ACTION_DEF, Token::NAME, Token::LBRACK })) {
             buffer->clear_proposition_instances();
             buffer->clear_seen_atoms();
+            buffer->clear_inputs();
             domain->new_action(get_svalue(1));
             input();
             domain->set_action_input(buffer->get_inputs());

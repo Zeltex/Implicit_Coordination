@@ -49,6 +49,7 @@ namespace del {
         void add_variable(std::string variable);
         void clear_seen_atoms();
         void clear_formula();
+        void clear_inputs();
         void clear_variable_list();
         void clear_proposition_instances();
         void push_event_add_list();
@@ -65,6 +66,8 @@ namespace del {
         void set_object_type(std::string type);
         void set_state_reflexivity(bool val);
         bool is_state_reflexive();
+
+        Atom_Id get_owner_input_index(const std::string& type, const std::string& name) const;
     private:
         std::tuple<Formula_Types, std::vector<Formula_Id>> pop_formula_info();
         Proposition convert_instance_to_proposition(const Proposition_Instance& proposition_instance);

@@ -13,6 +13,7 @@ _domain Pepper {
 
 	_action move (pos from, pos to, agent agent) {
 		_cost = 100
+		_owner = agent agent
 		_designated_events = [event0]
 		_event event0 { 
 			_preconditions = ( AND( at(agent, from), free(to), adj(from, to), NOT(stopped(agent))) )
@@ -31,6 +32,7 @@ _domain Pepper {
 
 	_action announce (pos p, agent agent) {
 		_cost = 100
+		_owner = agent agent
 		_designated_events = [event0]
 		_event event0 { 
 			_preconditions = ( AND(at(agent, p), goal(agent, p), NOT(stopped(agent)) ))
