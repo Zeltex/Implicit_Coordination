@@ -18,7 +18,7 @@ namespace del {
 		const std::vector<Action>& get_actions() const;
 		const General_Action& get_general_action(const std::string& name) const;
 		std::vector<Action> get_announce_actions(const State& state, const Domain& domain) const;
-		Action create_announce_action(Agent_Id owner, const Proposition_Instance& proposition, size_t amount_of_agents, const Domain& domain) const;
+		Action create_announce_action(Agent_Id owner, const Proposition& proposition, size_t amount_of_agents, const Domain& domain) const;
 		void add_action(const Action& action);
 		void set_announce_enabled();
 		void add_general_action(const General_Action& action, const Domain& domain);

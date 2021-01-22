@@ -10,15 +10,22 @@ namespace del {
 		nodes.reserve(node_size); 
 		auto root = create_root_node(state);
 		history.insert(nodes.at(root.id));
-		for (auto global : split_into_global_states(state, planning_agent)) {
-			auto local = std::move(perform_perspective_shift(global, planning_agent));
-			local = std::move(perform_k_bisimilar_contraction(local, BISIMILAR_DEPTH));
-			local.remove_unreachable_worlds();
+//		auto local = std::move(perform_perspective_shift(state, planning_agent));
+//#if BISIM_CONTRACTION_ENABLED == 1
+//		local = std::move(perform_k_bisimilar_contraction(local, BISIMILAR_DEPTH));
+//#endif
+//		local.remove_unreachable_worlds();
+//		for (auto& global : split_into_global_states(local, planning_agent)) {
+//
+//			auto node = create_or_node(std::move(global), root);
+//			history.insert(nodes.at(node.id));
+//			add_to_frontier(node);
+//		}
 
-			auto node = create_or_node(std::move(local), root);
-			if (state.get_designated_worlds_count() > 1) {
-				history.insert(nodes.at(node.id));
-			}
+		for (auto& global : split_into_global_states(state, planning_agent)) {
+
+			auto node = create_or_node(std::move(global), root);
+			history.insert(nodes.at(node.id));
 			add_to_frontier(node);
 		}
 	}

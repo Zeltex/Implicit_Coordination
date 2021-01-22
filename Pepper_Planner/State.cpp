@@ -1,5 +1,6 @@
 #include "State.hpp"
 #include "Domain.hpp"
+#include "Formula_Input_Impl.hpp"
 
 namespace del {
 
@@ -12,7 +13,7 @@ namespace del {
 		set_amount_of_agents(number_of_agents);
 	}
 
-	const std::vector<Proposition_Instance>& State::get_true_propositions(size_t world_id) const {
+	const std::vector<Proposition>& State::get_true_propositions(size_t world_id) const {
 		return worlds[world_id].get_true_propositions();
 	}
 
@@ -22,7 +23,7 @@ namespace del {
 		while (!frontier.empty()) {
 			auto current = frontier.back();
 			frontier.pop_back();
-			for (auto relation : indistinguishability_relation[agent_id]) {
+			for (const auto& relation : indistinguishability_relation[agent_id]) {
 				if (relation.world_from.id == current &&
 					std::find(visited.begin(), visited.end(), relation.world_to.id) == visited.end()) {
 
@@ -46,9 +47,10 @@ namespace del {
 		}
 	}
 
-	bool State::valuate(const Formula& formula) const {
-		for (auto world : designated_worlds) {
-			if (!formula.valuate(world.id, this)) {
+	bool State::valuate(const Formula& formula, const Domain& domain) const {
+		Formula_Input_Impl input = { this, &domain };
+		for (const auto& world : designated_worlds) {
+			if (!formula.valuate(world.id, &input)) {
 				return false;
 			}
 		}
@@ -59,9 +61,9 @@ namespace del {
 		std::vector<World_Id> frontier = { world };
 		std::vector<World_Id> visited;
 		while (!frontier.empty()) {
-			auto current = frontier.back();
+			const auto& current = frontier.back();
 			frontier.pop_back();
-			for (auto relation : indistinguishability_relation[agent.id]) {
+			for (const auto& relation : indistinguishability_relation[agent.id]) {
 				if (relation.world_from.id == current.id &&
 					std::find(visited.begin(), visited.end(), relation.world_to) == visited.end()) {
 
@@ -82,7 +84,7 @@ namespace del {
 	}
 
 	bool State::is_one_reachable(Agent_Id agent, World_Id world1, World_Id world2) const {
-		for (auto relations : indistinguishability_relation[agent.id]) {
+		for (const auto& relations : indistinguishability_relation[agent.id]) {
 			if (relations.world_from == world1 && relations.world_to == world2) {
 				return true;
 			}
@@ -94,14 +96,13 @@ namespace del {
 	std::vector<World_Id> State::get_designated_world_reachables(Agent_Id agent) const {
 		std::vector<World_Id> frontier;
 		std::vector<World_Id> visited;
-		for (auto designated_world : designated_worlds) {
+		for (const auto& designated_world : designated_worlds) {
 			frontier.push_back(designated_world);
-			//visited.push_back(designated_world);
 		}
 		while (!frontier.empty()) {
-			auto current = frontier.back();
+			const auto& current = frontier.back();
 			frontier.pop_back();
-			for (auto relation : indistinguishability_relation[agent.id]) {
+			for (const auto& relation : indistinguishability_relation[agent.id]) {
 				if (relation.world_from.id == current.id && 
 					std::find(visited.begin(), visited.end(), relation.world_to) == visited.end()) {
 
@@ -117,11 +118,11 @@ namespace del {
 		indistinguishability_relation[agent.id].emplace_back(world_from, world_to);
 	}
 
-	void State::add_true_propositions(World_Id world, std::vector<Proposition_Instance> propositions) {
+	void State::add_true_propositions(World_Id world, const std::vector<Proposition>& propositions) {
 		worlds[world.id].add_true_propositions(propositions);
 	}
 
-	void State::remove_true_propositions(World_Id world, std::vector<Proposition_Instance> propositions) {
+	void State::remove_true_propositions(World_Id world, const std::vector<Proposition>& propositions) {
 		worlds[world.id].remove_true_propositions(propositions);
 	}
 
@@ -197,8 +198,8 @@ namespace del {
 		designated_worlds.push_back(world);
 	}
 
-	void State::add_observability(Agent_Id observer, std::vector<Agent_Id> agents) {
-		for (auto agent : agents) {
+	void State::add_observability(Agent_Id observer, const std::vector<Agent_Id>& agents) {
+		for (const auto& agent : agents) {
 			auto& temp = observability[observer.id];
 			if (find(temp.begin(), temp.end(), agent) == temp.end()) {
 				observability[observer.id].push_back(agent);
@@ -206,8 +207,8 @@ namespace del {
 		}
 	}
 
-	void State::add_perceivability(Agent_Id perceiver, std::vector<Agent_Id> agents) {
-		for (auto agent : agents) {
+	void State::add_perceivability(Agent_Id perceiver, const std::vector<Agent_Id>& agents) {
+		for (const auto& agent : agents) {
 			auto& temp = perceivability[perceiver.id];
 			if (find(temp.begin(), temp.end(), agent) == temp.end()) {
 				perceivability[perceiver.id].push_back(agent);
@@ -215,8 +216,8 @@ namespace del {
 		}
 	}
 
-	void State::remove_perceivability(Agent_Id perceiver, std::vector<Agent_Id> agents) {
-		for (auto agent : agents) {
+	void State::remove_perceivability(Agent_Id perceiver, const std::vector<Agent_Id>& agents) {
+		for (const auto& agent : agents) {
 			auto& temp = perceivability[perceiver.id];
 			auto it = find(temp.begin(), temp.end(), agent);
 			if (it != temp.end()) {
@@ -225,8 +226,8 @@ namespace del {
 		}
 	}
 
-	void State::remove_observability(Agent_Id observer, std::vector<Agent_Id> agents) {
-		for (auto agent : agents) {
+	void State::remove_observability(Agent_Id observer, const std::vector<Agent_Id>& agents) {
+		for (const auto& agent : agents) {
 			auto& temp = observability[observer.id];
 			auto it = find(temp.begin(), temp.end(), agent);
 			if (it != temp.end()) {
@@ -243,7 +244,7 @@ namespace del {
 		return perceivability[agent.id];
 	}
 
-	void State::set_designated_worlds(std::vector<World_Id> worlds) {
+	void State::set_designated_worlds(const std::vector<World_Id>& worlds) {
 		designated_worlds = worlds;
 	}
 
@@ -251,10 +252,10 @@ namespace del {
 
 		// Convert relations
 		std::unordered_map<size_t, std::unordered_set<size_t>> relations;
-		for (auto& world : worlds) {
+		for (const auto& world : worlds) {
 			relations[world.get_id().id].reserve(worlds.size());
 		}
-		for (auto& agent_relations : indistinguishability_relation) {
+		for (const auto& agent_relations : indistinguishability_relation) {
 			for (const auto& relation : agent_relations) {
 				relations[relation.world_from.id].insert(relation.world_to.id);
 			}
@@ -263,7 +264,7 @@ namespace del {
 		// Get reachable worlds
 		std::vector<size_t> frontier;
 		std::unordered_set<size_t> visited;
-		for (auto designated_world : designated_worlds) {
+		for (const auto& designated_world : designated_worlds) {
 			frontier.push_back(designated_world.id);
 			visited.insert(designated_world.id);
 		}
@@ -381,17 +382,18 @@ namespace del {
 	std::string State::to_string(size_t indentation, const Domain& domain) const {
 
 		size_t relations_size = 0;
-		for (auto relation : indistinguishability_relation) {
+		for (const auto& relation : indistinguishability_relation) {
 			relations_size += relation.size();
 		}
 
 		std::string result = get_indentation(indentation) + " State\n" + get_indentation(indentation - 1) + " Sizes: (agents, " + std::to_string(number_of_agents) +
 			") (worlds, " + std::to_string(worlds.size()) +
 			") (designated worlds, " + std::to_string(designated_worlds.size()) +
+			") (cost, " + std::to_string(cost) +
 			") (relations, " + std::to_string(relations_size) + ")\n";
 		result += get_indentation(indentation - 1) + " Designated worlds: ";
 		bool first = true;
-		for (auto designated_world : designated_worlds) {
+		for (const auto& designated_world : designated_worlds) {
 			if (first) {
 				first = false;
 			} else {
@@ -401,8 +403,8 @@ namespace del {
 		}
 		result += "\n" + get_indentation(indentation - 1) + " ({Agent}, {World from}, {World to}) Relations";
 		size_t current_agent = 0;
-		for (auto agent_relations : indistinguishability_relation) {
-			for (auto relation : agent_relations) {
+		for (const auto& agent_relations : indistinguishability_relation) {
+			for (const auto& relation : agent_relations) {
 				result += "\n(" 
 					+ domain.get_agent(Agent_Id{ current_agent }).get_name() + ", "
 					+ std::to_string(relation.world_from.id) + ", "
@@ -411,7 +413,7 @@ namespace del {
 			current_agent++;
 		}
 		result += "\n" + get_indentation(indentation - 1) + " World {id}: {propositions}";
-		for (auto world : worlds) {
+		for (const auto& world : worlds) {
 			result += "\n" + world.to_string(domain);
 		}
 		return result;
@@ -428,7 +430,7 @@ namespace del {
 				} else {
 					propositions += ", \n";
 				}
-				propositions += proposition.to_string(domain.get_id_to_atom());
+				propositions += domain.get_proposition_instance(proposition).to_string(domain.get_id_to_atom());
 			}
 			result += node_id + std::to_string(world.get_id().id) + " [label=\"" + std::to_string(world.get_id().id) + "\n" + propositions + "\"";
 			if (std::find(designated_worlds.begin(), designated_worlds.end(), world.get_id()) != designated_worlds.end()) {

@@ -25,10 +25,13 @@ namespace del {
 #define BISIM_CONTRACTION_ENABLED 1
 #endif
 #ifndef DEBUG_PRINT 
-#define DEBUG_PRINT 1
+#define DEBUG_PRINT 0
 #endif
 #ifndef PRINT_PARTIAL
 #define PRINT_PARTIAL 0
+#endif
+#ifndef PRINT_NODES
+#define PRINT_NODES 1
 #endif
 
 #define PERCEIVES "perceives"

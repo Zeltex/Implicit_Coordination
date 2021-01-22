@@ -33,6 +33,7 @@ namespace del {
         std::vector<Atom_Id> temp_atoms;
         temp_atoms.reserve(ordered_variable_list.size());
 
+        // Variable list to atom id
         for (auto& entry : ordered_variable_list) {
             if (entry == REST_KEYWORD) {
                 atom_to_id[REST_KEYWORD] = REST_INDEX;
@@ -45,7 +46,14 @@ namespace del {
             temp_atoms.emplace_back(atom_to_id[entry]);
         }
 
-        propositions.emplace_back(name, temp_atoms);
+        // Save proposition_instance and create proposition
+        auto proposition_instance = Proposition_Instance(name, temp_atoms);
+        if (instance_to_proposition.find(proposition_instance) == instance_to_proposition.end()) {
+            instance_to_proposition.insert(std::pair(proposition_instance, Proposition(instance_to_proposition.size())));
+        }
+        proposition_instances.push_back(proposition_instance);
+        propositions.push_back(instance_to_proposition.at(proposition_instance));
+
         ordered_variable_list = {};
     }
 
@@ -65,13 +73,13 @@ namespace del {
         return std::move(temp);
     }
 
-    std::vector<Proposition_Instance> Domain_Buffer::get_event_add_list() {
+    std::vector<Proposition> Domain_Buffer::get_event_add_list() {
         auto temp = std::move(event_add_list);
         event_add_list = {};
         return std::move(temp);
     }
 
-    std::vector<Proposition_Instance> Domain_Buffer::get_event_delete_list() {
+    std::vector<Proposition> Domain_Buffer::get_event_delete_list() {
         auto temp = std::move(event_delete_list);
         event_delete_list = {};
         return std::move(temp);
@@ -84,9 +92,7 @@ namespace del {
     }
 
     std::vector<std::pair<std::string, std::string>> Domain_Buffer::get_inputs() {
-        auto temp = std::move(inputs);
-        inputs = {};
-        return std::move(temp);
+        return inputs;
     }
 
     std::unordered_map<std::string, std::unordered_set<std::string>> Domain_Buffer::get_objects() {
@@ -113,14 +119,23 @@ namespace del {
     }
 
     std::vector<Proposition_Instance> Domain_Buffer::get_proposition_instances() {
-        auto temp = std::move(propositions);
-        propositions = {};
+        auto temp = std::move(proposition_instances);
+        proposition_instances = {};
         return std::move(temp);
     }
 
     std::unordered_map<std::string, Atom_Id> Domain_Buffer::get_atom_to_id() {
-        auto temp = std::move(atom_to_id);
-        atom_to_id = {};
+        return atom_to_id;
+    }
+
+
+    const std::map<Proposition_Instance, Proposition>& Domain_Buffer::get_instance_to_proposition() const {
+        return instance_to_proposition;
+    }
+    
+    std::map<Proposition_Instance, Proposition> Domain_Buffer::get_clear_instance_to_proposition() {
+        auto temp = std::move(instance_to_proposition);
+        instance_to_proposition.clear();
         return std::move(temp);
     }
 
@@ -156,24 +171,22 @@ namespace del {
 
     void Domain_Buffer::push_event_add_list() {
         event_add_list = std::move(propositions);
-        propositions = {};
     }
 
     void Domain_Buffer::push_event_delete_list() {
         event_delete_list = std::move(propositions);
-        propositions = {};
     }
     void Domain_Buffer::push_pop_formula(std::string type) {
         if (formula_buffer.empty()) {
             switch (Formula_Converter::string_to_type(type)) {
-                case Formula_Types::Top:    formula.f_top();                    break;
-                case Formula_Types::Prop:   formula.f_prop(propositions[0]);    break;
+                case Formula_Types::Top:    formula.f_top();                     break;
+                case Formula_Types::Prop:   formula.f_prop(propositions.back()); break;
             }
 
         } else {
             switch (Formula_Converter::string_to_type(type)) {
-                case Formula_Types::Top:    formula_buffer.back().push_back(formula.f_top());                    break;
-                case Formula_Types::Prop:   formula_buffer.back().push_back(formula.f_prop(propositions[0]));    break;
+                case Formula_Types::Top:    formula_buffer.back().push_back(formula.f_top());                     break;
+                case Formula_Types::Prop:   formula_buffer.back().push_back(formula.f_prop(propositions.back())); break;
             }
         }
         propositions = {};
@@ -272,6 +285,12 @@ namespace del {
     }
 
     void Domain_Buffer::push_objects() {
+        for (auto& variable : variable_list) {
+            auto it = atom_to_id.find(variable);
+            if (it == atom_to_id.end()) {
+                atom_to_id[variable] = atom_to_id.size();
+            }
+        }
         objects[current_object_type] = std::move(variable_list);
         current_object_type = "";
         variable_list = std::unordered_set<std::string>();
@@ -298,10 +317,27 @@ namespace del {
     }
 
     void Domain_Buffer::clear_proposition_instances() {
-        propositions.clear();
+        propositions = {};
+        proposition_instances = {};
     }
 
     void Domain_Buffer::clear_seen_atoms() {
-        atom_to_id.clear();
+        atom_to_id = {};
+    }
+
+    void Domain_Buffer::clear_inputs() {
+        inputs = {};
+    }
+
+    Atom_Id Domain_Buffer::get_owner_input_index(const std::string& type, const std::string& name) const {
+        size_t counter = 0;
+        for (const auto& [in_type, in_name] : inputs) {
+            if (in_type == type && in_name == name) {
+                return Atom_Id{ counter };
+            }
+            ++counter;
+        }
+        std::cerr << "Owner " << type << " " << name << " is not a part of input for action\n";
+        exit(-1);
     }
 }

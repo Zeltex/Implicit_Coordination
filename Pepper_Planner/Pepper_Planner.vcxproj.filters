@@ -31,6 +31,12 @@
     <Filter Include="Header Files\DEL\Action">
       <UniqueIdentifier>{2cad09cd-b22e-47e7-8c84-78bf8783520e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\DEL\Formula">
+      <UniqueIdentifier>{49924280-f11c-4b07-b276-a1a495119bd4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\DEL\Formula">
+      <UniqueIdentifier>{9aacf4ca-15d7-418c-be58-3b34fb958e67}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Agent.cpp">
@@ -105,6 +111,15 @@
     <ClCompile Include="Node_Comparator.cpp">
       <Filter>Source Files\Planner</Filter>
     </ClCompile>
+    <ClCompile Include="Formula_Input_Impl.cpp">
+      <Filter>Source Files\DEL\Formula</Filter>
+    </ClCompile>
+    <ClCompile Include="Propositions.hpp">
+      <Filter>Header Files\DEL\Formula</Filter>
+    </ClCompile>
+    <ClCompile Include="Propositions.cpp">
+      <Filter>Source Files\DEL\Formula</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Agent.hpp">
@@ -175,6 +190,9 @@
     </ClInclude>
     <ClInclude Include="Domain_Interface_Implementation.hpp">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Formula_Input_Impl.hpp">
+      <Filter>Header Files\DEL\Formula</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

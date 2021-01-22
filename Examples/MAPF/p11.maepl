@@ -1,0 +1,102 @@
+_domain Pepper {
+	_announce_enabled = false
+	_types = [agent, pos]
+	_propositions = [
+		at(agent a, pos p)
+		adj(pos p1, pos p2)
+		goal(agent a, pos p)
+		free(pos p)
+		stopped(agent a)
+	]
+
+	_action move (pos from, pos to, agent agent) {
+		_cost = 100
+		_owner = agent agent
+		_designated_events = [event0]
+		_event event0 { 
+			_preconditions = ( AND( at(agent, from), free(to), adj(from, to), NOT(stopped(agent))) )
+			_effect_add = [ at(agent, to), free(from) ]
+			_effect_delete = [ at(agent, from), free(to) ]
+		}
+		_reachability = {
+			agent = {
+				(event0 event0) = (TOP)
+			}
+			_rest = {
+				(event0 event0) = (TOP)
+			}
+		}
+	}
+
+	_action announce (pos p, agent agent) {
+		_cost = 100
+		_owner = agent agent
+		_designated_events = [event0]
+		_event event0 { 
+			_preconditions = ( AND(at(agent, p), goal(agent, p), NOT(stopped(agent)) ))
+			_effect_add = [ stopped(agent) ]
+			_effect_delete = [ ]
+		}
+		_reachability = {
+			agent = {
+				(event0 event0) = (TOP)
+			}
+			_rest = {
+				(event0 event0) = (TOP)
+			}
+		}
+	}
+}
+_problem MAPF_DU {
+_objects = {
+	agent = [a0, a1, a2]
+	pos = [c0, c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, x3, x8]
+}
+
+_initial_state = [adj(c0, c1), adj(c1, c0), adj(c1, c2), adj(c2, c1), adj(c2, c3), adj(c3, c2), adj(c3, c4), adj(c4, c3), adj(c4, c5), adj(c5, c4), adj(c5, c6), adj(c6, c5), adj(c6, c7), adj(c7, c6), adj(c7, c8), adj(c8, c7), adj(c8, c9), adj(c9, c8), adj(c9, c10), adj(c10, c9), adj(c10, c11), adj(c11, c10), adj(c3, x3), adj(x3, c3), adj(c8, x8), adj(x8, c8)]
+
+_world w0 [free(c0), free(c1), free(c2), at(a2, c3), free(c4), free(c5), free(c6), free(c7), at(a1, c8), free(c9), free(c10), at(a0, c11), free(x3), free(x8), goal(a0, c0), goal(a1, c3), goal(a2, c8)]
+_world w1 [free(c0), free(c1), free(c2), at(a2, c3), free(c4), free(c5), free(c6), free(c7), at(a1, c8), free(c9), free(c10), at(a0, c11), free(x3), free(x8), goal(a0, x3), goal(a1, c3), goal(a2, c8)]
+_world w2 [free(c0), free(c1), free(c2), at(a2, c3), free(c4), free(c5), free(c6), free(c7), at(a1, c8), free(c9), free(c10), at(a0, c11), free(x3), free(x8), goal(a0, c0), goal(a1, x8), goal(a2, c8)]
+_world w3 [free(c0), free(c1), free(c2), at(a2, c3), free(c4), free(c5), free(c6), free(c7), at(a1, c8), free(c9), free(c10), at(a0, c11), free(x3), free(x8), goal(a0, x3), goal(a1, x8), goal(a2, c8)]
+_world w4 [free(c0), free(c1), free(c2), at(a2, c3), free(c4), free(c5), free(c6), free(c7), at(a1, c8), free(c9), free(c10), at(a0, c11), free(x3), free(x8), goal(a0, c0), goal(a1, c3), goal(a2, c11)]
+_world w5 [free(c0), free(c1), free(c2), at(a2, c3), free(c4), free(c5), free(c6), free(c7), at(a1, c8), free(c9), free(c10), at(a0, c11), free(x3), free(x8), goal(a0, x3), goal(a1, c3), goal(a2, c11)]
+_world w6 [free(c0), free(c1), free(c2), at(a2, c3), free(c4), free(c5), free(c6), free(c7), at(a1, c8), free(c9), free(c10), at(a0, c11), free(x3), free(x8), goal(a0, c0), goal(a1, x8), goal(a2, c11)]
+_world w7 [free(c0), free(c1), free(c2), at(a2, c3), free(c4), free(c5), free(c6), free(c7), at(a1, c8), free(c9), free(c10), at(a0, c11), free(x3), free(x8), goal(a0, x3), goal(a1, x8), goal(a2, c11)]
+
+_goal = [ AND(stopped(a0), stopped(a1), stopped(a2)) ] 
+	_designated_worlds = [ w0 ]
+	_reflexivity = false
+	_reachability = {
+		a0 = {
+		 (w0, w0), (w0, w2), (w0, w4), (w0, w6),
+		 (w1, w1), (w1, w3), (w1, w5), (w1, w7),
+		 (w2, w0), (w2, w2), (w2, w4), (w2, w6),
+		 (w3, w1), (w3, w3), (w3, w5), (w3, w7),
+		 (w4, w0), (w4, w2), (w4, w4), (w4, w6),
+		 (w5, w1), (w5, w3), (w5, w5), (w5, w7),
+		 (w6, w0), (w6, w2), (w6, w4), (w6, w6),
+		 (w7, w1), (w7, w3), (w7, w5), (w7, w7),
+		 }
+		a1 = {
+		 (w0, w0), (w0, w1), (w0, w4), (w0, w5),
+		 (w1, w0), (w1, w1), (w1, w4), (w1, w5),
+		 (w2, w2), (w2, w3), (w2, w6), (w2, w7),
+		 (w3, w2), (w3, w3), (w3, w6), (w3, w7),
+		 (w4, w0), (w4, w1), (w4, w4), (w4, w5),
+		 (w5, w0), (w5, w1), (w5, w4), (w5, w5),
+		 (w6, w2), (w6, w3), (w6, w6), (w6, w7),
+		 (w7, w2), (w7, w3), (w7, w6), (w7, w7),
+		 }
+		a2 = {
+		 (w0, w0), (w0, w1), (w0, w2), (w0, w3),
+		 (w1, w0), (w1, w1), (w1, w2), (w1, w3),
+		 (w2, w0), (w2, w1), (w2, w2), (w2, w3),
+		 (w3, w0), (w3, w1), (w3, w2), (w3, w3),
+		 (w4, w4), (w4, w5), (w4, w6), (w4, w7),
+		 (w5, w4), (w5, w5), (w5, w6), (w5, w7),
+		 (w6, w4), (w6, w5), (w6, w6), (w6, w7),
+		 (w7, w4), (w7, w5), (w7, w6), (w7, w7),
+		 }
+	}
+}

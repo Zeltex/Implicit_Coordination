@@ -6,13 +6,21 @@
 #include <fstream>
 #include <chrono>
 #include <ctime>    
+#include <numeric>
 
 //#include "../Domain_Loader/Loader.hpp"
 #include "Loader.hpp"
 #include "Domain_Interface_Implementation.hpp"
 #include "Domain.hpp"
 #include "Action_Library.hpp"
+#include "Run_Planner.hpp"
+#include "MAPF_Benchmark.hpp"
+
+
 using namespace del;
+
+
+
 
 std::string get_date_stamp() {
 	struct tm ltm;
@@ -30,6 +38,12 @@ std::string get_date_stamp() {
 		output += std::to_string(entry);
 	}
 	return output;
+}
+std::string get_benchmark_file_name(std::string date_stamp) {
+	return "../Benchmarks/Benchmarks_" + date_stamp + ".csv";
+}
+std::string get_benchmark_file_name() {
+	return get_benchmark_file_name(get_date_stamp());
 }
 
 class Simp_Timer {
@@ -111,10 +125,10 @@ std::vector<State> get_states(const std::string file_path, const int action_dept
 			while (action_library.has_action()) {
 				const Action& action = action_library.get_next_action();
 				State state_perspective_shift = perform_perspective_shift(current_state, action.get_owner());
-				if (!is_action_applicable(state_perspective_shift, action)) {
+				if (!is_action_applicable(state_perspective_shift, action, domain)) {
 					continue;
 				}
-				State state_product_update = perform_product_update(state_perspective_shift, action, domain.get_agents());
+				State state_product_update = perform_product_update(state_perspective_shift, action, domain.get_agents(), domain);
 				size_t hash = state_product_update.to_hash();
 				if (hashes.find(hash) == hashes.end()) {
 					hashes.insert(hash);
@@ -140,7 +154,7 @@ std::tuple<Loader, Domain, Action_Library, std::vector<State>> get_stuff(const s
 }
 
 //std::vector<State> get_states_using_globals(const std::string file_path, const int action_depth, Logger& logger) {
-std::vector<State> get_states_using_globals_phase_times(const std::vector<State>& states, Action_Library& action_library, Domain& domain, Logger& logger) {
+std::vector<State> get_states_using_globals_phase_times(const std::vector<State>& states, Action_Library& action_library, Domain& domain, Logger& logger, bool use_contraction) {
 
 	Agent_Id dummy_agent = { 0 };
 	Simp_Timer timer;
@@ -161,16 +175,20 @@ std::vector<State> get_states_using_globals_phase_times(const std::vector<State>
 			temp_times[0] = std::chrono::high_resolution_clock::now();
 			State state_perspective_shift = perform_perspective_shift(current_state, action.get_owner());
 			temp_times[1] = std::chrono::high_resolution_clock::now();
-			if (!is_action_applicable(state_perspective_shift, action)) {
+			if (!is_action_applicable(state_perspective_shift, action, domain)) {
 				continue;
 			}
 			temp_times[2] = std::chrono::high_resolution_clock::now();
-			State state_product_update = perform_product_update(state_perspective_shift, action, domain.get_agents());
+			State state_product_update = perform_product_update(state_perspective_shift, action, domain.get_agents(), domain);
 			temp_times[3] = std::chrono::high_resolution_clock::now();
 			auto globals = split_into_global_states(state_product_update, dummy_agent);
 			temp_times[4] = std::chrono::high_resolution_clock::now();
 			bool found_new_state = false;
-			for (const auto& state : globals) {
+			for (auto& state : globals) {
+				if (use_contraction) {
+					state.remove_unreachable_worlds();
+					state = perform_k_bisimilar_contraction(std::move(state), BISIMILAR_DEPTH);
+				}
 				size_t hash = state.to_hash();
 				if (hashes.find(hash) == hashes.end()) {
 					hashes.insert(hash);
@@ -191,8 +209,10 @@ std::vector<State> get_states_using_globals_phase_times(const std::vector<State>
 		}
 	}
 	//}
+	long total_time = 0;
+	total_time = std::accumulate(std::begin(total_times), std::end(total_times), total_time);
 	for (size_t i = 0; i < 5; ++i) {
-		std::cout << "Phase " << i << " took 'us: " << total_times[i] << std::endl;
+		std::cout << "Phase " << i << " took 'us: " << total_times[i] << " = " << (100.0 * total_times[i] / total_time) << "%\n";
 	}
 	std::cout << "Spent 'us on new states: " << time_new_state << std::endl;
 	std::cout << "Spent 'us on old states: " << time_old_state << std::endl;
@@ -204,7 +224,7 @@ std::vector<State> get_states_using_globals_phase_times(const std::vector<State>
 
 
 //std::vector<State> get_states_using_globals(const std::string file_path, const int action_depth, Logger& logger) {
-std::vector<State> get_states_using_globals(const std::vector<State>& states, Action_Library& action_library, Domain& domain, Logger& logger, bool use_contraction) {
+std::tuple<std::vector<State>, long> get_states_using_globals(const std::vector<State>& states, Action_Library& action_library, Domain& domain, Logger& logger, bool use_contraction) {
 
 	Agent_Id dummy_agent = { 0 };
 	Simp_Timer timer;
@@ -213,15 +233,15 @@ std::vector<State> get_states_using_globals(const std::vector<State>& states, Ac
 	result.reserve(states.size() * action_library.get_actions().size() / 2);
 	const size_t temp_state_size = states.size();
 	for (size_t k = 0; k < temp_state_size; k++) {
-		const auto current_state = states.at(k);
+		const auto& current_state = states.at(k);
 		action_library.load_actions(current_state, domain);
 		while (action_library.has_action()) {
 			const Action& action = action_library.get_next_action();
 			State state_perspective_shift = perform_perspective_shift(current_state, action.get_owner());
-			if (!is_action_applicable(state_perspective_shift, action)) {
+			if (!is_action_applicable(state_perspective_shift, action, domain)) {
 				continue;
 			}
-			State state_product_update = perform_product_update(state_perspective_shift, action, domain.get_agents());
+			State state_product_update = perform_product_update(state_perspective_shift, action, domain.get_agents(), domain);
 			auto globals = split_into_global_states(state_product_update, dummy_agent);
 			for (State& state : globals) {
 				if (use_contraction) {
@@ -237,8 +257,9 @@ std::vector<State> get_states_using_globals(const std::vector<State>& states, Ac
 			}
 		}
 	}
-	logger.add_entry((std::string("Initial states size") + (use_contraction ? " with contraction" : "")), states.size(), timer.get_time());
-	return result;
+	logger.add_entry((std::string("Initial states size") + (use_contraction ? " with contraction" : "")), states.size(), 0);
+	logger.add_entry((std::string("Hashes") + (use_contraction ? " with contraction" : "")), result.size(), timer.get_time());
+	return { result, timer.get_time() };
 }
 
 void benchmark1_calculations(std::vector<State>& states, Logger& logger) {
@@ -308,7 +329,8 @@ void benchmark1(const std::string& file_path, const size_t action_depth) {
 	for (size_t i = 1; i <= action_depth; ++i) {
 		std::cout << "Starting " << i << "\n";
 		logger.add_entry("Action depth " + std::to_string(i), 0, 0);
-		states = get_states_using_globals(states, action_library, domain, logger,false);
+		auto [temp_states, time] = get_states_using_globals(states, action_library, domain, logger,false);
+		states = std::move(temp_states);
 		if (states.empty()) {
 			__debugbreak;
 		}
@@ -327,11 +349,63 @@ void benchmark2(const std::string& file_path, const size_t action_depth) {
 	for (size_t i = 1; i <= action_depth; ++i) {
 		std::cout << "Starting " << i << "\n";
 		logger.add_entry("Action depth " + std::to_string(i), 0, 0);
-		normal_states = get_states_using_globals(normal_states, action_library, domain, logger, false);
-		contracted_states = get_states_using_globals(contracted_states, action_library, domain, logger, true);
+		normal_states = get_states_using_globals_phase_times(normal_states, action_library, domain, logger, false);
+		contracted_states = get_states_using_globals_phase_times(contracted_states, action_library, domain, logger, true);
 		logger.save();
 	}
 	logger.save();
+}
+
+void log_data(const std::vector<std::vector<long>>& data, const std::vector<std::string>& data_descriptions, const std::string& output_file_name, const std::string& title) {
+	std::string output;
+	for (size_t j = 0; j < data.size(); ++j) {
+		output += data_descriptions[j];
+		for (auto& entry : data[j]) {
+			output += ", " + std::to_string(entry);
+		}
+		output += '\n';
+	}
+	std::ofstream stream;
+	stream.open(output_file_name);
+	stream << title << '\n';
+	stream << output;
+	stream.close();
+}
+
+/**
+Generating all possible states to specific action depth and recording amount of hashes with and without contraction along with timing
+*/
+void benchmark3(const std::string& file_path, const size_t action_depth) {
+	auto [loader, domain, action_library, states] = get_stuff(file_path);
+	auto normal_states = states;
+	auto contracted_states = states;
+	const std::string title = file_path + " Hashes with and without contraction, and calculation time";
+	std::vector<std::vector<long>> data(4);
+	std::vector<std::string> data_descriptions = { "Baseline hashes", "Contracted hashes", "Baseline time", "Contracted time" };
+	auto output_file_name = get_benchmark_file_name();
+
+	Logger logger(file_path);
+	for (size_t i = 1; i <= action_depth; ++i) {
+		std::cout << "Starting " << i << "\n";
+		logger.add_entry("Action depth " + std::to_string(i), 0, 0);
+		auto [temp_normal_states, normal_time] = get_states_using_globals(normal_states, action_library, domain, logger, false);
+		auto [temp_contracted_states, contracted_time] = get_states_using_globals(contracted_states, action_library, domain, logger, true);
+
+		std::cout << "\nPrinting contracted states at depth " << i << std::endl;
+		for (auto& entry : temp_contracted_states) {
+			std::cout << entry.to_string(domain) << std::endl;
+		}
+
+		normal_states = std::move(temp_normal_states);
+		contracted_states = std::move(temp_contracted_states);
+		data[0].emplace_back(normal_states.size());
+		data[1].emplace_back(contracted_states.size());
+		data[2].emplace_back(normal_time);
+		data[3].emplace_back(contracted_time);
+		log_data(data, data_descriptions, output_file_name, title);
+		//logger.save();
+	}
+	//logger.save();
 }
 
 
@@ -343,16 +417,30 @@ int main(int argc, char* argv[]) {
 	//auto file_path = "../Examples/Second_Order.maepl";
 	//auto file_path = "../Examples/Sally_Anne.maepl";
 	//auto file_path = "../Examples/False_Belief_Synthesis.maepl";
-	auto file_path = "../Examples/Dice5-3.maepl";
+	//auto file_path = "../Examples/Dice5-3.maepl";
+	//auto file_path = "../Examples/MAPF/p12.maepl";
+	//auto file_path = "../Examples/Coin_Flip.maepl";
 	//benchmark1(file_path, 3);
-	benchmark2(file_path, 3);
+	//benchmark3(file_path, 100);
 
-	/*std::cout << get_date_stamp();
 
-	Logger logger;
-	logger.add_entry("First", 100, 0.10);
-	logger.add_entry("second", 200, 0.20);
-	logger.save();
-	std::cout << logger.to_string();*/
+
+	//execute_second_order();
+//execute_test_case();
+
+
+//find_and_execute("Simple.maepl", "Pepper");
+//find_and_execute("Stack.maepl", "P");
+//find_and_execute("False_Belief_Synthesis.maepl", "P");
+//find_and_execute("Block_Search.maepl", "R");
+	//find_and_execute("MAPFDU.maepl", "R");
+	//find_and_execute("Block_Search_Single.maepl", "R");
+
+	//find_and_execute("MAPF/p7.maepl", "a0");
+	//find_and_execute("Thorsten_Domains/p1.maepl", "a0");
+
+	run_mapf_benchmark();
+
 	__debugbreak;
+	return 0;
 }

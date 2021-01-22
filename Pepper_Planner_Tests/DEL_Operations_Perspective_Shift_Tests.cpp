@@ -36,10 +36,10 @@ namespace PepperPlannerTests
 			state.create_world();
 			state.create_world();
 			state.create_world();
-			state.add_true_propositions(World_Id{ 0 }, { {"in", {atom_to_id["red"], atom_to_id["Box0"]} } });
-			state.add_true_propositions(World_Id{ 1 }, { {"in", {atom_to_id["red"], atom_to_id["Box1"]} } });
-			state.add_true_propositions(World_Id{ 2 }, { {"in", {atom_to_id["red"], atom_to_id["Box1"]} } });
-			state.add_true_propositions(World_Id{ 3 }, { {"in", {atom_to_id["red"], atom_to_id["Box2"]} } });
+			state.add_true_propositions(World_Id{ 0 }, { {0} });
+			state.add_true_propositions(World_Id{ 1 }, { {1} });
+			state.add_true_propositions(World_Id{ 2 }, { {1} });
+			state.add_true_propositions(World_Id{ 3 }, { {2} });
 
 			for (size_t i = 0; i < 4; i++) {
 				state.add_indistinguishability_relation(Agent_Id{ 0 }, World_Id{ i }, World_Id{ i });
@@ -86,10 +86,10 @@ namespace PepperPlannerTests
 			state.create_world();
 			state.create_world();
 			state.create_world();
-			state.add_true_propositions(World_Id{ 0 }, { {"in", {atom_to_id["red"], atom_to_id["Box0"]} } });
-			state.add_true_propositions(World_Id{ 1 }, { {"in", {atom_to_id["red"], atom_to_id["Box1"]} } });
-			state.add_true_propositions(World_Id{ 2 }, { {"in", {atom_to_id["red"], atom_to_id["Box1"]} } });
-			state.add_true_propositions(World_Id{ 3 }, { {"in", {atom_to_id["red"], atom_to_id["Box2"]} } });
+			state.add_true_propositions(World_Id{ 0 }, { {0} });
+			state.add_true_propositions(World_Id{ 1 }, { {1} });
+			state.add_true_propositions(World_Id{ 2 }, { {1} });
+			state.add_true_propositions(World_Id{ 3 }, { {2} });
 
 			state.add_indistinguishability_relation(Agent_Id{ 0 }, World_Id{ 1 }, World_Id{ 1 });
 

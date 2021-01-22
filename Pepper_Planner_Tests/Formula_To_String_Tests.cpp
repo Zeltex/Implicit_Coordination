@@ -30,44 +30,45 @@ namespace PepperPlannerTests
 
 		TEST_METHOD(Prop_String) {
 			Formula f;
-			f.f_prop({"first"});
-			Assert::AreEqual(f.to_string({}), std::string("first()"));
+			f.f_prop({0});
+			Assert::AreEqual(f.to_string({}), std::string("0"));
 		}
 
 		TEST_METHOD(Not_String) {
 			Formula f;
-			f.f_not(f.f_prop({"first"}));
-			Assert::AreEqual(f.to_string({}), std::string("Not(first())"));
+			f.f_not(f.f_prop({0}));
+			Assert::AreEqual(f.to_string({}), std::string("Not(0)"));
 		}
 
 		TEST_METHOD(And_String) {
 			Formula f;
-			f.f_and({ f.f_not(f.f_prop({"first"})), f.f_prop({"second"}) });
-			Assert::AreEqual(f.to_string({}), std::string("And(Not(first());second())"));
+			f.f_and({ f.f_not(f.f_prop({0})), f.f_prop({1}) });
+			auto f_string = f.to_string({});
+			Assert::AreEqual(f_string, std::string("And(Not(0);1)"));
 		}
 
 		TEST_METHOD(Or_String) {
 			Formula f;
-			f.f_or({ f.f_and({f.f_prop({"first"}), f.f_prop({"second"})}), f.f_prop({"third"}) });
-			Assert::AreEqual(f.to_string({}), std::string("Or(And(first();second());third())"));
+			f.f_or({ f.f_and({f.f_prop({0}), f.f_prop({1})}), f.f_prop({2}) });
+			Assert::AreEqual(f.to_string({}), std::string("Or(And(0;1);2)"));
 		}
 
 		TEST_METHOD(Believes_String) {
 			Formula f;
-			f.f_believes( 9 , f.f_and({ f.f_prop({"first"}), f.f_prop({"second"})}));
-			Assert::AreEqual(f.to_string({}), std::string("Believes_9(And(first();second()))"));
+			f.f_believes( 9 , f.f_and({ f.f_prop({0}), f.f_prop({1})}));
+			Assert::AreEqual(f.to_string({}), std::string("Believes_9(And(0;1))"));
 		}
 
 		TEST_METHOD(Everyone_Believes_String) {
 			Formula f;
-			f.f_everyone_Believes(f.f_and({ f.f_prop({"first"}), f.f_prop({"second"}) }));
-			Assert::AreEqual(f.to_string({}), std::string("Everyone_Believes(And(first();second()))"));
+			f.f_everyone_Believes(f.f_and({ f.f_prop({0}), f.f_prop({1}) }));
+			Assert::AreEqual(f.to_string({}), std::string("Everyone_Believes(And(0;1))"));
 		}
 
 		TEST_METHOD(Common_Knowledge_String) {
 			Formula f;
-			f.f_common_Knowledge(f.f_and({ f.f_prop({"first"}), f.f_prop({"second"}) }));
-			Assert::AreEqual(f.to_string({}), std::string("Common_Knowledge(And(first();second()))"));
+			f.f_common_Knowledge(f.f_and({ f.f_prop({0}), f.f_prop({1}) }));
+			Assert::AreEqual(f.to_string({}), std::string("Common_Knowledge(And(0;1))"));
 		}
 	};
 }

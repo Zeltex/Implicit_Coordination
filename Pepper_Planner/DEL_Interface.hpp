@@ -29,8 +29,8 @@ namespace del {
 
 		void perform_action(Action action);
 		void perform_action(const std::string& name, const std::string& owner, const std::vector<std::string>& arguments);
-		bool create_policy(Formula goal, const std::string& planning_agent);
-		bool create_policy(const std::string& planning_agent);
+		bool create_policy(Formula goal, const std::string& planning_agent, const bool is_benchmark=false);
+		bool create_policy(const std::string& planning_agent, const bool is_benchmark=false);
 		bool is_solved();
 
 		const std::unordered_map<std::string, Atom_Id>& get_proposition_context();

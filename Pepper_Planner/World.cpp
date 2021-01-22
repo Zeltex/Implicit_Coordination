@@ -11,14 +11,14 @@ namespace del {
 		return World(id, true_propositions);
 	}
 
-	void World::add_true_propositions(const std::vector<Proposition_Instance> propositions) {
-		for (auto proposition : propositions) {
+	void World::add_true_propositions(const std::vector<Proposition>& propositions) {
+		for (const auto& proposition : propositions) {
 			true_propositions.push_back(proposition);
 		}
 	}
 
-	void World::remove_true_propositions(const std::vector<Proposition_Instance> propositions) {
-		for (auto proposition : propositions) {
+	void World::remove_true_propositions(const std::vector<Proposition>& propositions) {
+		for (const auto& proposition : propositions) {
 			auto result = find(true_propositions.begin(), true_propositions.end(), proposition);
 			if (result != true_propositions.end()) {
 				true_propositions.erase(result);
@@ -26,20 +26,20 @@ namespace del {
 		}
 	}
 
-	const std::vector<Proposition_Instance>& World::get_true_propositions() const {
+	const std::vector<Proposition>& World::get_true_propositions() const {
 		return true_propositions;
 	}
 
 	std::string World::to_string(const Domain& domain) const{
 		std::string result = "World " + std::to_string(id.id) + ": ";
 		bool first = true;
-		for (auto proposition : true_propositions) {
+		for (const auto& proposition : true_propositions) {
 			if (first) {
 				first = false;
 			} else {
 				result += ";";
 			}
-			result += proposition.to_string(domain.get_id_to_atom());
+			result += domain.get_proposition_instance(proposition).to_string(domain.get_id_to_atom());
 		}
 		return result;
 	}
@@ -56,7 +56,7 @@ namespace del {
 	}
 	std::string World::to_hash() const {
 		std::string hash;
-		for (auto& prop : true_propositions) {
+		for (const auto& prop : true_propositions) {
 			hash += prop.to_hash();
 		}
 		return hash;

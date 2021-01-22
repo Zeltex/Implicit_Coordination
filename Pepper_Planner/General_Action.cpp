@@ -25,7 +25,7 @@ namespace del {
 		this->inputs = inputs;
 	}
 
-	void General_Action::create_event(std::string name, Formula&& preconditions, std::vector<Proposition_Instance> add_list, std::vector<Proposition_Instance> delete_list) {
+	void General_Action::create_event(std::string name, Formula&& preconditions, const std::vector<Proposition>& add_list, const std::vector<Proposition>& delete_list) {
 		events.emplace_back(name, Event_Id{ events.size() }, std::move(preconditions), add_list, delete_list);
 	}
 
@@ -66,53 +66,7 @@ namespace del {
 		return edge_conditions;
 	}
 
-	Action General_Action::create_action(Atom_Id owner, const std::vector<Atom_Id>& arguments, const Domain& domain) const {
-
-		if (!is_correct_type(this->owner.first, owner, domain)) {
-			// TODO - Handle with custom exception
-			std::cerr << "Tried to instantiate general_action with owner of wrong type\n";
-			exit(-1);
-		}
-		std::unordered_map<size_t, size_t> input_to_agent;
-		std::unordered_map<size_t, Atom_Id> input_to_atom;
-		input_to_atom.insert({ this->owner.second.id, owner });
-
-		for (size_t i = 0; i < inputs.size(); ++i) {
-			auto& input = inputs[i];
-			auto& argument = arguments[i];
-			if (!is_correct_type(input.first, argument, domain)) {
-				// TODO - Handle with custom exception
-				std::cerr << "Tried to instantiate general_action with argument of wrong type\n";
-				exit(-1);
-			}
-
-			if (i == this->owner.second.id) {
-				if (owner != argument) {
-					// TODO - Handle with custom exception
-					std::cerr << "Tried to instantiate general_action with owner argument not matching owner\n";
-					exit(-1);
-				}
-			} else {
-				input_to_atom.insert({ i, argument });
-				auto agent_id = domain.get_agent_id_optional(argument);
-				if (agent_id.has_value()) {
-					input_to_agent[argument.id] = agent_id.value().id;
-				}
-			}
-		}
-		auto condition_owner_to_agent = get_condition_owner_to_agent(domain, input_to_atom);
-
-		return Action(*this, domain.get_agent_id(owner), input_to_atom, input_to_agent, condition_owner_to_agent);
-	}
-
-	
-	bool General_Action::is_correct_type(const std::string& type, const Atom_Id& object, const Domain& domain) const {
-		auto type_atoms = domain.get_all_atoms_of_type(type);
-		return (std::find(type_atoms.begin(), type_atoms.end(), object.id) != type_atoms.end());
-	}
-
-	// Copying agents as const Agent& does not seem to play nice with condition_owner_to_agent
-	std::unordered_map<size_t, std::vector<Agent>> General_Action::get_condition_owner_to_agent(const Domain& domain, const std::unordered_map<size_t, Atom_Id>& input_to_atom) const{
+	std::unordered_map<size_t, std::vector<Agent>> General_Action::get_condition_owner_to_agent(const Domain& domain, const std::vector<Atom_Id>& arguments) const{
 		std::unordered_map<size_t, std::vector<Agent>> condition_owner_to_agent;
 		std::unordered_set<std::string> seen_agents;
 
@@ -121,7 +75,7 @@ namespace del {
 				condition_owner_to_agent.insert({ REST_INDEX, { } });
 			}
 			else {
-				auto& agent = domain.get_agent_from_atom(input_to_atom.at(edge.first));
+				auto& agent = domain.get_agent_from_atom(arguments.at(edge.first));
 				seen_agents.insert(agent.get_name());
 				condition_owner_to_agent.insert({ edge.first, { agent } });
 			}
@@ -135,4 +89,33 @@ namespace del {
 
 		return std::move(condition_owner_to_agent);
 	}
+	void General_Action::set_instance_to_proposition(std::map<Proposition_Instance, Proposition> instance_to_proposition) {
+		input_to_formula = instance_to_proposition;
+	}
+	std::unordered_map<Proposition, Proposition> General_Action::create_converter(const Domain& domain, const std::unordered_map<size_t, Atom_Id>& arguments) const {
+		std::unordered_map<Proposition, Proposition> formula_to_domain;
+		formula_to_domain.reserve(input_to_formula.size());
+		for (auto& [prop_instance, prop] : input_to_formula) {
+			auto grounded_prop_instance = Proposition_Instance(prop_instance, arguments);
+			formula_to_domain[prop] = domain.get_proposition(grounded_prop_instance);
+		}
+		return formula_to_domain;
+	}
+	std::unordered_map<Proposition, Proposition> General_Action::create_converter(const Domain& domain, const std::vector<Atom_Id>& arguments) const{
+		std::unordered_map<Proposition, Proposition> formula_to_domain;
+		formula_to_domain.reserve(input_to_formula.size());
+		for (auto& [prop_instance, prop] : input_to_formula) {
+			if (!prop_instance.contains_non_atom_entry()) {
+				auto grounded_prop_instance = Proposition_Instance(prop_instance, arguments);
+				formula_to_domain[prop] = domain.get_proposition(grounded_prop_instance);
+			}
+		}
+		return formula_to_domain;
+	}
+
+
+	const std::unordered_map<Proposition, Proposition>& General_Action::get_converter() const {
+		return formula_to_domain;
+	}
+
 }

@@ -1,6 +1,63 @@
 Using Block_Search and False_Belief_Synthesis the bisimilar contraction did not make a difference at all
-Using Dice it did (Used 14 gb memory)
+Using Dice5-3 it did (Used 14 gb memory) (the normal states were calculated for 1,2,3 and 4 actions, and then contraction was applied to the resulting states)
 1 : 15 -> 15
 2 : 240 -> 225
 3 : 3840 -> 3210
 4 : 61440 -> 43875
+
+Using Dice5-3 (and hash sort, else same as above) it did (Used 14 gb memory)
+1 : 15 -> 15
+2 : 240 -> 225
+3 : 3840 -> 3210
+4 : 61440 -> 43875
+
+Using Dice5-3, amount of time spent expanding to non-new states
+1 : 0%
+2 : 67.42%
+3 : 88.48%
+
+Using Block_Search, same as above (not using contraction)
+1 : 60.62%
+2 : 97.94%
+3 : 98.55%
+
+Using Dice5-3, time to calculate states with and without contraction
+action:without:with
+1 : 0    : 0 
+2 : 0.04 : 0.05
+3 : 4.1  : 8.6
+
+Using Block_Search time to calculate states (same as above)
+1 : 22	 : 62
+2 : 1.74 : 4.56
+3 : 5.40 : 14.97
+
+Seems bisimilar contraction causes 2-3 the time to be spent
+Seems the vast majority of the time is spent exploring already explored states
+
+In the dice domain, after 3 actions a state may have 3^3=27 worlds with 27^2=729 relations which takes up 16.383 Bytes. Multiplied by 60.000 states we have around 1GB (this is in debug mode)
+
+Ideas
+- Exploit states that are fully connected by creating fully connected components of worlds. May add overhead in adding worlds though
+
+- Manually check if an announce action breaks a relation, if not there are no changes, and the action can be discarded
+
+- General optimisations like trying to merge operations together, i.e. removing unreachable worlds during a product update
+
+- Drop bisimilar contraction and argue that the algorithm works anyways (Need to check that it actually does). Downside is that we would have to drop it from the paper
+
+- Reachability should be represented as distinguishability relation instead of indistinguishability
+
+- Actions should be generated on the fly such that when trying move(player, pos1, pos2) not all combinations are attempted, only those where pos1 is the players actual position
+
+new benchmarks
+try throwing the same dice
+partition refinement vs ordered partition refinement
+russiasn cardgame
+corridor
+grape wine
+geffner secret example (corridor)
+try benchmarking against "Implicit Coordination Using FOND Planning"
+add benchmarks to paper
+Filippos Kominis and Hector Geffner from one to many
+honours program needs to be done by 1 july

@@ -21,15 +21,11 @@ namespace del {
 	public:
 		Action() {}
 		Action(Agent_Id owner, size_t number_of_agents);
-		Action(	General_Action general_action, 
-				Agent_Id owner, 
-				const std::unordered_map<size_t, Atom_Id>& input_to_atom, 
-			const std::unordered_map<size_t, size_t>& input_to_agent,
-				const std::unordered_map<size_t, std::vector<Agent>>& condition_owner_to_agent);
+		Action(const General_Action& general_action, const Domain& domain, const std::vector<Atom_Id>& arguments);
 
 		void add_designated_event(Event_Id event);
 		void add_event(const Action_Event& event);
-		void add_event(std::string name, Event_Id id, Formula&& precondition, std::vector<Proposition_Instance>&& proposition_add, std::vector<Proposition_Instance>&& proposition_delete);
+		void add_event(const std::string& name, Event_Id id, Formula&& precondition, std::vector<Proposition>&& proposition_add, std::vector<Proposition>&& proposition_delete);
 		void add_reachability(Agent_Id owner, Event_Id event_from, Event_Id event_to, Formula&& condition);
 		void set_cost(size_t cost);
 		void set_name(const std::string& name);
@@ -40,7 +36,7 @@ namespace del {
 		Agent_Id							get_owner() const;
 
 		bool is_event_designated(Event_Id event) const;
-		bool is_condition_fulfilled(Agent_Id agent, Event_Id event_from, Event_Id event_to, const State& state, const World_Id world) const;
+		bool is_condition_fulfilled(Agent_Id agent, Event_Id event_from, Event_Id event_to, const State& state, const World_Id world, const Domain& domain) const;
 
 
 		std::string to_string(const Domain& domain) const;
@@ -49,14 +45,14 @@ namespace del {
 		std::string to_graph(const std::string& base_id, const Domain& domain) const;
 
 		// Args is mainly debug
-		std::unordered_map<size_t, Atom_Id> args;
+		std::vector<Atom_Id> args;
 
 	private:
-		void copy_and_instantiate_edge_conditions(const General_Action& general_action, const std::unordered_map<size_t, std::vector<Agent>>& condition_owner_to_id, const std::unordered_map<std::string, Event_Id>& event_name_to_id, std::unordered_map<size_t, Atom_Id> input_to_atom, const std::unordered_map<size_t, size_t>& input_to_agent);
+		void copy_and_instantiate_edge_conditions(const General_Action& general_action, const std::unordered_map<std::string, Event_Id>& event_name_to_id, const std::vector<Atom_Id>& arguments, const Domain& domain);
 		void copy_and_instantiate_designated_events(const General_Action& general_action, const std::unordered_map<std::string, Event_Id>& event_name_to_id);
-		std::unordered_map<std::string, Event_Id> copy_and_instantiate_events(const General_Action& general_action, const std::unordered_map<size_t, Atom_Id>& input_to_atom, const std::unordered_map<size_t, size_t>& input_to_agent);
+		std::unordered_map<std::string, Event_Id> copy_and_instantiate_events(const General_Action& general_action, const std::vector<Atom_Id>& arguments, const Domain& domain);
 
-		std::string get_string(const std::vector<Proposition_Instance>& propositions, const Domain& domain) const;
+		std::string get_string(const std::vector<Proposition>& propositions, const Domain& domain) const;
 
 		size_t cost;
 		std::vector<Action_Event> events;

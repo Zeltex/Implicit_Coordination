@@ -94,6 +94,19 @@ namespace del {
             }
         }
 
+        Proposition_Instance(const Proposition_Instance& other, const std::vector<Atom_Id>& input_arguments) :
+            name(other.name), arguments() {
+            size_t counter = 0;
+            for (auto& entry : other.arguments) {
+                if (entry == EMPTY_INDEX) {
+                    arguments[counter] = EMPTY_INDEX;
+                } else {
+                    arguments[counter] = input_arguments[entry.id];
+                }
+                counter++;
+            }
+        }
+
         std::string name;
         prop_array arguments;
         //std::vector<std::string> arguments;
@@ -142,6 +155,11 @@ namespace del {
             return !(*this == other);
         }
 
+        bool operator < (const Proposition_Instance& other) const
+        {
+            return to_hash().compare(other.to_hash()) < 0;
+        }
+
         std::string to_hash() const {
             std::string hash = name;
             for (auto& arg : arguments) {
@@ -149,6 +167,39 @@ namespace del {
             }
             return hash;
         }
+
+        bool contains_non_atom_entry() const {
+            for (auto& entry : arguments) {
+                if (entry == REST_INDEX) {
+                    return true;
+                }
+            }
+            return false;
+        }
+    };
+
+    struct Proposition {
+    public:
+        Proposition() : id(EMPTY_INDEX) {}
+        Proposition(size_t id) : id(id) {}
+        std::string to_string() const { return std::to_string(id); }
+        size_t to_hash() const { return id; }
+        bool operator==(const Proposition& other) const { return this->id == other.id; }
+        bool operator!=(const Proposition& other) const { return !(*this == other); }
+        bool operator<(const Proposition& other) const { return this->id < other.id; }
+    private:
+        size_t id;
     };
 }
 
+namespace std {
+    template<>
+    struct hash<del::Proposition>
+    {
+        size_t
+            operator()(const del::Proposition& obj) const
+        {
+            return hash<size_t>()(obj.to_hash());
+        }
+    };
+}

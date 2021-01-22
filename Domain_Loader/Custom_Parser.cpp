@@ -98,6 +98,7 @@ namespace del {
             return maepl();
         }
         if (try_match({ Token::PROBLEM_DEF, Token::NAME, Token::LBRACK })) {
+            buffer->clear_seen_atoms();
             problem_body();
             if (!must_match({ Token::RBRACK })) return;
             if (buffer->is_state_reflexive()) domain->create_state_reflexive_reachables();
@@ -125,6 +126,7 @@ namespace del {
 
             if (!must_match({ Token::PROPOSITIONS_DEF, Token::EQUALS, Token::LBRACK })) return;
             propositions();
+            buffer->get_proposition_instances();
             if (!must_match({ Token::RBRACK })) return;
 
             return actions();
@@ -141,12 +143,13 @@ namespace del {
 
         if (try_match({ Token:: OBJECTS_DEF, Token::EQUALS, Token:: LBRACK })) {
             objects();
-            domain->set_objects(buffer->get_objects());
+            domain->set_objects(buffer->get_objects(), buffer->get_atom_to_id());
             if (!must_match({ Token::RBRACK })) return;
             return problem_body();
         }
 
         if (try_match({ Token:: INIT_DEF, Token:: EQUALS, Token:: LBRACK})) {
+            buffer->clear_proposition_instances();
             proposition_instances();
             domain->set_initial_propositions(buffer->get_proposition_instances());
             if (!must_match({ Token::RBRACK })) return;
@@ -157,14 +160,14 @@ namespace del {
             auto world_name = get_svalue(1);
             buffer->clear_proposition_instances();
             proposition_instances();
-            domain->create_world(world_name, buffer->get_proposition_instances(), buffer->get_atom_to_id());
+            domain->create_world(world_name, buffer->get_proposition_instances());
             if (!must_match({ Token::RBRACK })) return;
             return problem_body();
         }
 
         if (try_match({ Token::GOAL_DEF, Token::EQUALS, Token::LBRACK })) {
             formula();
-            domain->set_goal(buffer->get_formula(), buffer->get_atom_to_id());
+            domain->set_goal(buffer->get_formula(), buffer->get_instance_to_proposition(), buffer->get_atom_to_id());
             if (!must_match({ Token::RBRACK })) return;
             return problem_body();
         }
@@ -203,6 +206,7 @@ namespace del {
     void Custom_Parser::reachability_body() {
         if (try_match({ Token::NAME, Token::EQUALS, Token::LBRACK })) {
             auto name = get_svalue(0);
+            buffer->clear_inputs();
             bracketed_input();
             domain->add_reachability(name, buffer->get_inputs());
             if (!must_match({ Token::RBRACK })) return;
@@ -274,7 +278,7 @@ namespace del {
 
     void Custom_Parser::action_body() {
         if (try_match({ Token::OWNER_DEF, Token::EQUALS, Token::NAME, Token::NAME })) {
-            domain->set_action_owner(get_svalue(2), get_svalue(3), buffer->translate_atom_to_id(get_svalue(3)));
+            domain->set_action_owner(get_svalue(2), get_svalue(3), buffer->get_owner_input_index(get_svalue(2), get_svalue(3)));
             return action_body();
         }
 
@@ -484,6 +488,7 @@ namespace del {
     void Custom_Parser::propositions() {
         if (try_match({ Token::NAME, Token::LBRACK })) {
             auto name = get_svalue(0);
+            buffer->clear_inputs();
             input();
             domain->add_proposition(name, buffer->get_inputs());
             if (!must_match({ Token::RBRACK })) return;
@@ -496,12 +501,13 @@ namespace del {
         if (try_match({ Token::ACTION_DEF, Token::NAME, Token::LBRACK })) {
             buffer->clear_proposition_instances();
             buffer->clear_seen_atoms();
+            buffer->clear_inputs();
             domain->new_action(get_svalue(1));
             input();
             domain->set_action_input(buffer->get_inputs());
             if (!must_match({ Token::RBRACK, Token::LBRACK })) return;
             action_body();
-            domain->finish_action();
+            domain->finish_action(buffer->get_clear_instance_to_proposition());
             buffer->clear_proposition_instances();
             buffer->clear_seen_atoms();
             if (!must_match({ Token::RBRACK })) return;
