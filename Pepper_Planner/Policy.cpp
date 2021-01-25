@@ -29,7 +29,7 @@ namespace del {
 				}
 
 				auto& [policy_state, policy_actions] = (*potential_match).second;
-				if (are_states_bisimilar(policy_state, agent_states[agent_counter])) {
+				if (policy_state == agent_states[agent_counter]) {
 					for (auto& [policy_action, policy_node] : policy_actions) {
 						if (policy_action.get_owner().id == agent_counter) {
 							return policy_action;
@@ -54,7 +54,7 @@ namespace del {
 
 			// TODO - Need to not add duplicates
 			auto& [policy_state, policy_actions] = (*potential_match).second;
-			if (are_states_bisimilar(policy_state, state)) {
+			if (policy_state == state) {
 				policy_actions.emplace_back(action, node_id);
 				return;
 			}

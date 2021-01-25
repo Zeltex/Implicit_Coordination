@@ -8,6 +8,7 @@
 #include "Action_Event.hpp"
 #include "Types.hpp"
 #include "Agent.hpp"
+#include "Indistinguishability_Relations.hpp"
 
 namespace del {
 	class Action;
@@ -33,10 +34,14 @@ namespace del {
 		const std::vector<std::string>&										get_designated_events() const;
 		const std::unordered_map<size_t, std::vector<Edge_Condition>>&		get_edge_conditions() const;
 		const std::vector<Action_Event>&									get_events() const;
+		Event_Id															get_event_id(const std::string& name) const;
 		const std::vector<std::pair<std::string, std::string>>&				get_inputs() const;
 		std::string															get_name() const;
 		std::pair<std::string, Atom_Id>										get_owner() const;
+		const std::map<Atom_Id, std::vector<std::vector<Event_Id>>>&		get_relations() const;
 		//Action create_action(Atom_Id owner, const std::vector<Atom_Id>& arguments, const Domain& domain) const;
+
+		void add_relations(Atom_Id agent, const std::vector<std::vector<Event_Id>>& agent_relations);
 
 		std::unordered_map<size_t, std::vector<Agent>> get_condition_owner_to_agent(const Domain& domain, const std::vector<Atom_Id>& arguments) const;
 	private:
@@ -48,6 +53,7 @@ namespace del {
 		std::vector<std::string> designated_events;
 		std::vector<std::pair<std::string, std::string>> inputs;
 		std::unordered_map<size_t, std::vector<Edge_Condition>> edge_conditions;
+		std::unordered_map<std::string, Event_Id> event_to_id;
 
 		// Ids from input of general action to ids of propositions in formula
 		std::map<Proposition_Instance, Proposition> input_to_formula;
@@ -55,6 +61,8 @@ namespace del {
 		std::unordered_map<Proposition, Proposition> formula_to_domain;
 		bool converter_generated;
 
-		// TODO - preconditions
+		std::map<Atom_Id, std::vector<std::vector<Event_Id>>> relations;
+		//Indistinguishability_Relations relations;
+
 	};
 }

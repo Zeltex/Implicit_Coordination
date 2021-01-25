@@ -17,11 +17,11 @@ namespace del {
 	public:
 		Domain_Interface_Implementation(): 
 			actions(), current_action(), initial_state(), library(), domain(), general_propositions(), world_name_to_id(), action_reflexivity(false){}
+		virtual void new_action(std::string name) override;
 		virtual void new_domain(std::string name) override;
+		virtual void finish_action(std::map<Proposition_Instance, Proposition> instance_to_proposition) override;
 		virtual void finish_domain() override;
 		virtual void finish_problem() override;
-		virtual void new_action(std::string name) override;
-		virtual void finish_action(std::map<Proposition_Instance, Proposition> instance_to_proposition) override;
 
 
 		virtual void set_action_cost(size_t cost) override;
@@ -39,14 +39,14 @@ namespace del {
 
 		virtual void create_event(std::string name, del::Formula&& preconditions, std::vector<Proposition> add_list, std::vector<Proposition> delete_list) override;
 		virtual void create_world(std::string name, const std::vector<Proposition_Instance>& propositions) override;
-		virtual void create_action_reflexive_reachables() override;
-		virtual void create_state_reflexive_reachables() override;
+		//virtual void create_action_reflexive_reachables() override;
+		//virtual void create_state_reflexive_reachables() override;
 
+		virtual void add_action_relations(Atom_Id agent, const std::vector<std::unordered_set<std::string>>& action_relations) override;
 		virtual void add_observability(std::string observer, const std::vector<std::string>& agents) override;
-		virtual void add_edge_condition(Atom_Id agent, std::vector< std::tuple<std::string, std::string, del::Formula>>&& edge_conditions) override;
 		virtual void add_perceivability(std::string perceiver, const std::vector<std::string>& agents) override;
+		virtual void add_problem_relations(Atom_Id agent, const std::vector<std::unordered_set<std::string>>& action_relations) override;
 		virtual void add_proposition(std::string name, const std::vector<std::pair<std::string, std::string>>& inputs) override;
-		virtual void add_reachability(std::string name, const std::vector<std::pair<std::string, std::string>>& reachables) override;
 		std::tuple<Domain, Action_Library, Formula> get_loaded();
 	private:
 

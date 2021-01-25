@@ -276,5 +276,9 @@ namespace del {
 		return proposition_to_instance.at(proposition);
 	}
 
+	size_t Domain::get_amount_of_agents() const {
+		return amount_of_agents;
+	}
+
 
 }

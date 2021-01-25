@@ -29,6 +29,7 @@ namespace del {
         std::vector<std::string> add_reflexive_perceivability(std::string name, std::vector<std::string> agents);
 
         std::unordered_map<std::string, Atom_Id>							get_atom_to_id();
+        std::vector<std::unordered_set<std::string>>                        get_relations();
         std::map<Proposition_Instance, Proposition>                         get_clear_instance_to_proposition();
         std::vector<std::string>											get_designated_events();
         std::vector<std::tuple<std::string, std::string, Formula>>			get_edge_conditions();
@@ -47,11 +48,13 @@ namespace del {
         Atom_Id																translate_atom_to_id(const std::string& type);
 
         void add_variable(std::string variable);
+        void clear_relations();
         void clear_seen_atoms();
         void clear_formula();
         void clear_inputs();
         void clear_variable_list();
         void clear_proposition_instances();
+        void push_relations();
         void push_event_add_list();
         void push_event_delete_list();
         void push_types();
@@ -85,6 +88,7 @@ namespace del {
         bool action_reflexivity;
         std::vector<std::string> seen_perceivability;
         std::vector<std::tuple<std::string, std::string, Formula>> edge_conditions;
+        std::vector<std::unordered_set<std::string>> relations;
 
         std::map<Proposition_Instance, Proposition> instance_to_proposition;
 

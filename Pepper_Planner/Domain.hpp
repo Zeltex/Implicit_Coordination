@@ -34,11 +34,12 @@ namespace del {
 		Agent_Id									get_agent_id(Atom_Id atom_id) const;
 		Agent_Id									get_agent_id(const std::string& name) const;
 		std::optional<Agent_Id>						get_agent_id_optional(Atom_Id atom_id) const;
-		const std::vector<Atom_Id>&			get_all_atoms_of_type(const std::string& type) const;
+		const std::vector<Atom_Id>&					get_all_atoms_of_type(const std::string& type) const;
 		Atom_Id										get_atom_id(const std::string& atom_name) const;
 		std::string									get_atom_name(Atom_Id atom_id) const;
 		const std::unordered_set<std::string>&		get_atom_types() const;
-		const std::vector<Proposition>		get_atom_rigids() const;
+		const std::vector<Proposition>				get_atom_rigids() const;
+		size_t										get_amount_of_agents() const;
 		const Proposition&							get_proposition(const Proposition_Instance& proposition_instance) const;
 		const Proposition_Instance&					get_proposition_instance(const Proposition& proposition) const;
 

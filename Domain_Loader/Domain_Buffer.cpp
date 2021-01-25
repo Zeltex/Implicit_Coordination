@@ -67,11 +67,11 @@ namespace del {
         return std::move(temp);
     }
 
-    std::vector<std::tuple<std::string, std::string, Formula>> Domain_Buffer::get_edge_conditions() {
-        auto temp = std::move(edge_conditions);
-        edge_conditions = std::vector<std::tuple<std::string, std::string, Formula>>();
-        return std::move(temp);
-    }
+    //std::vector<std::tuple<std::string, std::string, Formula>> Domain_Buffer::get_edge_conditions() {
+    //    auto temp = std::move(edge_conditions);
+    //    edge_conditions = std::vector<std::tuple<std::string, std::string, Formula>>();
+    //    return std::move(temp);
+    //}
 
     std::vector<Proposition> Domain_Buffer::get_event_add_list() {
         auto temp = std::move(event_add_list);
@@ -167,6 +167,19 @@ namespace del {
 
     void Domain_Buffer::clear_variable_list() {
         variable_list.clear();
+    }
+
+    void Domain_Buffer::push_relations() {
+        relations.emplace_back(std::move(variable_list));
+        variable_list = {};
+    }
+
+    void Domain_Buffer::clear_relations() {
+        relations = {};
+    }
+
+    std::vector<std::unordered_set<std::string>> Domain_Buffer::get_relations() {
+        return relations;
     }
 
     void Domain_Buffer::push_event_add_list() {

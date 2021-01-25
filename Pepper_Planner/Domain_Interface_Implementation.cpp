@@ -173,21 +173,27 @@ namespace del {
 		}
 	}
 
-	void Domain_Interface_Implementation::create_action_reflexive_reachables() {
-		action_reflexivity = true;
-	}
-	
-	void Domain_Interface_Implementation::create_state_reflexive_reachables() {
-		for (auto& world : initial_state.get_worlds()) {
-			for (auto& agent : domain.get_agents()) {
-				initial_state.add_indistinguishability_relation(agent.get_id(), world.get_id(), world.get_id());
+
+	void Domain_Interface_Implementation::add_action_relations(Atom_Id agent, const std::vector<std::unordered_set<std::string>>& action_relations) {
+		std::vector<std::vector<Event_Id>> event_id_relations;
+
+		for (const auto& indistinguishability_set : action_relations) {
+			event_id_relations.emplace_back();
+			for (const auto& event_name : indistinguishability_set) {
+				event_id_relations.back().push_back(current_action.get_event_id(event_name));
 			}
 		}
+
+		current_action.add_relations(agent, event_id_relations);
 	}
 
-	void Domain_Interface_Implementation::add_reachability(std::string name, const std::vector<std::pair<std::string, std::string>>& reachables) {
-		for (auto& entry : reachables) {
-			initial_state.add_indistinguishability_relation(domain.get_agent_id(name), world_name_to_id[entry.first], world_name_to_id[entry.second]);
+	void Domain_Interface_Implementation::add_problem_relations(Atom_Id agent, const std::vector<std::unordered_set<std::string>>& world_relations) {
+		for (const auto& indistinguishability_set : world_relations) {
+			std::unordered_set<World_Id> worlds;
+			for (const auto& world_name: indistinguishability_set) {
+				worlds.insert(world_name_to_id.at(world_name));
+			}
+			initial_state.add_indistinguishability_set(domain.get_agent_from_atom(agent).get_id(), worlds);
 		}
 	}
 
@@ -205,15 +211,15 @@ namespace del {
 		this->goal = Formula(goal, converter);
 	}
 
-	void Domain_Interface_Implementation::add_edge_condition(Atom_Id agent, std::vector< std::tuple<std::string, std::string, Formula>>&& edge_conditions) {
+	//void Domain_Interface_Implementation::add_edge_condition(Atom_Id agent, std::vector< std::tuple<std::string, std::string, Formula>>&& edge_conditions) {
 
-		std::vector<Edge_Condition> temp;
-		temp.reserve(edge_conditions.size());
-		for (auto&[event_from, event_to, condition] : edge_conditions) {
-			temp.emplace_back(std::move(event_from), std::move(event_to), std::move(condition));
-		}
-		current_action.add_edge_condition(agent, std::move(temp));
-	}
+	//	std::vector<Edge_Condition> temp;
+	//	temp.reserve(edge_conditions.size());
+	//	for (auto&[event_from, event_to, condition] : edge_conditions) {
+	//		temp.emplace_back(std::move(event_from), std::move(event_to), std::move(condition));
+	//	}
+	//	current_action.add_edge_condition(agent, std::move(temp));
+	//}
 
 	void Domain_Interface_Implementation::add_observability(std::string observer, const std::vector<std::string>& agents) {
 		observability[observer] = agents;

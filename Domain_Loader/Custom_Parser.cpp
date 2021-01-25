@@ -101,7 +101,7 @@ namespace del {
             buffer->clear_seen_atoms();
             problem_body();
             if (!must_match({ Token::RBRACK })) return;
-            if (buffer->is_state_reflexive()) domain->create_state_reflexive_reachables();
+            //if (buffer->is_state_reflexive()) domain->create_state_reflexive_reachables();
             for (auto agent : buffer->get_missing_perceivables()) {
                 domain->add_perceivability(agent, { agent });
             }
@@ -205,15 +205,50 @@ namespace del {
 
     void Custom_Parser::reachability_body() {
         if (try_match({ Token::NAME, Token::EQUALS, Token::LBRACK })) {
-            auto name = get_svalue(0);
-            buffer->clear_inputs();
-            bracketed_input();
-            domain->add_reachability(name, buffer->get_inputs());
+            auto& agent_name = get_svalue(0);
+            buffer->clear_relations();
+            reachability_body_recurse();
+            domain->add_problem_relations(buffer->translate_atom_to_id(agent_name), buffer->get_relations());
             if (!must_match({ Token::RBRACK })) return;
             return reachability_body();
         }
         return;
     }
+
+    void Custom_Parser::reachability_body_recurse() {
+        if (try_match({ Token::LBRACK })) {
+            buffer->clear_variable_list();
+            variables();
+            buffer->push_relations();;
+            if (!must_match({ Token::RBRACK })) return;
+            reachability_body_recurse();
+        }
+        return;
+    }
+
+    //if (try_match({ Token::REST_DEF, Token::EQUALS, Token::LBRACK })) {
+    //    buffer->clear_action_relations();
+    //    action_agent_reachability();
+    //    domain->add_action_relations(REST_INDEX, buffer->get_action_relations());
+    //    if (!must_match({ Token::RBRACK })) return;
+    //    return action_reachability();
+    //}
+    //return;
+    //}
+
+    //void Custom_Parser::action_agent_reachability() {
+
+    //    if (try_match({ Token::LBRACK })) {
+    //        buffer->clear_variable_list();
+    //        variables();
+    //        buffer->push_action_relations();
+    //        //domain->add_action_reachability_set(name, buffer->get_variables());
+    //        if (!must_match({ Token::RBRACK })) return;
+    //        action_agent_reachability();
+    //    }
+    //    return;
+    //}
+
 
     void Custom_Parser::perceivability_body() {
         if (try_match({ Token::NAME, Token::EQUALS, Token::LBRACK })) {
@@ -319,15 +354,17 @@ namespace del {
     void Custom_Parser::action_reachability() {
         if (try_match({ Token::NAME, Token::EQUALS, Token::LBRACK })) {
             std::string agent_name = get_svalue(0);
+            buffer->clear_relations();
             action_agent_reachability();
-            domain->add_edge_condition(buffer->translate_atom_to_id(agent_name), buffer->get_edge_conditions());
+            domain->add_action_relations(buffer->translate_atom_to_id(agent_name), buffer->get_relations());
             if (!must_match({ Token::RBRACK })) return;
             return action_reachability();
         }
 
         if (try_match({ Token::REST_DEF, Token::EQUALS, Token::LBRACK })) {
+            buffer->clear_relations();
             action_agent_reachability();
-            domain->add_edge_condition(REST_INDEX, buffer->get_edge_conditions());
+            domain->add_action_relations(REST_INDEX, buffer->get_relations());
             if (!must_match({ Token::RBRACK })) return;
             return action_reachability();
         }
@@ -336,17 +373,29 @@ namespace del {
 
     void Custom_Parser::action_agent_reachability() {
 
-        if (try_match({ Token::LBRACK, Token::NAME, Token::NAME, Token::RBRACK, Token::EQUALS, Token::LBRACK})) {
-            std::string event0 = get_svalue(1);
-            std::string event1 = get_svalue(2);
-            formula_single();
-            buffer->add_edge_condition({ event0, event1, std::move(buffer->get_formula()) });
+        if (try_match({ Token::LBRACK })) {
+            buffer->clear_variable_list();
+            variables();
+            buffer->push_relations();
+            //domain->add_action_reachability_set(name, buffer->get_variables());
             if (!must_match({ Token::RBRACK })) return;
             action_agent_reachability();
         }
         return;
-
     }
+
+    //void Custom_Parser::reachability_body() {
+    //    if (try_match({ Token::NAME, Token::EQUALS, Token::LBRACK })) {
+    //        auto& name = get_svalue(0);
+    //        buffer->clear_variable_list();
+    //        variables();
+
+    //        domain->add_reachability_set(name, buffer->get_variables());
+    //        if (!must_match({ Token::RBRACK })) return;
+    //        return reachability_body();
+    //    }
+    //    return;
+    //}
 
     void Custom_Parser::designated_events_body() {
         if (try_match({ Token::NAME })) {
