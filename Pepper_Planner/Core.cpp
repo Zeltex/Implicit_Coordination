@@ -52,10 +52,7 @@ namespace del {
 		} else {
 			std::set<size_t> arg_set;
 			for (auto& entry : action.args) {
-				arg_set.insert(entry.id);
-			}
-			for (auto& entry : arg_set) {
-				std::cout << domain.get_atom_name(action.args.at(entry)) << " ";
+				std::cout << domain.get_atom_name(entry) << " ";
 			}
 			std::cout << ")";
 		}

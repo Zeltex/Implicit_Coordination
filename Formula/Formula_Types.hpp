@@ -40,7 +40,9 @@ namespace del {
         }
         bool operator!=(const Atom_Id& other) const {
             return this->id != other.id;
-            //return !(this->id == other.id);
+        }
+        bool operator<(const Atom_Id& other) const {
+            return this->id < other.id;
         }
     };
 

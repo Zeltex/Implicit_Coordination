@@ -14,3 +14,8 @@ x64/
 Release/
 Debug/
 *.PNG
+*.png
+*.txt
+*.xlsx
+CMakeFiles/
+Notes/

@@ -27,6 +27,9 @@ namespace del {
         bool operator!=(const Agent_Id& other) const {
             return this->id != other.id;
         }
+		bool operator<(const Agent_Id& other) const {
+			return this->id < other.id;
+		}
 	};
 
 	struct World_Id {
@@ -39,6 +42,10 @@ namespace del {
         bool operator!=(const World_Id& other) const {
             return this->id != other.id;
         }
+
+		bool operator<(const  World_Id& other) const {
+			return this->id < other.id;
+		}
 	};
 
 	struct Event_Id {
@@ -121,4 +128,15 @@ namespace del {
 		std::size_t operator()(const State& state) const;
 	};
 
+}
+namespace std {
+	template<>
+	struct hash<del::World_Id>
+	{
+		size_t
+			operator()(const del::World_Id& obj) const
+		{
+			return hash<size_t>()(obj.id);
+		}
+	};
 }

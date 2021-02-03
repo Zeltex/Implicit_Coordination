@@ -187,6 +187,7 @@ namespace del {
 			for (size_t i = 0; i < counters.size(); i++) {
 				arguments.emplace_back(atoms[i][counters[i]]);
 			}
+			Action(general_action, domain, arguments);
 			actions.emplace_back(general_action, domain, arguments);
 
 			// Advance indices

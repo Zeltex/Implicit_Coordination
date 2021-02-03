@@ -35,15 +35,14 @@ namespace del {
 
         virtual void create_event								(std::string name, del::Formula&& preconditions, std::vector<Proposition> add_list, std::vector<Proposition> delete_list) = 0;
         virtual void create_world								(std::string name, const std::vector<Proposition_Instance>& propositions) = 0;
-        virtual void create_action_reflexive_reachables			() = 0;
-        virtual void create_state_reflexive_reachables			() = 0;
+        //virtual void create_action_reflexive_reachables			() = 0;
+        //virtual void create_state_reflexive_reachables			() = 0;
 
-        virtual void add_edge_condition							(Atom_Id, std::vector< std::tuple<std::string, std::string, del::Formula>>&& edge_conditions) = 0;
+        virtual void add_action_relations                       (Atom_Id agent, const std::vector<std::unordered_set<std::string>>& action_relations) = 0;
         virtual void add_observability							(std::string observer, const std::vector<std::string>& agents) = 0;
         virtual void add_perceivability							(std::string perceiver, const std::vector<std::string>& agents) = 0;
+        virtual void add_problem_relations                      (Atom_Id agent, const std::vector<std::unordered_set<std::string>>& action_relations) = 0;
         virtual void add_proposition							(std::string name, const std::vector<std::pair<std::string, std::string>>& inputs) = 0;
-        virtual void add_reachability							(std::string name, const std::vector<std::pair<std::string, std::string>>& reachables) = 0;
-
     private:
         std::vector<std::string> buffer_list;
     };

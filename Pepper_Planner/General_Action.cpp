@@ -26,7 +26,9 @@ namespace del {
 	}
 
 	void General_Action::create_event(std::string name, Formula&& preconditions, const std::vector<Proposition>& add_list, const std::vector<Proposition>& delete_list) {
-		events.emplace_back(name, Event_Id{ events.size() }, std::move(preconditions), add_list, delete_list);
+		Event_Id id = { events.size() };
+		event_to_id.insert({ name, id });
+		events.emplace_back(name, id, std::move(preconditions), add_list, delete_list);
 	}
 
 	void General_Action::add_edge_condition(Atom_Id agent, std::vector<Edge_Condition>&& edge_conditions_input) {
@@ -118,4 +120,16 @@ namespace del {
 		return formula_to_domain;
 	}
 
+
+	const std::map<Atom_Id, std::vector<std::vector<Event_Id>>>& General_Action::get_relations() const {
+		return relations;
+	}
+
+	void General_Action::add_relations(Atom_Id agent, const std::vector<std::vector<Event_Id>>& agent_relations) {
+		this->relations.insert({ agent, agent_relations });
+	}
+
+	Event_Id General_Action::get_event_id(const std::string& name) const {
+		return event_to_id.at(name);
+	}
 }

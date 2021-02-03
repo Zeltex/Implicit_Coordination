@@ -45,7 +45,7 @@ namespace del {
         void proposition_instances();
         void propositions();
         void reachability_body();
-        void variables_container();
+        void reachability_body_recurse();
         void variables();
     };
 }

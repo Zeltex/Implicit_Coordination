@@ -1,4 +1,5 @@
 
+
 _domain Pepper {
 	_announce_enabled = false
 	_types = [agent, pos]
@@ -21,10 +22,10 @@ _domain Pepper {
 		}
 		_reachability = {
 			agent = {
-				(event0 event0) = (TOP)
+				(event0)
 			}
 			_rest = {
-				(event0 event0) = (TOP)
+				(event0)
 			}
 		}
 	}
@@ -40,10 +41,10 @@ _domain Pepper {
 		}
 		_reachability = {
 			agent = {
-				(event0 event0) = (TOP)
+				(event0)
 			}
 			_rest = {
-				(event0 event0) = (TOP)
+				(event0)
 			}
 		}
 	}
@@ -53,59 +54,32 @@ _objects = {
 	agent = [a0, a1, a2]
 	pos = [c0, c1, c2, c3, x1, x2]
 }
+_initial_state = [
+	adj(c0, c1), adj(c1, c0), adj(c1, c2), adj(c2, c1), adj(c2, c3), adj(c3, c2), adj(c1, x1), adj(x1, c1), adj(c2, x2), adj(x2, c2)
+]
 
-_initial_state = [adj(c0, c1), adj(c1, c0), adj(c1, c2), adj(c2, c1), adj(c2, c3), adj(c3, c2), adj(c1, x1), adj(x1, c1), adj(c2, x2), adj(x2, c2)]
 
-_world w0 [free(c0), at(a2, c1), at(a1, c2), at(a0, c3), free(x1), free(x2), goal(a0, c0), goal(a1, c1), goal(a2, c2)]
-
-_world w1 [free(c0), at(a2, c1), at(a1, c2), at(a0, c3), free(x1), free(x2), goal(a0, x1), goal(a1, c1), goal(a2, c2)]
-
-_world w2 [free(c0), at(a2, c1), at(a1, c2), at(a0, c3), free(x1), free(x2), goal(a0, c0), goal(a1, x2), goal(a2, c2)]
-
-_world w3 [free(c0), at(a2, c1), at(a1, c2), at(a0, c3), free(x1), free(x2), goal(a0, x1), goal(a1, x2), goal(a2, c2)]
-
-_world w4 [free(c0), at(a2, c1), at(a1, c2), at(a0, c3), free(x1), free(x2), goal(a0, c0), goal(a1, c1), goal(a2, c3)]
-
-_world w5 [free(c0), at(a2, c1), at(a1, c2), at(a0, c3), free(x1), free(x2), goal(a0, x1), goal(a1, c1), goal(a2, c3)]
-
-_world w6 [free(c0), at(a2, c1), at(a1, c2), at(a0, c3), free(x1), free(x2), goal(a0, c0), goal(a1, x2), goal(a2, c3)]
-
-_world w7 [free(c0), at(a2, c1), at(a1, c2), at(a0, c3), free(x1), free(x2), goal(a0, x1), goal(a1, x2), goal(a2, c3)]
-
-_goal = [ AND(stopped(a0), stopped(a1), stopped(a2)) ] 
-
+	_world w0 [free(c0), at(a2, c1), at(a1, c2), at(a0, c3), free(x1), free(x2), goal(a0, c0), goal(a1, c1), goal(a2, c2)]
+	_world w1 [free(c0), at(a2, c1), at(a1, c2), at(a0, c3), free(x1), free(x2), goal(a0, x1), goal(a1, c1), goal(a2, c2)]
+	_world w2 [free(c0), at(a2, c1), at(a1, c2), at(a0, c3), free(x1), free(x2), goal(a0, c0), goal(a1, x2), goal(a2, c2)]
+	_world w3 [free(c0), at(a2, c1), at(a1, c2), at(a0, c3), free(x1), free(x2), goal(a0, x1), goal(a1, x2), goal(a2, c2)]
+	_world w4 [free(c0), at(a2, c1), at(a1, c2), at(a0, c3), free(x1), free(x2), goal(a0, c0), goal(a1, c1), goal(a2, c3)]
+	_world w5 [free(c0), at(a2, c1), at(a1, c2), at(a0, c3), free(x1), free(x2), goal(a0, x1), goal(a1, c1), goal(a2, c3)]
+	_world w6 [free(c0), at(a2, c1), at(a1, c2), at(a0, c3), free(x1), free(x2), goal(a0, c0), goal(a1, x2), goal(a2, c3)]
+	_world w7 [free(c0), at(a2, c1), at(a1, c2), at(a0, c3), free(x1), free(x2), goal(a0, x1), goal(a1, x2), goal(a2, c3)]
+		_goal = [ AND(stopped(a0), stopped(a1), stopped(a2))]
+	
 	_designated_worlds = [ w0 ]
 	_reflexivity = false
 	_reachability = {
 		a0 = {
-		 (w0, w0), (w0, w2), (w0, w4), (w0, w6),
-		 (w1, w1), (w1, w3), (w1, w5), (w1, w7),
-		 (w2, w0), (w2, w2), (w2, w4), (w2, w6),
-		 (w3, w1), (w3, w3), (w3, w5), (w3, w7),
-		 (w4, w0), (w4, w2), (w4, w4), (w4, w6),
-		 (w5, w1), (w5, w3), (w5, w5), (w5, w7),
-		 (w6, w0), (w6, w2), (w6, w4), (w6, w6),
-		 (w7, w1), (w7, w3), (w7, w5), (w7, w7),
-		 }
+			(w0 w2 w4 w6) (w1 w3 w5 w7)
+		}
 		a1 = {
-		 (w0, w0), (w0, w1), (w0, w4), (w0, w5),
-		 (w1, w0), (w1, w1), (w1, w4), (w1, w5),
-		 (w2, w2), (w2, w3), (w2, w6), (w2, w7),
-		 (w3, w2), (w3, w3), (w3, w6), (w3, w7),
-		 (w4, w0), (w4, w1), (w4, w4), (w4, w5),
-		 (w5, w0), (w5, w1), (w5, w4), (w5, w5),
-		 (w6, w2), (w6, w3), (w6, w6), (w6, w7),
-		 (w7, w2), (w7, w3), (w7, w6), (w7, w7),
-		 }
+			(w0 w1 w4 w5) (w2 w3 w6 w7)
+		}
 		a2 = {
-		 (w0, w0), (w0, w1), (w0, w2), (w0, w3),
-		 (w1, w0), (w1, w1), (w1, w2), (w1, w3),
-		 (w2, w0), (w2, w1), (w2, w2), (w2, w3),
-		 (w3, w0), (w3, w1), (w3, w2), (w3, w3),
-		 (w4, w4), (w4, w5), (w4, w6), (w4, w7),
-		 (w5, w4), (w5, w5), (w5, w6), (w5, w7),
-		 (w6, w4), (w6, w5), (w6, w6), (w6, w7),
-		 (w7, w4), (w7, w5), (w7, w6), (w7, w7),
-		 }
+			(w0 w1 w2 w3) (w4 w5 w6 w7)
+		}
 	}
 }

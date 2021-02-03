@@ -161,6 +161,7 @@
     <ClCompile Include="Formula_Input_Impl.cpp" />
     <ClCompile Include="General_Action.cpp" />
     <ClCompile Include="General_World.cpp" />
+    <ClCompile Include="Indistinguishability_Relations.cpp" />
     <ClCompile Include="Interface_DTO.cpp" />
     <ClCompile Include="Misc.cpp" />
     <ClCompile Include="Node_Comparator.cpp" />
@@ -190,6 +191,7 @@
     <ClInclude Include="Formula_Input_Impl.hpp" />
     <ClInclude Include="General_Action.hpp" />
     <ClInclude Include="General_World.hpp" />
+    <ClInclude Include="Indistinguishability_Relations.hpp" />
     <ClInclude Include="Interface_DTO.hpp" />
     <ClInclude Include="Misc.hpp" />
     <ClInclude Include="Node_Comparator.hpp" />

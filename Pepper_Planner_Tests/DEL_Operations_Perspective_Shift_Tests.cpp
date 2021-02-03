@@ -64,8 +64,8 @@ namespace PepperPlannerTests
 
 
 			Assert::AreEqual(size_t{ 1 }, new_state.get_designated_worlds().size());
-			Assert::AreEqual(size_t{ 4 }, new_state.get_indistinguishability_relations(Agent_Id{ 0 }).size());
-			Assert::AreEqual(size_t{ 13 }, new_state.get_indistinguishability_relations(Agent_Id{ 1 }).size());
+			Assert::AreEqual(size_t{ 4 }, new_state.get_relations().get_size(Agent_Id{ 0 }));
+			Assert::AreEqual(size_t{ 13 }, new_state.get_relations().get_size(Agent_Id{ 1 }));
 
 			Assert::IsTrue(new_state.is_one_reachable(Agent_Id{ 1 }, World_Id{ 0 }, World_Id{ 0 }));
 			Assert::IsTrue(new_state.is_one_reachable(Agent_Id{ 0 }, World_Id{ 0 }, World_Id{ 0 }));
@@ -114,8 +114,8 @@ namespace PepperPlannerTests
 
 			auto& worlds = new_state.get_worlds();
 			Assert::AreEqual(size_t{ 4 }, worlds.size());
-			Assert::AreEqual(size_t{ 10 }, new_state.get_indistinguishability_relations(Agent_Id{ 0 }).size());
-			Assert::AreEqual(size_t{ 13 }, new_state.get_indistinguishability_relations(Agent_Id{ 1 }).size());
+			Assert::AreEqual(size_t{ 10 }, new_state.get_relations().get_size(Agent_Id{ 0 }));
+			Assert::AreEqual(size_t{ 13 }, new_state.get_relations().get_size(Agent_Id{ 1 }));
 
 			Assert::IsTrue(new_state.is_one_reachable(Agent_Id{ 1 }, World_Id{ 1 }, World_Id{ 1 }));
 			Assert::IsTrue(new_state.is_one_reachable(Agent_Id{ 0 }, World_Id{ 1 }, World_Id{ 1 }));
