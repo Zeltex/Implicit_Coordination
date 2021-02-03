@@ -90,6 +90,7 @@ namespace del {
 					debug_or_layer_size[debug_cost_or] ++;
 #endif
 					Node_Id global_agent_node = graph.create_or_node(global_state, action_node);
+
 					if (is_goal_node(graph.get_node(global_agent_node), goal_formula, domain)) {
 						graph.get_node(global_agent_node).set_solved();
 					} else {

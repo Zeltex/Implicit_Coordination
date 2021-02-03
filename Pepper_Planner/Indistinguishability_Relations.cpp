@@ -103,13 +103,15 @@ namespace del {
 	}
 
 	size_t Indistinguishability_Relations::get_size() const {
-		std::unordered_set<size_t> indices;
+		size_t indices_count = 0;
 		for (size_t agent = 0; agent < relations.size(); ++agent) {
+			std::unordered_set<size_t> indices;
 			for (const auto& index : relations.at(agent)) {
 				indices.insert(index);
 			}
+			indices_count += indices.size();
 		}
-		return (relations.size() * relations.at(0).size()) - indices.size();
+		return (relations.size() * relations.at(0).size()) - indices_count;
 	}
 
 	size_t Indistinguishability_Relations::get_size(Agent_Id agent) const {
@@ -121,10 +123,10 @@ namespace del {
 	}
 
 	bool Indistinguishability_Relations::operator==(const Indistinguishability_Relations& other) const {
-		std::unordered_map<size_t, size_t> this_to_other;
 
 		size_t agent_size = relations.size();
 		for (size_t i = 0; i < agent_size; ++i) {
+			std::unordered_map<size_t, size_t> this_to_other;
 			size_t agent_relation_size = relations.at(i).size();
 			for (size_t j = 0; j < agent_relation_size; ++j) {
 				auto find = this_to_other.find(relations.at(i).at(j));
@@ -147,8 +149,12 @@ namespace del {
 	std::string Indistinguishability_Relations::to_hash() const {
 		std::string result;
 		for (const auto& agent_relations : relations) {
+			std::unordered_map<size_t, size_t> map;
 			for (const auto& index : agent_relations) {
-				result += std::to_string(index);
+				if (map.find(index) == map.end()) {
+					map.insert({ index, map.size() });
+				}
+				result += std::to_string(map.at(index));
 			}
 		}
 		return result;

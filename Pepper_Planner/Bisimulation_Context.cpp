@@ -1,5 +1,6 @@
 #include "Bisimulation_Context.hpp"
 #include <set>
+#include <map>
 
 namespace del {
 	//void Bisimulation_Context::create_merged_worlds_list() {
@@ -293,26 +294,53 @@ namespace del {
 		bool changed = false;
 
 		for (size_t i = 0; i < blocks_size; ++i) {
+			if (blocks.at(i).size() == 1) continue;
+
 			std::set<World_Id> new_block;
 			size_t new_block_index = blocks.size();
 			auto block_signature = relations.get_signature(*blocks.at(i).begin(), world_to_block);
 
-			for (auto iter = blocks.at(i).begin(); iter != blocks.at(i).end();) {
-				auto signature = relations.get_signature(*iter, world_to_block);
+			std::set<Signature> signatures;
+			std::vector<Signature> world_signatures;
+			std::map<Signature, size_t> signature_to_block;
 
-				if (!signature.equals(block_signature)) {
-					new_block.insert(*iter);
-					world_to_block[iter->id] = new_block_index;
-					iter = blocks.at(i).erase(iter);
-				} else {
-					++iter;
+			// Generate all signatures in block
+			for (auto& world : blocks.at(i)) {
+				auto signature = relations.get_signature(world, world_to_block);
+				signatures.insert(signature);
+				world_signatures.push_back(signature);
+			}
+			if (signatures.size() == 1) continue;
+
+			// Generate blocks for signatures
+			bool first = true;
+			for (auto& signature : signatures) {
+				if (first) {
+					first = false;
+					signature_to_block.insert({ signature, i });
+					continue;
+				}
+				if (signature_to_block.find(signature) == signature_to_block.end()) {
+					blocks.emplace_back();
+					signature_to_block.insert({ signature, new_block_index });
+					++new_block_index;
 				}
 			}
 
-			if (!new_block.empty()) {
-				blocks.push_back(new_block);
-				changed = true;
+			// Move worlds to blocks
+			std::set<World_Id> old_block;
+			size_t world_idx = 0;
+			for (const auto& world : blocks.at(i)) {
+				auto new_block = signature_to_block.at(world_signatures.at(world_idx));
+				if (new_block == i) {
+					old_block.insert(world);
+				} else {
+					blocks.at(new_block).insert(world);
+					changed = true;
+				}
+				++world_idx;
 			}
+			blocks.at(i) = old_block;
 		}
 		if (changed) {
 			partition_into_relations_blocks_contraction(relations);

@@ -10,16 +10,21 @@
 namespace del {
 	class Signature {
 	public:
-		Signature(std::vector<size_t> signature) : signature(signature) {}
+		Signature(std::set<size_t> signature) : signature(signature) {}
 		bool equals(const Signature& other) const {
 			if (signature.size() != other.signature.size()) return false;
-			for (size_t i = 0; i < signature.size(); ++i) {
-				if (signature.at(i) != other.signature.at(i)) return false;
+			for (auto& entry : signature) {
+				if (other.signature.find(entry) == other.signature.end()) {
+					return false;
+				}
 			}
 			return true;
 		}
+		bool operator<(const Signature& other) const {
+			return signature < other.signature;
+		}
 	private:
-		std::vector<size_t> signature;
+		std::set<size_t> signature;
 	};
 	class Indistinguishability_Relations;
 	class Quick_Relations {
@@ -28,10 +33,10 @@ namespace del {
 		Signature get_signature(World_Id world, std::unordered_map<size_t, size_t> converter) const {
 			size_t n_worlds = relations.size();
 			size_t n_agents = relations.at(0).size();
-			std::vector<size_t> signature;
+			std::set<size_t> signature;
 			for (size_t agent = 0; agent < n_agents; ++agent) {
 				for (const auto& world_to : relations.at(world.id).at(agent)) {
-					signature.push_back(agent * n_worlds + converter.at(world_to.id));
+					signature.insert(agent * n_worlds + converter.at(world_to.id));
 				}
 			}
 			return Signature(signature);
