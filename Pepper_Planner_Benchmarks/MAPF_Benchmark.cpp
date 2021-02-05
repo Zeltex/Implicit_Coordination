@@ -29,7 +29,6 @@ namespace del {
 			}
 			output.close();
 		}
-		__debugbreak;
 	}
 
 	void run_mapf_and_solve() {
@@ -54,6 +53,5 @@ namespace del {
 			}
 			output.close();
 		}
-		__debugbreak;
 	}
 }

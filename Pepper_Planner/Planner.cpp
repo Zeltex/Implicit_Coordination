@@ -139,7 +139,7 @@ namespace del {
 			PRINT_GRAPH_DOT(graph, domain);
 			PRINT_GRAPH(graph, domain);
 			std::cout << "Policy found\n";
-			std::cout << "is benchmark " << is_benchmark <<  std::endl;
+			//std::cout << "is benchmark " << is_benchmark <<  std::endl;
 			if (is_benchmark) {
 				return Policy(false);
 			} else {
