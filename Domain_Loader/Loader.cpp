@@ -10,7 +10,7 @@ namespace del {
     void Loader::parse(Domain_Interface* domain, std::string file_path) {
         std::ifstream file(file_path);
         if (!file) {
-            std::cerr << "Can't open file" << file_path << std::endl;
+            std::cerr << "Can't open file " << file_path << std::endl;
             return;
         }
         Domain_Buffer buffer = Domain_Buffer();

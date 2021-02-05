@@ -1,5 +1,5 @@
 #pragma once
 namespace del {
-	void run_mapf_benchmark();
-	void run_mapf_and_solve();
+	void run_mapf_benchmark(const std::string& folder);
+	void run_mapf_and_solve(const std::string& folder);
 }

@@ -29,9 +29,14 @@ using namespace del;
 
 
 std::string get_date_stamp() {
-//	struct tm ltm;
 	time_t now = time(0);
-	auto ltm = *(localtime(&now));
+	struct tm ltm;
+#if _MSC_VER
+	localtime_s(&ltm, &now);
+#else
+	ltm = *(localtime(&now));
+#endif
+
 	std::string output;
 	bool first = true;
 	for (const auto& entry : { ltm.tm_year - 100, ltm.tm_mon + 1, ltm.tm_mday, ltm.tm_hour, ltm.tm_min, ltm.tm_sec }) {
@@ -44,6 +49,7 @@ std::string get_date_stamp() {
 		output += std::to_string(entry);
 	}
 	return output;
+
 }
 std::string get_benchmark_file_name(std::string date_stamp) {
 	return "../Benchmarks/Benchmarks_" + date_stamp + ".csv";
@@ -443,7 +449,11 @@ int main(int argc, char* argv[]) {
 	//find_and_execute("MAPF/p7.maepl", "a0");
 	//find_and_execute("Thorsten_Domains/p1.maepl", "a0");
 
-	run_mapf_benchmark();
+	if (argc == 2) {
+		run_mapf_benchmark(argv[1]);
+	} else {
+		run_mapf_benchmark("../Examples/MAPF/");
+	}
 	//run_mapf_and_solve();
 	return 0;
 }
