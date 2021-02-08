@@ -3,9 +3,10 @@
 #BSUB -J Pepper_Planner
 #BSUB -n 1
 #BSUB -R "span[hosts=1]"
-#BSUB -R "rusage[mem=64]"
+#BSUB -R "rusage[mem=64GB]"
+#BSUB -R "select[model == XeonGold6126]"
 #BSUB -M 128GB
-#BSUB -W 01:00
+#BSUB -W 05:00
 #BSUB -u s164438@student.dtu.dk
 #BSUB -B
 #BSUB -N
