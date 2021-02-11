@@ -1,6 +1,7 @@
 #include "Bisimulation_Context.hpp"
 #include <set>
 #include <map>
+#include "Core.hpp"
 
 namespace del {
 	//void Bisimulation_Context::create_merged_worlds_list() {
@@ -269,7 +270,7 @@ namespace del {
 #if OPR_ENABLED == 1
 	class Valuations {
 	public:
-		void add(const std::string& valuation) { signatures.insert(signature); }
+		void add(const std::string& valuation) { valuations.insert(valuation); }
 		const std::set<std::string>& get() { return valuations; }
 		const size_t size() const { return valuations.size(); }
 	private:

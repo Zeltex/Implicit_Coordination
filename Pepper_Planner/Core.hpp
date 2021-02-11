@@ -25,7 +25,7 @@ namespace del {
 #define BISIM_CONTRACTION_ENABLED 0
 #endif
 #ifndef OPR_ENABLED
-#define OPR_ENABLED 0
+#define OPR_ENABLED 1
 #endif
 #ifndef DEBUG_PRINT 
 #define DEBUG_PRINT 1
