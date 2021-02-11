@@ -403,7 +403,7 @@ void benchmark3(const std::string& file_path, const size_t action_depth) {
 
 		std::cout << "\nPrinting contracted states at depth " << i << std::endl;
 		for (auto& entry : temp_contracted_states) {
-			std::cout << entry.to_string(domain) << std::endl;
+			std::cout << entry.to_string(domain) << "\n" << std::endl;
 		}
 
 		normal_states = std::move(temp_normal_states);
@@ -418,6 +418,30 @@ void benchmark3(const std::string& file_path, const size_t action_depth) {
 	//logger.save();
 }
 
+/**
+Generating all possible states to specific action depth and recording amount of hashes with contraction along with timing
+*/
+void benchmark4(const std::string& file_path, const size_t action_depth) {
+	auto [loader, domain, action_library, states] = get_stuff(file_path);
+	auto contracted_states = states;
+	const std::string title = file_path + " Hashes with and without contraction, and calculation time";
+	std::vector<std::vector<long>> data(4);
+	std::vector<std::string> data_descriptions = { "Baseline hashes", "Contracted hashes", "Baseline time", "Contracted time" };
+	auto output_file_name = get_benchmark_file_name();
+
+	Logger logger(file_path);
+	for (size_t i = 1; i <= action_depth; ++i) {
+		std::cout << "Starting " << i << "\n";
+		logger.add_entry("Action depth " + std::to_string(i), 0, 0);
+		auto [temp_contracted_states, contracted_time] = get_states_using_globals(contracted_states, action_library, domain, logger, true);
+
+		contracted_states = std::move(temp_contracted_states);
+		data[1].emplace_back(contracted_states.size());
+		data[3].emplace_back(contracted_time);
+		log_data(data, data_descriptions, output_file_name, title);
+	}
+}
+
 
 
 int main(int argc, char* argv[]) {
@@ -429,7 +453,7 @@ int main(int argc, char* argv[]) {
 	//auto file_path = "../Examples/False_Belief_Synthesis.maepl";
 	//auto file_path = "../Examples/Dice5-3.maepl";
 	//auto file_path = "../Examples/MAPF/p12.maepl";
-	//auto file_path = "../Examples/Coin_Flip.maepl";
+	auto file_path = "../Examples/Coin_Flip_Multi5.maepl";
 	//benchmark1(file_path, 3);
 	//benchmark3(file_path, 100);
 
@@ -452,7 +476,9 @@ int main(int argc, char* argv[]) {
 	if (argc == 2) {
 		run_mapf_benchmark(argv[1]);
 	} else {
-		run_mapf_benchmark("../Examples/MAPF/");
+		benchmark4(file_path, 10);
+		//find_and_execute("Coin_Flip.maepl", "a0");
+		//run_mapf_benchmark("../Examples/MAPF/");
 	}
 	//run_mapf_and_solve();
 	return 0;

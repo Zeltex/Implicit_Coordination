@@ -2,7 +2,7 @@ _domain Pepper {
 	_announce_enabled = false
 	_types = [agent, heads, tails, side]
 	_propositions = [
-		coin(side s)
+		coin(agent a, side s)
 	]
 
 	_action throw (tails t, heads h, agent agent) {
@@ -11,20 +11,20 @@ _domain Pepper {
 		_designated_events = [event0, event1]
 		_event event0 { 
 			_preconditions = ( TOP )
-			_effect_add = [ coin(t) ]
-			_effect_delete = [ coin(h), coin(t) ]
+			_effect_add = [ coin(agent, t) ]
+			_effect_delete = [ coin(agent, h), coin(agent, t) ]
 		}
 		_event event1 { 
 			_preconditions = ( TOP )
-			_effect_add = [ coin(h) ]
-			_effect_delete = [ coin(t), coin(h)]
+			_effect_add = [ coin(agent, h) ]
+			_effect_delete = [ coin(agent, t), coin(agent, h)]
 		}
 		_reachability = {
 			agent = {
-				(event0) (event1)
+				(event0, event1)
 			}
 			_rest = {
-				(event0) (event1)
+				(event0, event1)
 			}
 		}
 	}
@@ -42,7 +42,7 @@ _problem Coin_Flip {
 	_goal = [ TOP ]
 
 	_designated_worlds = [ w0 ]
-	_reflexivity = false
+	_reflexivity = false  
 	_reachability = {
 		a0 = {
 		 (w0)

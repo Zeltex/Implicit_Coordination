@@ -23,6 +23,9 @@ namespace del {
 		bool operator<(const Signature& other) const {
 			return signature < other.signature;
 		}
+		bool operator==(const Signature& other) const {
+			return signature == other.signature;
+		}
 	private:
 		std::set<size_t> signature;
 	};
@@ -44,6 +47,7 @@ namespace del {
 		std::pair<std::vector<std::vector<size_t>>, size_t> convert_to_block_relations(const std::unordered_map<size_t, size_t>& world_to_block,
 			const std::unordered_map<size_t, World_Id>& block_to_new_world, size_t n_agents, size_t n_worlds) const {
 
+			// Initialize such that all worlds are distinguishable
 			size_t relation_index = 0;
 			std::vector<std::vector<size_t>> new_relations(n_agents);
 			for (size_t i = 0; i < new_relations.size(); ++i) {
@@ -53,17 +57,27 @@ namespace del {
 			}
 			const size_t initial_index = relation_index;
 
+			// Transfer indistinguishability
 			for (size_t world_from = 0; world_from < relations.size(); ++world_from) {
 				for (size_t agent = 0; agent < relations.at(world_from).size(); ++agent) {
-					std::unordered_set<size_t> seen_indices;
+					std::set<size_t> seen_indices;
+					size_t new_relation_index = relation_index++;
+					bool first = true;
 					for (const auto& world_to : relations.at(world_from).at(agent)) {
 						auto world = block_to_new_world.at(world_to_block.at(world_to.id));
+
+
 						if (new_relations.at(agent).at(world.id) >= initial_index) {
-							seen_indices.insert(new_relations.at(agent).at(world.id));
+							if (first) {
+								new_relation_index = new_relations.at(agent).at(world.id);
+								seen_indices.insert(new_relations.at(agent).at(world.id));
+							} else if (new_relations.at(agent).at(world.id) != new_relation_index) {
+								seen_indices.insert(new_relations.at(agent).at(world.id));
+							}
 						}
-						new_relations.at(agent).at(world.id) = relation_index;
+						new_relations.at(agent).at(world.id) = new_relation_index;
 					}
-					++relation_index;
+					//++relation_index;
 					assert(seen_indices.size() < 2);
 				}
 			}

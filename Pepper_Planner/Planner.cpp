@@ -122,10 +122,14 @@ namespace del {
 
 	void Planner::print_debug_layer(const std::vector<size_t>& debug_or_layer_size, const std::vector<size_t>& debug_and_layer_size) const {
 		std::string debug_print;
+		size_t total_or_nodes = 0;
+		size_t total_and_nodes = 0;
 		for (size_t i = 0; i < debug_or_layer_size.size(); ++i) {
 			debug_print += std::to_string(i) + "(" + std::to_string(debug_and_layer_size.at(i)) + ", " + std::to_string(debug_or_layer_size.at(i)) + ") ";
+			total_and_nodes += debug_and_layer_size.at(i);
+			total_or_nodes += debug_or_layer_size.at(i);
 		}
-		std::cout << debug_print << "\n";
+		std::cout << debug_print << "\nOr:" << total_or_nodes << ", and: " << total_and_nodes << std::endl;
 	}
 
 	std::optional<Policy> Planner::check_root(Graph& graph, const Domain& domain, const bool is_benchmark) const {
