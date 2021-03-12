@@ -12,7 +12,7 @@ namespace del {
 	void run_mapf_benchmark(const std::string& folder) {
 		std::string planning_agent = "a0";
 		std::vector<long> times;
-		for (size_t i = 1; i <= 15; ++i) {
+		for (size_t i = 1; i <= 18; ++i) {
 			std::string file_name = folder + "p" + std::to_string(i) + ".maepl";
 			DEL_Interface del_interface(file_name);
 			auto time_start = std::chrono::high_resolution_clock::now();
@@ -34,7 +34,7 @@ namespace del {
 	void run_mapf_and_solve(const std::string& folder) {
 		std::string planning_agent = "a0";
 		std::vector<long> times;
-		for (size_t i = 1; i <= 15; ++i) {
+		for (size_t i = 1; i <= 18; ++i) {
 			std::string file_name = folder + "p" + std::to_string(i) + ".maepl";
 			DEL_Interface del_interface(file_name);
 			auto time_start = std::chrono::high_resolution_clock::now();

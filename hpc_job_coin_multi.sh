@@ -14,4 +14,4 @@
 
 module load cmake/3.18.2
 module load gcc/9.2.0
-build_and_run.sh > print.out
+build_and_run_coin_multi.sh > print_coin_multi.out
