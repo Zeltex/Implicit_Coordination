@@ -39,8 +39,6 @@ namespace del {
         //virtual void create_state_reflexive_reachables			() = 0;
 
         virtual void add_action_relations                       (Atom_Id agent, const std::vector<std::unordered_set<std::string>>& action_relations) = 0;
-        virtual void add_observability							(std::string observer, const std::vector<std::string>& agents) = 0;
-        virtual void add_perceivability							(std::string perceiver, const std::vector<std::string>& agents) = 0;
         virtual void add_problem_relations                      (Atom_Id agent, const std::vector<std::unordered_set<std::string>>& action_relations) = 0;
         virtual void add_proposition							(std::string name, const std::vector<std::pair<std::string, std::string>>& inputs) = 0;
     private:

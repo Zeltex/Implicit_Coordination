@@ -31,7 +31,7 @@ namespace del {
 			std::cout << "\nNode " << current_node.id << "\n";
 			std::cout << graph.get_node(current_node).to_string(domain) << std::endl;;
 #endif
-			action_library.load_actions(graph.get_node(current_node).get_state(), domain);
+			action_library.load_actions();
 			std::vector<State> perspective_shifts;
 			perspective_shifts.reserve(domain.get_agents().size());
 			auto& current_state = graph.get_node(current_node).get_state();
@@ -145,7 +145,7 @@ namespace del {
 			std::cout << "Policy found" << std::endl;;
 			//std::cout << "is benchmark " << is_benchmark <<  std::endl;
 			if (is_benchmark) {
-				return Policy(false);
+				return Policy(true);
 			} else {
 				return extract_policy(graph);
 			}

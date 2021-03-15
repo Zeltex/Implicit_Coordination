@@ -37,9 +37,7 @@ namespace del {
         void input();
         void maepl();
         void objects();
-        void observability_body();
         void ordered_variables();
-        void perceivability_body();
         void problem_body();
         bool proposition_instance();
         void proposition_instances();

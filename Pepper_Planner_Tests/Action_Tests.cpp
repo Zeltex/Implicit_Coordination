@@ -30,8 +30,7 @@ namespace PepperPlannerTests
 
 
 
-			State state;
-			state.set_amount_of_agents(2);
+			State state(2);
 			auto& world1 = state.create_world();
 			world1.add_true_propositions({ { 0 } });
 			auto& world2 = state.create_world();

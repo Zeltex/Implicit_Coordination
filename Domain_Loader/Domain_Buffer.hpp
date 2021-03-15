@@ -26,7 +26,6 @@ namespace del {
         void add_ordered_variable(std::string variable);
         void add_edge_condition(std::tuple<std::string, std::string, Formula>&& edge_condition);
         void clear_designated_events();
-        std::vector<std::string> add_reflexive_perceivability(std::string name, std::vector<std::string> agents);
 
         std::unordered_map<std::string, Atom_Id>							get_atom_to_id();
         std::vector<std::unordered_set<std::string>>                        get_relations();
@@ -39,7 +38,6 @@ namespace del {
         Formula																get_formula();
         std::vector<std::pair<std::string, std::string>>					get_inputs();
         const std::map<Proposition_Instance, Proposition>&                  get_instance_to_proposition() const;
-        std::vector<std::string>											get_missing_perceivables();
         std::unordered_map<std::string, std::unordered_set<std::string>>	get_objects();
         std::vector<std::string>											get_ordered_variables();
         std::vector<Proposition_Instance>									get_proposition_instances();
@@ -86,7 +84,6 @@ namespace del {
         std::vector<Proposition_Instance> proposition_instances;
         bool state_reflexivity;
         bool action_reflexivity;
-        std::vector<std::string> seen_perceivability;
         std::vector<std::tuple<std::string, std::string, Formula>> edge_conditions;
         std::vector<std::unordered_set<std::string>> relations;
 

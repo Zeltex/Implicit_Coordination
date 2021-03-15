@@ -15,24 +15,6 @@ namespace del {
 			action.set_amount_of_agents(domain.get_agents().size());
 		}
 
-		// Perceivability
-		for (auto& perceiver_list : perceivability) {
-			std::vector<Agent_Id> temp;
-			for (auto& agent : perceiver_list.second) {
-				temp.emplace_back(domain.get_agent_id(agent));
-			}
-			initial_state.add_perceivability(domain.get_agent_id(perceiver_list.first), temp);
-		}
-
-		// Observability
-		for (auto& observer_list : observability) {
-			std::vector<Agent_Id> temp;
-			for (auto& agent : observer_list.second) {
-				temp.emplace_back(domain.get_agent_id(agent));
-			}
-			initial_state.add_observability(domain.get_agent_id(observer_list.first), temp);
-		}
-
 		for (auto& action : actions) {
 			library.add_general_action(action, domain);
 		}
@@ -83,7 +65,7 @@ namespace del {
 
 	void Domain_Interface_Implementation::set_objects(std::unordered_map<std::string, std::unordered_set<std::string>>&& objects, const std::unordered_map<std::string, Atom_Id>& atom_to_id) {
 		size_t amount_of_agents = objects["agent"].size();
-		initial_state.set_amount_of_agents(amount_of_agents);
+		initial_state = State(amount_of_agents);
 		library.set_amount_of_agents(amount_of_agents);
 
 		domain.set_objects(objects, atom_to_id);
@@ -221,13 +203,6 @@ namespace del {
 	//	current_action.add_edge_condition(agent, std::move(temp));
 	//}
 
-	void Domain_Interface_Implementation::add_observability(std::string observer, const std::vector<std::string>& agents) {
-		observability[observer] = agents;
-	}
-	
-	void Domain_Interface_Implementation::add_perceivability(std::string perceiver, const std::vector<std::string>& agents) {
-		perceivability[perceiver] = agents;
-	}
 
 	// Map from domain_loader ids to pepper_planner ids (using size_t and Atom_Id)
 	std::unordered_map<size_t, Atom_Id> Domain_Interface_Implementation::get_loader_to_planner_converter(const std::unordered_map<std::string, Atom_Id>& atom_to_id) const{

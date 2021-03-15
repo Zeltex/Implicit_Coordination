@@ -100,6 +100,7 @@ namespace del {
 		std::set<World_Id> get_reachables_set(const std::vector<World_Id>& worlds) const;
 		bool is_indistinguishable(Agent_Id agent, World_Id world1, World_Id world2) const;
 		void set_amount_of_agents(size_t number_of_agents);
+		size_t get_number_of_agents() const;
 		void convert(const std::unordered_map<size_t, size_t>& converter, const size_t new_world_size);
 		size_t get_size() const;
 		size_t get_size(Agent_Id agent) const;

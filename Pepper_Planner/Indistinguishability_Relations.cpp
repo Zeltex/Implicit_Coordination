@@ -87,6 +87,9 @@ namespace del {
 		}
 		set_amount_of_worlds(relations.at(0).size());
 	}
+	size_t Indistinguishability_Relations::get_number_of_agents() const {
+		return relations.size();
+	}
 
 	void Indistinguishability_Relations::convert(const std::unordered_map<size_t, size_t>& converter, const size_t new_world_size) {
 		std::vector<std::vector<size_t>> new_relations(relations.size(), std::vector<size_t>(new_world_size));

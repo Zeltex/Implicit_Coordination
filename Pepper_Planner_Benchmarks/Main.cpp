@@ -135,7 +135,7 @@ std::vector<State> get_states(const std::string file_path, const int action_dept
 		const size_t temp_state_size = states.size();
 		for (size_t k = 0; k < temp_state_size; k++) {
 			const auto current_state = states.at(k);
-			action_library.load_actions(current_state, domain);
+			action_library.load_actions();
 			while (action_library.has_action()) {
 				const Action& action = action_library.get_next_action();
 				State state_perspective_shift = perform_perspective_shift(current_state, action.get_owner());
@@ -182,7 +182,7 @@ std::vector<State> get_states_using_globals_phase_times(const std::vector<State>
 	const size_t temp_state_size = states.size();
 	for (size_t k = 0; k < temp_state_size; k++) {
 		const auto current_state = states.at(k);
-		action_library.load_actions(current_state, domain);
+		action_library.load_actions();
 		while (action_library.has_action()) {
 			const Action& action = action_library.get_next_action();
 			std::chrono::system_clock::time_point temp_times[6];
@@ -248,7 +248,7 @@ std::tuple<std::vector<State>, long> get_states_using_globals(const std::vector<
 	const size_t temp_state_size = states.size();
 	for (size_t k = 0; k < temp_state_size; k++) {
 		const auto& current_state = states.at(k);
-		action_library.load_actions(current_state, domain);
+		action_library.load_actions();
 		while (action_library.has_action()) {
 			const Action& action = action_library.get_next_action();
 			State state_perspective_shift = perform_perspective_shift(current_state, action.get_owner());
@@ -476,9 +476,9 @@ int main(int argc, char* argv[]) {
 	if (argc == 2) {
 		run_mapf_benchmark(argv[1]);
 	} else {
-		benchmark4(file_path, 10);
+		//benchmark4(file_path, 10);
 		//find_and_execute("Coin_Flip.maepl", "a0");
-		//run_mapf_benchmark("../Examples/MAPF/");
+		run_mapf_benchmark("../Examples/MAPF/");
 	}
 	//run_mapf_and_solve();
 	return 0;
