@@ -48,7 +48,7 @@ namespace del {
                             break;
                         }
                         std::cerr << "Unknown token at line " << line_number << ": " << line.substr(pointer);
-                        exit(-1);
+                        throw std::runtime_error("");
                         // TODO - Return custom exception
                     }
                 }
@@ -92,7 +92,7 @@ namespace del {
         if (token == "world")				{add_token(Token:: WORLD_DEF);				return;}
 
         std::cerr << "Unknown token at line" << line_number << ": _" << token << std::endl;
-        exit(-1);
+        throw std::runtime_error("");
         // TODO - Return custom exception
     }
 
