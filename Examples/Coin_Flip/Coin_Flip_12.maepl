@@ -1,0 +1,72 @@
+
+_domain Pepper {
+	_announce_enabled = false
+	_types = [agent, heads, tails, side]
+	_propositions = [
+		coin(agent a, side s)
+	]
+
+	_action throw (tails t, heads h, agent agent) {
+		_cost = 100
+		_owner = agent agent
+		_designated_events = [event0, event1]
+		_event event0 { 
+			_preconditions = ( TOP )
+			_effect_add = [ coin(agent, t) ]
+			_effect_delete = [ coin(agent, h), coin(agent, t) ]
+		}
+		_event event1 { 
+			_preconditions = ( TOP )
+			_effect_add = [ coin(agent, h) ]
+			_effect_delete = [ coin(agent, t), coin(agent, h)]
+		}
+		_reachability = {
+			agent = {
+				(event0, event1)
+			}
+			_rest = {
+				(event0, event1)
+			}
+		}
+	}
+}
+_problem Coin_Flip {
+	_objects = {
+		agent = [a0, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11,]
+		heads = [h]
+		tails = [t]
+		side = [h, t]
+	}
+	_initial_state = [
+	]
+	_world w0 [ ]
+	_goal = [AND(OR(coin(a0, t), coin(a0, h))
+OR(coin(a1, t), coin(a1, h))
+OR(coin(a2, t), coin(a2, h))
+OR(coin(a3, t), coin(a3, h))
+OR(coin(a4, t), coin(a4, h))
+OR(coin(a5, t), coin(a5, h))
+OR(coin(a6, t), coin(a6, h))
+OR(coin(a7, t), coin(a7, h))
+OR(coin(a8, t), coin(a8, h))
+OR(coin(a9, t), coin(a9, h))
+OR(coin(a10, t), coin(a10, h))
+OR(coin(a11, t), coin(a11, h))
+)]
+
+	_designated_worlds = [ w0 ]
+	_reflexivity = false  
+	_reachability = {a0 = {(w0)}
+a1 = {(w0)}
+a2 = {(w0)}
+a3 = {(w0)}
+a4 = {(w0)}
+a5 = {(w0)}
+a6 = {(w0)}
+a7 = {(w0)}
+a8 = {(w0)}
+a9 = {(w0)}
+a10 = {(w0)}
+a11 = {(w0)}
+}
+}

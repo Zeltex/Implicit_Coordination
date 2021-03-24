@@ -401,10 +401,10 @@ void benchmark3(const std::string& file_path, const size_t action_depth) {
 		auto [temp_normal_states, normal_time] = get_states_using_globals(normal_states, action_library, domain, logger, false);
 		auto [temp_contracted_states, contracted_time] = get_states_using_globals(contracted_states, action_library, domain, logger, true);
 
-		std::cout << "\nPrinting contracted states at depth " << i << std::endl;
-		for (auto& entry : temp_contracted_states) {
-			std::cout << entry.to_string(domain) << "\n" << std::endl;
-		}
+		//std::cout << "\nPrinting contracted states at depth " << i << std::endl;
+		//for (auto& entry : temp_contracted_states) {
+		//	std::cout << entry.to_string(domain) << "\n" << std::endl;
+		//}
 
 		normal_states = std::move(temp_normal_states);
 		contracted_states = std::move(temp_contracted_states);
@@ -453,33 +453,15 @@ int main(int argc, char* argv[]) {
 	//auto file_path = "../Examples/False_Belief_Synthesis.maepl";
 	//auto file_path = "../Examples/Dice5-3.maepl";
 	//auto file_path = "../Examples/MAPF/p12.maepl";
-	auto file_path = "../Examples/Coin_Flip_Multi5.maepl";
-	//benchmark1(file_path, 3);
-	//benchmark3(file_path, 100);
-
-
-
-	//execute_second_order();
-//execute_test_case();
-
-
-//find_and_execute("Simple.maepl", "Pepper");
-//find_and_execute("Stack.maepl", "P");
-//find_and_execute("False_Belief_Synthesis.maepl", "P");
-//find_and_execute("Block_Search.maepl", "R");
-	//find_and_execute("MAPFDU.maepl", "R");
-	//find_and_execute("Block_Search_Single.maepl", "R");
-
-	//find_and_execute("MAPF/p7.maepl", "a0");
-	//find_and_execute("Thorsten_Domains/p1.maepl", "a0");
+	//std::string file_path = "../Examples/Coin_Flip_Multi11.maepl";
+	std::string file_path = "../Examples/coin_flip/Coin_Flip_4.maepl";
 
 	if (argc == 2) {
 		run_mapf_benchmark(argv[1]);
 	} else {
-		//benchmark4(file_path, 10);
-		//find_and_execute("Coin_Flip.maepl", "a0");
-		run_mapf_benchmark("../Examples/MAPF/");
+		run_coin_flip_benchmark("../Examples/Coin_Flip/");
+		//find_plan(file_path, "a0");
+		//benchmark3(file_path, 15);
 	}
-	//run_mapf_and_solve();
 	return 0;
 }

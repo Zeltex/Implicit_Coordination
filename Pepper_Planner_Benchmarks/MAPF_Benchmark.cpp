@@ -31,6 +31,29 @@ namespace del {
 		}
 	}
 
+	void run_coin_flip_benchmark(const std::string& folder) {
+		std::string planning_agent = "a0";
+		std::vector<long> times;
+		std::string base_file_name = "Coin_Flip_";
+		for (size_t i = 1; i <= 18; ++i) {
+			std::string file_name = folder + base_file_name + std::to_string(i) + ".maepl";
+			DEL_Interface del_interface(file_name);
+			auto time_start = std::chrono::high_resolution_clock::now();
+			del_interface.create_policy(planning_agent, true);
+			auto time_end = std::chrono::high_resolution_clock::now();
+
+			times.push_back(std::chrono::duration_cast<std::chrono::milliseconds>(time_end - time_start).count());
+			std::cout << base_file_name << i << " took ms " << times.back() << "\n" << std::endl;
+
+			std::ofstream output;
+			output.open("../Benchmarks/Benchmarks_Coin_Flip.csv");
+			for (size_t j = 0; j < times.size(); ++j) {
+				output << base_file_name << (j + 1) << ": " << times[j] << " ms" << std::endl;
+			}
+			output.close();
+		}
+	}
+
 	void run_mapf_and_solve(const std::string& folder) {
 		std::string planning_agent = "a0";
 		std::vector<long> times;
