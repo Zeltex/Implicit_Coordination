@@ -2,9 +2,14 @@
 
 This repository contains the planner described in the paper *DEL-based Epistemic Planning for Human-Robot Collaboration: Theory and Implementation* currently under review for KR 2021 in Hanoi, Vietnam. The planner uses Dynamic Epistemic Logic to find *implicitly coordinated* plans, that is, plans where the agents uses perspective shifts to reason about the knowledge and capabilities of the other agents in the planning task, thus reducing the need for explicit communication between the agents.
 
-[![Video of robot solving MAPF/DU](media/MAPFDUYoutube.jpg?raw=true)](https://youtu.be/48h3Kbov9lo)
+## Demo
 
-[![Video of robot solving the Sally-Anne task](media/SallyAnneYoutube.jpg?raw=true)](https://youtu.be/T0lTlRgoBLg)
+Video of a Softbank's Pepper robot using this planner to solve a *multi-agent pathfinding with destination uncertainty* problem.
+[![Link to the video](media/MAPFDUYoutube.png?raw=true)](https://youtu.be/48h3Kbov9lo)
+
+Video of a Pepper robot using the reasoning capabilities of the planner to solve the Sally-Anne false belief task.
+See our prior article ![*Implementing Theory of Mind on a Robot Using Dynamic Epistemic Logic*](https://doi.org/10.24963/ijcai.2020/224) for further detail.
+[![Link to the video](media/SallyAnneYoutube.png?raw=true)](https://youtu.be/T0lTlRgoBLg)
 
 ## Install
 The project does not have any external dependencies, but requires a reasonable new C++-17 compiler.
