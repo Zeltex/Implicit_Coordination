@@ -28,8 +28,8 @@ namespace del {
 			
 			Node_Id current_node = graph.get_next_from_frontier();
 #if DEBUG_PRINT == 1 && PRINT_NODES == 1
-			std::cout << "\nNode " << current_node.id << "\n";
-			std::cout << graph.get_node(current_node).to_string(domain) << std::endl;;
+			//std::cout << "\nNode " << current_node.id << "\n";
+			//std::cout << graph.get_node(current_node).to_string(domain) << std::endl;;
 #endif
 			action_library.load_actions();
 			std::vector<State> perspective_shifts;

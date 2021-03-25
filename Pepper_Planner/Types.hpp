@@ -46,6 +46,10 @@ namespace del {
 		bool operator<(const  World_Id& other) const {
 			return this->id < other.id;
 		}
+
+		bool operator>(const  World_Id& other) const {
+			return this->id > other.id;
+		}
 	};
 
 	struct Event_Id {
