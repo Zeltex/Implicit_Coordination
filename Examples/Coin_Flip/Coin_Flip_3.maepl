@@ -1,28 +1,30 @@
-
 _domain Pepper {
 	_announce_enabled = false
-	_types = [agent, heads, tails, side]
+	_types = [agent, number, tyControl]
 	_propositions = [
-		coin(agent a, side s)
+		propControl(tyControl tc)
+		prop(number n)
+		adj(number n1, number n2)
+		agentNumb(number n, agent a)
 	]
 
-	_action throw (tails t, heads h, agent agent) {
+	_action throw (number n1, number n2, tyControl tc, agent a) {
 		_cost = 100
-		_owner = agent agent
+		_owner = agent a
 		_designated_events = [event0, event1]
 		_event event0 { 
-			_preconditions = ( TOP )
-			_effect_add = [ coin(agent, t) ]
-			_effect_delete = [ coin(agent, h), coin(agent, t) ]
+			_preconditions = ( AND(prop(n1), adj(n1, n2), agentNumb(n1, a)) )
+			_effect_add = [ prop(n2), propControl(tc) ]
+			_effect_delete = [ prop(n1) ]
 		}
 		_event event1 { 
-			_preconditions = ( TOP )
-			_effect_add = [ coin(agent, h) ]
-			_effect_delete = [ coin(agent, t), coin(agent, h)]
+			_preconditions = ( AND(prop(n1), adj(n1, n2), agentNumb(n1, a)) )
+			_effect_add = [ prop(n2) ]
+			_effect_delete = [ prop(n1), propControl(tc) ]
 		}
 		_reachability = {
-			agent = {
-				(event0, event1)
+			a = {
+				(event0), (event1)
 			}
 			_rest = {
 				(event0, event1)
@@ -32,23 +34,25 @@ _domain Pepper {
 }
 _problem Coin_Flip {
 	_objects = {
-		agent = [a0, a1, a2,]
-		heads = [h]
-		tails = [t]
-		side = [h, t]
+		agent = [a0, a1]
+		number = [
+n0 n1 n2 n3 ]
+		tyControl = [p]
 	}
-	_initial_state = [
-	]
-	_world w0 [ ]
-	_goal = [AND(OR(coin(a0, t), coin(a0, h))
-OR(coin(a1, t), coin(a1, h))
-OR(coin(a2, t), coin(a2, h))
-)]
+	_initial_state = [adj (n0 n1) 
+adj (n1 n2) 
+adj (n2 n3) 
+agentNumb (n0 a0) 
+agentNumb (n1 a1) 
+agentNumb (n2 a0) 
+agentNumb (n3 a1) 
+]
+	_world w0 [ prop(n1)]
+	_goal = [prop(n3)]
 
 	_designated_worlds = [ w0 ]
 	_reflexivity = false  
 	_reachability = {a0 = {(w0)}
 a1 = {(w0)}
-a2 = {(w0)}
 }
 }
