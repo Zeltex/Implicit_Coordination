@@ -1,5 +1,6 @@
 
 #define __STDC_WANT_LIB_EXT1__ 1
+#include <string.h>
 #include <string>
 #include <math.h>
 #include <unordered_set>
@@ -422,16 +423,21 @@ int main(int argc, char* argv[]) {
 	//auto file_path = "../Examples/MAPF/p12.maepl";
 	//std::string file_path = "../Examples/Coin_Flip_Multi11.maepl";
 	std::string file_path = "../Examples/coin_flip/Coin_Flip_4.maepl";
+	std::cout << "argc " << argc << std::endl;
 	if (argc == 5) {
-		size_t start_index;
-		size_t end_index;
-		try {
-			sscanf_s(argv[3], "%zu", &start_index);
-			sscanf_s(argv[4], "%zu", &end_index);
-		}
-		catch (int e) {
-			throw std::runtime_error("arguments 3 and 4 must be positive integers");
-		}
+		
+		
+		size_t start_index = 0;
+		size_t end_index = 0;
+
+		if (strlen(argv[3])>=2) start_index = 10 * (argv[3][0] - '0') + (argv[3][1] - '0');
+		else if (strlen(argv[3])>=1) start_index = argv[3][0] - '0';
+
+		if (strlen(argv[4])>=2) end_index = 10 * (argv[4][0] - '0') + (argv[4][1] - '0');
+		else if (strlen(argv[4])>=1) end_index = argv[4][0] - '0';
+
+		std::cout << "Start/End: " << start_index << "/" << end_index << std::endl;
+
 		run_benchmark(argv[1], argv[2], start_index, end_index);
 	} else if (argc == 2) {
 		run_mapf_benchmark(argv[1]);
