@@ -22,7 +22,10 @@ namespace del {
 #define BISIM_COMPARISON_ENABLED 1
 #endif
 #ifndef BISIM_CONTRACTION_ENABLED
-#define BISIM_CONTRACTION_ENABLED 0
+#define BISIM_CONTRACTION_ENABLED 1
+#endif
+#ifndef OPR_ENABLED
+#define OPR_ENABLED 1
 #endif
 #ifndef DEBUG_PRINT 
 #define DEBUG_PRINT 1
@@ -69,8 +72,8 @@ namespace del {
 
 	#define PRINT_POLICY(policy, domain) print_policy(policy, domain)
 	#define PRINT_ACTION_TO_CONSOLE(action, domain) print_action_to_console(action, domain)
-	#define CLEAR_ACTION_STATE_DIR() clear_action_state_dir()
 	#if PRINT_GRAPH_OPTION
+		#define CLEAR_ACTION_STATE_DIR() clear_action_state_dir()
 		#define PRINT_ACTION(action, domain, counter) print_action(action, domain, counter)
 		#define PRINT_STATE(state, domain, counter) print_state(state, domain, counter)
 		#define PRINT_GRAPH(graph, domain) print_graph(graph,domain)
@@ -81,6 +84,7 @@ namespace del {
 			#define PRINT_GRAPH_DOT(graph, domain) print_graph_dot(graph,domain);print_graph_dot_simple(graph,domain)
 		#endif
 	#else
+		#define CLEAR_ACTION_STATE_DIR()
 		#define PRINT_ACTION(action, domain, counter)
 		#define PRINT_STATE(state, domain, counter)
 		#define PRINT_GRAPH(graph, domain)
@@ -89,6 +93,7 @@ namespace del {
 
 
 #else
+	#define CLEAR_ACTION_STATE_DIR()
 	#define PRINT_POLICY(policy, domain) 
 	#define PRINT_ACTION(action, domain, counter) 
 	#define PRINT_ACTION_TO_CONSOLE(action, domain)

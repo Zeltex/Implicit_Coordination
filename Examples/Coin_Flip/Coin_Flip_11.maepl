@@ -1,0 +1,74 @@
+_domain Pepper {
+	_announce_enabled = false
+	_types = [agent, number, tyControl]
+	_propositions = [
+		propControl(tyControl tc)
+		prop(number n)
+		adj(number n1, number n2)
+		agentNumb(number n, agent a)
+	]
+
+	_action throw (number n1, number n2, tyControl tc, agent a) {
+		_cost = 100
+		_owner = agent a
+		_designated_events = [event0, event1]
+		_event event0 { 
+			_preconditions = ( AND(prop(n1), adj(n1, n2), agentNumb(n1, a)) )
+			_effect_add = [ prop(n2), propControl(tc) ]
+			_effect_delete = [ prop(n1) ]
+		}
+		_event event1 { 
+			_preconditions = ( AND(prop(n1), adj(n1, n2), agentNumb(n1, a)) )
+			_effect_add = [ prop(n2) ]
+			_effect_delete = [ prop(n1), propControl(tc) ]
+		}
+		_reachability = {
+			a = {
+				(event0), (event1)
+			}
+			_rest = {
+				(event0, event1)
+			}
+		}
+	}
+}
+_problem Coin_Flip {
+	_objects = {
+		agent = [a0, a1]
+		number = [
+n0 n1 n2 n3 n4 n5 n6 n7 n8 n9 n10 n11 ]
+		tyControl = [p]
+	}
+	_initial_state = [adj (n0 n1) 
+adj (n1 n2) 
+adj (n2 n3) 
+adj (n3 n4) 
+adj (n4 n5) 
+adj (n5 n6) 
+adj (n6 n7) 
+adj (n7 n8) 
+adj (n8 n9) 
+adj (n9 n10) 
+adj (n10 n11) 
+agentNumb (n0 a0) 
+agentNumb (n1 a1) 
+agentNumb (n2 a0) 
+agentNumb (n3 a1) 
+agentNumb (n4 a0) 
+agentNumb (n5 a1) 
+agentNumb (n6 a0) 
+agentNumb (n7 a1) 
+agentNumb (n8 a0) 
+agentNumb (n9 a1) 
+agentNumb (n10 a0) 
+agentNumb (n11 a1) 
+]
+	_world w0 [ prop(n1)]
+	_goal = [prop(n11)]
+
+	_designated_worlds = [ w0 ]
+	_reflexivity = false  
+	_reachability = {a0 = {(w0)}
+a1 = {(w0)}
+}
+}

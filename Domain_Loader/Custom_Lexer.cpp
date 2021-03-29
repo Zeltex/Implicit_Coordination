@@ -48,7 +48,7 @@ namespace del {
                             break;
                         }
                         std::cerr << "Unknown token at line " << line_number << ": " << line.substr(pointer);
-                        exit(-1);
+                        throw std::runtime_error("");
                         // TODO - Return custom exception
                     }
                 }
@@ -81,9 +81,7 @@ namespace del {
         if (token == "goal")				{add_token(Token:: GOAL_DEF);				return;}
         if (token == "initial_state")		{add_token(Token:: INIT_DEF);				return;}
         if (token == "objects")				{add_token(Token:: OBJECTS_DEF);			return;}
-        if (token == "observability")		{add_token(Token:: OBSERVABILITY_DEF);		return;}
         if (token == "owner")				{add_token(Token:: OWNER_DEF);				return;}
-        if (token == "perceivability")		{add_token(Token:: PERCEIVABILITY_DEF);		return;}
         if (token == "preconditions")		{add_token(Token:: PRECONDITIONS_DEF);		return;}
         if (token == "problem")				{add_token(Token:: PROBLEM_DEF);			return;}
         if (token == "propositions")		{add_token(Token:: PROPOSITIONS_DEF);		return;}
@@ -94,7 +92,7 @@ namespace del {
         if (token == "world")				{add_token(Token:: WORLD_DEF);				return;}
 
         std::cerr << "Unknown token at line" << line_number << ": _" << token << std::endl;
-        exit(-1);
+        throw std::runtime_error("");
         // TODO - Return custom exception
     }
 

@@ -1,3 +1,6 @@
+
+#define __STDC_WANT_LIB_EXT1__ 1
+#include <string.h>
 #include <string>
 #include <math.h>
 #include <unordered_set>
@@ -5,6 +8,10 @@
 #include <sstream>
 #include <fstream>
 #include <chrono>
+#include <time.h>
+#include <stdio.h>
+#include <stdlib.h> 
+
 #include <ctime>    
 #include <numeric>
 
@@ -15,46 +22,21 @@
 #include "Action_Library.hpp"
 #include "Run_Planner.hpp"
 #include "MAPF_Benchmark.hpp"
-
+#include "Utils.hpp"
 
 using namespace del;
 
-
-
-
-std::string get_date_stamp() {
-	struct tm ltm;
-	time_t now = time(0);
-	auto temp = localtime_s(&ltm ,&now);
-	std::string output;
-	bool first = true;
-	for (const auto& entry : { ltm.tm_year - 100, ltm.tm_mon + 1, ltm.tm_mday, ltm.tm_hour, ltm.tm_min, ltm.tm_sec }) {
-		if (first) {
-			first = false;
-		} else {
-			output += "-";
-		}
-		if (entry < 10) output += "0";
-		output += std::to_string(entry);
-	}
-	return output;
-}
-std::string get_benchmark_file_name(std::string date_stamp) {
-	return "../Benchmarks/Benchmarks_" + date_stamp + ".csv";
-}
-std::string get_benchmark_file_name() {
-	return get_benchmark_file_name(get_date_stamp());
-}
-
 class Simp_Timer {
 public:
-	Simp_Timer() : time_start(std::chrono::high_resolution_clock::now()) {}
+	Simp_Timer() {
+		time_start = std::chrono::system_clock::now();
+	}
 	long get_time() {
-		auto time_end = std::chrono::high_resolution_clock::now();
+		auto time_end = std::chrono::system_clock::now();
 		return std::chrono::duration_cast<std::chrono::milliseconds>(time_end - time_start).count();
 	}
 private:
-	std::chrono::steady_clock::time_point time_start;
+	std::chrono::system_clock::time_point time_start;
 };
 
 struct Log_Entry {
@@ -121,7 +103,7 @@ std::vector<State> get_states(const std::string file_path, const int action_dept
 		const size_t temp_state_size = states.size();
 		for (size_t k = 0; k < temp_state_size; k++) {
 			const auto current_state = states.at(k);
-			action_library.load_actions(current_state, domain);
+			action_library.load_actions();
 			while (action_library.has_action()) {
 				const Action& action = action_library.get_next_action();
 				State state_perspective_shift = perform_perspective_shift(current_state, action.get_owner());
@@ -168,21 +150,21 @@ std::vector<State> get_states_using_globals_phase_times(const std::vector<State>
 	const size_t temp_state_size = states.size();
 	for (size_t k = 0; k < temp_state_size; k++) {
 		const auto current_state = states.at(k);
-		action_library.load_actions(current_state, domain);
+		action_library.load_actions();
 		while (action_library.has_action()) {
 			const Action& action = action_library.get_next_action();
-			std::chrono::steady_clock::time_point temp_times[6];
-			temp_times[0] = std::chrono::high_resolution_clock::now();
+			std::chrono::system_clock::time_point temp_times[6];
+			temp_times[0] = std::chrono::system_clock::now();
 			State state_perspective_shift = perform_perspective_shift(current_state, action.get_owner());
-			temp_times[1] = std::chrono::high_resolution_clock::now();
+			temp_times[1] = std::chrono::system_clock::now();
 			if (!is_action_applicable(state_perspective_shift, action, domain)) {
 				continue;
 			}
-			temp_times[2] = std::chrono::high_resolution_clock::now();
+			temp_times[2] = std::chrono::system_clock::now();
 			State state_product_update = perform_product_update(state_perspective_shift, action, domain.get_agents(), domain);
-			temp_times[3] = std::chrono::high_resolution_clock::now();
+			temp_times[3] = std::chrono::system_clock::now();
 			auto globals = split_into_global_states(state_product_update, dummy_agent);
-			temp_times[4] = std::chrono::high_resolution_clock::now();
+			temp_times[4] = std::chrono::system_clock::now();
 			bool found_new_state = false;
 			for (auto& state : globals) {
 				if (use_contraction) {
@@ -196,7 +178,7 @@ std::vector<State> get_states_using_globals_phase_times(const std::vector<State>
 					found_new_state = true;
 				}
 			}
-			temp_times[5] = std::chrono::high_resolution_clock::now();
+			temp_times[5] = std::chrono::system_clock::now();
 			for (size_t i = 1; i < 6; ++i) {
 				total_times[i - 1] += std::chrono::duration_cast<std::chrono::microseconds>(temp_times[i] - temp_times[i - 1]).count();
 			}
@@ -234,7 +216,7 @@ std::tuple<std::vector<State>, long> get_states_using_globals(const std::vector<
 	const size_t temp_state_size = states.size();
 	for (size_t k = 0; k < temp_state_size; k++) {
 		const auto& current_state = states.at(k);
-		action_library.load_actions(current_state, domain);
+		action_library.load_actions();
 		while (action_library.has_action()) {
 			const Action& action = action_library.get_next_action();
 			State state_perspective_shift = perform_perspective_shift(current_state, action.get_owner());
@@ -319,7 +301,6 @@ void benchmark1_calculations(std::vector<State>& states, Logger& logger) {
 		// TODO - These are not contracted yet
 	}
 
-	__debugbreak;
 }
 
 void benchmark1(const std::string& file_path, const size_t action_depth) {
@@ -331,9 +312,6 @@ void benchmark1(const std::string& file_path, const size_t action_depth) {
 		logger.add_entry("Action depth " + std::to_string(i), 0, 0);
 		auto [temp_states, time] = get_states_using_globals(states, action_library, domain, logger,false);
 		states = std::move(temp_states);
-		if (states.empty()) {
-			__debugbreak;
-		}
 		benchmark1_calculations(states, logger);
 		logger.save();
 	}
@@ -391,10 +369,10 @@ void benchmark3(const std::string& file_path, const size_t action_depth) {
 		auto [temp_normal_states, normal_time] = get_states_using_globals(normal_states, action_library, domain, logger, false);
 		auto [temp_contracted_states, contracted_time] = get_states_using_globals(contracted_states, action_library, domain, logger, true);
 
-		std::cout << "\nPrinting contracted states at depth " << i << std::endl;
-		for (auto& entry : temp_contracted_states) {
-			std::cout << entry.to_string(domain) << std::endl;
-		}
+		//std::cout << "\nPrinting contracted states at depth " << i << std::endl;
+		//for (auto& entry : temp_contracted_states) {
+		//	std::cout << entry.to_string(domain) << "\n" << std::endl;
+		//}
 
 		normal_states = std::move(temp_normal_states);
 		contracted_states = std::move(temp_contracted_states);
@@ -408,40 +386,54 @@ void benchmark3(const std::string& file_path, const size_t action_depth) {
 	//logger.save();
 }
 
+/**
+Generating all possible states to specific action depth and recording amount of hashes with contraction along with timing
+*/
+void benchmark4(const std::string& file_path, const size_t action_depth) {
+	auto [loader, domain, action_library, states] = get_stuff(file_path);
+	auto contracted_states = states;
+	const std::string title = file_path + " Hashes with and without contraction, and calculation time";
+	std::vector<std::vector<long>> data(4);
+	std::vector<std::string> data_descriptions = { "Baseline hashes", "Contracted hashes", "Baseline time", "Contracted time" };
+	auto output_file_name = get_benchmark_file_name();
+
+	Logger logger(file_path);
+	for (size_t i = 1; i <= action_depth; ++i) {
+		std::cout << "Starting " << i << "\n";
+		logger.add_entry("Action depth " + std::to_string(i), 0, 0);
+		auto [temp_contracted_states, contracted_time] = get_states_using_globals(contracted_states, action_library, domain, logger, true);
+
+		contracted_states = std::move(temp_contracted_states);
+		data[1].emplace_back(contracted_states.size());
+		data[3].emplace_back(contracted_time);
+		log_data(data, data_descriptions, output_file_name, title);
+	}
+}
+
 
 
 int main(int argc, char* argv[]) {
 
-	//auto file_path = "../Examples/Block_Search.maepl";
-	//auto file_path = "../Examples/Block_Search3.maepl"; 
-	//auto file_path = "../Examples/Second_Order.maepl";
-	//auto file_path = "../Examples/Sally_Anne.maepl";
-	//auto file_path = "../Examples/False_Belief_Synthesis.maepl";
-	//auto file_path = "../Examples/Dice5-3.maepl";
-	//auto file_path = "../Examples/MAPF/p12.maepl";
-	//auto file_path = "../Examples/Coin_Flip.maepl";
-	//benchmark1(file_path, 3);
-	//benchmark3(file_path, 100);
+	if (argc == 5) {
+		size_t start_index = 0;
+		size_t end_index = 0;
 
+		if (strlen(argv[3])>=2) start_index = 10 * (argv[3][0] - '0') + (argv[3][1] - '0');
+		else if (strlen(argv[3])>=1) start_index = argv[3][0] - '0';
 
+		if (strlen(argv[4])>=2) end_index = 10 * (argv[4][0] - '0') + (argv[4][1] - '0');
+		else if (strlen(argv[4])>=1) end_index = argv[4][0] - '0';
 
-	//execute_second_order();
-//execute_test_case();
+		std::cout << "Start/End: " << start_index << "/" << end_index << std::endl;
 
+		run_benchmark(argv[1], argv[2], start_index, end_index);
+	} else {
+		std::cout << "4 arguments not given [folder_path/] [base_filename] [file_start_index] [file_end_index]" << std::endl;
+		std::cout << "Examples run: ./Release/Pepper_Planner \"../Examples/MAPF/\" \"MAPF_\" 1 27" << std::endl;		
+		
+		std::cout << "Running MAPF 1-27" << std::endl;
 
-//find_and_execute("Simple.maepl", "Pepper");
-//find_and_execute("Stack.maepl", "P");
-//find_and_execute("False_Belief_Synthesis.maepl", "P");
-//find_and_execute("Block_Search.maepl", "R");
-	//find_and_execute("MAPFDU.maepl", "R");
-	//find_and_execute("Block_Search_Single.maepl", "R");
-
-	//find_and_execute("MAPF/p7.maepl", "a0");
-	//find_and_execute("Thorsten_Domains/p1.maepl", "a0");
-
-	run_mapf_benchmark();
-	//run_mapf_and_solve();
-
-	__debugbreak;
+		run_benchmark("../Examples/MAPF/", "MAPF_", 1, 27);
+	}
 	return 0;
 }

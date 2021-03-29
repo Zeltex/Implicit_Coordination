@@ -31,7 +31,7 @@ namespace del {
 			std::cout << "\nNode " << current_node.id << "\n";
 			std::cout << graph.get_node(current_node).to_string(domain) << std::endl;;
 #endif
-			action_library.load_actions(graph.get_node(current_node).get_state(), domain);
+			action_library.load_actions();
 			std::vector<State> perspective_shifts;
 			perspective_shifts.reserve(domain.get_agents().size());
 			auto& current_state = graph.get_node(current_node).get_state();
@@ -122,10 +122,14 @@ namespace del {
 
 	void Planner::print_debug_layer(const std::vector<size_t>& debug_or_layer_size, const std::vector<size_t>& debug_and_layer_size) const {
 		std::string debug_print;
+		size_t total_or_nodes = 0;
+		size_t total_and_nodes = 0;
 		for (size_t i = 0; i < debug_or_layer_size.size(); ++i) {
 			debug_print += std::to_string(i) + "(" + std::to_string(debug_and_layer_size.at(i)) + ", " + std::to_string(debug_or_layer_size.at(i)) + ") ";
+			total_and_nodes += debug_and_layer_size.at(i);
+			total_or_nodes += debug_or_layer_size.at(i);
 		}
-		std::cout << debug_print << "\n";
+		std::cout << debug_print << "\nOr:" << total_or_nodes << ", and: " << total_and_nodes << std::endl;
 	}
 
 	std::optional<Policy> Planner::check_root(Graph& graph, const Domain& domain, const bool is_benchmark) const {
@@ -138,10 +142,10 @@ namespace del {
 		if (graph.get_root_node().is_solved()) {
 			PRINT_GRAPH_DOT(graph, domain);
 			PRINT_GRAPH(graph, domain);
-			std::cout << "Policy found\n";
-			std::cout << "is benchmark " << is_benchmark <<  std::endl;
+			std::cout << "Policy found" << std::endl;;
+			//std::cout << "is benchmark " << is_benchmark <<  std::endl;
 			if (is_benchmark) {
-				return Policy(false);
+				return Policy(true);
 			} else {
 				return extract_policy(graph);
 			}

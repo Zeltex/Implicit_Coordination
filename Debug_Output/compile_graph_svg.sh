@@ -1,1 +1,0 @@
-dot -Tsvg Graph.dot > Graph.svg

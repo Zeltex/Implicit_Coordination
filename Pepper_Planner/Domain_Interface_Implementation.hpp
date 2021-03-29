@@ -39,12 +39,8 @@ namespace del {
 
 		virtual void create_event(std::string name, del::Formula&& preconditions, std::vector<Proposition> add_list, std::vector<Proposition> delete_list) override;
 		virtual void create_world(std::string name, const std::vector<Proposition_Instance>& propositions) override;
-		//virtual void create_action_reflexive_reachables() override;
-		//virtual void create_state_reflexive_reachables() override;
 
 		virtual void add_action_relations(Atom_Id agent, const std::vector<std::unordered_set<std::string>>& action_relations) override;
-		virtual void add_observability(std::string observer, const std::vector<std::string>& agents) override;
-		virtual void add_perceivability(std::string perceiver, const std::vector<std::string>& agents) override;
 		virtual void add_problem_relations(Atom_Id agent, const std::vector<std::unordered_set<std::string>>& action_relations) override;
 		virtual void add_proposition(std::string name, const std::vector<std::pair<std::string, std::string>>& inputs) override;
 		std::tuple<Domain, Action_Library, Formula> get_loaded();

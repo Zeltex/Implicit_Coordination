@@ -67,10 +67,12 @@ namespace del {
 	}
 
 	void clear_action_state_dir() {
-		std::string command = "rm -r " + std::string(DEBUG_PRINT_PATH) + "dot/*";
+		auto folder = std::string(DEBUG_PRINT_PATH) + std::string("dot");
+		std::string command = "rm -rfv " + folder + "/*";
 		system(command.c_str());
 		command = "rm -r " + std::string(DEBUG_PRINT_PATH) + "png/* 2> nul";
 		system(command.c_str());
+		std::cout.flush();
 	}
 
 	void print_policy(const Policy& policy, const Domain& domain) {

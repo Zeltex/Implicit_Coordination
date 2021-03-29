@@ -64,9 +64,7 @@ namespace del {
             case Token::GOAL_DEF				: return "_goal";
             case Token::INIT_DEF				: return "initial_state";
             case Token::OBJECTS_DEF				: return "_objects";
-            case Token::OBSERVABILITY_DEF		: return "_observability";
             case Token::OWNER_DEF				: return "_owner";
-            case Token::PERCEIVABILITY_DEF		: return "_perceivability";
             case Token::PRECONDITIONS_DEF		: return "_preconditions";
             case Token::PROBLEM_DEF				: return "_problem";
             case Token::PROPOSITIONS_DEF		: return "_propositions";
@@ -101,10 +99,6 @@ namespace del {
             buffer->clear_seen_atoms();
             problem_body();
             if (!must_match({ Token::RBRACK })) return;
-            //if (buffer->is_state_reflexive()) domain->create_state_reflexive_reachables();
-            for (auto agent : buffer->get_missing_perceivables()) {
-                domain->add_perceivability(agent, { agent });
-            }
             domain->finish_problem();
             return maepl();
         }
@@ -135,6 +129,8 @@ namespace del {
         exit(-1);
     }
 
+    // Object def must come before world def and designated worlds def
+    // Need to implement restrictions and proper error messages
     void Custom_Parser::problem_body() {
         if (try_match({Token::DOMAIN_DEF, Token:: EQUALS, Token:: NAME})) {
             domain->set_domain(get_svalue(2));
@@ -189,18 +185,6 @@ namespace del {
             buffer->set_state_reflexivity(get_bvalue(2));
             return problem_body();
         }
-
-        if (try_match({ Token::PERCEIVABILITY_DEF, Token::EQUALS, Token::LBRACK })) {
-            perceivability_body();
-            if (!must_match({ Token::RBRACK })) return;
-            return problem_body();
-        }
-
-        if (try_match({ Token::OBSERVABILITY_DEF, Token::EQUALS, Token::LBRACK })) {
-            observability_body();
-            if (!must_match({ Token::RBRACK })) return;
-            return problem_body();
-        }
     }
 
     void Custom_Parser::reachability_body() {
@@ -248,29 +232,6 @@ namespace del {
     //    }
     //    return;
     //}
-
-
-    void Custom_Parser::perceivability_body() {
-        if (try_match({ Token::NAME, Token::EQUALS, Token::LBRACK })) {
-            auto name = get_svalue(0);
-            ordered_variables();
-            domain->add_perceivability(name, buffer->add_reflexive_perceivability(name,	buffer->get_ordered_variables()));
-            if (!must_match({ Token::RBRACK })) return;
-            return perceivability_body();
-        }
-        return;
-    }
-
-    void Custom_Parser::observability_body() {
-        if (try_match({ Token::NAME, Token::EQUALS, Token::LBRACK })) {
-            auto name = get_svalue(0);
-            ordered_variables();
-            domain->add_observability(name, buffer->get_ordered_variables());
-            if (!must_match({ Token::RBRACK })) return;
-            return observability_body();
-        }
-        return;
-    }
 
     void Custom_Parser::objects() {
         if (try_match({ Token::NAME, Token::EQUALS, Token::LBRACK })) {

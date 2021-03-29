@@ -33,7 +33,6 @@ namespace del {
 			}
 		}
 
-		result.copy_perceivability_and_observability(state);
 #if REMOVE_UNREACHABLE_WORLDS_ENABLED == 1
 		result.remove_unreachable_worlds();
 #endif

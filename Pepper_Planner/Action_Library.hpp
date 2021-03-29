@@ -23,7 +23,7 @@ namespace del {
 		void set_announce_enabled();
 		void add_general_action(const General_Action& action, const Domain& domain);
 
-		void load_actions(const State& state, const Domain& domain);
+		void load_actions();
 		bool has_action() const;
 		const Action& get_next_action();
 	private:

@@ -139,24 +139,6 @@ namespace del {
         return std::move(temp);
     }
 
-    std::vector<std::string> Domain_Buffer::get_missing_perceivables() {
-        std::vector<std::string> result;
-        for (auto agent : agents){
-            if (std::find(seen_perceivability.begin(), seen_perceivability.end(), agent) == seen_perceivability.end()) {
-                result.push_back(agent);
-            }
-        }
-        return result;
-    }
-
-    std::vector<std::string> Domain_Buffer::add_reflexive_perceivability(std::string name, std::vector<std::string> agents) {
-        if (std::find(agents.begin(), agents.end(), name) == agents.end()) {
-            agents.push_back(name);
-        }
-        seen_perceivability.push_back(name);
-        return agents;
-    }
-
     void Domain_Buffer::add_variable(std::string variable) {
         variable_list.insert(variable);
     }

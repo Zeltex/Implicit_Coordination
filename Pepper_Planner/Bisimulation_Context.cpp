@@ -1,6 +1,7 @@
 #include "Bisimulation_Context.hpp"
 #include <set>
 #include <map>
+#include "Core.hpp"
 
 namespace del {
 	//void Bisimulation_Context::create_merged_worlds_list() {
@@ -265,19 +266,41 @@ namespace del {
 
 		return result;
 	}
+
+#if OPR_ENABLED == 1
+	class Valuations {
+	public:
+		void add(const std::string& valuation) { valuations.insert(valuation); }
+		const std::set<std::string>& get() { return valuations; }
+		const size_t size() const { return valuations.size(); }
+	private:
+		std::set<std::string> valuations;
+	};
+#else
+	class Valuations {
+	public:
+		void add(const std::string& valuation) {
+			if (std::find(valuations.begin(), valuations.end(), valuation) == valuations.end()) valuations.push_back(valuation);
+		}
+		const std::vector<std::string>& get() { return valuations; }
+		const size_t size() const { return valuations.size(); }
+	private:
+		std::vector<std::string> valuations;
+	};
+#endif 
 	
 	void Bisimulation_Context::initialize_blocks(const State& state, std::unordered_map<std::string, size_t>& valuation_to_block) {
-		std::set<std::string> valuations;
+		Valuations valuations;
 
-		// Get sorted valuations
+		// Get valuations
 		for (auto& world : state.get_worlds()) {
-			valuations.insert(convert_propositions_to_string(world.get_true_propositions()));
+			valuations.add(convert_propositions_to_string(world.get_true_propositions()));
 		}
 
 		// Initialise blocks
 		blocks = std::vector<std::set<World_Id>>(valuations.size());
 		size_t block_counter = 0;
-		for (auto& valuation : valuations) {
+		for (auto& valuation : valuations.get()) {
 			valuation_to_block[valuation] = block_counter++;
 		}
 
@@ -288,6 +311,30 @@ namespace del {
 			world_to_block[world.get_id().id] = valuation_to_block[valuation];
 		}
 	}
+
+
+#if OPR_ENABLED == 1
+	class All_Signatures {
+	public:
+		void add(const Signature& signature) { signatures.insert(signature); }
+		const std::set<Signature>& get() { return signatures; }
+		const size_t size() const { return signatures.size(); }
+	private:
+		std::set<Signature> signatures;
+	};
+#else
+	class All_Signatures {
+	public:
+		void add(const Signature& signature) {
+			if (std::find(signatures.begin(), signatures.end(), signature) == signatures.end()) signatures.push_back(signature);
+		}
+		const std::vector<Signature>& get() { return signatures; }
+		const size_t size() const { return signatures.size(); }
+	private:
+		std::vector<Signature> signatures;
+	};
+#endif 
+
 
 	void Bisimulation_Context::partition_into_relations_blocks_contraction(const Quick_Relations& relations) {
 		size_t blocks_size = blocks.size();
@@ -300,27 +347,26 @@ namespace del {
 			size_t new_block_index = blocks.size();
 			auto block_signature = relations.get_signature(*blocks.at(i).begin(), world_to_block);
 
-			std::set<Signature> signatures;
+			All_Signatures signatures;
 			std::vector<Signature> world_signatures;
 			std::map<Signature, size_t> signature_to_block;
 
 			// Generate all signatures in block
 			for (auto& world : blocks.at(i)) {
 				auto signature = relations.get_signature(world, world_to_block);
-				signatures.insert(signature);
+				signatures.add(signature);
 				world_signatures.push_back(signature);
 			}
 			if (signatures.size() == 1) continue;
 
 			// Generate blocks for signatures
 			bool first = true;
-			for (auto& signature : signatures) {
+			for (auto& signature : signatures.get()) {
 				if (first) {
 					first = false;
 					signature_to_block.insert({ signature, i });
 					continue;
-				}
-				if (signature_to_block.find(signature) == signature_to_block.end()) {
+				} else {
 					blocks.emplace_back();
 					signature_to_block.insert({ signature, new_block_index });
 					++new_block_index;
