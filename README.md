@@ -31,24 +31,31 @@ make
 
 ## Usage
 
-The Examples folder contains the block search and false belief synthesis tasks, which are setup to be run through the Pepper_Planner/Main.cpp file.
+The Examples folder contains the block search, coin flip and Multi-Agent Path Finding with Destination Uncertainty (MAPF) tasks, which are setup to be run through the Pepper_Planner_Benchmarks/Main.cpp file. The build_and_run_coin_flip.sh and build_and_run_mapf.sh bash scripts are setup to run the coin flip and MAPF benchmarks from the paper (Benchmarks are saved in the Benchmarks/ directory). 
+
+To run the OPR benchmark, the Pepper_Planner/Core.hpp must be set to:
+BISIM_COMPARISON_ENABLED = 1
+BISIM_CONTRACTION_ENABLED = 1
+And for the Baseline benchmark:
+BISIM_COMPARISON_ENABLED = 0
+BISIM_CONTRACTION_ENABLED = 0
 
 ## Settings
 
 The Pepper_Planner/Core.hpp file contains flags for enabling various settings in the algorithm, most noticably:
-- BISIMILAR_USE_HASH_ENABLED: ??
-- BISIM_COMPARISON_ENABLED: ??
-- BISIM_CONTRACTION_ENABLED: ??
+- BISIMILAR_USE_HASH_ENABLED: If enabled uses hashing to lookup states, otherwise performs a comparison based linear search.
+- BISIM_COMPARISON_ENABLED: If enabled maintains a single node/state per set of bisimilar states via either a linear search or hashing (see BISIMILAR_USE_HASH_ENABLED)
+- BISIM_CONTRACTION_ENABLED: If enabled performs bisimilar contraction on nodes (If OPR_ENABLED is enabled, performs OPR)
 
 
 ## Code overview
 The project is split into 3 parts:
-- Domain_Loader contains a parser for the PDDL-like language used for domain descriptions.
+- Domain_Loader contains a parser for the PDDL-like language used for domain descriptions. The parser only detects syntax errors.
 - Formula contains various classes for representing and reasoning with Dynamic Epistemic Logic.
 - Pepper_Planner contains the planner itself. Some notable files includes:
   - Action.hpp - The *Action* class represents a pointed DEL event model.
   - Bisimulation_Context.cpp - Contains the novel Ordered Partition Refinement algorithm.
   - Domain.hpp - The *Domain* class contains a representation of an implicitly coordinated planning problem.
-  - Main.cpp - Contains the entry point of the planner.
   - Planner.cpp - Contains the breadth-first AND/OR graph search algorithm.
-  - World.hpp - The *World* class represents a pointed DEL world model.
+  - State.hpp - The *State* class represents a pointed DEL model.
+- Pepper_Planner_Benchmarks contains code to run the benchmarks presented in the paper (Benchmarks are saved in the Benchmarks/ directory)
