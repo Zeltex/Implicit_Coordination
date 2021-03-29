@@ -414,19 +414,7 @@ void benchmark4(const std::string& file_path, const size_t action_depth) {
 
 int main(int argc, char* argv[]) {
 
-	//auto file_path = "../Examples/Block_Search.maepl";
-	//auto file_path = "../Examples/Block_Search3.maepl"; 
-	//auto file_path = "../Examples/Second_Order.maepl";
-	//auto file_path = "../Examples/Sally_Anne.maepl";
-	//auto file_path = "../Examples/False_Belief_Synthesis.maepl";
-	//auto file_path = "../Examples/Dice5-3.maepl";
-	//auto file_path = "../Examples/MAPF/p12.maepl";
-	//std::string file_path = "../Examples/Coin_Flip_Multi11.maepl";
-	std::string file_path = "../Examples/coin_flip/Coin_Flip_4.maepl";
-	std::cout << "argc " << argc << std::endl;
 	if (argc == 5) {
-		
-		
 		size_t start_index = 0;
 		size_t end_index = 0;
 
@@ -439,12 +427,13 @@ int main(int argc, char* argv[]) {
 		std::cout << "Start/End: " << start_index << "/" << end_index << std::endl;
 
 		run_benchmark(argv[1], argv[2], start_index, end_index);
-	} else if (argc == 2) {
-		run_mapf_benchmark(argv[1]);
 	} else {
-		run_coin_flip_benchmark("../Examples/Coin_Flip/");
-		//find_plan(file_path, "a0");
-		//benchmark3(file_path, 15);
+		std::cout << "4 arguments not given [folder_path/] [base_filename] [file_start_index] [file_end_index]" << std::endl;
+		std::cout << "Examples run: ./Release/Pepper_Planner \"../Examples/MAPF/\" \"MAPF_\" 1 27" << std::endl;		
+		
+		std::cout << "Running MAPF 1-27" << std::endl;
+
+		run_benchmark("../Examples/MAPF/", "MAPF_", 1, 27);
 	}
 	return 0;
 }

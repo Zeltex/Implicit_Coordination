@@ -87,7 +87,7 @@ namespace del {
 			std::string file_name = folder + base_file_name + std::to_string(i) + ".maepl";
 			DEL_Interface del_interface(file_name);
 			auto time_start = std::chrono::high_resolution_clock::now();
-			del_interface.create_policy(planning_agent, false);
+			del_interface.create_policy(planning_agent, true);
 			auto time_end = std::chrono::high_resolution_clock::now();
 
 			times.push_back(std::chrono::duration_cast<std::chrono::milliseconds>(time_end - time_start).count());
