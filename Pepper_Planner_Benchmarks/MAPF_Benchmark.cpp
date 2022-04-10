@@ -26,8 +26,6 @@ namespace del {
 			output.close();
 
 		}
-
-		__debugbreak;
 	}
 	void run_mapf_and_solve() {
 		std::string planning_agent = "a0";
@@ -53,7 +51,5 @@ namespace del {
 			output.close();
 
 		}
-
-		__debugbreak;
 	}
 }

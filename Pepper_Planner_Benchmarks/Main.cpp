@@ -1,3 +1,5 @@
+#define __STDC_WANT_LIB_EXT1__ 1
+
 #include <string>
 #include <math.h>
 #include <unordered_set>
@@ -5,6 +7,9 @@
 #include <sstream>
 #include <fstream>
 #include <chrono>
+#include <time.h>
+#include <stdio.h>
+#include <stdlib.h> 
 #include <ctime>    
 #include <numeric>
 
@@ -23,9 +28,10 @@ using namespace del;
 
 
 std::string get_date_stamp() {
-	struct tm ltm;
+	//struct tm ltm;
 	time_t now = time(0);
-	auto temp = localtime_s(&ltm ,&now);
+	//auto temp = localtime_s(&ltm ,&now);
+	auto ltm = *(localtime(&now));
 	std::string output;
 	bool first = true;
 	for (const auto& entry : { ltm.tm_year - 100, ltm.tm_mon + 1, ltm.tm_mday, ltm.tm_hour, ltm.tm_min, ltm.tm_sec }) {
@@ -48,13 +54,13 @@ std::string get_benchmark_file_name() {
 
 class Simp_Timer {
 public:
-	Simp_Timer() : time_start(std::chrono::high_resolution_clock::now()) {}
+	Simp_Timer() : time_start(std::chrono::system_clock::now()) {}
 	long get_time() {
-		auto time_end = std::chrono::high_resolution_clock::now();
+		auto time_end = std::chrono::system_clock::now();
 		return std::chrono::duration_cast<std::chrono::milliseconds>(time_end - time_start).count();
 	}
 private:
-	std::chrono::steady_clock::time_point time_start;
+	std::chrono::system_clock::time_point time_start;
 };
 
 struct Log_Entry {
@@ -171,18 +177,18 @@ std::vector<State> get_states_using_globals_phase_times(const std::vector<State>
 		action_library.load_actions(current_state, domain);
 		while (action_library.has_action()) {
 			const Action& action = action_library.get_next_action();
-			std::chrono::steady_clock::time_point temp_times[6];
-			temp_times[0] = std::chrono::high_resolution_clock::now();
+			std::chrono::system_clock::time_point temp_times[6];
+			temp_times[0] = std::chrono::system_clock::now();
 			State state_perspective_shift = perform_perspective_shift(current_state, action.get_owner());
-			temp_times[1] = std::chrono::high_resolution_clock::now();
+			temp_times[1] = std::chrono::system_clock::now();
 			if (!is_action_applicable(state_perspective_shift, action, domain)) {
 				continue;
 			}
-			temp_times[2] = std::chrono::high_resolution_clock::now();
+			temp_times[2] = std::chrono::system_clock::now();
 			State state_product_update = perform_product_update(state_perspective_shift, action, domain.get_agents(), domain);
-			temp_times[3] = std::chrono::high_resolution_clock::now();
+			temp_times[3] = std::chrono::system_clock::now();
 			auto globals = split_into_global_states(state_product_update, dummy_agent);
-			temp_times[4] = std::chrono::high_resolution_clock::now();
+			temp_times[4] = std::chrono::system_clock::now();
 			bool found_new_state = false;
 			for (auto& state : globals) {
 				if (use_contraction) {
@@ -196,7 +202,7 @@ std::vector<State> get_states_using_globals_phase_times(const std::vector<State>
 					found_new_state = true;
 				}
 			}
-			temp_times[5] = std::chrono::high_resolution_clock::now();
+			temp_times[5] = std::chrono::system_clock::now();
 			for (size_t i = 1; i < 6; ++i) {
 				total_times[i - 1] += std::chrono::duration_cast<std::chrono::microseconds>(temp_times[i] - temp_times[i - 1]).count();
 			}
@@ -331,9 +337,6 @@ void benchmark1(const std::string& file_path, const size_t action_depth) {
 		logger.add_entry("Action depth " + std::to_string(i), 0, 0);
 		auto [temp_states, time] = get_states_using_globals(states, action_library, domain, logger,false);
 		states = std::move(temp_states);
-		if (states.empty()) {
-			__debugbreak;
-		}
 		benchmark1_calculations(states, logger);
 		logger.save();
 	}
@@ -442,6 +445,5 @@ int main(int argc, char* argv[]) {
 	//run_mapf_benchmark();
 	run_mapf_and_solve();
 
-	__debugbreak;
 	return 0;
 }
