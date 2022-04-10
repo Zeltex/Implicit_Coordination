@@ -452,11 +452,13 @@ int main(int argc, char* argv[]) {
 
 		std::cout << "Start/End: " << start_index << "/" << end_index << std::endl;
 		//run_benchmark(argv[1], argv[2], start_index, end_index);
-	}
-	else if (argc == 2) {
-		run_mapf_benchmark(argv[1]);
-	}
-	else {
+	} else {
+		std::cout << "4 arguments not given [folder_path/] [base_filename] [file_start_index] [file_end_index]" << std::endl;
+		std::cout << "Examples run: ./Release/Pepper_Planner \"../Examples/MAPF/\" \"MAPF_\" 1 27" << std::endl;
+
+		std::cout << "Running MAPF 1-27" << std::endl;
+
+		//run_benchmark("../Examples/MAPF/", "MAPF_", 1, 27);
 		run_mapf_benchmark("../Examples/MAPF/");
 	}
 
