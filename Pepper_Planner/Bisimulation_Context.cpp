@@ -2,6 +2,48 @@
 #include <set>
 
 namespace del {
+
+#if OPR_ENABLED == 1
+	class Valuations {
+	public:
+		void add(const std::string& valuation) { signatures.insert(signature); }
+		const std::set<std::string>& get() { return valuations; }
+		const size_t size() const { return valuations.size(); }
+	private:
+		std::set<std::string> valuations;
+	};
+	class All_Signatures {
+	public:
+		void add(const Signature& signature) { signatures.insert(signature); }
+		const std::set<Signature>& get() { return signatures; }
+		const size_t size() const { return signatures.size(); }
+	private:
+		std::set<Signature> signatures;
+	};
+
+#else
+	class Valuations {
+	public:
+		void add(const std::string& valuation) {
+			if (std::find(valuations.begin(), valuations.end(), valuation) == valuations.end()) valuations.push_back(valuation);
+		}
+		const std::vector<std::string>& get() { return valuations; }
+		const size_t size() const { return valuations.size(); }
+	private:
+		std::vector<std::string> valuations;
+	};
+	class All_Signatures {
+	public:
+		void add(const Signature& signature) {
+			if (std::find(signatures.begin(), signatures.end(), signature) == signatures.end()) signatures.push_back(signature);
+		}
+		const std::vector<Signature>& get() { return signatures; }
+		const size_t size() const { return signatures.size(); }
+	private:
+		std::vector<Signature> signatures;
+	};
+#endif 
+
 	void Bisimulation_Context::create_merged_worlds_list() {
 		worlds = std::vector<World>();
 		for (auto& world : state1.get_worlds()) {
