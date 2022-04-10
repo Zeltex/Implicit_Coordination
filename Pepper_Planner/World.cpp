@@ -13,13 +13,15 @@ namespace del {
 
 	void World::add_true_propositions(const std::vector<Proposition>& propositions) {
 		for (const auto& proposition : propositions) {
-			true_propositions.push_back(proposition);
+			if (std::find(true_propositions.begin(), true_propositions.end(), proposition) == true_propositions.end()) {
+				true_propositions.push_back(proposition);
+			}
 		}
 	}
 
 	void World::remove_true_propositions(const std::vector<Proposition>& propositions) {
 		for (const auto& proposition : propositions) {
-			auto result = find(true_propositions.begin(), true_propositions.end(), proposition);
+			auto result = std::find(true_propositions.begin(), true_propositions.end(), proposition);
 			if (result != true_propositions.end()) {
 				true_propositions.erase(result);
 			}
@@ -49,9 +51,15 @@ namespace del {
 
 	bool World::operator!=(const World& other) const {
 		if (true_propositions.size() != other.true_propositions.size()) return true;
-		for (size_t i = 0; i < true_propositions.size(); i++) {
-			if (true_propositions[i] != other.true_propositions[i]) return true;
+		auto props1 = true_propositions;
+		auto props2 = other.true_propositions;
+		std::sort(props1.begin(), props1.end());
+		std::sort(props2.begin(), props2.end());
+
+		for (size_t i = 0; i < props1.size(); i++) {
+			if (props1[i] != props2[i]) return true;
 		}
+
 		return false;
 	}
 	std::string World::to_hash() const {
