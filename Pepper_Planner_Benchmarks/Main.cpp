@@ -441,15 +441,16 @@ int main(int argc, char* argv[]) {
 	//run_mapf_benchmark();
 	//run_mapf_and_solve();
 	if (argc == 5) {
-		size_t start_index;
-		size_t end_index;
-		try {
-			sscanf_s(argv[3], "%zu", &start_index);
-			sscanf_s(argv[4], "%zu", &end_index);
-		}
-		catch (int e) {
-			throw std::runtime_error("arguments 3 and 4 must be positive integers");
-		}
+		size_t start_index = 0;
+		size_t end_index = 0;
+
+		if (strlen(argv[3]) >= 2) start_index = 10 * (argv[3][0] - '0') + (argv[3][1] - '0');
+		else if (strlen(argv[3]) >= 1) start_index = argv[3][0] - '0';
+
+		if (strlen(argv[4]) >= 2) end_index = 10 * (argv[4][0] - '0') + (argv[4][1] - '0');
+		else if (strlen(argv[4]) >= 1) end_index = argv[4][0] - '0';
+
+		std::cout << "Start/End: " << start_index << "/" << end_index << std::endl;
 		//run_benchmark(argv[1], argv[2], start_index, end_index);
 	}
 	else if (argc == 2) {
