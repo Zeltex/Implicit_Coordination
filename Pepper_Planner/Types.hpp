@@ -27,6 +27,10 @@ namespace del {
         bool operator!=(const Agent_Id& other) const {
             return this->id != other.id;
         }
+
+		bool operator<(const Agent_Id& other) const {
+			return this->id < other.id;
+		}
 	};
 
 	struct World_Id {
@@ -39,6 +43,10 @@ namespace del {
         bool operator!=(const World_Id& other) const {
             return this->id != other.id;
         }
+
+		bool operator<(const  World_Id& other) const {
+			return this->id < other.id;
+		}
 	};
 
 	struct Event_Id {
