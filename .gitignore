@@ -20,3 +20,5 @@ Debug/
 CMakeFiles/ 
 Notes/ 
 Build/ 
+*.bak
+*/*.bak
