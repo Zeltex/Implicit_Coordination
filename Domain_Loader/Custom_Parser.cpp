@@ -135,6 +135,8 @@ namespace del {
         exit(-1);
     }
 
+    // Object def must come before world def and designated worlds def
+    // Need to implement restrictions and proper error messages
     void Custom_Parser::problem_body() {
         if (try_match({Token::DOMAIN_DEF, Token:: EQUALS, Token:: NAME})) {
             domain->set_domain(get_svalue(2));

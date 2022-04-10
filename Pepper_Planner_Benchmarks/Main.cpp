@@ -21,37 +21,10 @@
 #include "Action_Library.hpp"
 #include "Run_Planner.hpp"
 #include "MAPF_Benchmark.hpp"
+#include "Utils.h"
 
 
 using namespace del;
-
-
-
-
-std::string get_date_stamp() {
-	//struct tm ltm;
-	time_t now = time(0);
-	//auto temp = localtime_s(&ltm ,&now);
-	auto ltm = *(localtime(&now));
-	std::string output;
-	bool first = true;
-	for (const auto& entry : { ltm.tm_year - 100, ltm.tm_mon + 1, ltm.tm_mday, ltm.tm_hour, ltm.tm_min, ltm.tm_sec }) {
-		if (first) {
-			first = false;
-		} else {
-			output += "-";
-		}
-		if (entry < 10) output += "0";
-		output += std::to_string(entry);
-	}
-	return output;
-}
-std::string get_benchmark_file_name(std::string date_stamp) {
-	return "../Benchmarks/Benchmarks_" + date_stamp + ".csv";
-}
-std::string get_benchmark_file_name() {
-	return get_benchmark_file_name(get_date_stamp());
-}
 
 class Simp_Timer {
 public:
@@ -467,7 +440,19 @@ int main(int argc, char* argv[]) {
 
 	//run_mapf_benchmark();
 	//run_mapf_and_solve();
-	if (argc == 2) {
+	if (argc == 5) {
+		size_t start_index;
+		size_t end_index;
+		try {
+			sscanf_s(argv[3], "%zu", &start_index);
+			sscanf_s(argv[4], "%zu", &end_index);
+		}
+		catch (int e) {
+			throw std::runtime_error("arguments 3 and 4 must be positive integers");
+		}
+		//run_benchmark(argv[1], argv[2], start_index, end_index);
+	}
+	else if (argc == 2) {
 		run_mapf_benchmark(argv[1]);
 	}
 	else {

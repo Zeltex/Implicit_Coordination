@@ -144,7 +144,7 @@ namespace del {
 			std::cout << "Policy found\n";
 			std::cout << "is benchmark " << is_benchmark <<  std::endl;
 			if (is_benchmark) {
-				return Policy(false);
+				return Policy(true);
 			} else {
 				return extract_policy(graph);
 			}
