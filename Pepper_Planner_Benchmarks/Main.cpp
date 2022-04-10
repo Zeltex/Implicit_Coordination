@@ -444,7 +444,13 @@ int main(int argc, char* argv[]) {
 	//find_and_execute("Thorsten_Domains/p1.maepl", "a0");
 
 	//run_mapf_benchmark();
-	run_mapf_and_solve();
+	//run_mapf_and_solve();
+	if (argc == 2) {
+		run_mapf_benchmark(argv[1]);
+	}
+	else {
+		run_mapf_benchmark("../Examples/MAPF/");
+	}
 
 	return 0;
 }
