@@ -1,4 +1,5 @@
 #define __STDC_WANT_LIB_EXT1__ 1
+#define _CRT_SECURE_NO_WARNINGS 1
 
 #include <string>
 #include <math.h>
