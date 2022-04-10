@@ -353,6 +353,10 @@ namespace del {
 		for (auto& relations : indistinguishability_relation) relations_size += relations.size();
 		hashes.reserve(worlds.size() + designated_worlds.size() + relations_size);
 
+		hashes.push_back(std::to_string(worlds.size()));
+		hashes.push_back(std::to_string(designated_worlds.size()));
+		hashes.push_back(std::to_string(relations_size));
+
 		for (auto& world : worlds) {
 			hashes.emplace_back(std::move(world.to_hash()));
 		}
