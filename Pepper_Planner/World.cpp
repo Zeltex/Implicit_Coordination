@@ -64,7 +64,9 @@ namespace del {
 	}
 	std::string World::to_hash() const {
 		std::string hash;
-		for (const auto& prop : true_propositions) {
+		auto temp = true_propositions;
+		std::sort(temp.begin(), temp.end());
+		for (const auto& prop : temp) {
 			hash += prop.to_hash();
 		}
 		return hash;
