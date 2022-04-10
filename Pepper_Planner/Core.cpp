@@ -67,7 +67,10 @@ namespace del {
 	}
 
 	void clear_action_state_dir() {
-		std::string command = "rm -r " + std::string(DEBUG_PRINT_PATH) + "dot/*";
+		auto folder = std::string(DEBUG_PRINT_PATH) + "dot";
+		std::string command = "mkdir -p " + folder;
+		system(command.c_str());
+		command = "rm -rfv " + folder + "/*";
 		system(command.c_str());
 		command = "rm -r " + std::string(DEBUG_PRINT_PATH) + "png/* 2> nul";
 		system(command.c_str());
