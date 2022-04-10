@@ -21,7 +21,7 @@ namespace del {
 			}
 		}
 
-		bool operator==(const Signature& other) {
+		bool operator==(const Signature& other) const {
 			if (this->data.size() != other.data.size()) return false;
 			for (size_t i = 0; i < this->data.size(); ++i) {
 				if (this->data.at(i) != other.data.at(i)) return false;
@@ -29,7 +29,7 @@ namespace del {
 			return true;
 		}
 
-		bool operator<(const Signature& other) {
+		bool operator<(const Signature& other) const {
 			if (this->data.size() < other.data.size()) return true;
 			else if (this->data.size() > other.data.size()) return false;
 
