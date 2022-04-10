@@ -153,6 +153,12 @@ namespace del {
 		if (find(designated_worlds.begin(), designated_worlds.end(), world) != designated_worlds.end()) {
 			return;
 		}
+		for (size_t i = 0; i < designated_worlds.size(); ++i) {
+			if (designated_worlds.at(i) > world) {
+				designated_worlds.insert(designated_worlds.begin() + i, world);
+				return;
+			}
+		}
 		designated_worlds.push_back(world);
 	}
 
