@@ -22,7 +22,7 @@ namespace del {
 					updated_world.add_true_propositions(event.get_add_list());
 
 					if (state.is_world_designated(world.get_id()) && action.is_event_designated(event.get_id())) {
-						result.add_designated_world(updated_world.get_id());
+						result.set_world_designated(updated_world.get_id());
 					}
 
 					new_worlds.emplace_back(world.get_id(), event.get_id(), updated_world.get_id());
@@ -114,15 +114,13 @@ namespace del {
 	}
 
 	bool are_states_bisimilar(const State& state1, const State& state2) {
-		Bisimulation_Context bisimulation_context(state1, state2);
-		return bisimulation_context.is_bisimilar();
+		State contracted_state1 = bisimulation_context::contract(state1);
+		State contracted_state2 = bisimulation_context::contract(state2);
+		return contracted_state1 == contracted_state2;
 	}
 
-
-	State perform_k_bisimilar_contraction(const State& state, size_t depth) {
-		State temp1;
-		State temp2;
-		Bisimulation_Context bisimulation_context(temp1, temp2);
-		return bisimulation_context.to_bisimulation_contraction(state, depth);
+	State perform_bisimilar_contraction(const State& state)
+	{
+		return bisimulation_context::contract(state);
 	}
 }

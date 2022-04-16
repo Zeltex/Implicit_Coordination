@@ -118,7 +118,7 @@ namespace del {
 
 	//	state.add_indistinguishability_relation(Agent_Id{ 0 }, World_Id{ 1 }, World_Id{ 1 });
 
-	//	state.add_designated_world(World_Id{ 1 });
+	//	state.set_world_designated(World_Id{ 1 });
 
 	//	return state;
 	//}

@@ -25,7 +25,7 @@ namespace PepperPlannerTests
 		TEST_METHOD(Bisimilar_Contraction_Merge_Worlds) {
 			//State state(1);
 			//state.create_worlds(4);
-			//state.add_designated_world({ 0 });
+			//state.set_world_designated({ 0 });
 			//state.add_indistinguishability_relation({ 0 }, { 0 }, { 1 });
 			//state.add_indistinguishability_relation({ 0 }, { 0 }, { 2 });
 			//state.add_indistinguishability_relation({ 0 }, { 1 }, { 3 });
@@ -55,7 +55,7 @@ namespace PepperPlannerTests
 		TEST_METHOD(Contraction_Makes_Hash_Match) {
 			State state(1);
 			state.create_worlds(2);
-			state.add_designated_world({ 0 });
+			state.set_world_designated({ 0 });
 			state.add_indistinguishability_relation({ 0 }, { 0 }, { 1 });
 			state.add_indistinguishability_relation({ 0 }, { 1 }, { 0 });
 			state.add_indistinguishability_relation({ 0 }, { 0 }, { 0 });
@@ -66,7 +66,7 @@ namespace PepperPlannerTests
 
 			State state2(1);
 			state2.create_worlds(2);
-			state2.add_designated_world({ 1 });
+			state2.set_world_designated({ 1 });
 			state2.add_indistinguishability_relation({ 0 }, { 0 }, { 1 });
 			state2.add_indistinguishability_relation({ 0 }, { 1 }, { 0 });
 			state2.add_indistinguishability_relation({ 0 }, { 0 }, { 0 });
@@ -81,11 +81,9 @@ namespace PepperPlannerTests
 			Assert::AreNotEqual(state.to_hash(), state2.to_hash());
 
 
-			Bisimulation_Context context = { state, state };
-			State bisim = context.to_bisimulation_contraction(state, 2);
-
-			Bisimulation_Context context2 = { state2, state2 };
-			State bisim2 = context2.to_bisimulation_contraction(state2, 2);
+			//Bisimulation_Context context = { state, state };
+			State bisim = bisimulation_context::contract(state);
+			State bisim2 = bisimulation_context::contract(state2);
 
 			Assert::AreEqual(bisim.to_hash(), bisim2.to_hash());
 

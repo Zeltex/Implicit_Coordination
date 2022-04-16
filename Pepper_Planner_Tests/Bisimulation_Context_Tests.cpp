@@ -34,10 +34,10 @@ namespace PepperPlannerTests
 				state1.add_indistinguishability_relation(Agent_Id{ 0 }, World_Id{ i }, World_Id{ i });
 			}
 
-			state1.add_designated_world(World_Id{ 0 });
-			state1.add_designated_world(World_Id{ 3 });
-			state1.add_designated_world(World_Id{ 4 });
-			state1.add_designated_world(World_Id{ 7 });
+			state1.set_world_designated(World_Id{ 0 });
+			state1.set_world_designated(World_Id{ 3 });
+			state1.set_world_designated(World_Id{ 4 });
+			state1.set_world_designated(World_Id{ 7 });
 
 			State state2(1);
 			state2.create_worlds(5);
@@ -52,13 +52,11 @@ namespace PepperPlannerTests
 				state2.add_indistinguishability_relation(Agent_Id{ 0 }, World_Id{ i }, World_Id{ i });
 			}
 
-			state2.add_designated_world(World_Id{ 0 });
-			state2.add_designated_world(World_Id{ 1 });
-			state2.add_designated_world(World_Id{ 4 });
+			state2.set_world_designated(World_Id{ 0 });
+			state2.set_world_designated(World_Id{ 1 });
+			state2.set_world_designated(World_Id{ 4 });
 
-
-			Bisimulation_Context context(state1, state2);
-			Assert::IsTrue(context.is_bisimilar());
+			Assert::IsTrue(are_states_bisimilar(state1, state2));
 
 		}
 
@@ -80,11 +78,11 @@ namespace PepperPlannerTests
 				state1.add_indistinguishability_relation(Agent_Id{ 0 }, World_Id{ i }, World_Id{ i });
 			}
 
-			state1.add_designated_world(World_Id{ 0 });
-			state1.add_designated_world(World_Id{ 3 });
-			state1.add_designated_world(World_Id{ 4 });
-			state1.add_designated_world(World_Id{ 5 });
-			state1.add_designated_world(World_Id{ 7 });
+			state1.set_world_designated(World_Id{ 0 });
+			state1.set_world_designated(World_Id{ 3 });
+			state1.set_world_designated(World_Id{ 4 });
+			state1.set_world_designated(World_Id{ 5 });
+			state1.set_world_designated(World_Id{ 7 });
 
 			State state2(1);
 			state2.create_worlds(5);
@@ -99,14 +97,11 @@ namespace PepperPlannerTests
 				state2.add_indistinguishability_relation(Agent_Id{ 0 }, World_Id{ i }, World_Id{ i });
 			}
 
-			state2.add_designated_world(World_Id{ 0 });
-			state2.add_designated_world(World_Id{ 1 });
-			state2.add_designated_world(World_Id{ 4 });
+			state2.set_world_designated(World_Id{ 0 });
+			state2.set_world_designated(World_Id{ 1 });
+			state2.set_world_designated(World_Id{ 4 });
 
-
-			Bisimulation_Context context(state1, state2);
-			Assert::IsFalse(context.is_bisimilar());
-
+			Assert::IsFalse(are_states_bisimilar(state1, state2));
 		}
 	};
 }

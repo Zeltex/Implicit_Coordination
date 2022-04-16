@@ -167,7 +167,7 @@ std::vector<State> get_states_using_globals_phase_times(const std::vector<State>
 			for (auto& state : globals) {
 				if (use_contraction) {
 					state.remove_unreachable_worlds();
-					state = perform_k_bisimilar_contraction(std::move(state), BISIMILAR_DEPTH);
+					state = perform_bisimilar_contraction(std::move(state));
 				}
 				size_t hash = state.to_hash();
 				if (hashes.find(hash) == hashes.end()) {
@@ -226,7 +226,7 @@ std::tuple<std::vector<State>, long> get_states_using_globals(const std::vector<
 			for (State& state : globals) {
 				if (use_contraction) {
 					state.remove_unreachable_worlds();
-					state = perform_k_bisimilar_contraction(std::move(state), BISIMILAR_DEPTH);
+					state = perform_bisimilar_contraction(std::move(state));
 				}
 
 				size_t hash = state.to_hash();
@@ -250,7 +250,7 @@ void benchmark1_calculations(std::vector<State>& states, Logger& logger) {
 		contracted_states.reserve(states.size());
 		Simp_Timer timer_con;
 		std::transform(states.begin(), states.end(), std::back_inserter(contracted_states),
-			[](State state) -> State {return perform_k_bisimilar_contraction(state, BISIMILAR_DEPTH); });
+			[](State state) -> State {return perform_bisimilar_contraction(state); });
 		logger.add_entry("Perform bisimilar contraction", contracted_states.size(), timer_con.get_time());
 
 

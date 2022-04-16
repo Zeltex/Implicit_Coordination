@@ -111,12 +111,6 @@
     <ClCompile Include="Formula_Input_Impl.cpp">
       <Filter>Source Files\DEL\Formula</Filter>
     </ClCompile>
-    <ClCompile Include="Propositions.hpp">
-      <Filter>Header Files\DEL\Formula</Filter>
-    </ClCompile>
-    <ClCompile Include="Propositions.cpp">
-      <Filter>Source Files\DEL\Formula</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Agent.hpp">

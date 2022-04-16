@@ -169,7 +169,7 @@ namespace del {
 
 	void Domain_Interface_Implementation::set_designated_worlds(const std::unordered_set<std::string>& designated_worlds) {
 		for (auto& entry : designated_worlds) {
-			initial_state.add_designated_world(world_name_to_id[entry]);
+			initial_state.set_world_designated(world_name_to_id[entry]);
 		}
 	}
 

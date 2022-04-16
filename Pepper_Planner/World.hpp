@@ -11,17 +11,17 @@ namespace del {
 	class World {
 	public:
 
-		World(World_Id id) : id(id), true_propositions(std::vector<Proposition>()) {}
-		World(World_Id id, std::vector<Proposition> true_propositions) :
+		World(World_Id id) : id(id), true_propositions() {}
+		World(World_Id id, Propositions true_propositions) :
 			id(id), true_propositions(true_propositions) {}
 
 		World_Id get_id() const;
-		void add_true_propositions(const std::vector<Proposition>& propositions);
-		void remove_true_propositions(const std::vector<Proposition>& propositions);
+		void add_true_propositions(const Propositions& propositions);
+		void remove_true_propositions(const Propositions& propositions);
 
 		World create_copy(World_Id id) const;
 		
-		const std::vector<Proposition>& get_true_propositions() const;
+		const Propositions& get_true_propositions() const;
 
 		std::string to_string(const Domain& domain) const;
 		void set_id(World_Id id);
@@ -30,6 +30,6 @@ namespace del {
 	private:
 
 		World_Id id;
-		std::vector<Proposition> true_propositions;
+		Propositions true_propositions;
 	};
 }

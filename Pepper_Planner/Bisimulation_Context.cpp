@@ -1,463 +1,261 @@
 #include "Bisimulation_Context.hpp"
 #include "Core.hpp"
+#include "Types.hpp"
+
 #include <set>
 #include <map>
+#include <algorithm>
 
-namespace del {
+namespace del::bisimulation_context {
 
-#if OPR_ENABLED == 1
-	class Valuations {
-	public:
-
-		Valuations(const State& state, const Bisimulation_Context* bisimContext)
-			: bisimContext(bisimContext) {
-
-			valuations.reserve(state.get_worlds().size());
-			// Get and sort valuations
-			for (auto& world : state.get_worlds()) {
-				std::string valuation = bisimContext->convert_propositions_to_string(world.get_true_propositions());
-				if (std::find(valuations.begin(), valuations.end(), valuation) == valuations.end()) {
-					valuations.push_back(valuation);
-				}
-			}
-			std::sort(valuations.begin(), valuations.end());
-			
-			for (size_t i = 0; i < valuations.size(); ++i) {
-				valuation_to_block[valuations.at(i)] = i;
-			}
-		}
-
-		size_t GetBlockIndex(const std::string& valuation) const {
-			return valuation_to_block.at(valuation);
-		}
-
-		void add(const std::string& valuation) { valuations.push_back(valuation); }
-		const std::vector<std::string>& get() { return valuations; }
-		const size_t size() const { return valuations.size(); }
-	private:
-		std::vector<std::string> valuations;
-		std::unordered_map<std::string, size_t> valuation_to_block;
-		const Bisimulation_Context* bisimContext;
-	};
-	class All_Signatures {
-	public:
-		void add(const Signature& signature) { signatures.insert(signature); }
-		const std::set<Signature>& get() { return signatures; }
-		const size_t size() const { return signatures.size(); }
-	private:
-		std::set<Signature> signatures;
+	struct Block_Id {
+		size_t id;
+		World_Id to_world() const { return World_Id{ id }; }
+		bool operator==(const Block_Id& other) const { return this->id == other.id; }
+		bool operator!=(const Block_Id& other) const { return this->id != other.id; }
+		bool operator<(const  Block_Id& other) const { return this->id < other.id; }
+		bool operator>(const  Block_Id& other) const { return this->id > other.id; }
 	};
 
-#else
-	class Valuations {
-	public:
-		void add(const std::string& valuation) {
-			if (std::find(valuations.begin(), valuations.end(), valuation) == valuations.end()) valuations.push_back(valuation);
-		}
-		const std::vector<std::string>& get() { return valuations; }
-		const size_t size() const { return valuations.size(); }
-	private:
-		std::vector<std::string> valuations;
-	};
-	class All_Signatures {
-	public:
-		void add(const Signature& signature) {
-			if (std::find(signatures.begin(), signatures.end(), signature) == signatures.end()) signatures.push_back(signature);
-		}
-		const std::vector<Signature>& get() { return signatures; }
-		const size_t size() const { return signatures.size(); }
-	private:
-		std::vector<Signature> signatures;
-	};
-#endif 
+	struct Agent_World_Reachable
+	{
+		Agent_Id agent;
+		World_Id world;
 
-	void Bisimulation_Context::create_merged_worlds_list() {
-		worlds = std::vector<World>();
-		for (auto& world : state1.get_worlds()) {
-			size_t id = worlds.size();
-			worlds.emplace_back(World_Id{ id }, world.get_true_propositions());
-			old_to_new_world1[world.get_id().id] = id;
-			is_world_from_state1[id] = true;
-			is_world_designated[id] = false;
-		}
-		for (auto& world : state2.get_worlds()) {
-			size_t id = worlds.size();
-			worlds.emplace_back(World_Id{ id }, world.get_true_propositions());
-			old_to_new_world2[world.get_id().id] = id;
-			is_world_from_state1[id] = false;
-			is_world_designated[id] = false;
+		bool operator!= (const Agent_World_Reachable& other) const
+		{
+			return agent != other.agent && world != other.world;
 		}
 
-		for (auto& world : state1.get_designated_worlds()) {
-			is_world_designated[old_to_new_world1[world.id]] = true;
-		}
-		for (auto& world : state2.get_designated_worlds()) {
-			is_world_designated[old_to_new_world2[world.id]] = true;
-		}
-	}
-
-	void Bisimulation_Context::create_merged_relations_list() {
-		for (size_t agent = 0; agent < state1.get_number_of_agents(); agent++) {
-			indistinguishability_relation.emplace_back();
-			for (auto& relation : state1.get_indistinguishability_relations(Agent_Id{ agent })) {
-				auto& world_from = old_to_new_world1[relation.world_from.id];
-				auto& world_to = old_to_new_world1[relation.world_to.id];
-				if (indistinguishability_relation[agent].find(world_from) != indistinguishability_relation[agent].end()) {
-					indistinguishability_relation[agent][world_from].push_back(world_to);
-				} else {
-					indistinguishability_relation[agent][world_from] = { world_to };
-				}
-			}
-			for (auto& relation : state2.get_indistinguishability_relations(Agent_Id{ agent })) {
-				auto& world_from = old_to_new_world2[relation.world_from.id];
-				auto& world_to = old_to_new_world2[relation.world_to.id];
-
-
-				if (indistinguishability_relation[agent].find(world_from) != indistinguishability_relation[agent].end()) {
-					indistinguishability_relation[agent][world_from].push_back(world_to);
-				}
-				else {
-					indistinguishability_relation[agent][world_from] = { world_to };
-				}
-			}
-		}
-	}
-
-	void Bisimulation_Context::partition_into_valuation_blocks() {
-		std::unordered_map<std::string, std::vector<World_Id>> valuation_partitions;
-		for (auto& world : worlds) {
-			std::string valuation = convert_propositions_to_string(world.get_true_propositions());
-			if (valuation_partitions.find(valuation) != valuation_partitions.end()) {
-				valuation_partitions[valuation].push_back(world.get_id());
-			} else {
-				valuation_partitions[valuation] = { world.get_id() };
-			}
-		}
-
-		for (auto& valuation_partition : valuation_partitions) {
-			blocks.emplace_back();
-			size_t block = blocks.size() - 1;
-			for (auto& partition_world : valuation_partition.second) {
-				blocks[block].push_back(partition_world);
-				world_to_block[partition_world.id] = block;
-			}
-		}
-	}
-
-	// TODO - Could be optimised
-	void Bisimulation_Context::partition_into_relations_blocks() {
-		bool blocks_changed = false;
-		size_t block_counter = 0;
-		std::vector<std::vector<World_Id>> worlds_to_be_moved;
-		std::vector < std::vector<size_t>> index_to_be_erased;
-		for (auto& block : blocks) {
-			worlds_to_be_moved.emplace_back();
-			index_to_be_erased.emplace_back();
-			if (block.empty()) {
-				continue;
-			}
-			size_t base_world = block[0].id;
-			size_t counter = 0;
-			for (auto& block_entry : block) {
-				for (size_t i = 0; i < indistinguishability_relation.size(); i++) {
-					if (!are_relations_equal(indistinguishability_relation[i][base_world], indistinguishability_relation[i][block_entry.id])) {
-						worlds_to_be_moved[block_counter].push_back(block_entry);
-						index_to_be_erased[block_counter].push_back(counter);
-						blocks_changed = true;
-						break;
-					}
-				}
-				counter++;
-			}
-			block_counter++;
-		}
-		for (size_t i = 0; i < worlds_to_be_moved.size(); ++i) {
-			for (auto it = index_to_be_erased[i].rbegin(); it != index_to_be_erased[i].rend(); ++it) {
-				this->blocks[i].erase(this->blocks[i].begin() + *it);
-
-			}
-			if (!worlds_to_be_moved[i].empty()) {
-				move_worlds_to_new_block(worlds_to_be_moved[i]);
-			}
-		}
-		if (blocks_changed) {
-			partition_into_relations_blocks();
-		}
-	}
-
-	bool Bisimulation_Context::are_relations_equal(std::vector<size_t> original_relations1, std::vector<size_t> original_relations2) {
-		std::vector<size_t> relations1;
-		for (size_t entry : original_relations1) {
-			relations1.push_back(world_to_block[entry]);
-		}
-		std::vector<size_t> relations2;
-		for (size_t entry : original_relations2) {
-			relations2.push_back(world_to_block[entry]);
-		}
-
-		std::sort(relations1.begin(), relations1.end());
-		std::sort(relations2.begin(), relations2.end());
-		relations1.erase(std::unique(relations1.begin(), relations1.end()), relations1.end());
-		relations2.erase(std::unique(relations2.begin(), relations2.end()), relations2.end());
-		if (relations1.size() != relations2.size()) {
+		bool operator< (const Agent_World_Reachable& other) const
+		{
+			if (agent != other.agent) return agent < other.agent;
+			if (world != other.world) return world < other.world;
 			return false;
 		}
-
-		// TODO - I believe this should evaluate based on world true propositions rather than world ids
-		for (size_t i = 0; i < relations1.size(); i++) {
-			if (relations1[i] != relations2[i]) {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	void Bisimulation_Context::move_worlds_to_new_block(const std::vector<World_Id>& worlds_to_be_moved) {
-		std::vector<World_Id> worlds_different_than_base;
-		std::vector<World_Id> worlds_same_as_base;
-		size_t base_world = worlds_to_be_moved[0].id;
-		worlds_same_as_base.push_back(worlds_to_be_moved[0]);
-		size_t counter = 0;
-		bool first = true;
-
-		for (auto& block_entry : worlds_to_be_moved) {
-			if (first) {
-				first = false;
-			} else {
-				bool is_different = false;
-				for (size_t i = 0; i < indistinguishability_relation.size(); i++) {
-					if (!are_relations_equal(indistinguishability_relation[i][base_world], indistinguishability_relation[i][block_entry.id])) {
-						worlds_different_than_base.push_back(block_entry);
-						is_different = true;
-						break;
-					}
-				}
-				if (!is_different) {
-					worlds_same_as_base.push_back(block_entry);
-				}
-			}
-			counter++;
-		}
-
-		blocks.emplace_back();
-		for (auto world : worlds_same_as_base) {
-			blocks.back().push_back(world);
-			world_to_block[world.id] = blocks.size() - 1;
-		}
-
-		if (!worlds_different_than_base.empty()) {
-			move_worlds_to_new_block(worlds_different_than_base);
-		}
-	}
-
-	bool Bisimulation_Context::is_bisimilar() {
-		if (state1.get_number_of_agents() != state2.get_number_of_agents()) {
-			return false;
-		}
-		create_merged_worlds_list();
-		create_merged_relations_list();
-		partition_into_valuation_blocks();
-		partition_into_relations_blocks();
-
-		for (const auto& block : blocks) {
-			bool contains_world_from_state1 = false;
-			bool contains_world_from_state2 = false;
-			bool contains_designated_from_state1 = false;
-			bool contains_designated_from_state2 = false;
-
-			for (const auto& world : block) {
-				if (is_world_from_state1[world.id]) {
-					contains_world_from_state1 = true;
-					if (is_world_designated[world.id]) {
-						contains_designated_from_state1 = true;
-					}
-				} else {
-					contains_world_from_state2 = true;
-					if (is_world_designated[world.id]) {
-						contains_designated_from_state2 = true;
-					}
-				}
-			}
-			if (!contains_world_from_state1
-				|| !contains_world_from_state2
-				|| (contains_designated_from_state1 && !contains_designated_from_state2)
-				|| (!contains_designated_from_state1 && contains_designated_from_state2)) {
-				return false;
-			}
-		}
-		return true;
-	}
-
-
-	struct World_Relations {
-
-		World_Relations(const State& state) {
-			for (size_t i = 0; i < state.get_worlds_count(); ++i) {
-				relations[i] = std::vector < std::vector<size_t>>(state.get_number_of_agents());
-			}
-			size_t agent = 0;
-			for (auto& relation : state.get_indistinguishability_relations()) {
-				for (auto& entry : relation) {
-					if (relations.find(entry.world_from.id) == relations.end()) {
-						relations.insert({ entry.world_from.id, std::vector<std::vector<size_t>>(state.get_number_of_agents()) });
-					}
-					relations[entry.world_from.id][agent].emplace_back(entry.world_to.id);
-				}
-				agent++;
-			}
-		}
-
-		const std::vector<std::vector<size_t>>& Get(const World_Id& world) const {
-			return (*relations.find(world.id)).second;
-		}
-
-		// [world_from][agent][world_to]
-		std::unordered_map <size_t, std::vector<std::vector<size_t>>> relations;
 	};
 
-	// TODO - Split this into around a billion seperate methods
-	State Bisimulation_Context::to_bisimulation_contraction(const State& state, size_t k) {
-		World_Relations world_relations(state);
-		Valuations valuations(state, this);
+	struct Agent_Block_Reachable
+	{
+		Agent_Id agent;
+		Block_Id block;
 
-
-		// Initialise blocks
-		blocks = std::vector<std::vector<World_Id>>(valuations.size());
-
-		for (const auto& world : state.get_worlds()) {
-			// Set block/world mapping
-			std::string valuation = convert_propositions_to_string(world.get_true_propositions());
-			size_t block_index = valuations.GetBlockIndex(valuation);
-			blocks[block_index].push_back(world.get_id());
-			world_to_block[world.get_id().id] = block_index;
+		bool operator!= (const Agent_Block_Reachable& other) const 
+		{
+			return agent != other.agent && block != other.block;
 		}
 
+		bool operator< (const Agent_Block_Reachable& other) const
+		{
+			if (agent != other.agent) return agent < other.agent;
+			if (block != other.block) return block < other.block;
+			return false;
+		}
+	};
 
-		partition_into_relations_blocks_contraction(world_relations, state.get_number_of_agents(), state.get_worlds_count());
+	struct Signature
+	{
+		void insert(const Agent_Block_Reachable& agent_block_reachable)
+		{
+			agent_block_reachables.insert(agent_block_reachable);
+		}
 
+		bool operator<(const Signature& other) const
+		{
+			if (agent_block_reachables.size() != other.agent_block_reachables.size()) 
+			{
+				return agent_block_reachables.size() < other.agent_block_reachables.size();
+			}
 
-		State result(state.get_number_of_agents());
-		result.set_cost(state.get_cost());
-		std::unordered_map<size_t, World_Id> block_to_new_world;
-
-		std::vector<std::vector<std::set<size_t>>> block_relations(state.get_number_of_agents(), std::vector<std::set<size_t>>(state.get_worlds_count()));
-
-		// Create block relations
-		for (auto& old_world_entry : world_relations.relations) {
-			size_t agent = 0;
-			size_t block_from = world_to_block[old_world_entry.first];
-			for (auto& agent_entry : old_world_entry.second) {
-				for (auto& old_world_to : agent_entry) {
-					auto block_to = world_to_block[old_world_to];
-					block_relations[agent][block_from].insert(block_to);
+			auto it1 = agent_block_reachables.begin();
+			auto it2 = other.agent_block_reachables.begin();
+			for (; it1 != agent_block_reachables.end(); ++it1, ++it2) 
+			{
+				if (*it1 != *it2)
+				{
+					return *it1 < *it2;
 				}
-				++agent;
+			}
+			return false;
+		}
+		
+		std::set<Agent_Block_Reachable> agent_block_reachables;
+	};
+
+
+	struct Block 
+	{
+		void insert(const World& world) 
+		{
+			worlds.push_back(world.get_id());
+		}
+
+		void remove(const World_Id& world) 
+		{
+			worlds.erase(std::find(worlds.begin(), worlds.end(), world));
+		}
+
+		Propositions get_propositions(const State& state) const
+		{
+			Propositions propositions = state.get_world(worlds.front()).get_true_propositions();
+			propositions.sort();
+			return propositions;
+		}
+
+		std::vector<World_Id> worlds;
+	};
+	struct Agent_World_Reachables
+	{
+		Agent_World_Reachables(const State& state)
+		{
+			for (const World& world : state.get_worlds())
+			{
+				std::set<Agent_World_Reachable> reachables;
+				for (size_t i = 0; i < state.get_number_of_agents(); ++i)
+				{
+					Agent_Id agent = { i };
+					for (auto& reachable_world : state.get_reachables(Agent_Id{ i }, world.get_id()))
+					{
+						reachables.insert({ agent, reachable_world });
+					}
+				}
+				data.insert({world.get_id(), std::move(reachables)});
 			}
 		}
 
-		// Create new worlds
-		for (size_t block = 0; block < this->blocks.size(); ++block) {
-			auto& world = result.create_world();
-			block_to_new_world[block] = world.get_id();
-			auto props = state.get_world(blocks[block][0]).get_true_propositions();
-			std::sort(props.begin(), props.end());
-			world.add_true_propositions(props);
+		const std::set<Agent_World_Reachable>& get(World_Id world) const
+		{
+			return data.at(world);
 		}
 
-		// Create new world relations
-		size_t agent_size = block_relations.size();
-		for (size_t agent = 0; agent < agent_size; ++agent) {
-			size_t from_size = block_relations[agent].size();
-			for (size_t block_from = 0; block_from < from_size; ++block_from) {
-				for (auto& block_to : block_relations[agent][block_from]) {
-					auto& world_from = block_to_new_world[block_from];
-					auto& world_to = block_to_new_world[block_to];
+		std::map<World_Id, std::set<Agent_World_Reachable>> data;
+	};
 
-					result.add_indistinguishability_relation({ agent }, { world_from }, { world_to });
+	struct Blocks
+	{
+		Blocks(const State& state) 
+		{
+			// Extract signatures
+			std::map<std::string, Block> signature_to_block;
+			for (World world : state.get_worlds())
+			{
+				std::string propositions = world.get_true_propositions().to_signature_string();
+				signature_to_block[propositions].insert(world);
+			}
+
+			// Create blocks
+			for (const std::pair<std::string, Block>& kvp : signature_to_block) {
+				const Block& block = kvp.second;
+				blocks.push_back(block);
+				Block_Id block_index = { blocks.size() - 1 };
+				for (auto& world : block.worlds)
+				{
+					world_to_block.insert({ world, block_index });
 				}
+			}
+		}
+		Signature get_signature(const std::set<Agent_World_Reachable>& world_reachables)
+		{
+			Signature result;
+			for (const Agent_World_Reachable& reachable : world_reachables)
+			{
+				Block_Id block_index = world_to_block.at(reachable.world);
+				result.insert(Agent_Block_Reachable{ reachable.agent, block_index });
+			}
+			return result;
+		}
+
+		void insert_block_and_update(const Block& block) 
+		{
+			Block_Id new_block_index = { blocks.size() };
+			for (const World_Id& world : block.worlds) 
+			{
+				Block_Id& block_index = world_to_block.at(world);
+				blocks.at(block_index.id).remove(world);
+				block_index = new_block_index;
+			}
+			blocks.push_back(block);
+		}
+
+		const Block_Id& get_block_id(World_Id index) const { return world_to_block.at(index); }
+		const Block& get_block(size_t index) const { return blocks.at(index); }
+		const Block& get_block(Block_Id index) const { return blocks.at(index.id); }
+
+		size_t size() const { return blocks.size(); }
+
+		std::vector<Block> blocks;
+		std::map<World_Id, Block_Id> world_to_block;
+
+	};
+
+	State contract(const State& state)
+	{
+		Agent_World_Reachables reachables(state);
+		Blocks blocks(state);
+		size_t old_length = -1;
+		size_t new_length = blocks.size();
+		while (new_length != old_length)
+		{
+			for (size_t i = 0; i < new_length; ++i)
+			{
+				std::map<Signature, Block> new_blocks;
+				const Block& block = blocks.get_block(i);
+				Signature blockSignature;
+				bool first = true;
+
+				// Extract signatures
+				for (const World_Id& world_id : block.worlds)
+				{
+					const std::set<Agent_World_Reachable>& world_reachables = reachables.get(world_id);
+					Signature signature = blocks.get_signature(world_reachables);
+					if (first)
+					{
+						blockSignature = std::move(signature);
+						first = false;
+					}
+					else
+					{
+						new_blocks[signature].insert(world_id);
+					}
+				}
+
+				// Split block
+				for (const std::pair<Signature, Block>& kvp : new_blocks)
+				{
+					const Block& block = kvp.second;
+					blocks.insert_block_and_update(block);
+				}
+			}
+			old_length = new_length;
+			new_length = blocks.size();
+		}
+
+		// Set world propositions
+		State result_state(state.get_number_of_agents());
+		for (const Block& block : blocks.blocks)
+		{
+			auto& world = result_state.create_world();
+			world.add_true_propositions(block.get_propositions(state));
+		}
+
+		// Set world relation
+		for (const auto& kvp : reachables.data)
+		{
+			const World_Id& world_from = kvp.first;
+			const Block_Id& block_from = blocks.get_block_id(world_from);
+			for (const Agent_World_Reachable& reachable : kvp.second)
+			{
+				const Block_Id& block_to = blocks.get_block_id(reachable.world);
+				result_state.add_indistinguishability_relation(reachable.agent, block_from.to_world(), block_to.to_world());
 			}
 		}
 
 		// Set designated worlds
-		std::unordered_set<size_t> visited;
-		visited.reserve(state.get_designated_worlds_count());
-		for (auto& designated_world : state.get_designated_worlds()) {
-			auto& block = world_to_block[designated_world.id];
-			auto& world = block_to_new_world[block];
-			if (visited.find(world.id) == visited.end()) {
-				visited.insert(world.id);
-				result.add_designated_world(world);
-			}
+		for (const World_Id& world : state.get_designated_worlds()) 
+		{
+			result_state.set_world_designated(blocks.get_block_id(world).to_world());
 		}
-		return result;
+
+		return result_state;
 	}
-
-	void Bisimulation_Context::partition_into_relations_blocks_contraction(const World_Relations& world_relations, size_t agents_size, size_t worlds_size) {
-		size_t block_counter = 0;
-		std::vector<std::vector<Signature>> blocks_to_be_created;
-
-
-		std::vector<std::set<size_t>> blocks_to_be_deleted(this->blocks.size());
-		for (auto& block : this->blocks) {
-
-			// Record signatures
-			std::vector<Signature> signatures;
-			size_t counter_entry = 0;
-			for (auto& block_entry : block) {
-				signatures.emplace_back(block_counter, counter_entry, block_entry, world_relations.Get(block_entry), agents_size, worlds_size);
-				counter_entry++;
-			}
-			std::sort(signatures.begin(), signatures.end());
-
-			// Note blocks to be created
-			std::vector<Signature> new_block;
-			for (auto& signature : signatures) {
-				if (new_block.empty() || new_block.at(0) == signature) {
-					new_block.emplace_back(signature);
-				} else {
-					for (auto& entry : new_block) {
-						blocks_to_be_deleted[block_counter].insert(entry.index_in_block);
-					}
-					blocks_to_be_created.push_back(std::move(new_block));
-					new_block = { signature };
-				}
-			}
-			++block_counter;
-		}
-
-		// Erase worlds from existing blocks
-		for (size_t i = 0; i < blocks_to_be_deleted.size(); ++i) {
-			auto& block = blocks_to_be_deleted.at(i);
-			for (auto entry = block.rbegin(); entry != block.rend(); ++entry) {
-				auto& temp_block = this->blocks.at(i);
-				temp_block.erase(temp_block.begin() + *entry);
-			}
-		}
-
-		// Create new blocks
-		for (auto& block : blocks_to_be_created) {
-			this->blocks.emplace_back();
-			for (auto& block_entry : block) {
-				blocks.back().push_back(block_entry.world);
-				world_to_block[block_entry.world.id] = blocks.size() - 1;
-			}
-		}
-
-		// Recurse
-		if (!blocks_to_be_created.empty()) {
-			partition_into_relations_blocks_contraction(world_relations, agents_size, worlds_size);
-		}
-	}
-
-	// TODO - Handle this better, since propositions representation changed
-	std::string Bisimulation_Context::convert_propositions_to_string(const std::vector<Proposition>& propositions) const {
-		auto props = propositions;
-		std::sort(props.begin(), props.end());
-		std::string result;
-		for (auto& prop : props) {
-			result += prop.to_string();
-		}
-		return result;
-	}
-	
 }

@@ -15,7 +15,7 @@ namespace del {
 			State temp = state;
 			temp = std::move(perform_perspective_shift(temp, { agent }));
 			temp.remove_unreachable_worlds();
-			temp = std::move(perform_k_bisimilar_contraction(temp, BISIMILAR_DEPTH));
+			temp = std::move(perform_bisimilar_contraction(temp));
 			agent_hashes.emplace_back(temp.to_hash());
 			agent_states.push_back(std::move(temp));
 		}

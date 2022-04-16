@@ -96,7 +96,7 @@ namespace del {
 		const State& current_state = states.back();
 		auto product_update = perform_product_update(current_state, action, agents, *this);
 #if BISIM_CONTRACTION_ENABLED == 1
-		product_update = perform_k_bisimilar_contraction(std::move(product_update), BISIMILAR_DEPTH);
+		product_update = perform_bisimilar_contraction(std::move(product_update));
 #endif
 		states.push_back(std::move(product_update));
 		PRINT_ACTION_TO_CONSOLE(action, *(this));

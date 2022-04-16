@@ -15,5 +15,5 @@ namespace del {
 	State perform_perspective_shift(const State& state, Agent_Id agent_id);
 	std::vector<State> split_into_global_states(const State& state, const Agent_Id agent);
 	bool are_states_bisimilar(const State& state1, const State& state2);
-	State perform_k_bisimilar_contraction(const State& state, size_t depth);
+	State perform_bisimilar_contraction(const State& state);
 }

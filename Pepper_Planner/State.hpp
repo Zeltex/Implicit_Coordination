@@ -13,7 +13,7 @@ namespace del {
 		State();
 		State(size_t amount_of_agents);
 
-		virtual const std::vector<Proposition>& get_true_propositions(size_t world_id) const;
+		virtual const Propositions& get_true_propositions(size_t world_id) const;
 		virtual std::vector<size_t> get_reachable_worlds(size_t agent_id, size_t world_id) const;
 
 		World&	create_world();
@@ -21,6 +21,7 @@ namespace del {
 		void	create_worlds(size_t amount_to_create);	
 		void	copy_perceivability_and_observability(const State& other);
 		bool	is_one_reachable(Agent_Id agent, World_Id world1, World_Id world2) const;
+		bool	is_true(size_t world_id, const Proposition& proposition) const;
 		bool	is_world_designated(World_Id world) const;
 		void	set_amount_of_agents(size_t amount_of_agents);
 		void	set_cost(size_t cost);
@@ -29,7 +30,7 @@ namespace del {
 		bool	valuate(const Formula& formula, const Domain& domain) const;
 
 
-		void add_designated_world(World_Id world);
+		void set_world_designated(World_Id world);
 		void add_indistinguishability_relation(Agent_Id agent, World_Id world_from, World_Id world_to);
 		void add_observability(Agent_Id observer, const std::vector<Agent_Id>& agents);
 		void add_perceivability(Agent_Id perceiver, const std::vector<Agent_Id>& agents);

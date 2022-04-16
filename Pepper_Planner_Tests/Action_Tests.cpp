@@ -33,9 +33,9 @@ namespace PepperPlannerTests
 			State state;
 			state.set_amount_of_agents(2);
 			auto& world1 = state.create_world();
-			world1.add_true_propositions({ { 0 } });
+			world1.add_true_propositions(Propositions{ Proposition{ 0 } });
 			auto& world2 = state.create_world();
-			world2.add_true_propositions({ { 1 } });
+			world2.add_true_propositions(Propositions{ Proposition{ 1 } });
 			state.add_indistinguishability_relation({ 1 }, { 0 }, { 1 });
 			state.add_indistinguishability_relation({ 1 }, { 1 }, { 1 });
 			state.add_indistinguishability_relation({ 0 }, { 0 }, { 0 });

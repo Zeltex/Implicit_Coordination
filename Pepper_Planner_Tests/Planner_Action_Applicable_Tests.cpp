@@ -25,7 +25,7 @@ namespace PepperPlannerTests
 		TEST_METHOD(Stack_Worlds_Problem) {
 			//State state(1);
 			//state.create_worlds(1);
-			//state.add_designated_world({ 0 });
+			//state.set_world_designated({ 0 });
 			//state.add_indistinguishability_relation({ 0 }, { 0 }, { 0 });
 
 			//state.add_true_propositions({ 0 }, { {"p"} });

@@ -48,7 +48,7 @@ namespace PepperPlannerTests
 				state.add_indistinguishability_relation(Agent_Id{ 1 }, World_Id{ i }, World_Id{ i });
 			}
 
-			state.add_designated_world(World_Id{ 1 });
+			state.set_world_designated(World_Id{ 1 });
 
 			Action action(Agent_Id{ 1 }, 2);
 			Formula f;
@@ -67,7 +67,7 @@ namespace PepperPlannerTests
 			Assert::AreEqual(size_t{ 1 }, propositions.size());
 			
 			Proposition proposition_to_find = { 1 };
-			Assert::IsTrue(std::find(propositions.begin(), propositions.end(), proposition_to_find) != propositions.end());
+			Assert::IsTrue(propositions.contains(proposition_to_find));
 
 		}
 
@@ -95,9 +95,9 @@ namespace PepperPlannerTests
 				}
 			}
 
-			state.add_designated_world(World_Id{ 0 });
-			state.add_designated_world(World_Id{ 1 });
-			state.add_designated_world(World_Id{ 2 });
+			state.set_world_designated(World_Id{ 0 });
+			state.set_world_designated(World_Id{ 1 });
+			state.set_world_designated(World_Id{ 2 });
 
 			Action action(Agent_Id{ 1 }, 2);
 			Formula f;
@@ -137,7 +137,7 @@ namespace PepperPlannerTests
 			auto& propositions = worlds[1].get_true_propositions();
 			Assert::AreEqual(size_t{ 1 }, propositions.size());
 			Proposition proposition_to_find = { 1 };
-			Assert::IsTrue(std::find(propositions.begin(), propositions.end(), proposition_to_find) != propositions.end());
+			Assert::IsTrue(propositions.contains(proposition_to_find));
 
 			// Correct agent 0 (pepper) indistinguishability
 			Assert::IsFalse(new_state.is_one_reachable(Agent_Id{ 0 }, World_Id{ 1 }, World_Id{ 0 }));
@@ -175,7 +175,7 @@ namespace PepperPlannerTests
 			state.add_indistinguishability_relation(Agent_Id{ 1 }, World_Id{ 0 }, World_Id{ 2 });
 			state.add_indistinguishability_relation(Agent_Id{ 1 }, World_Id{ 2 }, World_Id{ 0 });
 
-			state.add_designated_world(World_Id{ 0 });
+			state.set_world_designated(World_Id{ 0 });
 
 			Action action(Agent_Id{ 1 }, 2);
 			Formula f;

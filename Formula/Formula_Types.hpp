@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include <unordered_map>
+#include <algorithm>
 
 #include "Formula_Core.hpp"
 
@@ -193,6 +194,101 @@ namespace del {
         bool operator<(const Proposition& other) const { return this->id < other.id; }
     private:
         size_t id;
+    };
+
+    struct Propositions
+    {
+        Propositions()
+        {
+
+        }
+
+        Propositions(const Proposition& data_in)
+        {
+            data.push_back(data_in);
+        }
+
+        Propositions(const std::vector<Proposition>& data_in)
+        {
+            data = data_in;
+        }
+
+        void insert(const Propositions& propositions)
+        {
+            for (const auto& proposition : propositions.data) {
+                insert(proposition);
+            }
+        }
+
+        void insert(const Proposition& proposition)
+        {
+            if (std::find(data.begin(), data.end(), proposition) == data.end()) {
+                data.push_back(proposition);
+            }
+        }
+
+        void remove(const Propositions& propositions)
+        {
+            for (const auto& proposition : propositions.data) {
+                remove(proposition);
+            }
+        }
+
+        void remove(const Proposition& proposition)
+        {
+            auto result = std::find(data.begin(), data.end(), proposition);
+            if (result != data.end()) {
+                data.erase(result);
+            }
+        }
+
+        bool contains(const Proposition& proposition) const 
+        {
+            return std::find(data.begin(), data.end(), proposition) != data.end();
+        }
+
+        std::string to_signature_string() const
+        {
+            std::string result;
+            Propositions copy = *this;
+            copy.sort();
+            for (const Proposition& proposition : copy.data) {
+                result += proposition.to_string();
+            }
+            return result;
+        }
+
+        void sort()
+        {
+            std::sort(data.begin(), data.end());
+        }
+
+        size_t size() const { return data.size(); }
+
+        bool operator!=(const Propositions& other) const
+        {
+            if (data.size() != other.data.size()) return true;
+            auto props1 = data;
+            auto props2 = other.data;
+            std::sort(props1.begin(), props1.end());
+            std::sort(props2.begin(), props2.end());
+
+            for (size_t i = 0; i < props1.size(); i++) {
+                if (props1[i] != props2[i]) return true;
+            }
+            return false;
+        }
+        std::string to_hash() const {
+            std::string hash;
+            std::vector<Proposition> data_copy = data;
+            std::sort(data_copy.begin(), data_copy.end());
+            for (const Proposition& prop : data_copy) {
+                hash += prop.to_hash();
+            }
+            return hash;
+        }
+
+        std::vector<Proposition> data;
     };
 }
 

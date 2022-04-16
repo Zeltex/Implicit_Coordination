@@ -13,8 +13,12 @@ namespace del {
 		set_amount_of_agents(number_of_agents);
 	}
 
-	const std::vector<Proposition>& State::get_true_propositions(size_t world_id) const {
+	const Propositions& State::get_true_propositions(size_t world_id) const {
 		return worlds[world_id].get_true_propositions();
+	}
+
+	bool State::is_true(size_t world_id, const Proposition& proposition) const {
+		return worlds[world_id].get_true_propositions().contains(proposition);
 	}
 
 	std::vector<size_t> State::get_reachable_worlds(size_t agent_id, size_t world_id) const {
@@ -149,7 +153,7 @@ namespace del {
 		return find(designated_worlds.begin(), designated_worlds.end(), world) != designated_worlds.end();
 	}
 
-	void State::add_designated_world(World_Id world) {
+	void State::set_world_designated(World_Id world) {
 		if (find(designated_worlds.begin(), designated_worlds.end(), world) != designated_worlds.end()) {
 			return;
 		}
@@ -434,7 +438,7 @@ namespace del {
 		for (auto& world : worlds) {
 			std::string propositions;
 			bool first = true;
-			for (auto proposition : world.get_true_propositions()) {
+			for (auto proposition : world.get_true_propositions().data) {
 				if (first) {
 					first = false;
 				} else {
