@@ -166,7 +166,6 @@
     <ClCompile Include="Node_Comparator.cpp" />
     <ClCompile Include="Planner.cpp" />
     <ClCompile Include="Graph.cpp" />
-    <ClCompile Include="Main.cpp" />
     <ClCompile Include="Node.cpp" />
     <ClCompile Include="Policy.cpp" />
     <ClCompile Include="Propositions.cpp" />

@@ -8,11 +8,36 @@ namespace del {
 #if OPR_ENABLED == 1
 	class Valuations {
 	public:
-		void add(const std::string& valuation) { valuations.insert(valuation); }
-		const std::set<std::string>& get() { return valuations; }
+
+		Valuations(const State& state, const Bisimulation_Context* bisimContext)
+			: bisimContext(bisimContext) {
+
+			valuations.reserve(state.get_worlds().size());
+			// Get and sort valuations
+			for (auto& world : state.get_worlds()) {
+				std::string valuation = bisimContext->convert_propositions_to_string(world.get_true_propositions());
+				if (std::find(valuations.begin(), valuations.end(), valuation) == valuations.end()) {
+					valuations.push_back(valuation);
+				}
+			}
+			std::sort(valuations.begin(), valuations.end());
+			
+			for (size_t i = 0; i < valuations.size(); ++i) {
+				valuation_to_block[valuations.at(i)] = i;
+			}
+		}
+
+		size_t GetBlockIndex(const std::string& valuation) const {
+			return valuation_to_block.at(valuation);
+		}
+
+		void add(const std::string& valuation) { valuations.push_back(valuation); }
+		const std::vector<std::string>& get() { return valuations; }
 		const size_t size() const { return valuations.size(); }
 	private:
-		std::set<std::string> valuations;
+		std::vector<std::string> valuations;
+		std::unordered_map<std::string, size_t> valuation_to_block;
+		const Bisimulation_Context* bisimContext;
 	};
 	class All_Signatures {
 	public:
@@ -264,55 +289,51 @@ namespace del {
 	}
 
 
-	// TODO - Split this into around a billion seperate methods
-	State Bisimulation_Context::to_bisimulation_contraction(const State& state, size_t k) {
+	struct World_Relations {
+
+		World_Relations(const State& state) {
+			for (size_t i = 0; i < state.get_worlds_count(); ++i) {
+				relations[i] = std::vector < std::vector<size_t>>(state.get_number_of_agents());
+			}
+			size_t agent = 0;
+			for (auto& relation : state.get_indistinguishability_relations()) {
+				for (auto& entry : relation) {
+					if (relations.find(entry.world_from.id) == relations.end()) {
+						relations.insert({ entry.world_from.id, std::vector<std::vector<size_t>>(state.get_number_of_agents()) });
+					}
+					relations[entry.world_from.id][agent].emplace_back(entry.world_to.id);
+				}
+				agent++;
+			}
+		}
+
+		const std::vector<std::vector<size_t>>& Get(const World_Id& world) const {
+			return (*relations.find(world.id)).second;
+		}
 
 		// [world_from][agent][world_to]
 		std::unordered_map <size_t, std::vector<std::vector<size_t>>> relations;
-		for (size_t i = 0; i < state.get_worlds_count(); ++i) {
-			relations[i] = std::vector < std::vector<size_t>>(state.get_number_of_agents());
-		}
-		size_t agent = 0;
-		for (auto& relation : state.get_indistinguishability_relations()) {
-			for (auto& entry : relation) {
-				if (relations.find(entry.world_from.id) == relations.end()) {
-					relations.insert({ entry.world_from.id, std::vector<std::vector<size_t>>(state.get_number_of_agents()) });
-				}
-				relations[entry.world_from.id][agent].emplace_back(entry.world_to.id);
-			}
-			agent++;
-		}
+	};
 
-		std::unordered_map<std::string, size_t> valuation_to_block;
-		std::vector<std::string> valuations;
-		valuations.reserve(state.get_worlds().size());
+	// TODO - Split this into around a billion seperate methods
+	State Bisimulation_Context::to_bisimulation_contraction(const State& state, size_t k) {
+		World_Relations world_relations(state);
+		Valuations valuations(state, this);
 
-		// Get and sort valuations
-		for (auto& world : state.get_worlds()) {
-			std::string valuation = convert_propositions_to_string(world.get_true_propositions());
-			if (std::find(valuations.begin(), valuations.end(), valuation) == valuations.end()) {
-				valuations.push_back(valuation);
-			}
-		}
-		std::sort(valuations.begin(), valuations.end());
 
 		// Initialise blocks
 		blocks = std::vector<std::vector<World_Id>>(valuations.size());
-		size_t block_counter = 0;
-		for (auto& valuation : valuations) {
-			valuation_to_block[valuation] = block_counter;
-			++block_counter;
-		}
 
 		for (const auto& world : state.get_worlds()) {
 			// Set block/world mapping
 			std::string valuation = convert_propositions_to_string(world.get_true_propositions());
-			blocks[valuation_to_block[valuation]].push_back(world.get_id());
-			world_to_block[world.get_id().id] = valuation_to_block[valuation];
+			size_t block_index = valuations.GetBlockIndex(valuation);
+			blocks[block_index].push_back(world.get_id());
+			world_to_block[world.get_id().id] = block_index;
 		}
 
 
-		partition_into_relations_blocks_contraction(relations, state.get_number_of_agents(), state.get_worlds_count());
+		partition_into_relations_blocks_contraction(world_relations, state.get_number_of_agents(), state.get_worlds_count());
 
 
 		State result(state.get_number_of_agents());
@@ -322,7 +343,7 @@ namespace del {
 		std::vector<std::vector<std::set<size_t>>> block_relations(state.get_number_of_agents(), std::vector<std::set<size_t>>(state.get_worlds_count()));
 
 		// Create block relations
-		for (auto& old_world_entry : relations) {
+		for (auto& old_world_entry : world_relations.relations) {
 			size_t agent = 0;
 			size_t block_from = world_to_block[old_world_entry.first];
 			for (auto& agent_entry : old_world_entry.second) {
@@ -371,7 +392,7 @@ namespace del {
 		return result;
 	}
 
-	void Bisimulation_Context::partition_into_relations_blocks_contraction(const std::unordered_map <size_t, std::vector<std::vector<size_t>>>& relations, size_t agents_size, size_t worlds_size) {
+	void Bisimulation_Context::partition_into_relations_blocks_contraction(const World_Relations& world_relations, size_t agents_size, size_t worlds_size) {
 		size_t block_counter = 0;
 		std::vector<std::vector<Signature>> blocks_to_be_created;
 
@@ -383,7 +404,7 @@ namespace del {
 			std::vector<Signature> signatures;
 			size_t counter_entry = 0;
 			for (auto& block_entry : block) {
-				signatures.emplace_back(block_counter, counter_entry, block_entry, (*relations.find(block_entry.id)).second, agents_size, worlds_size);
+				signatures.emplace_back(block_counter, counter_entry, block_entry, world_relations.Get(block_entry), agents_size, worlds_size);
 				counter_entry++;
 			}
 			std::sort(signatures.begin(), signatures.end());
@@ -424,12 +445,12 @@ namespace del {
 
 		// Recurse
 		if (!blocks_to_be_created.empty()) {
-			partition_into_relations_blocks_contraction(relations, agents_size, worlds_size);
+			partition_into_relations_blocks_contraction(world_relations, agents_size, worlds_size);
 		}
 	}
 
 	// TODO - Handle this better, since propositions representation changed
-	std::string Bisimulation_Context::convert_propositions_to_string(const std::vector<Proposition>& propositions) {
+	std::string Bisimulation_Context::convert_propositions_to_string(const std::vector<Proposition>& propositions) const {
 		auto props = propositions;
 		std::sort(props.begin(), props.end());
 		std::string result;
