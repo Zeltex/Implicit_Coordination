@@ -42,12 +42,8 @@ namespace del {
 	void State::set_amount_of_agents(size_t number_of_agents) {
 		this->number_of_agents = number_of_agents;
 		indistinguishability_relation.reserve(number_of_agents);
-		perceivability.reserve(number_of_agents);
-		observability.reserve(number_of_agents);
 		for (size_t i = 0; i < number_of_agents; i++) {
 			indistinguishability_relation.emplace_back();
-			perceivability.emplace_back();
-			observability.emplace_back();
 		}
 	}
 
@@ -166,11 +162,6 @@ namespace del {
 		designated_worlds.push_back(world);
 	}
 
-	void State::copy_perceivability_and_observability(const State& other) {
-		perceivability = other.perceivability;
-		observability = other.observability;
-	}
-
 	size_t State::get_worlds_count() const {
 		return worlds.size();
 	}
@@ -206,52 +197,6 @@ namespace del {
 	void State::set_single_designated_world(World_Id world) {
 		designated_worlds.clear();
 		designated_worlds.push_back(world);
-	}
-
-	void State::add_observability(Agent_Id observer, const std::vector<Agent_Id>& agents) {
-		for (const auto& agent : agents) {
-			auto& temp = observability[observer.id];
-			if (find(temp.begin(), temp.end(), agent) == temp.end()) {
-				observability[observer.id].push_back(agent);
-			}
-		}
-	}
-
-	void State::add_perceivability(Agent_Id perceiver, const std::vector<Agent_Id>& agents) {
-		for (const auto& agent : agents) {
-			auto& temp = perceivability[perceiver.id];
-			if (find(temp.begin(), temp.end(), agent) == temp.end()) {
-				perceivability[perceiver.id].push_back(agent);
-			}
-		}
-	}
-
-	void State::remove_perceivability(Agent_Id perceiver, const std::vector<Agent_Id>& agents) {
-		for (const auto& agent : agents) {
-			auto& temp = perceivability[perceiver.id];
-			auto it = find(temp.begin(), temp.end(), agent);
-			if (it != temp.end()) {
-				temp.erase(it);
-			}
-		}
-	}
-
-	void State::remove_observability(Agent_Id observer, const std::vector<Agent_Id>& agents) {
-		for (const auto& agent : agents) {
-			auto& temp = observability[observer.id];
-			auto it = find(temp.begin(), temp.end(), agent);
-			if (it != temp.end()) {
-				temp.erase(it);
-			}
-		}
-	}
-
-	const std::vector<Agent_Id>& State::get_observables(Agent_Id agent) const {
-		return observability[agent.id];
-	}
-
-	const std::vector<Agent_Id>& State::get_perceivables(Agent_Id agent) const {
-		return perceivability[agent.id];
 	}
 
 	void State::set_designated_worlds(const std::vector<World_Id>& worlds) {

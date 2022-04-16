@@ -15,24 +15,6 @@ namespace del {
 			action.set_amount_of_agents(domain.get_agents().size());
 		}
 
-		// Perceivability
-		for (auto& perceiver_list : perceivability) {
-			std::vector<Agent_Id> temp;
-			for (auto& agent : perceiver_list.second) {
-				temp.emplace_back(domain.get_agent_id(agent));
-			}
-			initial_state.add_perceivability(domain.get_agent_id(perceiver_list.first), temp);
-		}
-
-		// Observability
-		for (auto& observer_list : observability) {
-			std::vector<Agent_Id> temp;
-			for (auto& agent : observer_list.second) {
-				temp.emplace_back(domain.get_agent_id(agent));
-			}
-			initial_state.add_observability(domain.get_agent_id(observer_list.first), temp);
-		}
-
 		for (auto& action : actions) {
 			library.add_general_action(action, domain);
 		}

@@ -41,11 +41,10 @@ namespace del {
 				}
 			}
 		}
-		result.copy_perceivability_and_observability(state);
 #if REMOVE_UNREACHABLE_WORLDS_ENABLED == 1
 		result.remove_unreachable_worlds();
 #endif
-		return std::move(result);
+		return result;
 	}
 	// Using definition: All states reachable by 'agent' from any designated world, 
 	// and the resulting worlds must be closed under 'agent' (any world should be reachable from any other world by 'agent')
@@ -77,7 +76,7 @@ namespace del {
 
 		State result = State(state);
 		result.set_designated_worlds(designated_worlds);
-		return std::move(result);
+		return result;
 	}
 
 	std::vector<State> split_into_global_states(const State& state, const Agent_Id agent) {
