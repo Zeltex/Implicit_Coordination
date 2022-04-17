@@ -4,7 +4,6 @@
 
 namespace del {
 
-	// TODO - Check definition of applicable, does there have to be at least one designated world left?
 	State perform_product_update(const State& state, const Action& action, const std::vector<Agent>& agents, const Domain& domain) {
 		std::vector<World_Entry> new_worlds;
 		State result(state.get_number_of_agents());
@@ -44,38 +43,6 @@ namespace del {
 #if REMOVE_UNREACHABLE_WORLDS_ENABLED == 1
 		result.remove_unreachable_worlds();
 #endif
-		return result;
-	}
-	// Using definition: All states reachable by 'agent' from any designated world, 
-	// and the resulting worlds must be closed under 'agent' (any world should be reachable from any other world by 'agent')
-	State perform_perspective_shift(const State& state, Agent_Id agent_id) {
-
-		std::vector<World_Id> frontier;
-		// Using size_t instead of World_Id to avoid specifying custom hash function for World_Id
-		std::unordered_set<size_t> visited;
-		for (const auto& designated_world : state.get_designated_worlds()) {
-			frontier.push_back(designated_world);
-		}
-		while (!frontier.empty()) {
-			auto current = frontier.back();
-			frontier.pop_back();
-			for (const auto& relation : state.get_indistinguishability_relations(agent_id)) {
-				if (relation.world_from == current &&
-					std::find(visited.begin(), visited.end(), relation.world_to.id) == visited.end()) {
-
-					frontier.push_back(relation.world_to);
-					visited.insert(relation.world_to.id);
-				}
-			}
-		}
-		std::vector<World_Id> designated_worlds;
-		designated_worlds.reserve(visited.size());
-		for (auto& entry : visited) {
-			designated_worlds.emplace_back(World_Id{ entry });
-		}
-
-		State result = State(state);
-		result.set_designated_worlds(designated_worlds);
 		return result;
 	}
 
