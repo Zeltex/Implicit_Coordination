@@ -1,6 +1,7 @@
 #pragma once
 
 #include <set>
+#include <vector>
 
 #include "Formula.hpp"
 #include "World.hpp"
@@ -11,22 +12,14 @@
 
 namespace del {
 
-	class World_Relations 
-	{
-	public:
-
-
-	private:
-		std::vector<bool> data;
-	};
-
-
+	class Action;
 	class Domain;
 	class State {
 	public:
 		State();
 		State(size_t amount_of_agents);
 		State(size_t number_of_agents, size_t world_count);
+		State(const std::vector<World>& worlds, const Accessibility_Relations& accessbility_relations, const std::set<World_Id>& designated_worlds, size_t cost);
 
 		virtual const Propositions& get_true_propositions(size_t world_id) const;
 		virtual std::vector<size_t> get_reachable_worlds(size_t agent_id, size_t world_id) const;
@@ -37,7 +30,7 @@ namespace del {
 		bool	is_one_reachable(Agent_Id agent, World_Id world_from, World_Id world_to) const;
 		bool	is_true(size_t world_id, const Proposition& proposition) const;
 		bool	is_world_designated(World_Id world) const;
-		void	set_amount_of_agents(size_t amount_of_agents);
+		State	product_update(const Action& action, const Domain& domain) const;
 		void	set_cost(size_t cost);
 		void	set_designated_worlds(const std::set<World_Id>& worlds);
 		void	set_single_designated_world(World_Id world);

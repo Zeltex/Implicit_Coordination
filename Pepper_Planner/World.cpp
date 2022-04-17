@@ -1,7 +1,16 @@
 #include "World.hpp"
 #include "Domain.hpp"
+#include "Action_Event.hpp"
 
 namespace del {
+
+	World::World(const World& other, const Action_Event& action, const World_Id& id)
+		: id(id)
+	{
+		true_propositions = other.get_true_propositions();
+		true_propositions.remove(action.get_delete_list());
+		true_propositions.insert(action.get_add_list());
+	}
 
 	World_Id World::get_id() const {
 		return id;

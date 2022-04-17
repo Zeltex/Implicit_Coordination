@@ -1,12 +1,18 @@
 #include "State.hpp"
 #include "Domain.hpp"
 #include "Formula_Input_Impl.hpp"
+#include "Action.hpp"
 
 namespace del {
 
 	State::State(size_t number_of_agents, size_t world_count) :
-		cost(0), worlds(), designated_worlds(), accessibility_relations(world_count) {
-		set_amount_of_agents(number_of_agents);
+		cost(0), worlds(), designated_worlds(), accessibility_relations(world_count, number_of_agents) {
+	}
+
+	State::State(const std::vector<World>& worlds, const Accessibility_Relations& accessbility_relations, const std::set<World_Id>& designated_worlds, size_t cost)
+		: cost(cost), worlds(worlds), designated_worlds(designated_worlds), accessibility_relations(accessbility_relations)
+	{
+
 	}
 
 	void State::shift_perspective(Agent_Id agent, bool is_exclusive) 
@@ -177,6 +183,43 @@ namespace del {
 		designated_worlds = new_designated_worlds;
 	}
 
+
+	State State::product_update(const Action& action, const Domain& domain) const
+	{
+		World_Id new_world_id{ 0 };
+		Formula_Input_Impl input = { this, &domain };
+		std::vector<World> new_worlds;
+		std::set<World_Id> new_designated_worlds;
+		std::vector<World_Entry> world_conversion;
+
+		for (const World& world : worlds) {
+			for (const Action_Event& event : action.get_events()) {
+				
+				if (!event.get_preconditions().valuate(world.get_id().id, &input)) 
+				{
+					continue;
+				}
+
+				// Create world
+				new_worlds.push_back(World(world, event, new_world_id));
+
+				// Set designated
+				if (is_world_designated(world.get_id()) && action.is_event_designated(event.get_id())) 
+				{
+					new_designated_worlds.insert(new_world_id);
+				}
+
+				world_conversion.push_back({ world.get_id(), event.get_id(), new_world_id });
+				++new_world_id;
+			}
+		}
+		Accessibility_Relations new_accessbility_relations = accessibility_relations.product_update(world_conversion, action, domain, *this);
+
+		State result(new_worlds, new_accessbility_relations, new_designated_worlds, cost);
+		result.remove_unreachable_worlds();
+		return result;
+	}
+
 	bool State::operator==(const State& other) const {
 		if (cost != other.cost || worlds.size() != other.worlds.size() || designated_worlds.size() != other.designated_worlds.size())
 		{
@@ -240,17 +283,10 @@ namespace del {
 
 
 	std::string State::to_string(size_t indentation, const Domain& domain) const {
-
-		size_t relations_size = 0;
-		for (const auto& relation : indistinguishability_relation) {
-			relations_size += relation.size();
-		}
-
-		std::string result = get_indentation(indentation) + " State\n" + get_indentation(indentation - 1) + " Sizes: (agents, " + std::to_string(number_of_agents) +
+		std::string result = get_indentation(indentation) + " State\n" + get_indentation(indentation - 1) + " Sizes: " +
 			") (worlds, " + std::to_string(worlds.size()) +
 			") (designated worlds, " + std::to_string(designated_worlds.size()) +
-			") (cost, " + std::to_string(cost) +
-			") (relations, " + std::to_string(relations_size) + ")\n";
+			") (cost, " + std::to_string(cost) + ")\n";
 		result += get_indentation(indentation - 1) + " Designated worlds: ";
 		bool first = true;
 		for (const auto& designated_world : designated_worlds) {
@@ -262,16 +298,7 @@ namespace del {
 			result += std::to_string(designated_world.id);
 		}
 		result += "\n" + get_indentation(indentation - 1) + " ({Agent}, {World from}, {World to}) Relations";
-		size_t current_agent = 0;
-		for (const auto& agent_relations : indistinguishability_relation) {
-			for (const auto& relation : agent_relations) {
-				result += "\n(" 
-					+ domain.get_agent(Agent_Id{ current_agent }).get_name() + ", "
-					+ std::to_string(relation.world_from.id) + ", "
-					+ std::to_string(relation.world_to.id) + ")";
-			}
-			current_agent++;
-		}
+		result += "\n" + accessibility_relations.to_string(domain);
 		result += "\n" + get_indentation(indentation - 1) + " World {id}: {propositions}";
 		for (const auto& world : worlds) {
 			result += "\n" + world.to_string(domain);

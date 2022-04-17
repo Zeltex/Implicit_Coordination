@@ -7,10 +7,12 @@
 #include "Formula.hpp"
 
 namespace del {
+	class Action_Event;
 	class Domain;
 	class World {
 	public:
 
+		World(const World& other, const Action_Event& action, const World_Id& id);
 		World(World_Id id) : id(id), true_propositions() {}
 		World(World_Id id, Propositions true_propositions) :
 			id(id), true_propositions(true_propositions) {}

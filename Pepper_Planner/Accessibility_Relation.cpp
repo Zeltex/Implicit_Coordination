@@ -1,17 +1,42 @@
 #include "Accessibility_Relation.hpp"
 
+#include "Domain.hpp"
+#include "Action_Event.hpp"
 
 namespace del 
 {
-
-	bool Accessibility_Relation::has_direct_relation(const World_Id& from_world, const World_Id& to_world) const 
+	Accessibility_Relation::Accessibility_Relation(const Agent_Id& agent, size_t worlds_size)
+		: agent(agent), worlds_size(worlds_size), world_relations(worlds_size * worlds_size, false)
 	{
-		return world_relations.at(get_index(from_world, to_world));
+		
 	}
 
-	Accessibility_Relation::Accessibility_Relation(const Accessibility_Relation& other, const std::map<World_Id, World_Id>& world_old_to_new)
+	Accessibility_Relation::Accessibility_Relation(
+		const Agent_Id& agent,
+		const Accessibility_Relation& other, 
+		const std::vector<World_Entry>& world_conversion,
+		const Action& action,
+		const Domain& domain,
+		const State& state)
+		: agent(agent), worlds_size(world_conversion.size()), world_relations(worlds_size * worlds_size, false)
 	{
-		worlds_size = world_old_to_new.size();
+		for (const auto& from_conversion : world_conversion)
+		{
+			for (const auto& to_conversion : world_conversion)
+			{
+				if (!action.is_condition_fulfilled(agent, from_conversion.old_event, to_conversion.old_event, state, from_conversion.old_world, domain))
+				{
+					continue;
+				}
+
+				world_relations.at(get_index(from_conversion.new_world, to_conversion.new_world)) = other.has_direct_relation(from_conversion.old_world, from_conversion.old_world);
+			}
+		}
+	}
+
+	Accessibility_Relation::Accessibility_Relation(const Agent_Id& agent, const Accessibility_Relation& other, const std::map<World_Id, World_Id>& world_old_to_new)
+		: agent(agent), worlds_size(world_old_to_new.size()), world_relations(worlds_size * worlds_size, false)
+	{
 		for (const auto&[world_old_from, world_new_from] : world_old_to_new) 
 		{
 			for (const auto& [world_old_to, world_new_to] : world_old_to_new)
@@ -19,6 +44,11 @@ namespace del
 				world_relations.at(get_index(world_new_from, world_new_to)) = other.has_direct_relation(world_old_from, world_old_to);
 			}
 		}
+	}
+
+	bool Accessibility_Relation::has_direct_relation(const World_Id& from_world, const World_Id& to_world) const 
+	{
+		return world_relations.at(get_index(from_world, to_world));
 	}
 
 	size_t Accessibility_Relation::get_index(const World_Id& from_world, const World_Id& to_world) const
@@ -67,10 +97,44 @@ namespace del
 		}
 	}
 
+	std::string Accessibility_Relation::to_string(const Domain& domain) const
+	{
+		std::string result;
+		bool first = true;
+		for (size_t world_from = 0; world_from < worlds_size; ++world_from)
+		{
+			for (size_t world_to = 0; world_to < worlds_size; ++world_to)
+			{
+				if (world_relations.at(get_index({ world_from }, { world_to })))
+				{
+					if (first)
+					{
+						first = false;
+					}
+					else
+					{
+						result += "\n";
+					}
+					result += "(" 
+						+ domain.get_agent(agent).get_name() + ", "
+						+ std::to_string(world_from) + ", "
+						+ std::to_string(world_to) + ")";
+				}
+			}
+		}
+	}
+
 	// ------
 
 
-	Accessibility_Relations::Accessibility_Relations(size_t world_count)
+	Accessibility_Relations::Accessibility_Relations(const std::vector<Accessibility_Relation>& new_agent_relations)
+		: worlds_size(new_agent_relations.size()), agent_relations(new_agent_relations)
+	{
+	}
+
+
+	Accessibility_Relations::Accessibility_Relations(size_t world_count, size_t agent_count)
+		: worlds_size(world_count), agent_relations(agent_count)
 	{
 		// TODO
 	}
@@ -78,9 +142,9 @@ namespace del
 	void Accessibility_Relations::convert_world_ids(const std::map<World_Id, World_Id>& world_old_to_new)
 	{
 		std::vector<Accessibility_Relation> new_agent_relations;
-		for (const Accessibility_Relation& agent_relation : agent_relations)
+		for (size_t i = 0; i < agent_relations.size(); ++i)
 		{
-			new_agent_relations.push_back(Accessibility_Relation(agent_relation, world_old_to_new));
+			new_agent_relations.push_back(Accessibility_Relation(Agent_Id{ i }, agent_relations.at(i), world_old_to_new));
 		}
 		agent_relations = new_agent_relations;
 	}
@@ -118,6 +182,20 @@ namespace del
 	{
 		return agent_relations.at(agent.id).has_direct_relation(from_world, to_world);
 	}
+
+	Accessibility_Relations Accessibility_Relations::product_update(
+		const std::vector<World_Entry>& world_conversion,
+		const Action& action,
+		const Domain& domain,
+		const State& state) const
+	{
+		std::vector<Accessibility_Relation> new_agent_relations;
+		for (size_t i = 0; i < agent_relations.size(); ++i)
+		{
+			new_agent_relations.push_back(Accessibility_Relation(Agent_Id{ i }, agent_relations.at(i), world_conversion, action, domain, state));
+		}
+		return Accessibility_Relations(new_agent_relations);
+	}
 	
 	bool Accessibility_Relations::operator== (const Accessibility_Relations& other) const
 	{
@@ -153,6 +231,25 @@ namespace del
 			agent_relations.at(i).to_hashable_string(result, ref_count);
 		}
 
+		return result;
+	}
+
+	std::string Accessibility_Relations::to_string(const Domain& domain) const
+	{
+		std::string result;
+		bool first = true;
+		for (size_t i = 0; i < agent_relations.size(); ++i)
+		{
+			if (first)
+			{
+				first = false;
+			}
+			else
+			{
+				result += "\n";
+			}
+			result += agent_relations.at(i).to_string(domain);
+		}
 		return result;
 	}
 }
