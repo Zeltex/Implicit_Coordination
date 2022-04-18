@@ -168,27 +168,6 @@ namespace del {
 		return result;
 	}
 
-	std::string Action::to_graph(const std::string& base_id, const Domain& domain) const {
-		std::string result;
-		for (auto& event : events) {
-			result += base_id + std::to_string(event.get_id().id) + "[label=\"" + event.get_name() + "\n<"
-				+ event.get_preconditions().to_string(domain.get_id_to_atom()) + ">\n<"
-				+ get_string(event.get_add_list(), domain) + ">\n<"
-				+ get_string(event.get_delete_list(), domain) + ">\"";
-			if (find(designated_events.begin(), designated_events.end(), event.get_id()) != designated_events.end()) {
-				result += ", shape=doublecircle";
-			}
-			result += "];\n";
-		}
-
-		size_t agent = 0;
-		for (const auto& agent_relations : edge_conditions) {
-			result += agent_relations.to_graph(domain.get_agent(Agent_Id{ agent }).get_name(), base_id, domain);
-			agent++;
-		}
-		return result;
-	}
-
 	std::string Action::get_string(const std::vector<Proposition>& propositions, const Domain& domain) const {
 		std::string result;
 		bool first = true;

@@ -42,9 +42,6 @@
     <ClCompile Include="Agent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DEL_Operations.cpp">
-      <Filter>Source Files\DEL</Filter>
-    </ClCompile>
     <ClCompile Include="State.cpp">
       <Filter>Source Files\DEL</Filter>
     </ClCompile>
@@ -121,9 +118,6 @@
     </ClInclude>
     <ClInclude Include="Types.hpp">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DEL_Operations.hpp">
-      <Filter>Header Files\DEL</Filter>
     </ClInclude>
     <ClInclude Include="State.hpp">
       <Filter>Header Files\DEL</Filter>

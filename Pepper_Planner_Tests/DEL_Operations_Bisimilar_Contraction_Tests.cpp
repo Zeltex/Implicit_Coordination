@@ -8,9 +8,7 @@
 #include "State.hpp"
 #include "Action.hpp"
 #include "Action_Event.hpp"
-#include "DEL_Operations.hpp"
 #include "Types.hpp"
-#include "DEL_Operations.hpp"
 #include "Bisimulation_Context.hpp"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;

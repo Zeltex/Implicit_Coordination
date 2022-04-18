@@ -154,7 +154,6 @@
     <ClCompile Include="Agent.cpp" />
     <ClCompile Include="Bisimulation_Context.cpp" />
     <ClCompile Include="Core.cpp" />
-    <ClCompile Include="DEL_Operations.cpp" />
     <ClCompile Include="Domain.cpp" />
     <ClCompile Include="Domain_Interface_Implementation.cpp" />
     <ClCompile Include="Environment_Loader.cpp" />
@@ -181,7 +180,6 @@
     <ClInclude Include="Agent.hpp" />
     <ClInclude Include="Bisimulation_Context.hpp" />
     <ClInclude Include="Core.hpp" />
-    <ClInclude Include="DEL_Operations.hpp" />
     <ClInclude Include="Domain.hpp" />
     <ClInclude Include="Domain_Interface_Implementation.hpp" />
     <ClInclude Include="Environment_Loader.hpp" />

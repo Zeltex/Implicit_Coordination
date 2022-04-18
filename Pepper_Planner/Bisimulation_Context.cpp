@@ -104,22 +104,26 @@ namespace del::bisimulation_context {
 
 		std::vector<World_Id> worlds;
 	};
+
 	struct Agent_World_Reachables
 	{
 		Agent_World_Reachables(const State& state)
 		{
-			for (const World& world : state.get_worlds())
+			for (const World& world_from : state.get_worlds())
 			{
 				std::set<Agent_World_Reachable> reachables;
 				for (size_t i = 0; i < state.get_number_of_agents(); ++i)
 				{
 					Agent_Id agent = { i };
-					for (auto& reachable_world : state.get_reachables(Agent_Id{ i }, world.get_id()))
+					for (const World& world_to : state.get_worlds())
 					{
-						reachables.insert({ agent, reachable_world });
+						if (state.is_one_reachable(agent, world_from.get_id(), world_to.get_id()))
+						{
+							reachables.insert({ agent, world_to.get_id() });
+						}
 					}
 				}
-				data.insert({world.get_id(), std::move(reachables)});
+				data.insert({ world_from.get_id(), reachables });
 			}
 		}
 

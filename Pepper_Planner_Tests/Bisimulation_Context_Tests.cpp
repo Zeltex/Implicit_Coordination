@@ -4,7 +4,6 @@
 #include <iostream>
 
 #include "Types.hpp"
-#include "DEL_Operations.hpp"
 #include "Bisimulation_Context.hpp"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;

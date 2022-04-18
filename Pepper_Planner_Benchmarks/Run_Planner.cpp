@@ -11,7 +11,6 @@
 #include "Formula_Component.hpp"
 #include "Action.hpp"
 #include "Action_Event.hpp"
-#include "DEL_Operations.hpp"
 #include "Action_Library.hpp"
 #include "Planner.hpp"
 #include "Domain.hpp"

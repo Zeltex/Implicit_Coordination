@@ -9,9 +9,7 @@
 #include "State.hpp"
 #include "Action.hpp"
 #include "Action_Event.hpp"
-#include "DEL_Operations.hpp"
 #include "Types.hpp"
-#include "DEL_Operations.hpp"
 #include "Domain.hpp"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
