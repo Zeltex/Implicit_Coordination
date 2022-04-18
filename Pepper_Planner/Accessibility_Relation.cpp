@@ -46,6 +46,45 @@ namespace del
 		}
 	}
 
+	bool Accessibility_Relation::is_serial_transitive_euclidean() const
+	{
+		for (size_t i = 0; i < worlds_size; ++i)
+		{
+			bool serial_connection_found = false;
+			for (size_t j = 0; j < worlds_size; ++j)
+			{
+				if (!world_relations.at(get_index(i, j)))
+				{
+					continue;
+				}
+
+				serial_connection_found = true;
+
+				for (size_t k = 0; k < worlds_size; ++k)
+				{
+					if (world_relations.at(get_index(j, k)) && !world_relations.at(get_index(i, k)))
+					{
+						// Not transitive
+						return false;
+					}
+
+					if (world_relations.at(get_index(i, k)) && !world_relations.at(get_index(j, k)))
+					{
+						// Not euclidean
+						return false;
+					}
+				}
+			}
+
+			if (!serial_connection_found) 
+			{
+				// Not serial
+				return false;
+			}
+		}
+		return true;
+	}
+
 	bool Accessibility_Relation::has_direct_relation(const World_Id& from_world, const World_Id& to_world) const 
 	{
 		return world_relations.at(get_index(from_world, to_world));
@@ -251,5 +290,17 @@ namespace del
 			result += agent_relations.at(i).to_string(domain);
 		}
 		return result;
+	}
+
+	bool Accessibility_Relations::is_serial_transitive_euclidean() const
+	{
+		for (const Accessibility_Relation& agent_relation : agent_relations)
+		{
+			if (!agent_relation.is_serial_transitive_euclidean())
+			{
+				return false;
+			}
+		}
+		return true;
 	}
 }

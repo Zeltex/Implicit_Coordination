@@ -217,9 +217,17 @@ namespace del {
 		// Update accessbility relations
 		Accessibility_Relations new_accessbility_relations = accessibility_relations.product_update(world_conversion, action, domain, *this);
 
-		State result(new_worlds, new_accessbility_relations, new_designated_worlds, cost + action.get_cost());
-		result.remove_unreachable_worlds();
-		return result;
+		if (!new_accessbility_relations.is_serial_transitive_euclidean())
+		{
+			return *this;
+		}
+		else
+		{
+			State result(new_worlds, new_accessbility_relations, new_designated_worlds, cost + action.get_cost());
+			result.remove_unreachable_worlds();
+
+			return result;
+		}
 	}
 
 	std::vector<State> State::split_into_globals() const
