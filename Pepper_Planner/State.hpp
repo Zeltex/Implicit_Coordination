@@ -52,6 +52,8 @@ namespace del {
 		const World&									get_world(World_Id world) const;
 		const std::vector<World>&						get_worlds() const;
 		size_t											get_worlds_count() const;
+		std::vector<State>								split_into_globals() const;
+
 
 
 		std::string to_string(const Domain& domain) const;

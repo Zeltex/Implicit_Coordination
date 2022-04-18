@@ -213,10 +213,24 @@ namespace del {
 				++new_world_id;
 			}
 		}
+
+		// Update accessbility relations
 		Accessibility_Relations new_accessbility_relations = accessibility_relations.product_update(world_conversion, action, domain, *this);
 
-		State result(new_worlds, new_accessbility_relations, new_designated_worlds, cost);
+		State result(new_worlds, new_accessbility_relations, new_designated_worlds, cost + action.get_cost());
 		result.remove_unreachable_worlds();
+		return result;
+	}
+
+	std::vector<State> State::split_into_globals() const
+	{
+		std::vector<State> result;
+		for (const World_Id& designated_world : designated_worlds) {
+			State new_state = State(*this);
+			new_state.set_single_designated_world(designated_world);
+			new_state.remove_unreachable_worlds();
+			result.push_back(std::move(new_state));
+		}
 		return result;
 	}
 

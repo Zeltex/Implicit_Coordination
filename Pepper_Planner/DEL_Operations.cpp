@@ -4,62 +4,6 @@
 
 namespace del {
 
-	State perform_product_update(const State& state, const Action& action, const std::vector<Agent>& agents, const Domain& domain) {
-		std::vector<World_Entry> new_worlds;
-		State result(state.get_number_of_agents());
-		result.set_cost(state.get_cost() + action.get_cost());
-		Formula_Input_Impl input = { &state, &domain };
-
-		for (auto& world : state.get_worlds()) {
-			for (const auto& event : action.get_events()) {
-				if (event.get_preconditions().valuate(world.get_id().id, &input)) {
-					// TODO - Maybe handle unreachable worlds here
-
-					World& updated_world = result.create_world();
-					updated_world.add_true_propositions(world.get_true_propositions());
-					updated_world.remove_true_propositions(event.get_delete_list());
-					updated_world.add_true_propositions(event.get_add_list());
-
-					if (state.is_world_designated(world.get_id()) && action.is_event_designated(event.get_id())) {
-						result.set_world_designated(updated_world.get_id());
-					}
-
-					new_worlds.emplace_back(world.get_id(), event.get_id(), updated_world.get_id());
-				}
-			}
-		}
-
-		for (const auto& world1 : new_worlds) {
-			for (const auto& world2 : new_worlds) {
-				for (size_t i = 0; i < state.get_number_of_agents(); i++) {
-					Agent_Id agent = Agent_Id{ i };
-					if (state.is_one_reachable(agent, world1.old_world, world2.old_world) &&
-						action.is_condition_fulfilled(agent, world1.old_event, world2.old_event, state, world1.old_world, domain)) {
-						result.add_indistinguishability_relation(agent, world1.new_world, world2.new_world);
-					}
-				}
-			}
-		}
-#if REMOVE_UNREACHABLE_WORLDS_ENABLED == 1
-		result.remove_unreachable_worlds();
-#endif
-		return result;
-	}
-
-	std::vector<State> split_into_global_states(const State& state, const Agent_Id agent) {
-		std::vector<State> result;
-		for (const auto& designated_world : state.get_designated_worlds()) {
-			State new_state = State(state);
-			new_state.set_single_designated_world(designated_world);
-#if REMOVE_UNREACHABLE_WORLDS_ENABLED == 1
-			new_state.remove_unreachable_worlds();
-#endif
-			result.push_back(std::move(new_state));
-		}
-		return result;
-	}
-
-
 	bool is_action_applicable(const State& state, const Action& action, const Domain& domain) {
 		auto worlds = state.get_designated_world_reachables(action.get_owner());
 		Formula_Input_Impl input = { &state, &domain };
