@@ -30,7 +30,6 @@ namespace del {
 		bool	is_one_reachable(Agent_Id agent, World_Id world_from, World_Id world_to) const;
 		bool	is_true(size_t world_id, const Proposition& proposition) const;
 		bool	is_world_designated(World_Id world) const;
-		State	product_update(const Action& action, const Domain& domain) const;
 		void	set_cost(size_t cost);
 		void	set_designated_worlds(const std::set<World_Id>& worlds);
 		void	set_single_designated_world(World_Id world);
@@ -44,7 +43,8 @@ namespace del {
 		void remove_true_propositions(World_Id world, const std::vector<Proposition>& propositions);
 		void remove_unreachable_worlds();
 
-
+		State											contract() const;
+		std::vector<State>								get_all_perspective_shifts(size_t number_of_agents) const;
 		size_t											get_cost() const;
 		const std::set<World_Id>&						get_designated_worlds() const;
 		size_t											get_designated_worlds_count() const;
@@ -52,6 +52,7 @@ namespace del {
 		const World&									get_world(World_Id world) const;
 		const std::vector<World>&						get_worlds() const;
 		size_t											get_worlds_count() const;
+		std::optional<State>							product_update(const Action& action, const Domain& domain) const;
 		std::vector<State>								split_into_globals() const;
 
 

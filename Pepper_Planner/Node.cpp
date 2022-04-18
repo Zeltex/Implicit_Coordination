@@ -2,6 +2,12 @@
 #include "Graph.hpp"
 
 namespace del {
+
+	bool Node::is_goal(const Formula& goal_formula, const Domain& domain) const
+	{
+		return valuate(goal_formula, domain);
+	}
+
 	const State& Node::get_state() const {
 		return state;;
 	}

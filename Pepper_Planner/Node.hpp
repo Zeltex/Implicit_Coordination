@@ -39,6 +39,7 @@ namespace del {
 		bool is_root_node() const;
 		bool is_dead() const;
 		bool is_solved() const;
+		bool is_goal(const Formula& goal_formula, const Domain& domain) const;
 		bool check_if_dead(Graph& graph);
 		bool check_if_solved(Graph& graph);
 		bool valuate(const Formula& formula, const Domain& domain) const;

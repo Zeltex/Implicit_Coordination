@@ -1,6 +1,5 @@
 #include "Node_Comparator.hpp"
 #include "State.hpp"
-#include "DEL_Operations.hpp"
 #include "Graph.hpp"
 #include "Node.hpp"
 #include "Core.hpp"
@@ -11,7 +10,7 @@ namespace del {
 		insert(node);
 	}
 
-	std::pair<bool, std::optional<Node_Id>> Node_Comparator::does_bisimilar_exist_and(const Graph& graph, const State& state, Node_Id parent_id) const {
+	std::pair<bool, std::optional<Node_Id>> Node_Comparator::does_bisimilar_exist_and(const Graph& graph, const State& state) const {
 #if BISIM_COMPARISON_ENABLED == 1
 	#if BISIMILAR_USE_HASH_ENABLED == 1
 		return does_bisimilar_exist(graph, state, visited_and);
@@ -23,7 +22,7 @@ namespace del {
 #endif
 	}
 
-	std::pair<bool, std::optional<Node_Id>> Node_Comparator::does_bisimilar_exist_or(const Graph& graph, const State& state, Node_Id parent_id) const{
+	std::pair<bool, std::optional<Node_Id>> Node_Comparator::does_bisimilar_exist_or(const Graph& graph, const State& state) const{
 #if BISIM_COMPARISON_ENABLED == 1
 	#if BISIMILAR_USE_HASH_ENABLED == 1
 		return does_bisimilar_exist(graph, state, visited_or);

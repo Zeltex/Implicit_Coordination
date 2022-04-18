@@ -1,6 +1,5 @@
 #include "Graph.hpp"
 #include "Node_Comparator.hpp"
-#include "DEL_Operations.hpp"
 #include "Core.hpp"
 
 namespace del {
@@ -40,29 +39,40 @@ namespace del {
 		return frontier.size() == 0;
 	}
 
-	Node_Id Graph::create_or_node(State state, Node_Id parent) {
+	Node& Graph::create_or_node(State state, const Node& parent) {
+		return create_or_node(state, parent.get_id());
+	}
+
+	Node& Graph::create_or_node(State state, Node_Id parent) {
 		Node_Id node_id = Node_Id{ nodes.size() };
 		nodes.emplace_back(state, node_id, parent, false);
-		nodes.back().calculate_hash();
+		Node& node = nodes.back();
+		node.calculate_hash();
 		nodes[parent.id].add_child(node_id);
-		return node_id;
+		return node;
 	}
 
-	Node_Id Graph::create_and_node(State state, Node_Id parent, Action action_from_parent) {
+	Node& Graph::create_and_node(State state, Node_Id parent, Action action_from_parent) {
 		Node_Id node_id = Node_Id{ nodes.size() };
 		nodes.emplace_back(state, node_id, parent, action_from_parent, false);
-		nodes.back().calculate_hash();
+		Node& node = nodes.back();
+		node.calculate_hash();
 		nodes[parent.id].add_child(node_id);
-		return node_id;
+		return node;
 	}
 
-	Node_Id Graph::create_root_node(State state) {
+	Node& Graph::create_root_node(State state) {
 		Node_Id node_id = Node_Id{ nodes.size() };
 		// The dummy action makes sure root is and-node
 		nodes.emplace_back(state, node_id, Node_Id{ 0 }, Action{ }, true);
-		nodes.back().calculate_hash();
+		Node& node = nodes.back();
+		node.calculate_hash();
 		root = node_id;
-		return node_id;
+		return node;
+	}
+
+	void Graph::add_to_frontier(const Node& node) {
+		add_to_frontier(node.get_id());
 	}
 
 	void Graph::add_to_frontier(Node_Id node_id) {
@@ -70,6 +80,10 @@ namespace del {
 			throw;
 		}
 		frontier.emplace(node_id, nodes.at(node_id.id).get_cost());
+	}
+
+	void Graph::set_parent_child(const Node& parent, Node_Id child_id, const Action& action) {
+		set_parent_child(parent.get_id(), child_id, action);
 	}
 
 	void Graph::set_parent_child(Node_Id parent_id, Node_Id child_id, const Action& action) {
@@ -95,6 +109,11 @@ namespace del {
 	}
 
 	Node& Graph::get_node(Node_Id node_id) {
+		return nodes.at(node_id.id);
+	}
+
+	const Node& Graph::get_node(Node_Id node_id) const
+	{
 		return nodes.at(node_id.id);
 	}
 

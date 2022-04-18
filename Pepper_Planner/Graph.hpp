@@ -18,18 +18,22 @@ namespace del {
 
 		Node_Id get_next_from_frontier();
 		bool is_frontier_empty() const;
+		void add_to_frontier(const Node& node);
 		void add_to_frontier(Node_Id node_id);
+		void set_parent_child(const Node& parent_id, Node_Id child, const Action& action);
 		void set_parent_child(Node_Id parent_id, Node_Id child_id, const Action& action);
 		void set_parent_child(Node_Id parent_id, Node_Id child_id);
-		Node_Id create_and_node(State state, Node_Id parent, Action action_from_parent);
-		Node_Id create_or_node(State state, Node_Id parent);
-		Node_Id create_root_node(State state);
+		Node& create_and_node(State state, Node_Id parent, Action action_from_parent);
+		Node& create_or_node(State state, const Node& parent);
+		Node& create_or_node(State state, Node_Id parent);
+		Node& create_root_node(State state);
 
 		// The reference returned may become invalid if a new node is created 
 		// since the vector may reallocate memory on the heap
 		std::vector<Node>& get_nodes();
 		const std::vector<Node>& get_const_nodes() const;
 		Node& get_node(Node_Id node_id);
+		const Node& get_node(Node_Id node_id) const;
 		const Node& get_const_node(Node_Id node_id) const;
 		Node& get_root_node();
 

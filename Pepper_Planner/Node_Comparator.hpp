@@ -12,8 +12,8 @@ namespace del {
 	public:
 		Node_Comparator() {};
 		Node_Comparator(const Node& node);
-		std::pair<bool, std::optional<Node_Id>> does_bisimilar_exist_and(const Graph& graph, const State& state, Node_Id parent_id) const;
-		std::pair<bool, std::optional<Node_Id>> does_bisimilar_exist_or(const Graph& graph, const State& state, Node_Id parent_id) const;
+		std::pair<bool, std::optional<Node_Id>> does_bisimilar_exist_and(const Graph& graph, const State& state) const;
+		std::pair<bool, std::optional<Node_Id>> does_bisimilar_exist_or(const Graph& graph, const State& state) const;
 		void insert(const Node& node);
 
 	private:

@@ -14,6 +14,18 @@ namespace del {
 	{
 
 	}
+	std::vector<State> State::get_all_perspective_shifts(size_t number_of_agents) const
+	{
+		std::vector<State> perspective_shifts;
+		perspective_shifts.reserve(number_of_agents);
+
+		for (size_t i = 0; i < number_of_agents; ++i)
+		{
+			State temp_state = *this;
+			temp_state.shift_perspective(Agent_Id{ i });
+			perspective_shifts.push_back(temp_state);
+		}
+	}
 
 	void State::shift_perspective(Agent_Id agent, bool is_exclusive) 
 	{
@@ -35,6 +47,9 @@ namespace del {
 				}
 			}
 		}
+
+		// TODO - Might make this optional for optimisation
+		remove_unreachable_worlds();
 	}
 
 	bool State::is_one_reachable(Agent_Id agent, World_Id world_from, World_Id world_to) const
@@ -184,13 +199,14 @@ namespace del {
 	}
 
 
-	State State::product_update(const Action& action, const Domain& domain) const
+	std::optional<State> State::product_update(const Action& action, const Domain& domain) const
 	{
 		World_Id new_world_id{ 0 };
 		Formula_Input_Impl input = { this, &domain };
 		std::vector<World> new_worlds;
 		std::set<World_Id> new_designated_worlds;
 		std::vector<World_Entry> world_conversion;
+		std::set<World_Id> unassigned_designated_worlds = designated_worlds;
 
 		for (const World& world : worlds) {
 			for (const Action_Event& event : action.get_events()) {
@@ -207,6 +223,7 @@ namespace del {
 				if (is_world_designated(world.get_id()) && action.is_event_designated(event.get_id())) 
 				{
 					new_designated_worlds.insert(new_world_id);
+					unassigned_designated_worlds.erase(world.get_id());
 				}
 
 				world_conversion.push_back({ world.get_id(), event.get_id(), new_world_id });
@@ -214,12 +231,19 @@ namespace del {
 			}
 		}
 
+		// Some designated world did not have associated designated event
+		if (!unassigned_designated_worlds.empty())
+		{
+			return {};
+		}
+
+
 		// Update accessbility relations
 		Accessibility_Relations new_accessbility_relations = accessibility_relations.product_update(world_conversion, action, domain, *this);
 
 		if (!new_accessbility_relations.is_serial_transitive_euclidean())
 		{
-			return *this;
+			return {};
 		}
 		else
 		{
@@ -326,5 +350,10 @@ namespace del {
 			result += "\n" + world.to_string(domain);
 		}
 		return result;
+	}
+
+	State State::contract() const
+	{
+		return perform_bisimilar_contraction(*this);
 	}
 }
