@@ -38,9 +38,6 @@ namespace del {
 		Node& get_root_node();
 
 		std::string to_string(const Domain& domain) const;
-		std::string to_graph(const Domain& domain) const;
-		std::string to_graph_simple(const Domain& domain) const;
-		std::string to_partial_graph(const Domain& domain) const;
 	private:
 		Node_Id root;
 		std::priority_queue < Node_Entry, std::vector<Node_Entry>, Node_Entry_Comparator> frontier;

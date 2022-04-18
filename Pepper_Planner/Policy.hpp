@@ -6,7 +6,6 @@
 #include "State.hpp"
 #include "Action.hpp"
 #include "Misc.hpp"
-#include "DEL_Operations.hpp"
 
 namespace del {
 	class Node_Comparator;
@@ -23,7 +22,6 @@ namespace del {
 		bool is_solved() const;
 		std::optional<Action> get_action(const State& state, Agent_Id preferred_agent = { 0 }) const;
 
-		std::string to_graph(const Domain& domain) const;
 		std::string to_string(const Domain& domain) const;
 	private:
 		bool solved;

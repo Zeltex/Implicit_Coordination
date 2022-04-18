@@ -45,7 +45,6 @@ namespace del {
 		bool valuate(const Formula& formula, const Domain& domain) const;
 		
 		std::string to_string(const Domain& domain) const;
-		std::string to_graph(const std::string node_id, const std::string state_id, const Domain& domain) const;
 		std::string type_to_string() const;
 
 	private:

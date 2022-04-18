@@ -116,7 +116,6 @@ namespace del {
 		void insert(Event_Id event_from, Event_Id event_to, Formula&& condition);
 		std::optional<const Formula*> get_condition(Event_Id event_from, Event_Id event_to) const;
 		size_t size() const;
-		std::string to_graph(const std::string& agent_name, const std::string& base_id, const Domain& domain) const;
 	private:
 		size_t current_size;
 	};

@@ -216,17 +216,6 @@ namespace del {
 		return result;
 	}
 
-	std::string Node::to_graph(const std::string node_id, const std::string state_id, const Domain& domain) const {
-		std::string result = "subgraph cluster_" + node_id + " {\nlabel=\"(" + type_to_string() + ")Node " + node_id + "\";\n";
-		if (solved) {
-			result += "pencolor=green;\n";
-		} else if (dead) {
-			result += "pencolor=red;\n";
-		}
-		result += state.to_graph(state_id, domain) + "\n}";
-		return result;
-	}
-
 	std::string Node::type_to_string() const {
 		switch (type) {
 		case Node_Type::And: return "And"; break;

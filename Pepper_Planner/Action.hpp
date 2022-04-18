@@ -42,7 +42,6 @@ namespace del {
 		std::string to_string(const Domain& domain) const;
 		std::string to_string(size_t indentation, const Domain& domain) const;
 		std::string to_compact_string(const Domain& domain) const;
-		std::string to_graph(const std::string& base_id, const Domain& domain) const;
 
 		// Args is mainly debug
 		std::vector<Atom_Id> args;

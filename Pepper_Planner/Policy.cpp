@@ -63,41 +63,6 @@ namespace del {
 
 	}
 
-	std::string Policy::to_graph(const Domain& domain) const {
-		std::string result;
-		size_t counter = 0;
-		//for (auto& entry : policy) {
-		//	std::string counter_s = std::to_string(counter);
-		//	result += "subgraph cluster_"
-		//		+ counter_s
-		//		+ "{label=\"entry"
-		//		+ counter_s
-		//		+ "\";\nsubgraph cluster_s"
-		//		+ counter_s
-		//		+ "{"
-		//		//+ entry.first.to_graph("s" + counter_s, domain)
-		//		+ std::to_string(entry.first)
-		//		+ "} subgraph cluster_a"
-		//		+ counter_s
-		//		+ "{label=\""
-		//		+ entry.second.get_name()
-		//		+ "\"\n"
-		//		+ entry.second.to_graph("a" + counter_s, domain)
-		//		+ "}"
-		//		+ "s" 
-		//		+ counter_s
-		//		+ "0->a"
-		//		+ counter_s
-		//		+ "0[ltail=cluster_s"
-		//		+ counter_s
-		//		+ ", lhead=cluster_a"
-		//		+ counter_s
-		//		+ "];}\n";
-		//	counter++;
-		//}
-		return result;
-	}
-
 	std::string Policy::to_string(const Domain& domain) const {
 		size_t indentation = 4;
 		std::string result = get_indentation(indentation) + " Policy";
