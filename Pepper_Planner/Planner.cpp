@@ -88,6 +88,8 @@ namespace del {
 
 	// TODO - Node references may become invalid if more nodes are added to graph (du to vector reallocation), make sure this is not the case.
 
+	// TODO - Check if we need to verify assumptions on initial state
+
 	// TODO - Add option to specify for what person the goal must be fulfilled
 	Policy Planner::find_policy(const Formula& goal_formula, 
 								Action_Library& action_library, 

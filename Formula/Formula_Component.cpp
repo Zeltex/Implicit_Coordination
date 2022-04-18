@@ -107,7 +107,7 @@ namespace del {
         }
         case Formula_Types::Believes:
         {
-            std::vector<size_t> reachables = input_interface->get_reachable_worlds(agent, world_id);
+            std::set<size_t> reachables = input_interface->get_reachable_worlds(agent, world_id);
             for (const auto& reachable_world : reachables) {
                 if (!all_formulas[formula.id].valuate(all_formulas, reachable_world, input_interface)) {
                     return false;

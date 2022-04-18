@@ -161,11 +161,17 @@ namespace del
 				}
 			}
 		}
+		return result;
+	}
+
+	void Accessibility_Relation::set(World_Id world_from, World_Id world_to)
+	{
+		world_relations.at(get_index(world_from, world_to)) = true;
 	}
 
 	// ------
 
-
+	
 	Accessibility_Relations::Accessibility_Relations(const std::vector<Accessibility_Relation>& new_agent_relations)
 		: worlds_size(new_agent_relations.size()), agent_relations(new_agent_relations)
 	{
@@ -173,8 +179,13 @@ namespace del
 
 
 	Accessibility_Relations::Accessibility_Relations(size_t world_count, size_t agent_count)
-		: worlds_size(world_count), agent_relations(agent_count)
+		: worlds_size(world_count), agent_relations()
 	{
+		for (size_t i = 0; i < agent_count; ++i)
+		{
+			agent_relations.push_back(Accessibility_Relation(Agent_Id{ i }, world_count));
+		}
+
 		// TODO
 	}
 
@@ -187,7 +198,6 @@ namespace del
 		}
 		agent_relations = new_agent_relations;
 	}
-
 	std::set<World_Id> Accessibility_Relations::get_unreachable_worlds(const std::set<World_Id>& worlds) const
 	{
 		std::set<World_Id> unreachable_worlds;
@@ -302,5 +312,10 @@ namespace del
 			}
 		}
 		return true;
+	}
+
+	void Accessibility_Relations::set(Agent_Id agent, World_Id world_from, World_Id world_to)
+	{
+		agent_relations.at(agent.id).set(world_from, world_to);
 	}
 }

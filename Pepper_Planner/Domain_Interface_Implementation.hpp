@@ -56,7 +56,7 @@ namespace del {
 
 		std::vector<General_Action> actions;
 		General_Action current_action;
-		State initial_state;
+		State_Builder initial_state;
 		Action_Library library;
 		Domain domain;
 		Formula goal;

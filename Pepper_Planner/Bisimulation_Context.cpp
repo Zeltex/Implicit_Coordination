@@ -235,7 +235,7 @@ namespace del::bisimulation_context {
 		}
 
 		// Set world propositions
-		State result_state(state.get_number_of_agents());
+		State_Builder result_state;
 		for (const Block& block : blocks.blocks)
 		{
 			auto& world = result_state.create_world();
@@ -250,7 +250,7 @@ namespace del::bisimulation_context {
 			for (const Agent_World_Reachable& reachable : kvp.second)
 			{
 				const Block_Id& block_to = blocks.get_block_id(reachable.world);
-				result_state.add_indistinguishability_relation(reachable.agent, block_from.to_world(), block_to.to_world());
+				result_state.add_accessibility_relation(reachable.agent, block_from.to_world(), block_to.to_world());
 			}
 		}
 
@@ -260,6 +260,6 @@ namespace del::bisimulation_context {
 			result_state.set_world_designated(blocks.get_block_id(world).to_world());
 		}
 
-		return result_state;
+		return result_state.to_state();
 	}
 }

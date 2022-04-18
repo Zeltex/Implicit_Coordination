@@ -20,7 +20,7 @@ namespace del {
 		return false;
 	}
 	
-	std::vector<size_t> Formula_Input_Impl::get_reachable_worlds(Proposition agent_id, size_t world_id) const {
+	std::set<size_t> Formula_Input_Impl::get_reachable_worlds(Proposition agent_id, size_t world_id) const {
 		return state->get_reachable_worlds(agent_id.to_hash(), world_id);
 	}
 

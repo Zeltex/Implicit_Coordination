@@ -13,9 +13,9 @@ namespace del {
 		std::vector<State> agent_states;
 		for (size_t agent = 0; agent < state.get_number_of_agents(); ++agent) {
 			State temp = state;
-			temp = std::move(perform_perspective_shift(temp, { agent }));
+			temp.shift_perspective(Agent_Id{ agent });
 			temp.remove_unreachable_worlds();
-			temp = std::move(perform_bisimilar_contraction(temp));
+			temp = temp.contract();
 			agent_hashes.emplace_back(temp.to_hash());
 			agent_states.push_back(std::move(temp));
 		}
@@ -29,7 +29,7 @@ namespace del {
 				}
 
 				auto& [policy_state, policy_actions] = (*potential_match).second;
-				if (are_states_bisimilar(policy_state, agent_states[agent_counter])) {
+				if (policy_state.is_bisimilar_to(agent_states[agent_counter])) {
 					for (auto& [policy_action, policy_node] : policy_actions) {
 						if (policy_action.get_owner().id == agent_counter) {
 							return policy_action;
@@ -54,7 +54,7 @@ namespace del {
 
 			// TODO - Need to not add duplicates
 			auto& [policy_state, policy_actions] = (*potential_match).second;
-			if (are_states_bisimilar(policy_state, state)) {
+			if (policy_state.is_bisimilar_to(state)) {
 				policy_actions.emplace_back(action, node_id);
 				return;
 			}

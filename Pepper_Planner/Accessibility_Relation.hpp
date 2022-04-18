@@ -37,6 +37,7 @@ namespace del
 
 		void to_hashable_string(std::string& ref_result, size_t& ref_count) const;
 		std::string to_string(const Domain& domain) const;
+		void set(World_Id world_from, World_Id world_to);
 
 		Agent_Id agent;
 		size_t worlds_size;
@@ -56,6 +57,7 @@ namespace del
 		bool operator!= (const Accessibility_Relations& other) const;
 		std::string to_hashable_string(size_t& ref_count) const;
 		std::string to_string(const Domain& domain) const;
+		void set(Agent_Id agent, World_Id world_from, World_Id world_to);
 
 
 		bool is_serial() const;

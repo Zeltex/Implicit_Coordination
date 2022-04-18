@@ -41,7 +41,8 @@ namespace del {
 			if (potential_match == visited.end()) {
 				return { false, {} };
 			}
-			if (are_states_bisimilar(graph.get_const_node((*potential_match).second).get_state(), state)) {
+			const State& temp_state = graph.get_const_node((*potential_match).second).get_state();
+			if (temp_state.is_bisimilar_to(state)) {
 				return { true, (*potential_match).second };
 			}
 			++hash;
@@ -51,7 +52,7 @@ namespace del {
 	std::pair<bool, std::optional<Node_Id>> Node_Comparator::does_bisimilar_exist_brute(const Graph& graph, const State& state, Node_Type type) const {
 		for (const auto& node : graph.get_const_nodes()) {
 			if (node.get_type() != type) continue;
-			if (are_states_bisimilar(node.get_state(), state)) {
+			if (node.get_state().is_bisimilar_to(state)) {
 				return { true, {node.get_id()} };
 			}
 		}

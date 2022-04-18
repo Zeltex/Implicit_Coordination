@@ -77,6 +77,14 @@ namespace del {
 		And
 	};
 
+	struct Agent_World_Relation {
+		Agent_World_Relation(Agent_Id agent, World_Id world_from, World_Id world_to) :
+			agent(agent), world_from(world_from), world_to(world_to) {}
+		Agent_Id agent;
+		World_Id world_from;
+		World_Id world_to;
+	};
+
 	struct World_Relation {
 		World_Relation(World_Id world_from, World_Id world_to) :
 			world_from(world_from), world_to(world_to) {}

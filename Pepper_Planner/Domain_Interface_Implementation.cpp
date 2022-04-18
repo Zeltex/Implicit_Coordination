@@ -18,7 +18,7 @@ namespace del {
 		for (auto& action : actions) {
 			library.add_general_action(action, domain);
 		}
-		domain.set_initial_state(std::move(initial_state));
+		domain.set_initial_state(initial_state.to_state());
 		initial_state = {};
 	}
 
@@ -65,7 +65,6 @@ namespace del {
 
 	void Domain_Interface_Implementation::set_objects(std::unordered_map<std::string, std::unordered_set<std::string>>&& objects, const std::unordered_map<std::string, Atom_Id>& atom_to_id) {
 		size_t amount_of_agents = objects["agent"].size();
-		initial_state.set_amount_of_agents(amount_of_agents);
 		library.set_amount_of_agents(amount_of_agents);
 
 		domain.set_objects(objects, atom_to_id);
@@ -162,14 +161,14 @@ namespace del {
 	void Domain_Interface_Implementation::create_state_reflexive_reachables() {
 		for (auto& world : initial_state.get_worlds()) {
 			for (auto& agent : domain.get_agents()) {
-				initial_state.add_indistinguishability_relation(agent.get_id(), world.get_id(), world.get_id());
+				initial_state.add_accessibility_relation(agent.get_id(), world.get_id(), world.get_id());
 			}
 		}
 	}
 
 	void Domain_Interface_Implementation::add_reachability(std::string name, const std::vector<std::pair<std::string, std::string>>& reachables) {
 		for (auto& entry : reachables) {
-			initial_state.add_indistinguishability_relation(domain.get_agent_id(name), world_name_to_id[entry.first], world_name_to_id[entry.second]);
+			initial_state.add_accessibility_relation(domain.get_agent_id(name), world_name_to_id[entry.first], world_name_to_id[entry.second]);
 		}
 	}
 

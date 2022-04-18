@@ -2,6 +2,7 @@
 #include "Domain.hpp"
 #include "Formula_Input_Impl.hpp"
 #include "Action.hpp"
+#include "Bisimulation_Context.hpp"
 
 namespace del {
 
@@ -14,6 +15,13 @@ namespace del {
 	{
 
 	}
+
+	State::State(const State& other, World_Id designated_world)
+		: cost(other.cost), worlds(other.worlds), accessibility_relations(other.accessibility_relations)
+	{
+		this->designated_worlds.insert(designated_world);
+	}
+
 	std::vector<State> State::get_all_perspective_shifts(size_t number_of_agents) const
 	{
 		std::vector<State> perspective_shifts;
@@ -25,6 +33,7 @@ namespace del {
 			temp_state.shift_perspective(Agent_Id{ i });
 			perspective_shifts.push_back(temp_state);
 		}
+		return perspective_shifts;
 	}
 
 	void State::shift_perspective(Agent_Id agent, bool is_exclusive) 
@@ -57,7 +66,6 @@ namespace del {
 		return accessibility_relations.has_direct_relation(agent, world_from, world_to);
 	}
 
-
 	const Propositions& State::get_true_propositions(size_t world_id) const {
 		return worlds[world_id].get_true_propositions();
 	}
@@ -66,22 +74,17 @@ namespace del {
 		return worlds[world_id].get_true_propositions().contains(proposition);
 	}
 
-	std::vector<size_t> State::get_reachable_worlds(size_t agent_id, size_t world_id) const {
-		std::vector<size_t> frontier = { { world_id } };
-		std::vector<size_t> visited;
-		while (!frontier.empty()) {
-			auto current = frontier.back();
-			frontier.pop_back();
-			for (const auto& relation : indistinguishability_relation[agent_id]) {
-				if (relation.world_from.id == current &&
-					std::find(visited.begin(), visited.end(), relation.world_to.id) == visited.end()) {
-
-					frontier.push_back(relation.world_to.id);
-					visited.push_back(relation.world_to.id);
-				}
+	std::set<size_t> State::get_reachable_worlds(size_t agent_id, size_t world_id) const {
+		// Due to the serial, transitive and euclidean conditions we only need to check depth one
+		std::set<size_t> result;
+		for (const World& world : worlds)
+		{
+			if (accessibility_relations.has_direct_relation(Agent_Id{ agent_id }, World_Id{ world_id }, world.get_id()))
+			{
+				result.insert(world.get_id().id);
 			}
 		}
-		return std::move(visited);
+		return result;
 	}
 
 	bool State::valuate(const Formula& formula, const Domain& domain) const {
@@ -98,43 +101,8 @@ namespace del {
 		return worlds;
 	}
 
-	void State::add_indistinguishability_relation(Agent_Id agent, World_Id world_from, World_Id world_to) {
-		indistinguishability_relation[agent.id].emplace_back(world_from, world_to);
-	}
-
-	void State::add_true_propositions(World_Id world, const std::vector<Proposition>& propositions) {
-		worlds[world.id].add_true_propositions(propositions);
-	}
-
-	void State::remove_true_propositions(World_Id world, const std::vector<Proposition>& propositions) {
-		worlds[world.id].remove_true_propositions(propositions);
-	}
-
-	World& State::create_world() {
-		World_Id new_world = World_Id{ worlds.size() };
-		worlds.emplace_back(new_world);
-		return worlds[new_world.id];
-	}
-
-	World& State::create_world(const World& world) {
-		World_Id new_world = World_Id{ worlds.size() };
-		worlds.emplace_back(new_world, world.get_true_propositions());
-		return worlds[new_world.id];
-	}
-
-	void State::create_worlds(size_t amount_to_create) {
-		for (size_t i = 0; i < amount_to_create; i++) {
-			World_Id new_world = World_Id{ worlds.size() };
-			worlds.emplace_back(new_world);
-		}
-	}
-
 	bool State::is_world_designated(World_Id world) const {
 		return find(designated_worlds.begin(), designated_worlds.end(), world) != designated_worlds.end();
-	}
-
-	void State::set_world_designated(World_Id world) {
-		designated_worlds.insert(world);
 	}
 
 	size_t State::get_worlds_count() const {
@@ -155,19 +123,6 @@ namespace del {
 
 	size_t State::get_cost() const {
 		return cost;
-	}
-
-	void State::set_cost(size_t cost) {
-		this->cost = cost;
-	}
-
-	void State::set_single_designated_world(World_Id world) {
-		designated_worlds.clear();
-		designated_worlds.insert(world);
-	}
-
-	void State::set_designated_worlds(const std::set<World_Id>& worlds) {
-		designated_worlds = worlds;
 	}
 
 	void State::remove_unreachable_worlds() {
@@ -258,8 +213,7 @@ namespace del {
 	{
 		std::vector<State> result;
 		for (const World_Id& designated_world : designated_worlds) {
-			State new_state = State(*this);
-			new_state.set_single_designated_world(designated_world);
+			State new_state = State(*this, designated_world);
 			new_state.remove_unreachable_worlds();
 			result.push_back(std::move(new_state));
 		}
@@ -354,6 +308,74 @@ namespace del {
 
 	State State::contract() const
 	{
-		return perform_bisimilar_contraction(*this);
+		return bisimulation_context::contract(*this);
 	}
+
+	bool State::is_bisimilar_to(const State& other) const
+	{
+		State contracted = contract();
+		State contracted_other = other.contract();
+		return contracted == contracted_other;
+	}
+
+	//--------------
+
+	State_Builder::State_Builder()
+	{
+
+	}
+
+
+	void State_Builder::set_cost(size_t cost) {
+		this->cost = cost;
+	}
+
+	void State_Builder::set_single_designated_world(World_Id world) {
+		designated_worlds.clear();
+		designated_worlds.insert(world);
+	}
+
+	void State_Builder::set_designated_worlds(const std::set<World_Id>& worlds) {
+		designated_worlds = worlds;
+	}
+
+	void State_Builder::add_accessibility_relation(Agent_Id agent, World_Id world_from, World_Id world_to) 
+	{
+		agent_world_relations.push_back({ agent, world_from, world_to });
+	}
+
+	World& State_Builder::create_world() {
+		World_Id new_world = World_Id{ worlds.size() };
+		worlds.emplace_back(new_world);
+		return worlds[new_world.id];
+	}
+
+	World& State_Builder::create_world(const World& world) {
+		World_Id new_world = World_Id{ worlds.size() };
+		worlds.emplace_back(new_world, world.get_true_propositions());
+		return worlds[new_world.id];
+	}
+
+	void State_Builder::create_worlds(size_t amount_to_create) {
+		for (size_t i = 0; i < amount_to_create; i++) {
+			World_Id new_world = World_Id{ worlds.size() };
+			worlds.emplace_back(new_world);
+		}
+	}
+
+	void State_Builder::set_world_designated(World_Id world) {
+		designated_worlds.insert(world);
+	}
+
+	State State_Builder::to_state()
+	{
+		// TODO
+		return State();
+	}
+
+	const std::vector<World>& State_Builder::get_worlds() const
+	{
+		return worlds;
+	}
+
 }
