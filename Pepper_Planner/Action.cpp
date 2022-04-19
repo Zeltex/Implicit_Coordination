@@ -5,25 +5,16 @@
 
 namespace del {
 
-	// TODO - Check if this constructor is used/should be used anymore. Seems the constructor based on General_Action should be default
-	Action::Action(Agent_Id owner, size_t number_of_agents) : cost((size_t)-1), owner(owner), name("Unknown") {
-		for (size_t i = 0; i < number_of_agents; i++) {
-			edge_conditions.emplace_back(number_of_agents);
-		}
-	}
-
 	Action::Action(const General_Action& general_action, const Domain& domain, const std::vector<Atom_Id>& arguments)
 			:args(arguments), cost(general_action.get_cost()), name(general_action.get_name()), events(), designated_events() {
 
-		auto& owner_atom = arguments.at(general_action.get_owner().second.id);
+		const Atom_Id& owner_atom = arguments.at(general_action.get_owner().second.id);
 		this->owner = domain.get_agent_from_atom(owner_atom).get_id();
 
 		auto event_name_to_id = copy_and_instantiate_events(general_action, arguments, domain);
 		copy_and_instantiate_designated_events(general_action, event_name_to_id);
 		copy_and_instantiate_edge_conditions(general_action, event_name_to_id, arguments, domain);
 	}
-
-
 
 	void Action::copy_and_instantiate_edge_conditions(
 				const General_Action& general_action, 
@@ -77,32 +68,26 @@ namespace del {
 		}
 	}
 
-	std::unordered_map<std::string, Event_Id> Action::copy_and_instantiate_events(const General_Action& general_action, const std::vector<Atom_Id>& arguments, const Domain& domain) {
+	std::unordered_map<std::string, Event_Id> Action::copy_and_instantiate_events(const General_Action& general_action, const std::vector<Atom_Id>& arguments, const Domain& domain)
+	{
 		std::unordered_map<std::string, Event_Id> event_name_to_id;
 		auto converter = general_action.create_converter(domain, arguments);
-		for (auto& event : general_action.get_events()) {
-			std::vector<Proposition> add_list;
-			std::vector<Proposition> delete_list;
-			for (auto& entry : event.get_add_list()) {
-				add_list.push_back(converter.at(entry));
-			}
-			for (auto& entry : event.get_delete_list()) {
-				delete_list.push_back(converter.at(entry));
-			}
+		for (auto& event : general_action.get_events()) 
+		{
 			Formula preconditions = Formula(event.get_preconditions(), converter);
 			auto id = Event_Id{ events.size() };
 			event_name_to_id.emplace(event.get_name(), id);
 
-			add_event(event.get_name(), id, std::move(preconditions), std::move(add_list), std::move(delete_list));
+			add_event(event.get_name(), id, std::move(preconditions), event.get_add_list(), event.get_delete_list());
 		}
-		return std::move(event_name_to_id);
+		return event_name_to_id;
 	}
 
 	void Action::add_event(const Action_Event& event) {
 		events.push_back(event);
 	}
 
-	void Action::add_event(const std::string& name, Event_Id id, Formula&& precondition, std::vector<Proposition>&& proposition_add, std::vector<Proposition>&& proposition_delete) {
+	void Action::add_event(const std::string& name, Event_Id id, Formula&& precondition, const std::vector<Proposition>& proposition_add, const std::vector<Proposition>& proposition_delete) {
 		events.emplace_back(name, id, std::move(precondition), proposition_add, proposition_delete);
 	}
 

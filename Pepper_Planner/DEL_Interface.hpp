@@ -9,7 +9,6 @@
 #include "Planner.hpp"
 #include "Interface_DTO.hpp"
 #include "Action_Library.hpp"
-#include "Environment_Loader.hpp"
 #include "Domain_Interface_Implementation.hpp"
 #include "Loader.hpp"
 #include "Types.hpp"
@@ -23,9 +22,6 @@ namespace del {
 		Interface_DTO get_next_action();
 
 		bool query(const Formula& query);
-		void perform_do(const Agent_Id i, const std::vector<Proposition_Instance>& add, const std::vector<Proposition_Instance>& del);
-		void perform_oc(const Agent_Id i, std::vector<std::vector<std::string>>&& add, std::vector<std::vector<std::string>>&& del);
-		void perform_oc(const std::string owner_name, std::vector<std::vector<std::string>>&& add, std::vector<std::vector<std::string>>&& del);
 
 		void perform_action(Action action);
 		void perform_action(const std::string& name, const std::string& owner, const std::vector<std::string>& arguments);
