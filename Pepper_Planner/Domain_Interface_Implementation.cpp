@@ -1,5 +1,7 @@
 #include "Domain_Interface_Implementation.hpp"
 
+#include "Edge_Conditions.hpp"
+
 namespace del {
 	void Domain_Interface_Implementation::new_domain(std::string name) {
 		domain.set_name(name);
@@ -186,14 +188,13 @@ namespace del {
 		this->goal = Formula(goal, converter);
 	}
 
-	void Domain_Interface_Implementation::add_edge_condition(Atom_Id agent, std::vector< std::tuple<std::string, std::string, Formula>>&& edge_conditions) {
+	void Domain_Interface_Implementation::add_edge_condition(Atom_Id agent, std::vector< std::tuple<std::string, std::string, Formula>>&& edge_conditions_input) {
 
-		std::vector<Edge_Condition> temp;
-		temp.reserve(edge_conditions.size());
-		for (auto&[event_from, event_to, condition] : edge_conditions) {
-			temp.emplace_back(std::move(event_from), std::move(event_to), std::move(condition));
+		General_Edge_Conditions edge_conditions;
+		for (auto&[event_from, event_to, condition] : edge_conditions_input) {
+			edge_conditions.insert({ std::move(event_from), std::move(event_to), std::move(condition) });
 		}
-		current_action.add_edge_condition(agent, std::move(temp));
+		current_action.add_edge_condition(agent, std::move(edge_conditions));
 	}
 
 	void Domain_Interface_Implementation::add_observability(std::string observer, const std::vector<std::string>& agents) {
@@ -215,16 +216,15 @@ namespace del {
 	}
 
 	// Map from domain_loader ids to pepper_planner ids (using Proposition)
-	std::unordered_map<Proposition, Proposition> Domain_Interface_Implementation::get_loader_to_formula_converter(const std::map<Proposition_Instance, Proposition>& instance_to_proposition) const {
-		std::unordered_map<Proposition, Proposition> converter;
-		converter.reserve(instance_to_proposition.size());
+	std::map<Proposition, Proposition> Domain_Interface_Implementation::get_loader_to_formula_converter(const std::map<Proposition_Instance, Proposition>& instance_to_proposition) const {
+		std::map<Proposition, Proposition> converter;
 		for (const auto& entry : instance_to_proposition) {
 			converter[entry.second] = domain.get_proposition(entry.first);
 		}
 		return converter;
 	}
 
-	std::vector<Proposition> Domain_Interface_Implementation::convert_loader_instances_to_planner_propositions(const std::vector<Proposition_Instance>& proposition_instances, const std::unordered_map<size_t, Atom_Id>& converter) const {
+	std::vector<Proposition> Domain_Interface_Implementation::convert_loader_instances_to_planner_propositions(const std::vector<Proposition_Instance>& proposition_instances, const std::map<size_t, Atom_Id>& converter) const {
 		std::vector<Proposition> propositions;
 		propositions.reserve(proposition_instances.size());
 		for (const auto& proposition_instance : proposition_instances) {

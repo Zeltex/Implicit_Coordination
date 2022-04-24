@@ -50,9 +50,9 @@ namespace del {
 		std::tuple<Domain, Action_Library, Formula> get_loaded();
 	private:
 
-		std::unordered_map<Proposition, Proposition>	get_loader_to_formula_converter(const std::map<Proposition_Instance, Proposition>& atom_to_id) const;
-		std::unordered_map<size_t, Atom_Id>				get_loader_to_planner_converter(const std::unordered_map<std::string, Atom_Id>& atom_to_id) const;
-		std::vector<Proposition>						convert_loader_instances_to_planner_propositions(const std::vector<Proposition_Instance>& proposition_instances, const std::unordered_map<size_t, Atom_Id>& converter) const;
+		std::map<Proposition, Proposition>		get_loader_to_formula_converter(const std::map<Proposition_Instance, Proposition>& atom_to_id) const;
+		std::unordered_map<size_t, Atom_Id>		get_loader_to_planner_converter(const std::unordered_map<std::string, Atom_Id>& atom_to_id) const;
+		std::vector<Proposition>				convert_loader_instances_to_planner_propositions(const std::vector<Proposition_Instance>& proposition_instances, const std::map<size_t, Atom_Id>& converter) const;
 
 		std::vector<General_Action> actions;
 		General_Action current_action;

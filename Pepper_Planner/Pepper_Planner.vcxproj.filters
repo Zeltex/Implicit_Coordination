@@ -108,6 +108,12 @@
     <ClCompile Include="Accessibility_Relation.cpp">
       <Filter>Source Files\DEL</Filter>
     </ClCompile>
+    <ClCompile Include="General_Edge_Conditions.cpp">
+      <Filter>Source Files\DEL\Action</Filter>
+    </ClCompile>
+    <ClCompile Include="Edge_Conditions.cpp">
+      <Filter>Source Files\DEL\Action</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Agent.hpp">
@@ -178,6 +184,12 @@
     </ClInclude>
     <ClInclude Include="Accessibility_Relation.hpp">
       <Filter>Header Files\DEL</Filter>
+    </ClInclude>
+    <ClInclude Include="General_Edge_Conditions.hpp">
+      <Filter>Header Files\DEL\Action</Filter>
+    </ClInclude>
+    <ClInclude Include="Edge_Conditions.hpp">
+      <Filter>Header Files\DEL\Action</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -2,6 +2,7 @@
 #include "Action.hpp"
 #include "Domain.hpp"
 #include "Formula_Core.hpp"
+#include "Edge_Conditions.hpp"
 
 namespace del {
 
@@ -29,8 +30,8 @@ namespace del {
 		events.emplace_back(name, Event_Id{ events.size() }, std::move(preconditions), add_list, delete_list);
 	}
 
-	void General_Action::add_edge_condition(Atom_Id agent, std::vector<Edge_Condition>&& edge_conditions_input) {
-		edge_conditions.insert({ agent.id, std::move(edge_conditions_input) });
+	void General_Action::add_edge_condition(Atom_Id agent, General_Edge_Conditions&& edge_conditions_input) {
+		edge_conditions.insert(agent.id, std::move(edge_conditions_input) );
 	} 
 
 	void General_Action::set_amount_of_agents(size_t amount_of_agents) {
@@ -62,48 +63,26 @@ namespace del {
 		return events;
 	}
 
-	const std::unordered_map<size_t, std::vector<Edge_Condition>>& General_Action::get_edge_conditions() const {
+	const General_Agent_Edge_Conditions& General_Action::get_edge_conditions() const {
 		return edge_conditions;
 	}
 
-	std::unordered_map<size_t, std::vector<Agent>> General_Action::get_condition_owner_to_agent(const Domain& domain, const std::vector<Atom_Id>& arguments) const{
-		std::unordered_map<size_t, std::vector<Agent>> condition_owner_to_agent;
-		std::unordered_set<std::string> seen_agents;
-
-		for (auto& edge : edge_conditions) {
-			if (edge.first == REST_INDEX) {
-				condition_owner_to_agent.insert({ REST_INDEX, { } });
-			}
-			else {
-				auto& agent = domain.get_agent_from_atom(arguments.at(edge.first));
-				seen_agents.insert(agent.get_name());
-				condition_owner_to_agent.insert({ edge.first, { agent } });
-			}
-		}
-
-		for (auto& agent : domain.get_agents()) {
-			if (seen_agents.find(agent.get_name()) == seen_agents.end()) {
-				condition_owner_to_agent[REST_INDEX].push_back(agent);
-			}
-		}
-
-		return std::move(condition_owner_to_agent);
-	}
+	
 	void General_Action::set_instance_to_proposition(std::map<Proposition_Instance, Proposition> instance_to_proposition) {
 		input_to_formula = instance_to_proposition;
 	}
-	std::unordered_map<Proposition, Proposition> General_Action::create_converter(const Domain& domain, const std::unordered_map<size_t, Atom_Id>& arguments) const {
-		std::unordered_map<Proposition, Proposition> formula_to_domain;
-		formula_to_domain.reserve(input_to_formula.size());
+
+	std::map<Proposition, Proposition> General_Action::create_converter(const Domain& domain, const std::map<size_t, Atom_Id>& arguments) const {
+		std::map<Proposition, Proposition> formula_to_domain;
 		for (auto& [prop_instance, prop] : input_to_formula) {
 			auto grounded_prop_instance = Proposition_Instance(prop_instance, arguments);
 			formula_to_domain[prop] = domain.get_proposition(grounded_prop_instance);
 		}
 		return formula_to_domain;
 	}
-	std::unordered_map<Proposition, Proposition> General_Action::create_converter(const Domain& domain, const std::vector<Atom_Id>& arguments) const{
-		std::unordered_map<Proposition, Proposition> formula_to_domain;
-		formula_to_domain.reserve(input_to_formula.size());
+
+	std::map<Proposition, Proposition> General_Action::create_converter(const Domain& domain, const std::vector<Atom_Id>& arguments) const{
+		std::map<Proposition, Proposition> formula_to_domain;
 		for (auto& [prop_instance, prop] : input_to_formula) {
 			if (!prop_instance.contains_non_atom_entry()) {
 				auto grounded_prop_instance = Proposition_Instance(prop_instance, arguments);
@@ -114,8 +93,7 @@ namespace del {
 	}
 
 
-	const std::unordered_map<Proposition, Proposition>& General_Action::get_converter() const {
+	const std::map<Proposition, Proposition>& General_Action::get_converter() const {
 		return formula_to_domain;
 	}
-
 }

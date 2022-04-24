@@ -4,6 +4,7 @@
 #include <vector>
 #include <unordered_set>
 #include <memory>
+#include <map>
 
 #include "Formula_Types.hpp"
 #include "Formula_Component.hpp"
@@ -14,7 +15,7 @@ namespace del {
 	class Formula {
 	public:
 		Formula():root(0) {}
-		Formula(const Formula& other, const std::unordered_map<Proposition, Proposition>& general_to_ground);
+		Formula(const Formula& other, const std::map<Proposition, Proposition>& general_to_ground);
 		std::string to_string(const std::unordered_map<size_t, std::string>& id_to_atom) const;
 		bool valuate(const size_t world_id, const Formula_Input_Interface* input_interface) const;
 		Formula_Id f_top();

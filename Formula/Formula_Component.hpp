@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include <unordered_set>
+#include <map>
 
 #include "Formula_Types.hpp"
 #include "Formula_Input_Interface.hpp"
@@ -23,7 +24,7 @@ namespace del {
 
 		Formula_Component() = default;
 
-		Formula_Component(const Formula_Component& other, const std::unordered_map<Proposition, Proposition>& general_to_ground);
+		Formula_Component(const Formula_Component& other, const std::map<Proposition, Proposition>& general_to_ground);
 
 		// Top, Bot
 		Formula_Component(Formula_Types type):

@@ -68,6 +68,10 @@ namespace del {
             return this->id != other.id;
         }
 
+		bool operator<(const Event_Id& other) const {
+			return this->id < other.id;
+		}
+
 		Event_Id(size_t id) : id(id) {};
 		Event_Id(const Event_Id& other) :id(other.id) {}
 	};
@@ -107,25 +111,6 @@ namespace del {
 		World_Id old_world;
 		Event_Id old_event;
 		World_Id new_world;
-	};
-
-	struct Edge_Condition {
-		Edge_Condition(std::string event_from, std::string event_to, Formula&& condition) :
-			event_from(event_from), event_to(event_to), condition(std::move(condition)) {}
-		std::string event_from;
-		std::string event_to;
-		Formula condition;
-	};
-
-	class Domain;
-	struct Agent_Edges {
-		Agent_Edges(size_t agents) : conditions(agents), current_size(0) {}
-		std::unordered_map<size_t, std::unordered_map<size_t, Formula>> conditions;
-		void insert(Event_Id event_from, Event_Id event_to, Formula&& condition);
-		std::optional<const Formula*> get_condition(Event_Id event_from, Event_Id event_to) const;
-		size_t size() const;
-	private:
-		size_t current_size;
 	};
 
 	class Node;

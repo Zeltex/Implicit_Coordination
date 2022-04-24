@@ -2,7 +2,7 @@
 
 namespace del {
 
-    Formula::Formula(const Formula& other, const std::unordered_map<Proposition, Proposition>& general_to_ground) {
+    Formula::Formula(const Formula& other, const std::map<Proposition, Proposition>& general_to_ground) {
         this->root = other.root;
         for (const auto& entry : other.formulas) {
             this->formulas.emplace_back(entry, general_to_ground);

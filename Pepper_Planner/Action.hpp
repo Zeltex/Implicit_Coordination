@@ -12,9 +12,11 @@
 #include "Types.hpp"
 #include "General_Action.hpp"
 #include "Agent.hpp"
+#include "Edge_Conditions.hpp"
 
 
 namespace del {
+
 	class World;
 	class State;
 	class Action {
@@ -47,9 +49,9 @@ namespace del {
 		std::vector<Atom_Id> args;
 
 	private:
-		void copy_and_instantiate_edge_conditions(const General_Action& general_action, const std::unordered_map<std::string, Event_Id>& event_name_to_id, const std::vector<Atom_Id>& arguments, const Domain& domain);
-		void copy_and_instantiate_designated_events(const General_Action& general_action, const std::unordered_map<std::string, Event_Id>& event_name_to_id);
-		std::unordered_map<std::string, Event_Id> copy_and_instantiate_events(const General_Action& general_action, const std::vector<Atom_Id>& arguments, const Domain& domain);
+		void copy_and_instantiate_edge_conditions(const General_Action& general_action, const std::map<std::string, Event_Id>& event_name_to_id, const std::vector<Atom_Id>& arguments, const Domain& domain);
+		void copy_and_instantiate_designated_events(const General_Action& general_action, const std::map<std::string, Event_Id>& event_name_to_id);
+		std::map<std::string, Event_Id> copy_and_instantiate_events(const General_Action& general_action, const std::vector<Atom_Id>& arguments, const Domain& domain);
 
 		std::string get_string(const std::vector<Proposition>& propositions, const Domain& domain) const;
 
@@ -58,7 +60,7 @@ namespace del {
 		std::vector<Event_Id> designated_events;
 		Agent_Id owner;
 		std::string name;
-		std::vector<Agent_Edges> edge_conditions;
+		Agent_Edge_Conditions edge_conditions;
 
 	};
 }

@@ -11,7 +11,7 @@ namespace del {
         return prop;
     }
 
-    Formula_Component::Formula_Component(const Formula_Component& other, const std::unordered_map<Proposition, Proposition>& general_to_ground): agent(0), formula() {
+    Formula_Component::Formula_Component(const Formula_Component& other, const std::map<Proposition, Proposition>& general_to_ground): agent(0), formula() {
         this->type = other.type;
         switch (other.type) {
         case Formula_Types::Prop:

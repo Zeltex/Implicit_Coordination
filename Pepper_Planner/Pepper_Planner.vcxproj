@@ -157,6 +157,8 @@
     <ClCompile Include="Domain.cpp" />
     <ClCompile Include="Domain_Interface_Implementation.cpp" />
     <ClCompile Include="DEL_Interface.cpp" />
+    <ClCompile Include="Edge_Conditions.cpp" />
+    <ClCompile Include="General_Edge_Conditions.cpp" />
     <ClCompile Include="Formula_Input_Impl.cpp" />
     <ClCompile Include="General_Action.cpp" />
     <ClCompile Include="General_World.cpp" />
@@ -182,6 +184,8 @@
     <ClInclude Include="Domain.hpp" />
     <ClInclude Include="Domain_Interface_Implementation.hpp" />
     <ClInclude Include="DEL_Interface.hpp" />
+    <ClInclude Include="Edge_Conditions.hpp" />
+    <ClInclude Include="General_Edge_Conditions.hpp" />
     <ClInclude Include="Formula_Input_Impl.hpp" />
     <ClInclude Include="General_Action.hpp" />
     <ClInclude Include="General_World.hpp" />

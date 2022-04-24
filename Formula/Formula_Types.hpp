@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include <unordered_map>
+#include <map>
 #include <algorithm>
 
 #include "Formula_Core.hpp"
@@ -73,7 +74,7 @@ namespace del {
             }
         }
 
-        Proposition_Instance(const std::string& name, const std::vector<std::string>& input, const std::unordered_map<std::string, Atom_Id>& context) :
+        Proposition_Instance(const std::string& name, const std::vector<std::string>& input, const std::map<std::string, Atom_Id>& context) :
                 name(name), arguments() {
             size_t counter;
             for (counter = 0; counter < input.size(); counter++) {
@@ -85,7 +86,7 @@ namespace del {
             }
         }
 
-        Proposition_Instance(const Proposition_Instance& other, const std::unordered_map<size_t, Atom_Id>& input_to_atom) :
+        Proposition_Instance(const Proposition_Instance& other, const std::map<size_t, Atom_Id>& input_to_atom) :
                 name(other.name), arguments() {
             size_t counter = 0;
             for (auto& entry : other.arguments) {

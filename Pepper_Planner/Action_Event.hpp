@@ -8,6 +8,7 @@
 #include "Formula.hpp"
 
 namespace del {
+	class Domain;
 	class Action_Event {
 	public:
 		Action_Event(std::string name, Event_Id id, Formula&& precondition, std::vector<Proposition> proposition_add, std::vector<Proposition> proposition_delete) :
