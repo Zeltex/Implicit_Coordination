@@ -1,14 +1,14 @@
 #pragma once
 
+#include <map>
 #include <string>
 #include <unordered_set>
 #include <unordered_map>
-#include <map>
 
-#include "Action_Event.hpp"
-#include "Types.hpp"
 #include "Agent.hpp"
+#include "General_Action_Events.hpp"
 #include "General_Edge_Conditions.hpp"
+#include "Types.hpp"
 
 namespace del {
 	class General_Agent_Edge_Conditions;
@@ -23,7 +23,6 @@ namespace del {
 		std::map<Proposition, Proposition> create_converter(const Domain& domain, const std::vector<Atom_Id>& arguments) const;
 		void create_event(std::string name, Formula&& preconditions, const std::vector<Proposition>& add_list, const std::vector<Proposition>& delete_list);
 		void set_action_input(std::vector<std::pair<std::string, std::string>>&& inputs);
-		void set_amount_of_agents(size_t amount_of_agents);
 		void set_cost(size_t cost);
 		void set_designated_events(std::vector<std::string> designated_events);
 		void set_instance_to_proposition(std::map<Proposition_Instance, Proposition> instance_to_proposition);
@@ -31,13 +30,13 @@ namespace del {
 		void set_owner(std::string type, Atom_Id name);
 
 		const std::map<Proposition, Proposition>&					get_converter() const;
-		size_t																get_cost() const;
-		const std::vector<std::string>&										get_designated_events() const;
-		const General_Agent_Edge_Conditions&									get_edge_conditions() const;
-		const std::vector<Action_Event>&									get_events() const;
-		const std::vector<std::pair<std::string, std::string>>&				get_inputs() const;
-		std::string															get_name() const;
-		std::pair<std::string, Atom_Id>										get_owner() const;
+		size_t														get_cost() const;
+		const std::vector<std::string>&								get_designated_events() const;
+		const General_Agent_Edge_Conditions&						get_edge_conditions() const;
+		const General_Action_Events&								get_events() const;
+		const std::vector<std::pair<std::string, std::string>>&		get_inputs() const;
+		std::string													get_name() const;
+		std::pair<std::string, Atom_Id>								get_owner() const;
 		//Action create_action(Atom_Id owner, const std::vector<Atom_Id>& arguments, const Domain& domain) const;
 
 	private:
@@ -45,7 +44,7 @@ namespace del {
 		size_t cost;
 		std::string name;
 		std::pair<std::string, Atom_Id> owner;
-		std::vector<Action_Event> events;
+		General_Action_Events events;
 		std::vector<std::string> designated_events;
 		std::vector<std::pair<std::string, std::string>> inputs;
 		General_Agent_Edge_Conditions edge_conditions;

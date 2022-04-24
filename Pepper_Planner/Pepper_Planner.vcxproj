@@ -149,7 +149,7 @@
   <ItemGroup>
     <ClCompile Include="Accessibility_Relation.cpp" />
     <ClCompile Include="Action.cpp" />
-    <ClCompile Include="Action_Event.cpp" />
+    <ClCompile Include="Action_Events.cpp" />
     <ClCompile Include="Action_Library.cpp" />
     <ClCompile Include="Agent.cpp" />
     <ClCompile Include="Bisimulation_Context.cpp" />
@@ -158,6 +158,7 @@
     <ClCompile Include="Domain_Interface_Implementation.cpp" />
     <ClCompile Include="DEL_Interface.cpp" />
     <ClCompile Include="Edge_Conditions.cpp" />
+    <ClCompile Include="General_Action_Events.cpp" />
     <ClCompile Include="General_Edge_Conditions.cpp" />
     <ClCompile Include="Formula_Input_Impl.cpp" />
     <ClCompile Include="General_Action.cpp" />
@@ -176,7 +177,7 @@
   <ItemGroup>
     <ClInclude Include="Accessibility_Relation.hpp" />
     <ClInclude Include="Action.hpp" />
-    <ClInclude Include="Action_Event.hpp" />
+    <ClInclude Include="Action_Events.hpp" />
     <ClInclude Include="Action_Library.hpp" />
     <ClInclude Include="Agent.hpp" />
     <ClInclude Include="Bisimulation_Context.hpp" />
@@ -185,6 +186,7 @@
     <ClInclude Include="Domain_Interface_Implementation.hpp" />
     <ClInclude Include="DEL_Interface.hpp" />
     <ClInclude Include="Edge_Conditions.hpp" />
+    <ClInclude Include="General_Action_Events.hpp" />
     <ClInclude Include="General_Edge_Conditions.hpp" />
     <ClInclude Include="Formula_Input_Impl.hpp" />
     <ClInclude Include="General_Action.hpp" />

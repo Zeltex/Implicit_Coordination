@@ -6,13 +6,11 @@
 namespace del {
 
 	Action::Action(const General_Action& general_action, const Domain& domain, const std::vector<Atom_Id>& arguments)
-			:args(arguments), cost(general_action.get_cost()), name(general_action.get_name()), events(), designated_events() 
+			:args(arguments), cost(general_action.get_cost()), name(general_action.get_name()), events(general_action, arguments, domain), designated_events()
 	{
 
 		const Atom_Id& owner_atom = arguments.at(general_action.get_owner().second.id);
 		this->owner = domain.get_agent_from_atom(owner_atom).get_id();
-
-
 
 		auto event_name_to_id = copy_and_instantiate_events(general_action, arguments, domain);
 		copy_and_instantiate_designated_events(general_action, event_name_to_id);
@@ -27,22 +25,7 @@ namespace del {
 		}
 	}
 
-	std::map<std::string, Event_Id> Action::copy_and_instantiate_events(const General_Action& general_action, const std::vector<Atom_Id>& arguments, const Domain& domain)
-	{
-		std::map<std::string, Event_Id> event_name_to_id;
-		auto converter = general_action.create_converter(domain, arguments);
-		for (auto& event : general_action.get_events()) 
-		{
-			Formula preconditions = Formula(event.get_preconditions(), converter);
-			auto id = Event_Id{ events.size() };
-			event_name_to_id.emplace(event.get_name(), id);
-
-			add_event(event.get_name(), id, std::move(preconditions), event.get_add_list(), event.get_delete_list());
-		}
-		return event_name_to_id;
-	}
-
-	const std::vector<Action_Event>& Action::get_events() const {
+	const Action_Events& Action::get_events() const {
 		return events;
 	}
 
@@ -83,18 +66,12 @@ namespace del {
 			result += ", " + std::to_string(event_id.id);
 		}
 		result += ")";
-		for (auto event : events) {
-			result += "\n" + event.to_string(domain);
-		}
+		result += events.to_string(domain);
 		return result;
 	}
 
 	std::string Action::to_compact_string(const Domain& domain) const {
-		std::string result = std::to_string(owner.id);
-		for (auto& event : events) {
-			result += "\n<" + event.get_preconditions().to_string(domain.get_id_to_atom()) + ",X,X>";
-		}
-		return result;
+		return std::to_string(owner.id) + events.to_compact_string(domain);
 	}
 
 	std::string Action::get_string(const std::vector<Proposition>& propositions, const Domain& domain) const {

@@ -27,9 +27,9 @@ namespace del {
 				auto& action = action_optional.value();
 				std::string announce_string = "";
 				if (action.get_owner() == pepper_id) {
-					auto& events = action.get_events();
+					const auto& events = action.get_events();
 					if (events.size() > 0) {
-						announce_string = events[0].get_preconditions().to_string(domain.get_id_to_atom());
+						announce_string = events.get_first_event().get_preconditions().to_string(domain.get_id_to_atom());
 					}
 				}
 				return Interface_DTO(action, announce_string);

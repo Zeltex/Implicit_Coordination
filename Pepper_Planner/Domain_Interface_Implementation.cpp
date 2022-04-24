@@ -12,11 +12,6 @@ namespace del {
 
 	void Domain_Interface_Implementation::finish_problem() {
 
-		// Action reachability and reflexivity
-		for (auto& action : actions) {
-			action.set_amount_of_agents(domain.get_agents().size());
-		}
-
 		for (auto& action : actions) {
 			library.add_general_action(action, domain);
 		}

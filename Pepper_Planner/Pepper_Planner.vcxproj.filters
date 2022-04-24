@@ -60,7 +60,7 @@
     <ClCompile Include="Action.cpp">
       <Filter>Source Files\DEL\Action</Filter>
     </ClCompile>
-    <ClCompile Include="Action_Event.cpp">
+    <ClCompile Include="Action_Events.cpp">
       <Filter>Source Files\DEL\Action</Filter>
     </ClCompile>
     <ClCompile Include="Planner.cpp">
@@ -114,6 +114,9 @@
     <ClCompile Include="Edge_Conditions.cpp">
       <Filter>Source Files\DEL\Action</Filter>
     </ClCompile>
+    <ClCompile Include="General_Action_Events.cpp">
+      <Filter>Source Files\DEL\Action</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Agent.hpp">
@@ -140,7 +143,7 @@
     <ClInclude Include="Action.hpp">
       <Filter>Header Files\DEL\Action</Filter>
     </ClInclude>
-    <ClInclude Include="Action_Event.hpp">
+    <ClInclude Include="Action_Events.hpp">
       <Filter>Header Files\DEL\Action</Filter>
     </ClInclude>
     <ClInclude Include="Planner.hpp">
@@ -189,6 +192,9 @@
       <Filter>Header Files\DEL\Action</Filter>
     </ClInclude>
     <ClInclude Include="Edge_Conditions.hpp">
+      <Filter>Header Files\DEL\Action</Filter>
+    </ClInclude>
+    <ClInclude Include="General_Action_Events.hpp">
       <Filter>Header Files\DEL\Action</Filter>
     </ClInclude>
   </ItemGroup>
