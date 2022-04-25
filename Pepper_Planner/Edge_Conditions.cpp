@@ -1,5 +1,6 @@
 #include "Edge_Conditions.hpp"
 #include "General_Edge_Conditions.hpp"
+#include "Action_Events.hpp"
 
 namespace del
 {
@@ -49,9 +50,10 @@ namespace del
 
 	}
 
-	Agent_Edge_Conditions::Agent_Edge_Conditions(const General_Action& general_action, const Domain& domain, const std::map<std::string, Event_Id>& event_name_to_id, const std::vector<Atom_Id>& arguments)
+	Agent_Edge_Conditions::Agent_Edge_Conditions(const General_Action& general_action, const Domain& domain, const Action_Events& action_events, const std::vector<Atom_Id>& arguments)
 		: edge_conditions(general_action.get_edge_conditions().size())
 	{
+		std::map<std::string, Event_Id> event_name_to_id = action_events.get_name_to_id();
 		const General_Agent_Edge_Conditions& other = general_action.get_edge_conditions();
 		std::vector<Atom_Id> converted_arguments = arguments;
 

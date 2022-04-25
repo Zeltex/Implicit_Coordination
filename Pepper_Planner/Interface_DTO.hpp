@@ -7,7 +7,7 @@
 namespace del {
 	class Interface_DTO {
 	public:
-		Interface_DTO() : has_an_action(false), action({ 0 }, 0), announce_string() {}
+		Interface_DTO() : has_an_action(false), action(), announce_string() {}
 		Interface_DTO(Action action, std::string announce_string) : has_an_action(true), action(action), announce_string(announce_string) {}
 		bool has_action() const;
 		Action get_action() const;

@@ -117,6 +117,9 @@
     <ClCompile Include="General_Action_Events.cpp">
       <Filter>Source Files\DEL\Action</Filter>
     </ClCompile>
+    <ClCompile Include="Designated_Events.cpp">
+      <Filter>Source Files\DEL\Action</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Agent.hpp">
@@ -195,6 +198,9 @@
       <Filter>Header Files\DEL\Action</Filter>
     </ClInclude>
     <ClInclude Include="General_Action_Events.hpp">
+      <Filter>Header Files\DEL\Action</Filter>
+    </ClInclude>
+    <ClInclude Include="Designated_Events.hpp">
       <Filter>Header Files\DEL\Action</Filter>
     </ClInclude>
   </ItemGroup>

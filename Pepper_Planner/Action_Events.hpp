@@ -49,6 +49,7 @@ namespace del {
 		std::string to_string(const Domain& domain) const;
 		size_t size() const;
 		const Action_Event& get_first_event() const;
+		std::map<std::string, Event_Id> get_name_to_id() const;
 		std::vector<Action_Event>::const_iterator begin() const;
 		std::vector<Action_Event>::const_iterator end() const;
 	private:

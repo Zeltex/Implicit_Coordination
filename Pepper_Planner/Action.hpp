@@ -14,6 +14,7 @@
 #include "Agent.hpp"
 #include "Edge_Conditions.hpp"
 #include "Action_Events.hpp"
+#include "Designated_Events.hpp"
 
 
 namespace del {
@@ -22,16 +23,8 @@ namespace del {
 	class State;
 	class Action {
 	public:
-		Action() {}
-		Action(Agent_Id owner, size_t number_of_agents);
+		Action();
 		Action(const General_Action& general_action, const Domain& domain, const std::vector<Atom_Id>& arguments);
-
-		void add_designated_event(Event_Id event);
-		//void add_event(const Action_Event& event);
-		//void add_event(const std::string& name, Event_Id id, Formula&& precondition, const std::vector<Proposition>& proposition_add, const std::vector<Proposition>& proposition_delete);
-		//void add_reachability(Agent_Id owner, Event_Id event_from, Event_Id event_to, Formula&& condition);
-		void set_cost(size_t cost);
-		void set_name(const std::string& name);
 
 		size_t					get_cost() const;
 		const Action_Events&	get_events() const;
@@ -50,15 +43,10 @@ namespace del {
 		std::vector<Atom_Id> args;
 
 	private:
-		void copy_and_instantiate_edge_conditions(const General_Action& general_action, const std::map<std::string, Event_Id>& event_name_to_id, const std::vector<Atom_Id>& arguments, const Domain& domain);
-		void copy_and_instantiate_designated_events(const General_Action& general_action, const std::map<std::string, Event_Id>& event_name_to_id);
-		std::map<std::string, Event_Id> copy_and_instantiate_events(const General_Action& general_action, const std::vector<Atom_Id>& arguments, const Domain& domain);
-
-		std::string get_string(const std::vector<Proposition>& propositions, const Domain& domain) const;
-
 		size_t cost;
+		// Events must be above designated_events and edge_conditions, for the initializer list ordering
 		Action_Events events;
-		std::vector<Event_Id> designated_events;
+		Designated_Events designated_events;
 		Agent_Id owner;
 		std::string name;
 		Agent_Edge_Conditions edge_conditions;

@@ -87,6 +87,16 @@ namespace del {
 		return events.front();
 	}
 
+	std::map<std::string, Event_Id> Action_Events::get_name_to_id() const
+	{
+		std::map<std::string, Event_Id> result;
+		for (const Action_Event& action_event : events)
+		{
+			result.insert({ action_event.get_name(), action_event.get_id() });
+		}
+		return result;
+	}
+
 	std::vector<Action_Event>::const_iterator Action_Events::begin() const
 	{
 		return events.begin();
