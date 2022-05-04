@@ -5,6 +5,7 @@
 
 #include "Types.hpp"
 #include "Formula.hpp"
+#include "Propositions.hpp"
 
 namespace del {
 	class Action_Event;

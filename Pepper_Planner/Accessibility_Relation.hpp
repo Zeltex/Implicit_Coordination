@@ -3,6 +3,7 @@
 #include <vector>
 #include <set>
 #include <map>
+#include <string>
 
 #include "Types.hpp"
 

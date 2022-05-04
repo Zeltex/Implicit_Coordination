@@ -170,7 +170,9 @@
     <ClCompile Include="Planner.cpp" />
     <ClCompile Include="Graph.cpp" />
     <ClCompile Include="Node.cpp" />
+    <ClCompile Include="Planner_Debug_Info.cpp" />
     <ClCompile Include="Policy.cpp" />
+    <ClCompile Include="Propositions.cpp" />
     <ClCompile Include="State.cpp" />
     <ClCompile Include="Types.cpp" />
     <ClCompile Include="World.cpp" />
@@ -199,7 +201,9 @@
     <ClInclude Include="Planner.hpp" />
     <ClInclude Include="Graph.hpp" />
     <ClInclude Include="Node.hpp" />
+    <ClInclude Include="Planner_Debug_Info.hpp" />
     <ClInclude Include="Policy.hpp" />
+    <ClInclude Include="Propositions.hpp" />
     <ClInclude Include="State.hpp" />
     <ClInclude Include="Types.hpp" />
     <ClInclude Include="World.hpp" />

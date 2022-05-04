@@ -3,6 +3,7 @@
 #include <string>
 
 #include "Types.hpp"
+#include "Formula_Types.hpp"
 
 namespace del {
 	class Agent {

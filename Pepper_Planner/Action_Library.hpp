@@ -6,10 +6,9 @@
 #include "General_Action.hpp"
 #include "Action.hpp"
 #include "Agent.hpp"
-#include "Domain.hpp"
-#include "Core.hpp"
 
 namespace del {
+	class Domain;
 	class Action_Library {
 	public:
 		Action_Library();

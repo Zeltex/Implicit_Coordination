@@ -17,7 +17,7 @@ namespace del {
 	}
 
 	World World::create_copy(World_Id id) const {
-		return World(id, true_propositions.data);
+		return World(id, true_propositions.propositions);
 	}
 
 	void World::add_true_propositions(const Propositions& propositions) {
@@ -35,7 +35,7 @@ namespace del {
 	std::string World::to_string(const Domain& domain) const{
 		std::string result = "World " + std::to_string(id.id) + ": ";
 		bool first = true;
-		for (const Proposition& proposition : true_propositions.data) {
+		for (const Proposition& proposition : true_propositions.propositions) {
 			if (first) {
 				first = false;
 			}

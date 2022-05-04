@@ -5,6 +5,7 @@
 
 #include "Formula.hpp"
 #include "Types.hpp"
+#include "Propositions.hpp"
 
 namespace del
 {
@@ -12,20 +13,20 @@ namespace del
 	{
 	friend class Action_Event;
 	public:
-		General_Action_Event(std::string name, Event_Id id, Formula&& precondition, const std::vector<Proposition>& proposition_add, const std::vector<Proposition>& proposition_delete);
+		General_Action_Event(std::string name, Event_Id id, Formula&& precondition, const Propositions& proposition_add, const Propositions& proposition_delete);
 	private:
 		std::string name;
 		Event_Id id;
 		Formula precondition;
-		std::vector<Proposition> proposition_add;
-		std::vector<Proposition> proposition_delete;
+		Propositions proposition_add;
+		Propositions proposition_delete;
 	};
 
 	class General_Action_Events
 	{
 	friend class Action_Events;
 	public:	
-		void insert(std::string name, Formula&& preconditions, const std::vector<Proposition>& add_list, const std::vector<Proposition>& delete_list);
+		void insert(std::string name, Formula&& preconditions, const Propositions& add_list, const Propositions& delete_list);
 		size_t size() const;
 	private:
 		std::vector<General_Action_Event> events;

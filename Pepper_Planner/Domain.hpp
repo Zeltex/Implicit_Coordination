@@ -68,8 +68,5 @@ namespace del {
 		std::unordered_map<std::string, std::vector<Atom_Id>> objects;
 		std::unordered_map<std::string, Atom_Id> atom_to_id;
 		std::unordered_map<size_t, std::string> id_to_atom;
-#if DEBUG_PRINT == 1
-		size_t debug_counter = 0;
-#endif
 	};
 }

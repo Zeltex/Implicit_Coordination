@@ -10,7 +10,7 @@ namespace del
 	class Domain;
 	class General_Edge_Condition 
 	{
-		friend class Edge_Conditions;
+		friend struct Edge_Conditions;
 	public:
 		General_Edge_Condition(std::string event_from, std::string event_to, Formula&& condition);
 	private:
@@ -21,7 +21,7 @@ namespace del
 
 	class General_Edge_Conditions
 	{
-		friend class Edge_Conditions;
+		friend struct Edge_Conditions;
 	public:
 		void insert(const General_Edge_Condition& edge_condition);
 	private:

@@ -2,7 +2,8 @@
 #include <cstddef>
 #include <vector>
 #include <optional>
-#include "Formula.hpp"
+#include <string>
+//#include "Formula.hpp"
 
 namespace del {
 	struct Node_Id {
