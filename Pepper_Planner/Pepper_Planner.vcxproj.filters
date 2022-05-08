@@ -37,6 +37,12 @@
     <Filter Include="Source Files\DEL\Formula">
       <UniqueIdentifier>{9aacf4ca-15d7-418c-be58-3b34fb958e67}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Domain_Loader">
+      <UniqueIdentifier>{ffb5df6d-9f22-44a2-a513-bd552bd4bf92}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Domain_Loader">
+      <UniqueIdentifier>{b99ce405-8c00-4411-961a-104747e65095}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Agent.cpp">
@@ -126,6 +132,33 @@
     <ClCompile Include="Planner_Debug_Info.cpp">
       <Filter>Source Files\Planner</Filter>
     </ClCompile>
+    <ClCompile Include="Atoms.cpp">
+      <Filter>Source Files\DEL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Formula\Formula_Converter.cpp">
+      <Filter>Source Files\DEL\Formula</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Formula\Formula_Component.cpp">
+      <Filter>Source Files\DEL\Formula</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Formula\Formula.cpp">
+      <Filter>Source Files\DEL\Formula</Filter>
+    </ClCompile>
+    <ClCompile Include="Proposition_Instance.cpp">
+      <Filter>Source Files\DEL\Formula</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Domain_Loader\Custom_Lexer.cpp">
+      <Filter>Source Files\Domain_Loader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Domain_Loader\Custom_Parser.cpp">
+      <Filter>Source Files\Domain_Loader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Domain_Loader\Domain_Buffer.cpp">
+      <Filter>Source Files\Domain_Loader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Domain_Loader\Loader.cpp">
+      <Filter>Source Files\Domain_Loader</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Agent.hpp">
@@ -214,6 +247,51 @@
     </ClInclude>
     <ClInclude Include="Planner_Debug_Info.hpp">
       <Filter>Header Files\Planner</Filter>
+    </ClInclude>
+    <ClInclude Include="Atoms.hpp">
+      <Filter>Header Files\DEL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Formula\Formula_Types.hpp">
+      <Filter>Header Files\DEL\Formula</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Formula\Formula_Input_Interface.hpp">
+      <Filter>Header Files\DEL\Formula</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Formula\Formula_Core.hpp">
+      <Filter>Header Files\DEL\Formula</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Formula\Formula_Converter.hpp">
+      <Filter>Header Files\DEL\Formula</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Formula\Formula_Component.hpp">
+      <Filter>Header Files\DEL\Formula</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Formula\Formula.hpp">
+      <Filter>Header Files\DEL\Formula</Filter>
+    </ClInclude>
+    <ClInclude Include="Proposition_Instance.hpp">
+      <Filter>Header Files\DEL\Formula</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Domain_Loader\Custom_Lexer.hpp">
+      <Filter>Header Files\Domain_Loader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Domain_Loader\Custom_Parser.hpp">
+      <Filter>Header Files\Domain_Loader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Domain_Loader\Domain_Buffer.hpp">
+      <Filter>Header Files\Domain_Loader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Domain_Loader\Domain_Interface.hpp">
+      <Filter>Header Files\Domain_Loader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Domain_Loader\Loader.hpp">
+      <Filter>Header Files\Domain_Loader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Domain_Loader\Loader_Types.hpp">
+      <Filter>Header Files\Domain_Loader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Domain_Loader\Maepl.hpp">
+      <Filter>Header Files\Domain_Loader</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

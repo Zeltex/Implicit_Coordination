@@ -3,8 +3,6 @@
 #include <vector>
 #include <string>
 
-#include "Formula.hpp"
-#include "Formula_Types.hpp"
 #include "Action_Events.hpp"
 #include "Misc.hpp"
 #include "Types.hpp"
@@ -13,16 +11,18 @@
 #include "Edge_Conditions.hpp"
 #include "Action_Events.hpp"
 #include "Designated_Events.hpp"
+#include "Atoms.hpp"
 
 
 namespace del {
 
 	class World;
 	class State;
+	class Atoms;
 	class Action {
 	public:
 		Action();
-		Action(const General_Action& general_action, const Domain& domain, const std::vector<Atom_Id>& arguments);
+		Action(const General_Action& general_action, const Domain& domain, const Atoms& arguments);
 
 		size_t					get_cost() const;
 		const Action_Events&	get_events() const;
@@ -38,7 +38,7 @@ namespace del {
 		std::string to_compact_string(const Domain& domain) const;
 
 		// Args is mainly debug
-		std::vector<Atom_Id> args;
+		Atoms args;
 
 	private:
 		size_t cost;

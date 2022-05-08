@@ -42,7 +42,7 @@ namespace del {
 			else {
 				result += ";";
 			}
-			result += domain.get_proposition_instance(proposition).to_string(domain.get_id_to_atom());
+			result += domain.get_proposition_instance(proposition).to_string(domain);
 		}
 		return result;
 	}

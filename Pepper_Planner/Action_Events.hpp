@@ -12,6 +12,7 @@
 
 namespace del {
 	class Domain;
+	class Atoms;
 	class Action_Event {
 	public:
 		Action_Event(const General_Action_Event& other, Event_Id id, const std::map<Proposition, Proposition>& converter);
@@ -36,7 +37,7 @@ namespace del {
 	{
 	public:
 		Action_Events();
-		Action_Events(const General_Action& general_action, const std::vector<Atom_Id>& arguments, const Domain& domain);
+		Action_Events(const General_Action& general_action, const Atoms& arguments, const Domain& domain);
 		std::string to_compact_string(const Domain& domain) const;
 		std::string to_string(const Domain& domain) const;
 		size_t size() const;

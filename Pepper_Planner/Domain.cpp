@@ -41,13 +41,7 @@ namespace del {
 	}
 
 	const Agent& Domain::get_agent(const Agent_Id& id) const {
-		if (id.id > agents.size()) {
-		// TODO - Handle this
-			std::cerr << "No agent with id: " << id.id << "\n";
-			exit(-1);
-		} else {
-			return agents[id.id];
-		}
+		return agents.at(id.id);
 	}
 
 	const Agent& Domain::get_agent_from_atom(const Atom_Id& id) const {
@@ -144,22 +138,6 @@ namespace del {
 		return atom_to_id.at(atom_name);
 	}
 
-	const std::unordered_map<size_t, std::string>& Domain::get_id_to_atom() const {
-		return id_to_atom;
-	}
-
-	const std::unordered_map<std::string, Atom_Id>& Domain::get_atom_to_id() const {
-		return atom_to_id;
-	}
-	
-	std::unordered_map<std::string, size_t> Domain::get_agent_to_id() const {
-		std::unordered_map<std::string, size_t> result;
-		for (auto& agent : agents) {
-			result[agent.get_name()] = agent.get_id().id;
-		}
-		return result;
-	}
-
 	void Domain::set_rigid_atoms(std::vector<Proposition> rigid_atoms) {
 		this->rigid_atoms = std::move(rigid_atoms);
 	}
@@ -183,6 +161,4 @@ namespace del {
 	const Proposition_Instance& Domain::get_proposition_instance(const Proposition& proposition) const {
 		return proposition_to_instance.at(proposition);
 	}
-
-
 }

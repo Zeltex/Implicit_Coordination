@@ -129,7 +129,7 @@ namespace del {
         return false;
     }
 
-    std::string Formula_Component::to_string(const std::vector<Formula_Component>& all_formulas, const std::unordered_map<size_t, std::string>& id_to_atom) const
+    std::string Formula_Component::to_string(const std::vector<Formula_Component>& all_formulas, const Domain& domain) const
     {
         std::string result;
 
@@ -148,40 +148,40 @@ namespace del {
         }
         case Formula_Types::Not:
         {
-            return "Not(" + all_formulas.at(formula.id).to_string(all_formulas, id_to_atom) + ")";
+            return "Not(" + all_formulas.at(formula.id).to_string(all_formulas, domain) + ")";
         }
         case Formula_Types::And:
         {
-            return "And(" + get_string_component(formulas, all_formulas, id_to_atom) + ")";
+            return "And(" + get_string_component(formulas, all_formulas, domain) + ")";
         }
         case Formula_Types::Or:
         {
-            return "Or(" + get_string_component(formulas, all_formulas, id_to_atom) + ")";
+            return "Or(" + get_string_component(formulas, all_formulas, domain) + ")";
         }
         case Formula_Types::Believes:
         {
             const auto& temp_formula = all_formulas.at(formula.id);
-            return "Believes_" + agent.to_string() + "(" + all_formulas[formula.id].to_string(all_formulas, id_to_atom) + ")";
+            return "Believes_" + agent.to_string() + "(" + all_formulas[formula.id].to_string(all_formulas, domain) + ")";
         }
         case Formula_Types::Everyone_Believes:
         {
-            return "Everyone_Believes(" + all_formulas[formula.id].to_string(all_formulas, id_to_atom) + ")";
+            return "Everyone_Believes(" + all_formulas[formula.id].to_string(all_formulas, domain) + ")";
         }
         case Formula_Types::Common_Knowledge:
         {
-            return "Common_Knowledge(" + all_formulas[formula.id].to_string(all_formulas, id_to_atom) + ")";
+            return "Common_Knowledge(" + all_formulas[formula.id].to_string(all_formulas, domain) + ")";
         }
         }
         return "UNKNOWN TYPE";
     }
 
-    std::string Formula_Component::get_string_component(const std::vector<Formula_Id>& formulas, const std::vector<Formula_Component>& all_formulas, const std::unordered_map<size_t, std::string>& id_to_atom) const {
+    std::string Formula_Component::get_string_component(const std::vector<Formula_Id>& formulas, const std::vector<Formula_Component>& all_formulas, const Domain& domain) const {
         std::string result;
         bool first = true;
         for (Formula_Id entry : formulas) {
             if (first) first = false;
             else result += delim;
-            result += all_formulas[entry.id].to_string(all_formulas, id_to_atom);
+            result += all_formulas[entry.id].to_string(all_formulas, domain);
         }
         return result;
     }

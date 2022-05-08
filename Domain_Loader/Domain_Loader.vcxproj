@@ -146,21 +146,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Custom_Lexer.cpp" />
-    <ClCompile Include="Custom_Parser.cpp" />
-    <ClCompile Include="Domain_Buffer.cpp" />
-    <ClCompile Include="Loader.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Custom_Lexer.hpp" />
-    <ClInclude Include="Custom_Parser.hpp" />
-    <ClInclude Include="Domain_Buffer.hpp" />
-    <ClInclude Include="Domain_Interface.hpp" />
-    <ClInclude Include="Loader.hpp" />
-    <ClInclude Include="Maepl.hpp" />
-    <ClInclude Include="Loader_Types.hpp" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Formula\Formula.vcxproj">
       <Project>{e3af9c11-7f0c-42e3-a149-a30696bab696}</Project>
     </ProjectReference>

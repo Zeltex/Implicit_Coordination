@@ -96,11 +96,11 @@ namespace del {
 			// Produce all grounded propositions
 			bool done = false;
 			while (!done) {
-				std::vector<Atom_Id> grounded_input;
+				Atoms grounded_input;
 				for (size_t i = 0; i < indices.size(); ++i) {
 					const std::string& input_type = inputs.at(i).first;
 					const std::string& atom = list_atoms.at(i).at(indices.at(i));
-					grounded_input.push_back(domain.get_atom_id(atom));
+					grounded_input.insert(domain.get_atom_id(atom));
 				}
 
 				instance_to_proposition.insert(std::pair(Proposition_Instance(general_proposition.name, grounded_input), instance_to_proposition.size()));

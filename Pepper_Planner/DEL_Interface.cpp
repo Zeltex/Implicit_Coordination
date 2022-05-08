@@ -29,7 +29,7 @@ namespace del {
 				if (action.get_owner() == pepper_id) {
 					const auto& events = action.get_events();
 					if (events.size() > 0) {
-						announce_string = events.get_first_event().get_preconditions().to_string(domain.get_id_to_atom());
+						announce_string = events.get_first_event().get_preconditions().to_string(domain);
 					}
 				}
 				return Interface_DTO(action, announce_string);
@@ -48,10 +48,10 @@ namespace del {
 	}
 
 	void DEL_Interface::perform_action(const std::string& name, const std::string& owner, const std::vector<std::string>& arguments) {
-		std::vector<Atom_Id> temp_arguments;
+		Atoms temp_arguments;
 		temp_arguments.reserve(arguments.size());
 		for (auto& argument : arguments) {
-			temp_arguments.push_back(domain.get_atom_id(argument));
+			temp_arguments.insert(domain.get_atom_id(argument));
 		}
 
 		auto action = Action(action_library.get_general_action(name), domain, temp_arguments);
@@ -73,13 +73,5 @@ namespace del {
 
 	bool DEL_Interface::is_solved() {
 		return domain.get_current_state().valuate(goal, domain);
-	}
-
-	const std::unordered_map<std::string, Atom_Id>& DEL_Interface::get_proposition_context() {
-		return domain.get_atom_to_id();
-	}
-
-	std::unordered_map<std::string, size_t> DEL_Interface::get_belief_context() {
-		return domain.get_agent_to_id();
 	}
 }

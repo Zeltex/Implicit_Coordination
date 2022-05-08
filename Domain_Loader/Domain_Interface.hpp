@@ -9,6 +9,7 @@
 #include "Formula.hpp"
 #include "Formula_Component.hpp"
 #include "Loader_Types.hpp"
+#include "Proposition_Instance.hpp"
 
 namespace del {
     class Domain_Interface {

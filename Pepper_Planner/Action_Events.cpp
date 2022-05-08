@@ -1,10 +1,15 @@
 #include "Action_Events.hpp"
 #include "Domain.hpp"
+#include "Atoms.hpp"
 
 namespace del {
 
 	Action_Event::Action_Event(const General_Action_Event& other, Event_Id id, const std::map<Proposition, Proposition>& converter)
-		: name(other.name), id(id), precondition(other.precondition, converter), proposition_add(other.proposition_add), proposition_delete(other.proposition_delete)
+		: name(other.name), 
+		id(id), 
+		precondition(other.precondition, converter), 
+		proposition_add(other.proposition_add), 
+		proposition_delete(other.proposition_delete)
 	{
 
 	}
@@ -33,7 +38,7 @@ namespace del {
 		return "Event " 
 			+ std::to_string(id.id) 
 			+ ": (Preconditions: " 
-			+ precondition.to_string(domain.get_id_to_atom()) 
+			+ precondition.to_string(domain) 
 			+ ") (Add list"
 			+ proposition_add.to_string(domain)
 			+ ") (Delete list, "
@@ -46,7 +51,7 @@ namespace del {
 
 	}
 
-	Action_Events::Action_Events(const General_Action& general_action, const std::vector<Atom_Id>& arguments, const Domain& domain)
+	Action_Events::Action_Events(const General_Action& general_action, const Atoms& arguments, const Domain& domain)
 	{
 		const General_Action_Events& other = general_action.get_events();
 		auto converter = general_action.create_converter(domain, arguments);
@@ -62,7 +67,7 @@ namespace del {
 	{
 		std::string result;
 		for (auto& event : events) {
-			result += "\n<" + event.get_preconditions().to_string(domain.get_id_to_atom()) + ",X,X>";
+			result += "\n<" + event.get_preconditions().to_string(domain) + ",X,X>";
 		}
 		return result;
 	}

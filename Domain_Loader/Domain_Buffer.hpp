@@ -9,7 +9,8 @@
 #include <map>
 
 #include "Formula.hpp"
-#include "Formula_Types.hpp"
+#include "Propositions.hpp"
+#include "Proposition_Instance.hpp"
 #include "Formula_Converter.hpp"
 #include "Loader_Types.hpp"
 

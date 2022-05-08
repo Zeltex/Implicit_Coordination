@@ -3,6 +3,7 @@
 #include "Domain.hpp"
 #include "Formula_Core.hpp"
 #include "Edge_Conditions.hpp"
+#include "Atoms.hpp"
 
 namespace del {
 
@@ -77,7 +78,7 @@ namespace del {
 		return formula_to_domain;
 	}
 
-	std::map<Proposition, Proposition> General_Action::create_converter(const Domain& domain, const std::vector<Atom_Id>& arguments) const{
+	std::map<Proposition, Proposition> General_Action::create_converter(const Domain& domain, const Atoms& arguments) const{
 		std::map<Proposition, Proposition> formula_to_domain;
 		for (auto& [prop_instance, prop] : input_to_formula) {
 			if (!prop_instance.contains_non_atom_entry()) {

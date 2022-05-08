@@ -9,18 +9,20 @@
 #include "General_Action_Events.hpp"
 #include "General_Edge_Conditions.hpp"
 #include "Types.hpp"
+#include "Proposition_Instance.hpp"
 
 namespace del {
 	class General_Agent_Edge_Conditions;
 	class Action;
 	class Domain;
+	class Atoms;
 	class General_Action {
 	public:
 		General_Action() : cost((size_t) - 1), converter_generated(false) {}
 		
 		void add_edge_condition(Atom_Id agent, General_Edge_Conditions&& edge_conditions);
 		std::map<Proposition, Proposition> create_converter(const Domain& domain, const std::map<size_t, Atom_Id>& arguments) const;
-		std::map<Proposition, Proposition> create_converter(const Domain& domain, const std::vector<Atom_Id>& arguments) const;
+		std::map<Proposition, Proposition> create_converter(const Domain& domain, const Atoms& arguments) const;
 		void create_event(std::string name, Formula&& preconditions, const std::vector<Proposition>& add_list, const std::vector<Proposition>& delete_list);
 		void set_action_input(std::vector<std::pair<std::string, std::string>>&& inputs);
 		void set_cost(size_t cost);

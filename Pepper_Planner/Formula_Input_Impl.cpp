@@ -1,10 +1,11 @@
 #include "Formula_Input_Impl.hpp"
 #include "State.hpp"
 #include "Domain.hpp"
+#include "Propositions.hpp"
 
 namespace del {
 
-	bool Formula_Input_Impl::valuate_prop(Proposition prop, const size_t world_id) const 
+	bool Formula_Input_Impl::valuate_prop(const Proposition& prop, const size_t world_id) const 
 	{
 		if (state->is_true(world_id, prop)) 
 		{
@@ -20,7 +21,7 @@ namespace del {
 		return false;
 	}
 	
-	std::set<size_t> Formula_Input_Impl::get_reachable_worlds(Proposition agent_id, size_t world_id) const {
+	std::set<size_t> Formula_Input_Impl::get_reachable_worlds(const Proposition& agent_id, size_t world_id) const {
 		return state->get_reachable_worlds(agent_id.to_hash(), world_id);
 	}
 

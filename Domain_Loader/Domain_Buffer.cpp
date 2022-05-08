@@ -1,4 +1,5 @@
 #include "Domain_Buffer.hpp"
+#include "Atoms.hpp"
 #include <algorithm>
 
 namespace del {
@@ -30,20 +31,25 @@ namespace del {
     }
 
     void Domain_Buffer::push_proposition_instance(std::string name) {
-        std::vector<Atom_Id> temp_atoms;
+        Atoms temp_atoms;
         temp_atoms.reserve(ordered_variable_list.size());
 
         // Variable list to atom id
-        for (auto& entry : ordered_variable_list) {
-            if (entry == REST_KEYWORD) {
+        for (auto& entry : ordered_variable_list) 
+        {
+            if (entry == REST_KEYWORD) 
+            {
                 atom_to_id[REST_KEYWORD] = REST_INDEX;
-            } else {
+            } 
+            else 
+            {
                 auto it = atom_to_id.find(entry);
-                if (it == atom_to_id.end()) {
+                if (it == atom_to_id.end()) 
+                {
                     atom_to_id[entry] = atom_to_id.size();
                 }
             }
-            temp_atoms.emplace_back(atom_to_id[entry]);
+            temp_atoms.insert(atom_to_id[entry]);
         }
 
         // Save proposition_instance and create proposition

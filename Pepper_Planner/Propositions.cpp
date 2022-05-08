@@ -52,7 +52,7 @@ namespace del {
         std::string result;
         for (const Proposition& proposition : propositions) 
         {
-            result += ", " + domain.get_proposition_instance(proposition).to_string(domain.get_id_to_atom());
+            result += ", " + domain.get_proposition_instance(proposition).to_string(domain);
         }
         return result;
     }

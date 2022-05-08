@@ -26,7 +26,7 @@ namespace del
 	{
 	public:
 		Agent_Edge_Conditions();
-		Agent_Edge_Conditions(const General_Action& general_action, const Domain& domain, const Action_Events& action_events, const std::vector<Atom_Id>& arguments);
+		Agent_Edge_Conditions(const General_Action& general_action, const Domain& domain, const Action_Events& action_events, const Atoms& arguments);
 		std::optional<const Formula*> get_precondition(Agent_Id agent, Event_Id event_from, Event_Id event_to) const;
 		size_t size() const;
 	private:

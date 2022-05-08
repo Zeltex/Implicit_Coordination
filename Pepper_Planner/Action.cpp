@@ -10,7 +10,7 @@ namespace del {
 
 	}
 
-	Action::Action(const General_Action& general_action, const Domain& domain, const std::vector<Atom_Id>& arguments)
+	Action::Action(const General_Action& general_action, const Domain& domain, const Atoms& arguments)
 		:args(arguments), 
 		cost(general_action.get_cost()), 
 		name(general_action.get_name()), 

@@ -10,6 +10,7 @@
 #include "Action_Events.hpp"
 #include "Action.hpp"
 #include "Core.hpp"
+#include "Proposition_Instance.hpp"
 
 namespace del {
 	class Domain {
@@ -46,10 +47,6 @@ namespace del {
 		void set_objects(const std::unordered_map<std::string, std::unordered_set<std::string>>& objects, const std::unordered_map<std::string, Atom_Id>& atom_to_id);
 		void set_rigid_atoms(std::vector<Proposition> rigid_atoms);
 		void set_proposition_instances(std::map<Proposition_Instance, Proposition>&& instance_to_proposition);
-
-		std::unordered_map<std::string, size_t>			get_agent_to_id() const;
-		const std::unordered_map<std::string, Atom_Id>& get_atom_to_id() const;
-		const std::unordered_map<size_t, std::string>&	get_id_to_atom() const;
 
 	private:
 		//std::unordered_set<size_t> get_obs_set(const Agent_Id& owner, const std::vector<Proposition_Instance>& add_list, const std::vector<Proposition_Instance>& delete_list);

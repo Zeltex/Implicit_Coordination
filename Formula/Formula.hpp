@@ -16,7 +16,7 @@ namespace del {
 	public:
 		Formula():root(0) {}
 		Formula(const Formula& other, const std::map<Proposition, Proposition>& general_to_ground);
-		std::string to_string(const std::unordered_map<size_t, std::string>& id_to_atom) const;
+		std::string to_string(const Domain& domain) const;
 		bool valuate(const size_t world_id, const Formula_Input_Interface* input_interface) const;
 		Formula_Id f_top();
 		Formula_Id f_bot();

@@ -7,6 +7,7 @@
 
 #include "Formula_Types.hpp"
 #include "Formula_Input_Interface.hpp"
+#include "Propositions.hpp"
 
 namespace del {
 	struct Formula_Component {
@@ -15,10 +16,10 @@ namespace del {
 
 
 		const char delim = ';';
-		std::string to_string(const std::vector<Formula_Component>& all_formulas, const std::unordered_map<size_t, std::string>& id_to_atom) const;
+		std::string to_string(const std::vector<Formula_Component>& all_formulas, const Domain& domain) const;
 		bool valuate(const std::vector<Formula_Component>& all_formulas, const size_t world_id, const Formula_Input_Interface* input_interface) const;
 
-		std::string get_string_component(const std::vector<Formula_Id>& formulas, const std::vector<Formula_Component>& all_formulas, const std::unordered_map<size_t, std::string>& id_to_atom) const;
+		std::string get_string_component(const std::vector<Formula_Id>& formulas, const std::vector<Formula_Component>& all_formulas, const Domain& domain) const;
 		Formula_Types get_type() const;
 		const Proposition& get_proposition() const;
 

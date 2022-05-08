@@ -121,7 +121,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)Domain_Loader;$(SolutionDir)Formula</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Domain_Loader;$(SolutionDir)Formula;$(SolutionDir)Pepper_Planner</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -147,6 +147,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\Domain_Loader\Custom_Lexer.cpp" />
+    <ClCompile Include="..\Domain_Loader\Custom_Parser.cpp" />
+    <ClCompile Include="..\Domain_Loader\Domain_Buffer.cpp" />
+    <ClCompile Include="..\Domain_Loader\Loader.cpp" />
+    <ClCompile Include="..\Formula\Formula.cpp" />
+    <ClCompile Include="..\Formula\Formula_Component.cpp" />
+    <ClCompile Include="..\Formula\Formula_Converter.cpp" />
     <ClCompile Include="Accessibility_Relation.cpp" />
     <ClCompile Include="Action.cpp" />
     <ClCompile Include="Action_Events.cpp" />
@@ -173,16 +180,32 @@
     <ClCompile Include="Planner_Debug_Info.cpp" />
     <ClCompile Include="Policy.cpp" />
     <ClCompile Include="Propositions.cpp" />
+    <ClCompile Include="Atoms.cpp" />
+    <ClCompile Include="Proposition_Instance.cpp" />
     <ClCompile Include="State.cpp" />
     <ClCompile Include="Types.cpp" />
     <ClCompile Include="World.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Domain_Loader\Custom_Lexer.hpp" />
+    <ClInclude Include="..\Domain_Loader\Custom_Parser.hpp" />
+    <ClInclude Include="..\Domain_Loader\Domain_Buffer.hpp" />
+    <ClInclude Include="..\Domain_Loader\Domain_Interface.hpp" />
+    <ClInclude Include="..\Domain_Loader\Loader.hpp" />
+    <ClInclude Include="..\Domain_Loader\Loader_Types.hpp" />
+    <ClInclude Include="..\Domain_Loader\Maepl.hpp" />
+    <ClInclude Include="..\Formula\Formula.hpp" />
+    <ClInclude Include="..\Formula\Formula_Component.hpp" />
+    <ClInclude Include="..\Formula\Formula_Converter.hpp" />
+    <ClInclude Include="..\Formula\Formula_Core.hpp" />
+    <ClInclude Include="..\Formula\Formula_Input_Interface.hpp" />
+    <ClInclude Include="..\Formula\Formula_Types.hpp" />
     <ClInclude Include="Accessibility_Relation.hpp" />
     <ClInclude Include="Action.hpp" />
     <ClInclude Include="Action_Events.hpp" />
     <ClInclude Include="Action_Library.hpp" />
     <ClInclude Include="Agent.hpp" />
+    <ClInclude Include="Atoms.hpp" />
     <ClInclude Include="Bisimulation_Context.hpp" />
     <ClInclude Include="Core.hpp" />
     <ClInclude Include="Designated_Events.hpp" />
@@ -204,6 +227,7 @@
     <ClInclude Include="Planner_Debug_Info.hpp" />
     <ClInclude Include="Policy.hpp" />
     <ClInclude Include="Propositions.hpp" />
+    <ClInclude Include="Proposition_Instance.hpp" />
     <ClInclude Include="State.hpp" />
     <ClInclude Include="Types.hpp" />
     <ClInclude Include="World.hpp" />

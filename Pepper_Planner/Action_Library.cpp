@@ -70,9 +70,9 @@ namespace del {
 		bool done = false;
 		while (!done) {
 
-			std::vector<Atom_Id> arguments;
+			Atoms arguments;
 			for (size_t i = 0; i < counters.size(); i++) {
-				arguments.emplace_back(atoms[i][counters[i]]);
+				arguments.insert(atoms[i][counters[i]]);
 			}
 			actions.emplace_back(general_action, domain, arguments);
 
