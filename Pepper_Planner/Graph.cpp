@@ -1,10 +1,11 @@
 #include "Graph.hpp"
 #include "Node_Comparator.hpp"
 #include "Core.hpp"
+#include "Agents.hpp"
 
 namespace del {
 
-	Graph::Graph(size_t node_size, const State& state, Node_Comparator& history, Agent_Id planning_agent) 
+	Graph::Graph(size_t node_size, const State& state, Node_Comparator& history, const Agent& planning_agent) 
 	{
 		nodes.reserve(node_size); 
 		Node& root = create_root_node(state);

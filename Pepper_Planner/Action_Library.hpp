@@ -3,9 +3,9 @@
 #include <vector>
 #include <iostream>
 
-#include "General_Action.hpp"
+#include "General_Actions.hpp"
 #include "Action.hpp"
-#include "Agent.hpp"
+#include "Agents.hpp"
 
 namespace del {
 	class Domain;

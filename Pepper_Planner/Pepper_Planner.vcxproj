@@ -149,7 +149,7 @@
   <ItemGroup>
     <ClCompile Include="..\Domain_Loader\Custom_Lexer.cpp" />
     <ClCompile Include="..\Domain_Loader\Custom_Parser.cpp" />
-    <ClCompile Include="..\Domain_Loader\Domain_Buffer.cpp" />
+    <ClCompile Include="..\Domain_Loader\General_Domain.cpp" />
     <ClCompile Include="..\Domain_Loader\Loader.cpp" />
     <ClCompile Include="..\Formula\Formula.cpp" />
     <ClCompile Include="..\Formula\Formula_Component.cpp" />
@@ -158,7 +158,8 @@
     <ClCompile Include="Action.cpp" />
     <ClCompile Include="Action_Events.cpp" />
     <ClCompile Include="Action_Library.cpp" />
-    <ClCompile Include="Agent.cpp" />
+    <ClCompile Include="Agents.cpp" />
+    <ClCompile Include="Atom_Buffer.cpp" />
     <ClCompile Include="Bisimulation_Context.cpp" />
     <ClCompile Include="Core.cpp" />
     <ClCompile Include="Designated_Events.cpp" />
@@ -166,11 +167,18 @@
     <ClCompile Include="Domain_Interface_Implementation.cpp" />
     <ClCompile Include="DEL_Interface.cpp" />
     <ClCompile Include="Edge_Conditions.cpp" />
+    <ClCompile Include="Formula_Buffer.cpp" />
     <ClCompile Include="General_Action_Events.cpp" />
+    <ClCompile Include="General_Agents.cpp" />
+    <ClCompile Include="General_Atoms.cpp" />
     <ClCompile Include="General_Edge_Conditions.cpp" />
     <ClCompile Include="Formula_Input_Impl.cpp" />
-    <ClCompile Include="General_Action.cpp" />
+    <ClCompile Include="General_Actions.cpp" />
+    <ClCompile Include="General_Objects.cpp" />
+    <ClCompile Include="General_State.cpp" />
+    <ClCompile Include="General_Typed_Proposition.cpp" />
     <ClCompile Include="General_World.cpp" />
+    <ClCompile Include="Inputs_Buffer.cpp" />
     <ClCompile Include="Interface_DTO.cpp" />
     <ClCompile Include="Misc.cpp" />
     <ClCompile Include="Node_Comparator.cpp" />
@@ -182,14 +190,16 @@
     <ClCompile Include="Propositions.cpp" />
     <ClCompile Include="Atoms.cpp" />
     <ClCompile Include="Proposition_Instance.cpp" />
+    <ClCompile Include="Proposition_Instance_Buffer.cpp" />
     <ClCompile Include="State.cpp" />
     <ClCompile Include="Types.cpp" />
+    <ClCompile Include="Variables_Buffer.cpp" />
     <ClCompile Include="World.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Domain_Loader\Custom_Lexer.hpp" />
     <ClInclude Include="..\Domain_Loader\Custom_Parser.hpp" />
-    <ClInclude Include="..\Domain_Loader\Domain_Buffer.hpp" />
+    <ClInclude Include="..\Domain_Loader\General_Domain.hpp" />
     <ClInclude Include="..\Domain_Loader\Domain_Interface.hpp" />
     <ClInclude Include="..\Domain_Loader\Loader.hpp" />
     <ClInclude Include="..\Domain_Loader\Loader_Types.hpp" />
@@ -204,8 +214,9 @@
     <ClInclude Include="Action.hpp" />
     <ClInclude Include="Action_Events.hpp" />
     <ClInclude Include="Action_Library.hpp" />
-    <ClInclude Include="Agent.hpp" />
+    <ClInclude Include="Agents.hpp" />
     <ClInclude Include="Atoms.hpp" />
+    <ClInclude Include="Atom_Buffer.hpp" />
     <ClInclude Include="Bisimulation_Context.hpp" />
     <ClInclude Include="Core.hpp" />
     <ClInclude Include="Designated_Events.hpp" />
@@ -213,11 +224,18 @@
     <ClInclude Include="Domain_Interface_Implementation.hpp" />
     <ClInclude Include="DEL_Interface.hpp" />
     <ClInclude Include="Edge_Conditions.hpp" />
+    <ClInclude Include="Formula_Buffer.hpp" />
     <ClInclude Include="General_Action_Events.hpp" />
+    <ClInclude Include="General_Agents.hpp" />
+    <ClInclude Include="General_Atoms.hpp" />
     <ClInclude Include="General_Edge_Conditions.hpp" />
     <ClInclude Include="Formula_Input_Impl.hpp" />
-    <ClInclude Include="General_Action.hpp" />
+    <ClInclude Include="General_Actions.hpp" />
+    <ClInclude Include="General_Objects.hpp" />
+    <ClInclude Include="General_State.hpp" />
+    <ClInclude Include="General_Typed_Propositions.hpp" />
     <ClInclude Include="General_World.hpp" />
+    <ClInclude Include="Inputs_Buffer.hpp" />
     <ClInclude Include="Interface_DTO.hpp" />
     <ClInclude Include="Misc.hpp" />
     <ClInclude Include="Node_Comparator.hpp" />
@@ -228,8 +246,10 @@
     <ClInclude Include="Policy.hpp" />
     <ClInclude Include="Propositions.hpp" />
     <ClInclude Include="Proposition_Instance.hpp" />
+    <ClInclude Include="Proposition_Instance_Buffer.hpp" />
     <ClInclude Include="State.hpp" />
     <ClInclude Include="Types.hpp" />
+    <ClInclude Include="Variables_Buffer.hpp" />
     <ClInclude Include="World.hpp" />
   </ItemGroup>
   <ItemGroup>

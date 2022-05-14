@@ -22,11 +22,11 @@ namespace PepperPlannerTests
 		TEST_METHOD(Perspective_Shift_Agent_P) {
 			
 
-			std::unordered_map<std::string, Atom_Id> atom_to_id;
-			atom_to_id["red"] = 0;
-			atom_to_id["Box0"] = 1;
-			atom_to_id["Box1"] = 2;
-			atom_to_id["Box2"] = 3;
+			std::unordered_map<std::string, Atom_Id> name_to_atom;
+			name_to_atom["red"] = 0;
+			name_to_atom["Box0"] = 1;
+			name_to_atom["Box1"] = 2;
+			name_to_atom["Box2"] = 3;
 
 			//Agents; 0:Pepper, 1:L
 			State state(2);
@@ -57,7 +57,7 @@ namespace PepperPlannerTests
 
 			state.set_world_designated(World_Id{ 1 });
 
-			Agent agent(Agent_Id{ 0 }, { atom_to_id.size() }, "Pepper");
+			Agent agent(Agent_Id{ 0 }, { name_to_atom.size() }, "Pepper");
 			auto new_state = perform_perspective_shift(state, agent.get_id());
 
 
@@ -72,11 +72,11 @@ namespace PepperPlannerTests
 		TEST_METHOD(Perspective_Shift_Agent_L) {
 
 
-			std::unordered_map<std::string, Atom_Id> atom_to_id;
-			atom_to_id["red"] = 0;
-			atom_to_id["Box0"] = 1;
-			atom_to_id["Box1"] = 2;
-			atom_to_id["Box2"] = 3;
+			std::unordered_map<std::string, Atom_Id> name_to_atom;
+			name_to_atom["red"] = 0;
+			name_to_atom["Box0"] = 1;
+			name_to_atom["Box1"] = 2;
+			name_to_atom["Box2"] = 3;
 
 			//Agents; 0:Pepper, 1:L
 			State state(2);
@@ -106,7 +106,7 @@ namespace PepperPlannerTests
 
 			state.set_world_designated(World_Id{ 1 });
 
-			Agent agent(Agent_Id{ 1 }, { atom_to_id.size() }, "L");
+			Agent agent(Agent_Id{ 1 }, { name_to_atom.size() }, "L");
 			auto new_state = perform_perspective_shift(state, agent.get_id());
 
 

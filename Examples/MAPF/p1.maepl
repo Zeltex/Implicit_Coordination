@@ -49,6 +49,7 @@ _domain Pepper {
 		}
 	}
 }
+
 _problem MAPF_DU {
 _objects = {
 	agent = [a0, a1]

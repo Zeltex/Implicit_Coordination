@@ -3,7 +3,7 @@
 #include <string>
 #include "Formula.hpp"
 #include "Types.hpp"
-#include "Agent.hpp"
+#include "Agents.hpp"
 
 namespace del
 {
@@ -23,7 +23,7 @@ namespace del
 	{
 		friend struct Edge_Conditions;
 	public:
-		void insert(const General_Edge_Condition& edge_condition);
+		void add(std::string event_from, std::string event_to, Formula&& condition);
 	private:
 		std::vector<General_Edge_Condition> edge_conditions;
 	};
@@ -33,10 +33,10 @@ namespace del
 	{
 		friend class Agent_Edge_Conditions;
 	public:
-		void insert(Atom_Id agent, General_Edge_Conditions&& edge_conditions_input);
-		void finalize(const Domain& domain, const std::vector<Atom_Id>& arguments);
+		void insert(Atom_Id agent, General_Edge_Conditions& edge_conditions_input);
+		//void finalize(const Domain& domain, const std::vector<Atom_Id>& arguments);
 		size_t size() const;
-		void convert_atom_to_id() const;
+		//void convert_atom_to_id() const;
 
 	private:
 		std::map<size_t, General_Edge_Conditions> agent_edge_conditions;

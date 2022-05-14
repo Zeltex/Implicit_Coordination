@@ -64,7 +64,7 @@ namespace del
 			{
 				if (agent_atom == REST_INDEX) 
 				{
-					converted_arguments.set(REST_INDEX, { agent.get_atom_id().id }); // TODO - Janky conversion, need a better 
+					converted_arguments.set(REST_INDEX, Atom{ agent.get_atom_id().id, agent.get_name() }); // TODO - Janky conversion, need a better 
 				}
 				std::map<Proposition, Proposition> general_to_instantiated = general_action.create_converter(domain, converted_arguments);
 

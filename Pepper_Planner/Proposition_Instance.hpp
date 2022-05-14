@@ -14,7 +14,7 @@ namespace del
     struct Proposition_Instance {
         Proposition_Instance();
         Proposition_Instance(const std::string& name);
-        Proposition_Instance(const std::string& name, const Atoms& input);
+        Proposition_Instance(const std::string& name, const std::vector<Atom_Id>& input);
         Proposition_Instance(const std::string& name, const std::vector<std::string>& input, const std::map<std::string, Atom_Id>& context);
         Proposition_Instance(const Proposition_Instance& other, const std::map<size_t, Atom_Id>& input_to_atom);
         Proposition_Instance(const Proposition_Instance& other, const Atoms& input_arguments);

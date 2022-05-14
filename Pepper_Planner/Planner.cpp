@@ -14,12 +14,11 @@ namespace del {
 
 	// TODO - Add option to specify for what person the goal must be fulfilled
 	Policy Planner::find_policy(const Formula& goal_formula, 
-								Action_Library& action_library, 
-								const State& initial_state, 
-								const std::vector<Agent>& agents, 
+								Action_Library& action_library,
 								const Domain& domain, 
-								Agent_Id planning_agent,
+								Agent planning_agent,
 								const bool is_benchmark) const {
+		const State& initial_state = domain.get_current_state();
 		constexpr size_t initial_node_size = 10000;
 		Node_Comparator history;
 		Graph graph(initial_node_size, initial_state, history, planning_agent);

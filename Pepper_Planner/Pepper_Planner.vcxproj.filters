@@ -43,11 +43,20 @@
     <Filter Include="Source Files\Domain_Loader">
       <UniqueIdentifier>{b99ce405-8c00-4411-961a-104747e65095}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Domain_Loader\DEL">
+      <UniqueIdentifier>{6e5a39a8-2877-4c64-9f1d-671cf7be9819}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Domain_Loader\DEL">
+      <UniqueIdentifier>{0a65ae15-c46e-4977-94fc-5dcf1a49c6ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Domain_Loader\Buffers">
+      <UniqueIdentifier>{dddc5ca1-512c-4821-9c28-c19682f65e90}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Domain_Loader\Buffers">
+      <UniqueIdentifier>{99365370-59cb-4d2a-8e04-153bcb311aa9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Agent.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="State.cpp">
       <Filter>Source Files\DEL</Filter>
     </ClCompile>
@@ -93,12 +102,6 @@
     <ClCompile Include="Domain_Interface_Implementation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="General_Action.cpp">
-      <Filter>Source Files\DEL\Action</Filter>
-    </ClCompile>
-    <ClCompile Include="General_World.cpp">
-      <Filter>Source Files\DEL</Filter>
-    </ClCompile>
     <ClCompile Include="Types.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -114,13 +117,7 @@
     <ClCompile Include="Accessibility_Relation.cpp">
       <Filter>Source Files\DEL</Filter>
     </ClCompile>
-    <ClCompile Include="General_Edge_Conditions.cpp">
-      <Filter>Source Files\DEL\Action</Filter>
-    </ClCompile>
     <ClCompile Include="Edge_Conditions.cpp">
-      <Filter>Source Files\DEL\Action</Filter>
-    </ClCompile>
-    <ClCompile Include="General_Action_Events.cpp">
       <Filter>Source Files\DEL\Action</Filter>
     </ClCompile>
     <ClCompile Include="Designated_Events.cpp">
@@ -153,17 +150,59 @@
     <ClCompile Include="..\Domain_Loader\Custom_Parser.cpp">
       <Filter>Source Files\Domain_Loader</Filter>
     </ClCompile>
-    <ClCompile Include="..\Domain_Loader\Domain_Buffer.cpp">
-      <Filter>Source Files\Domain_Loader</Filter>
-    </ClCompile>
     <ClCompile Include="..\Domain_Loader\Loader.cpp">
       <Filter>Source Files\Domain_Loader</Filter>
     </ClCompile>
+    <ClCompile Include="General_Edge_Conditions.cpp">
+      <Filter>Source Files\Domain_Loader\DEL</Filter>
+    </ClCompile>
+    <ClCompile Include="General_Actions.cpp">
+      <Filter>Source Files\Domain_Loader\DEL</Filter>
+    </ClCompile>
+    <ClCompile Include="General_Action_Events.cpp">
+      <Filter>Source Files\Domain_Loader\DEL</Filter>
+    </ClCompile>
+    <ClCompile Include="General_World.cpp">
+      <Filter>Source Files\Domain_Loader\DEL</Filter>
+    </ClCompile>
+    <ClCompile Include="Agents.cpp">
+      <Filter>Source Files\DEL</Filter>
+    </ClCompile>
+    <ClCompile Include="General_Agents.cpp">
+      <Filter>Source Files\Domain_Loader\DEL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Domain_Loader\General_Domain.cpp">
+      <Filter>Source Files\Domain_Loader\DEL</Filter>
+    </ClCompile>
+    <ClCompile Include="Variables_Buffer.cpp">
+      <Filter>Source Files\Domain_Loader\Buffers</Filter>
+    </ClCompile>
+    <ClCompile Include="General_Atoms.cpp">
+      <Filter>Source Files\Domain_Loader\DEL</Filter>
+    </ClCompile>
+    <ClCompile Include="Inputs_Buffer.cpp">
+      <Filter>Source Files\Domain_Loader\Buffers</Filter>
+    </ClCompile>
+    <ClCompile Include="Formula_Buffer.cpp">
+      <Filter>Source Files\Domain_Loader\Buffers</Filter>
+    </ClCompile>
+    <ClCompile Include="Proposition_Instance_Buffer.cpp">
+      <Filter>Source Files\Domain_Loader\Buffers</Filter>
+    </ClCompile>
+    <ClCompile Include="General_State.cpp">
+      <Filter>Source Files\Domain_Loader\DEL</Filter>
+    </ClCompile>
+    <ClCompile Include="General_Objects.cpp">
+      <Filter>Source Files\Domain_Loader\DEL</Filter>
+    </ClCompile>
+    <ClCompile Include="General_Typed_Proposition.cpp">
+      <Filter>Source Files\Domain_Loader\DEL</Filter>
+    </ClCompile>
+    <ClCompile Include="Atom_Buffer.cpp">
+      <Filter>Source Files\Domain_Loader\Buffers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Agent.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Types.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -209,12 +248,6 @@
     <ClInclude Include="DEL_Interface.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="General_Action.hpp">
-      <Filter>Header Files\DEL\Action</Filter>
-    </ClInclude>
-    <ClInclude Include="General_World.hpp">
-      <Filter>Header Files\DEL</Filter>
-    </ClInclude>
     <ClInclude Include="Core.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -230,13 +263,7 @@
     <ClInclude Include="Accessibility_Relation.hpp">
       <Filter>Header Files\DEL</Filter>
     </ClInclude>
-    <ClInclude Include="General_Edge_Conditions.hpp">
-      <Filter>Header Files\DEL\Action</Filter>
-    </ClInclude>
     <ClInclude Include="Edge_Conditions.hpp">
-      <Filter>Header Files\DEL\Action</Filter>
-    </ClInclude>
-    <ClInclude Include="General_Action_Events.hpp">
       <Filter>Header Files\DEL\Action</Filter>
     </ClInclude>
     <ClInclude Include="Designated_Events.hpp">
@@ -278,9 +305,6 @@
     <ClInclude Include="..\Domain_Loader\Custom_Parser.hpp">
       <Filter>Header Files\Domain_Loader</Filter>
     </ClInclude>
-    <ClInclude Include="..\Domain_Loader\Domain_Buffer.hpp">
-      <Filter>Header Files\Domain_Loader</Filter>
-    </ClInclude>
     <ClInclude Include="..\Domain_Loader\Domain_Interface.hpp">
       <Filter>Header Files\Domain_Loader</Filter>
     </ClInclude>
@@ -292,6 +316,54 @@
     </ClInclude>
     <ClInclude Include="..\Domain_Loader\Maepl.hpp">
       <Filter>Header Files\Domain_Loader</Filter>
+    </ClInclude>
+    <ClInclude Include="General_World.hpp">
+      <Filter>Header Files\Domain_Loader\DEL</Filter>
+    </ClInclude>
+    <ClInclude Include="General_Edge_Conditions.hpp">
+      <Filter>Header Files\Domain_Loader\DEL</Filter>
+    </ClInclude>
+    <ClInclude Include="General_Actions.hpp">
+      <Filter>Header Files\Domain_Loader\DEL</Filter>
+    </ClInclude>
+    <ClInclude Include="General_Action_Events.hpp">
+      <Filter>Header Files\Domain_Loader\DEL</Filter>
+    </ClInclude>
+    <ClInclude Include="Agents.hpp">
+      <Filter>Header Files\DEL</Filter>
+    </ClInclude>
+    <ClInclude Include="General_Agents.hpp">
+      <Filter>Header Files\Domain_Loader\DEL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Domain_Loader\General_Domain.hpp">
+      <Filter>Header Files\Domain_Loader\DEL</Filter>
+    </ClInclude>
+    <ClInclude Include="General_Atoms.hpp">
+      <Filter>Header Files\Domain_Loader\DEL</Filter>
+    </ClInclude>
+    <ClInclude Include="Variables_Buffer.hpp">
+      <Filter>Header Files\Domain_Loader\Buffers</Filter>
+    </ClInclude>
+    <ClInclude Include="Inputs_Buffer.hpp">
+      <Filter>Header Files\Domain_Loader\Buffers</Filter>
+    </ClInclude>
+    <ClInclude Include="General_Typed_Propositions.hpp">
+      <Filter>Header Files\Domain_Loader\DEL</Filter>
+    </ClInclude>
+    <ClInclude Include="Formula_Buffer.hpp">
+      <Filter>Header Files\Domain_Loader\Buffers</Filter>
+    </ClInclude>
+    <ClInclude Include="Proposition_Instance_Buffer.hpp">
+      <Filter>Header Files\Domain_Loader\Buffers</Filter>
+    </ClInclude>
+    <ClInclude Include="General_State.hpp">
+      <Filter>Header Files\Domain_Loader\DEL</Filter>
+    </ClInclude>
+    <ClInclude Include="General_Objects.hpp">
+      <Filter>Header Files\Domain_Loader\DEL</Filter>
+    </ClInclude>
+    <ClInclude Include="Atom_Buffer.hpp">
+      <Filter>Header Files\Domain_Loader\Buffers</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

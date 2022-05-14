@@ -10,7 +10,7 @@
 namespace del {
     class Custom_Lexer {
     public:
-        void lex(std::ifstream& file);
+        Custom_Lexer(const std::string& file_path);
         std::vector<Token> tokens;
         std::vector<size_t> line_numbers;
         std::unordered_map<size_t, val> values;

@@ -6,14 +6,17 @@
 
 #include "Domain_Interface.hpp"
 #include "Maepl.hpp"
-#include "Domain_Buffer.hpp"
 #include "Custom_Lexer.hpp"
 #include "Custom_Parser.hpp"
+#include "General_Domain.hpp"
 
 namespace del {
     class Loader {
     public:
-        void parse(Domain_Interface* domain, std::string file_path);
+        Loader(const std::string& file_path);
+        General_Domain get();
     private:
+        Custom_Lexer lexer;
+        Custom_Parser parser;
     };
 }

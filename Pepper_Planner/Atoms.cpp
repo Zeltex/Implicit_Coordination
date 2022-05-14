@@ -4,12 +4,34 @@
 
 namespace del
 {
-	const Atom_Id& Atoms::at(size_t index) const
+	Atom::Atom(size_t id, const std::string& name)
+		: id(id), name(name)
+	{
+
+	}
+
+	Atom::Atom(Atom_Id id, const std::string& name)
+		: id(id), name(name)
+	{
+
+	}
+
+	const std::string& Atom::get_name() const
+	{
+		return name;
+	}
+	
+	Atom_Id Atom::get_id() const
+	{
+		return id;
+	}
+
+	const Atom& Atoms::at(size_t index) const
 	{
 		return atoms.at(index);
 	}
 
-	void Atoms::set(size_t index, const Atom_Id& atom)
+	void Atoms::set(size_t index, const Atom& atom)
 	{
 		atoms.at(index) = atom;
 	}
@@ -19,7 +41,7 @@ namespace del
 		atoms.reserve(size);
 	}
 
-	void Atoms::insert(const Atom_Id& atom)
+	void Atoms::insert(const Atom& atom)
 	{
 		atoms.push_back(atom);
 	}
@@ -27,10 +49,22 @@ namespace del
 	std::string Atoms::to_string(const Domain& domain) const
 	{
 		std::string result;
-		for (const Atom_Id& atom_id : atoms)
+		for (const Atom& atom : atoms)
 		{
-			result += domain.get_atom_name(atom_id) + " ";
+			// TODO - Delete or reverse
+			//result += domain.get_atom(atom).get_name() + " ";
+			result += atom.get_name() + " ";
 		}
 		return result;
+	}
+
+	std::vector<Atom>::const_iterator Atoms::begin() const
+	{
+		return atoms.begin();
+	}
+
+	std::vector<Atom>::const_iterator Atoms::end() const
+	{
+		return atoms.end();
 	}
 }

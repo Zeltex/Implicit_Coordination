@@ -60,10 +60,6 @@ namespace del
 		std::string to_string(const Domain& domain) const;
 		void set(Agent_Id agent, World_Id world_from, World_Id world_to);
 
-
-		bool is_serial() const;
-		bool is_transitive() const;
-		bool is_euclidean() const;
 		bool is_serial_transitive_euclidean() const;
 
 	private:

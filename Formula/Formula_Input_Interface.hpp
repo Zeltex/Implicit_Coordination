@@ -3,7 +3,7 @@
 #include <set>
 
 namespace del {
-    class Proposition;
+    struct Proposition;
     class Formula_Input_Interface {
     public:
         virtual bool valuate_prop(const Proposition& prop, const size_t world_id) const = 0;

@@ -17,8 +17,8 @@ namespace del {
 	class DEL_Interface {
 	public:
 		DEL_Interface(std::string file_path);
-		DEL_Interface(size_t domain_to_load);
-		DEL_Interface(State initial_state, Action_Library library);
+		//DEL_Interface(size_t domain_to_load);
+		//DEL_Interface(State initial_state, Action_Library library);
 		Interface_DTO get_next_action();
 
 		bool query(const Formula& query);

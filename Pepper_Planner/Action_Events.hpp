@@ -7,7 +7,7 @@
 #include "Types.hpp"
 #include "Formula.hpp"
 #include "General_Action_Events.hpp"
-#include "General_Action.hpp"
+#include "General_Actions.hpp"
 #include "Propositions.hpp"
 
 namespace del {

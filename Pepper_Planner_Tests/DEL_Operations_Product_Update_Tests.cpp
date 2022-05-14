@@ -24,11 +24,11 @@ namespace PepperPlannerTests
 		TEST_METHOD(Product_Update_Test_One_Event_Applicable_In_One_Designated_World) {
 			
 
-			std::unordered_map<std::string, Atom_Id> atom_to_id;
-			atom_to_id["red"] = 0;
-			atom_to_id["Box0"] = 1;
-			atom_to_id["Box1"] = 2;
-			atom_to_id["Box2"] = 3;
+			std::unordered_map<std::string, Atom_Id> name_to_atom;
+			name_to_atom["red"] = 0;
+			name_to_atom["Box0"] = 1;
+			name_to_atom["Box1"] = 2;
+			name_to_atom["Box2"] = 3;
 
 			State state(2);
 			state.create_world();
@@ -56,7 +56,7 @@ namespace PepperPlannerTests
 			action.add_designated_event({ 0 });
 
 			Domain domain;
-			State& new_state = perform_product_update(state, action, { {{0}, {atom_to_id.size()}, "Pepper"}, {{1}, {atom_to_id.size()+1}, "L"} }, domain);
+			State& new_state = perform_product_update(state, action, { {{0}, {name_to_atom.size()}, "Pepper"}, {{1}, {name_to_atom.size()+1}, "L"} }, domain);
 			
 			auto& worlds = new_state.get_worlds();
 			Assert::AreEqual(size_t{ 1 }, worlds.size());
@@ -72,11 +72,11 @@ namespace PepperPlannerTests
 		TEST_METHOD(Product_Update_Test_Perceive_Action_Only_Observable_To_Owner) {
 
 
-			std::unordered_map<std::string, Atom_Id> atom_to_id;
-			atom_to_id["red"] = 0;
-			atom_to_id["Box0"] = 1;
-			atom_to_id["Box1"] = 2;
-			atom_to_id["Box2"] = 3;
+			std::unordered_map<std::string, Atom_Id> name_to_atom;
+			name_to_atom["red"] = 0;
+			name_to_atom["Box0"] = 1;
+			name_to_atom["Box1"] = 2;
+			name_to_atom["Box2"] = 3;
 
 			//Agents; 0:Pepper, 1:L
 			State state(2);
@@ -119,7 +119,7 @@ namespace PepperPlannerTests
 			action.add_designated_event(id);
 
 			Domain domain;
-			State& new_state = perform_product_update(state, action, { {{0}, {atom_to_id.size()}, "Pepper"}, {{1}, {atom_to_id.size()+1}, "L"} }, domain);
+			State& new_state = perform_product_update(state, action, { {{0}, {name_to_atom.size()}, "Pepper"}, {{1}, {name_to_atom.size()+1}, "L"} }, domain);
 
 			// Correct amount of worlds
 			auto& worlds = new_state.get_worlds();
@@ -152,11 +152,11 @@ namespace PepperPlannerTests
 
 		TEST_METHOD(Product_Update_Test_Perceive_Two_Events) {
 
-			std::unordered_map<std::string, Atom_Id> atom_to_id;
-			atom_to_id["red"] = 0;
-			atom_to_id["Box0"] = 1;
-			atom_to_id["Box1"] = 2;
-			atom_to_id["Box2"] = 3;
+			std::unordered_map<std::string, Atom_Id> name_to_atom;
+			name_to_atom["red"] = 0;
+			name_to_atom["Box0"] = 1;
+			name_to_atom["Box1"] = 2;
+			name_to_atom["Box2"] = 3;
 
 			//Agents; 0:Pepper, 1:L
 			State state(2);
@@ -197,7 +197,7 @@ namespace PepperPlannerTests
 
 
 			Domain domain;
-			State& new_state = perform_product_update(state, action, { {{0}, {atom_to_id.size()}, "Pepper"}, {{1}, {atom_to_id.size()+1}, "L"} }, domain);
+			State& new_state = perform_product_update(state, action, { {{0}, {name_to_atom.size()}, "Pepper"}, {{1}, {name_to_atom.size()+1}, "L"} }, domain);
 		}
 	};
 }

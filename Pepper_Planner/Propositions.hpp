@@ -3,6 +3,8 @@
 
 namespace del {
 
+    // A proposition is a name with a number of atom parameters
+    // Propositions are referenced by id. Full info is stored in Domain
     struct Proposition {
     public:
         Proposition() : id(EMPTY_INDEX) {}
@@ -24,6 +26,7 @@ namespace del {
         Propositions(const Propositions& data_in);
         Propositions(const std::vector<Proposition>& data_in);
         void insert(const Propositions& propositions);
+        void insert(const Proposition& proposition);
         void remove(const Propositions& propositions);
         bool contains(const Proposition& proposition) const;
         std::string to_string(const Domain& domain) const;
@@ -32,6 +35,7 @@ namespace del {
         size_t size() const;
         bool operator!=(const Propositions& other) const;
         std::string to_hash() const;
+        void reserve(size_t size);
 
         std::vector<Proposition> propositions;
     private:

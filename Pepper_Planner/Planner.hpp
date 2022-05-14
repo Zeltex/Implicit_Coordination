@@ -7,7 +7,7 @@
 #include "Node.hpp"
 #include "Action.hpp"
 #include "State.hpp"
-#include "Agent.hpp"
+#include "Agents.hpp"
 #include "Graph.hpp"
 #include "Types.hpp"
 #include "Formula.hpp"
@@ -19,7 +19,7 @@ namespace del {
 
 	class Planner {
 	public:
-		Policy find_policy(const Formula& formula, Action_Library& action_library, const State& initial_state, const std::vector<Agent>& agents, const Domain& domain, Agent_Id planning_agent, const bool is_benchmark=false) const;
+		Policy find_policy(const Formula& formula, Action_Library& action_library, const Domain& domain, Agent planning_agent, const bool is_benchmark=false) const;
 	private:
 		Policy extract_policy(Graph& graph) const;
 		void add_policy_entry(Policy& policy, const State& state, const Action& action, const Node_Id& node_id) const;

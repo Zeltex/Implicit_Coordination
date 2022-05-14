@@ -1,6 +1,7 @@
 #include "Bisimulation_Context.hpp"
 #include "Core.hpp"
 #include "Types.hpp"
+#include "General_State.hpp"
 
 #include <set>
 #include <map>
@@ -235,14 +236,21 @@ namespace del::bisimulation_context {
 		}
 
 		// Set world propositions
-		State_Builder result_state;
+
+		std::vector<World> worlds;
 		for (const Block& block : blocks.blocks)
 		{
-			auto& world = result_state.create_world();
-			world.add_true_propositions(block.get_propositions(state));
+			worlds.push_back(World(World_Id{ worlds.size() }, block.get_propositions(state)));
 		}
 
 		// Set world relation
+		//Accessibility_Relations accessibility_relations(worlds.size(), state.get_number_of_agents()); 
+		std::vector<Accessibility_Relation> accessibility_relations;
+		for (size_t i = 0; i < state.get_number_of_agents(); ++i)
+		{
+			accessibility_relations.push_back({ Agent_Id{ i }, worlds.size() });
+		}
+
 		for (const auto& kvp : reachables.data)
 		{
 			const World_Id& world_from = kvp.first;
@@ -250,16 +258,17 @@ namespace del::bisimulation_context {
 			for (const Agent_World_Reachable& reachable : kvp.second)
 			{
 				const Block_Id& block_to = blocks.get_block_id(reachable.world);
-				result_state.add_accessibility_relation(reachable.agent, block_from.to_world(), block_to.to_world());
+				accessibility_relations.at(reachable.agent.id).set(block_from.to_world(), block_to.to_world());
 			}
 		}
 
 		// Set designated worlds
+		std::set<World_Id> designated_worlds;
 		for (const World_Id& world : state.get_designated_worlds()) 
 		{
-			result_state.set_world_designated(blocks.get_block_id(world).to_world());
+			designated_worlds.insert(blocks.get_block_id(world).to_world());
 		}
 
-		return result_state.to_state();
+		return State(worlds, accessibility_relations, designated_worlds, state.get_cost());
 	}
 }

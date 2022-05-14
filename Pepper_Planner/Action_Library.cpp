@@ -56,12 +56,12 @@ namespace del {
 		general_actions.push_back(general_action);
 		general_action_name_to_id[general_action.get_name()] = general_actions.size() - 1;
 
-		std::vector<std::vector<Atom_Id>> atoms;
+		std::vector<std::vector<Atom>> atoms;
 		std::vector<size_t> counters;
 
 		// Load all combinations of input
 		for (auto& entry : general_action.get_inputs()) {
-			auto& temp = domain.get_all_atoms_of_type(entry.first);
+			auto& temp = domain.get_all_atoms_of_type(entry.get_type());
 			atoms.emplace_back(temp.begin(), temp.end());
 			counters.emplace_back(0);
 		}

@@ -1,8 +1,8 @@
 #pragma once
 
 #include "Domain_Interface.hpp"
-#include "Domain_Buffer.hpp"
+#include "General_Domain.hpp"
 
 namespace del {
-    void parse_domain(Domain_Interface* domain, Domain_Buffer* buffer, FILE* file_in);
+    void parse_domain(Domain_Interface* domain, General_Domain* buffer, FILE* file_in);
 }

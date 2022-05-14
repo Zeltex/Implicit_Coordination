@@ -2,22 +2,27 @@
 
 namespace del {
 
-	DEL_Interface::DEL_Interface(State initial_state, Action_Library library) : 
-			domain(initial_state), has_policy(false), policy(false), action_library(), pepper_id({ 0 }) {
-		domain = Domain(initial_state);
-		action_library = std::move(library);
-	}
+	//DEL_Interface::DEL_Interface(State initial_state, Action_Library library) 
+	//	: domain(initial_state), has_policy(false), policy(false), action_library(), pepper_id({ 0 }) {
+	//	action_library = std::move(library);
+	//}
 
 	DEL_Interface::DEL_Interface(std::string file_path) :
-		domain(), has_policy(false), policy(false), action_library(), pepper_id({ 0 }) {
-		Loader loader;
-		Domain_Interface_Implementation domain_interface;
-		loader.parse(&domain_interface, file_path);
+		has_policy(false), 
+		policy(false), 
+		action_library(), 
+		pepper_id({ 0 }),
+		domain(Loader(file_path).get())
+		{
+		Loader loader(file_path);
+		General_Domain general_domain = loader.get();
 
-		auto [domain, library, goal] = domain_interface.get_loaded();
-		this->domain = std::move(domain);
-		this->action_library = std::move(library);
-		this->goal = std::move(goal);
+
+		// TODO - Adapt to new system
+		//auto [domain, library, goal] = domain_interface.get_loaded();
+		//this->domain = std::move(domain);
+		//this->action_library = std::move(library);
+		//this->goal = std::move(goal);
 	}
 	
 	Interface_DTO DEL_Interface::get_next_action() {
@@ -44,18 +49,30 @@ namespace del {
 	}
 	
 	void DEL_Interface::perform_action(Action action) {
-		domain.perform_action(action);
+		const State& current_state = domain.get_current_state();
+		// TODO - Handle an inapplicable action here
+		std::optional<State> product_update = current_state.product_update(action, domain);
+		if (product_update.has_value())
+		{
+			product_update.value().contract();
+			domain.add_new_current_state(product_update.value());
+			PRINT_ACTION_TO_CONSOLE(action, *(this));
+		}
+		else
+		{
+			throw std::invalid_argument("Performed invalid action");
+		};
 	}
 
 	void DEL_Interface::perform_action(const std::string& name, const std::string& owner, const std::vector<std::string>& arguments) {
 		Atoms temp_arguments;
 		temp_arguments.reserve(arguments.size());
 		for (auto& argument : arguments) {
-			temp_arguments.insert(domain.get_atom_id(argument));
+			temp_arguments.insert(domain.get_atom(argument));
 		}
 
 		auto action = Action(action_library.get_general_action(name), domain, temp_arguments);
-		domain.perform_action(action);
+		perform_action(action);
 
 	}
 	
@@ -64,9 +81,9 @@ namespace del {
 		return create_policy(planning_agent, is_benchmark);
 	}
 
-	bool DEL_Interface::create_policy(const std::string& planning_agent, const bool is_benchmark) {
-		auto planning_agent_id = domain.get_agent_id(planning_agent);
-		policy = planner.find_policy(this->goal, action_library, domain.get_current_state(), domain.get_agents(), domain, planning_agent_id, is_benchmark);
+	bool DEL_Interface::create_policy(const std::string& planning_agent_name, const bool is_benchmark) {
+		const Agent& planning_agent = domain.get_agent(planning_agent_name);
+		policy = planner.find_policy(this->goal, action_library, domain, planning_agent, is_benchmark);
 		has_policy = policy.is_solved();
 		return policy.is_solved();
 	}

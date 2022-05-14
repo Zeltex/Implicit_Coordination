@@ -10,16 +10,16 @@ namespace del {
 
 	}
 
-	Action::Action(const General_Action& general_action, const Domain& domain, const Atoms& arguments)
+	Action::Action(const General_Action& other, const Domain& domain, const Atoms& arguments)
 		:args(arguments), 
-		cost(general_action.get_cost()), 
-		name(general_action.get_name()), 
-		events(general_action, arguments, domain), 
-		designated_events(general_action, events),
-		edge_conditions(general_action, domain, events, arguments)
+		cost(other.get_cost()), 
+		name(other.get_name()), 
+		events(other, arguments, domain), 
+		designated_events(other, events),
+		edge_conditions(other, domain, events, arguments)
 	{
-		const Atom_Id& owner_atom = arguments.at(general_action.get_owner().second.id);
-		this->owner = domain.get_agent_from_atom(owner_atom).get_id();
+		const Atom_Id& owner_atom = arguments.at(other.get_owner().second.id).get_id();
+		this->owner = domain.get_agent(owner_atom).get_id();
 	}
 
 	bool Action::is_event_designated(Event_Id event) const {

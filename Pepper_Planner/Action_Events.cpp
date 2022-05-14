@@ -7,11 +7,12 @@ namespace del {
 	Action_Event::Action_Event(const General_Action_Event& other, Event_Id id, const std::map<Proposition, Proposition>& converter)
 		: name(other.name), 
 		id(id), 
-		precondition(other.precondition, converter), 
-		proposition_add(other.proposition_add), 
-		proposition_delete(other.proposition_delete)
+		precondition(other.precondition, converter)
 	{
 
+		throw "TODO - Implement proposition conversion";
+		//proposition_add = other.proposition_add;
+		//proposition_delete = other.proposition_delete;
 	}
 
 	Event_Id Action_Event::get_id() const {

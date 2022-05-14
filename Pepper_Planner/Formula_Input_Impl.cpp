@@ -7,18 +7,7 @@ namespace del {
 
 	bool Formula_Input_Impl::valuate_prop(const Proposition& prop, const size_t world_id) const 
 	{
-		if (state->is_true(world_id, prop)) 
-		{
-			return true;
-		}
-
-		if (domain != nullptr) {
-			auto& propositions_domain = domain->get_atom_rigids();
-			if (std::find(propositions_domain.begin(), propositions_domain.end(), prop) != propositions_domain.end()) {
-				return true;
-			}
-		}
-		return false;
+		return state->is_true(world_id, prop) || (domain != nullptr && domain->is_rigid(prop));
 	}
 	
 	std::set<size_t> Formula_Input_Impl::get_reachable_worlds(const Proposition& agent_id, size_t world_id) const {

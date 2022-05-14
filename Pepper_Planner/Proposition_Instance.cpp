@@ -16,7 +16,7 @@ namespace del
         }
     }
 
-    Proposition_Instance::Proposition_Instance(const std::string& name, const Atoms& input) 
+    Proposition_Instance::Proposition_Instance(const std::string& name, const std::vector<Atom_Id>& input)
         : name(name), arguments() {
         size_t counter;
         for (counter = 0; counter < input.size(); counter++) {
@@ -63,7 +63,7 @@ namespace del
                 arguments[counter] = EMPTY_INDEX;
             }
             else {
-                arguments[counter] = input_arguments[entry.id];
+                arguments[counter] = input_arguments[entry.id].get_id();
             }
             counter++;
         }
@@ -81,7 +81,7 @@ namespace del
             {
                 result += ", ";
             }
-            result += domain.get_atom_name(entry);
+            result += domain.get_atom(entry).get_name();
         }
         return result + ")";
     }

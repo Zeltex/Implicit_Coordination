@@ -1,25 +1,31 @@
 #include "Custom_Lexer.hpp"
 
 namespace del {
-    void Custom_Lexer::lex(std::ifstream& file) {
-        std::string line;
-        line_number = 1;
-        size_t current_allocation = 300;
-        tokens.reserve(current_allocation);
-        line_numbers.reserve(current_allocation);
-        while (std::getline(file, line)) {
+    Custom_Lexer::Custom_Lexer(const std::string& file_path) {
+        std::ifstream file(file_path);
+        if (!file) {
+            throw std::runtime_error("Can't open file" + file_path);
+        }
+        try
+        {
+            std::string line;
+            line_number = 1;
+            size_t current_allocation = 300;
+            tokens.reserve(current_allocation);
+            line_numbers.reserve(current_allocation);
+            while (std::getline(file, line)) {
 
-            if (tokens.size() >= current_allocation) {
-                current_allocation = tokens.size() * 2;
-                tokens.reserve(current_allocation);
-                line_numbers.reserve(current_allocation);
-            }
+                if (tokens.size() >= current_allocation) {
+                    current_allocation = tokens.size() * 2;
+                    tokens.reserve(current_allocation);
+                    line_numbers.reserve(current_allocation);
+                }
 
-            size_t pointer = 0;
+                size_t pointer = 0;
 
-            while (pointer < line.size()) {
-                char c = line[pointer];
-                switch (c) {
+                while (pointer < line.size()) {
+                    char c = line[pointer];
+                    switch (c) {
                     case '(':
                     case '[':
                     case '{': add_token(Token::LBRACK);  pointer++;  break;
@@ -39,7 +45,8 @@ namespace del {
                             values.insert({ tokens.size() - 1, line.substr(pointer, end_of_name - pointer) });
                             pointer = end_of_name;
                             break;
-                        } else if (c >= '0' && c <= '9') {
+                        }
+                        else if (c >= '0' && c <= '9') {
                             size_t end_of_integer = get_end_of_integer(line, pointer);
                             add_token(Token::INTEGER);
                             val ival = { static_cast<size_t>(std::stoul(line.substr(pointer, end_of_integer - pointer), nullptr, 0)) };
@@ -47,13 +54,21 @@ namespace del {
                             pointer = end_of_integer;
                             break;
                         }
-                        std::cerr << "Unknown token at line " << line_number << ": " << line.substr(pointer);
+                        throw std::runtime_error("Unknown token at line " + line_number + std::string(": ") + line.substr(pointer));
                         exit(-1);
                         // TODO - Return custom exception
                     }
+                    }
                 }
+                line_number++;
             }
-            line_number++;
+            file.close();
+        }
+        catch (const std::runtime_error& exception)
+        {
+            file.close();
+            std::cerr << exception.what();
+            throw;
         }
     }
 
@@ -81,9 +96,7 @@ namespace del {
         if (token == "goal")				{add_token(Token:: GOAL_DEF);				return;}
         if (token == "initial_state")		{add_token(Token:: INIT_DEF);				return;}
         if (token == "objects")				{add_token(Token:: OBJECTS_DEF);			return;}
-        if (token == "observability")		{add_token(Token:: OBSERVABILITY_DEF);		return;}
         if (token == "owner")				{add_token(Token:: OWNER_DEF);				return;}
-        if (token == "perceivability")		{add_token(Token:: PERCEIVABILITY_DEF);		return;}
         if (token == "preconditions")		{add_token(Token:: PRECONDITIONS_DEF);		return;}
         if (token == "problem")				{add_token(Token:: PROBLEM_DEF);			return;}
         if (token == "propositions")		{add_token(Token:: PROPOSITIONS_DEF);		return;}
@@ -93,9 +106,7 @@ namespace del {
         if (token == "types")				{add_token(Token:: TYPES_DEF);				return;}
         if (token == "world")				{add_token(Token:: WORLD_DEF);				return;}
 
-        std::cerr << "Unknown token at line" << line_number << ": _" << token << std::endl;
-        exit(-1);
-        // TODO - Return custom exception
+        throw std::runtime_error("Unknown token at line" + line_number + std::string(": _") + token);
     }
 
     size_t Custom_Lexer::get_end_of_name(const std::string& line, const size_t& pointer) const {

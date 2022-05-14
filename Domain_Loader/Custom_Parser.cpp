@@ -1,57 +1,80 @@
 #include "Custom_Parser.hpp"
 
 namespace del {
-    Custom_Parser::Custom_Parser(Domain_Interface* domain_input, Domain_Buffer* buffer_input, Custom_Lexer* lexer)
-            : domain(domain_input), buffer(buffer_input), lexer(lexer), pointer(0), value_pointer(0), tokens_size(lexer->tokens.size()) {
+    Custom_Parser::Custom_Parser(Custom_Lexer* lexer)
+            : lexer(lexer), pointer(0), value_pointer(0), tokens_size(lexer->tokens.size()) {
         maepl();
     }
+    General_Domain Custom_Parser::get()
+    {
+        return std::move(buffer);
+    }
 
-    bool Custom_Parser::try_match(const std::vector<Token>& pattern) {
-        if (pointer + pattern.size() > tokens_size) {
+    bool Custom_Parser::try_match(const std::vector<Token>& pattern) 
+    {
+        if (pointer + pattern.size() > tokens_size) 
+        {
             return false;
         }
-        for (size_t i = 0; i < pattern.size(); i++) {
-            if (pattern[i] != lexer->tokens[pointer + i]) {
+        
+        for (size_t i = 0; i < pattern.size(); i++) 
+        {
+            if (pattern[i] != lexer->tokens[pointer + i]) 
+            {
                 return false;
             }
         }
+
         value_pointer = pointer;
         pointer += pattern.size();
         return true;
     }
 
-    bool Custom_Parser::must_match(const std::vector<Token>& pattern) {
-        if (!try_match(pattern)) {
-            std::cerr << "Syntax error line: " << lexer->line_numbers[pointer] << ". Expected token" << (pattern.size() > 1 ? "s " : " ");
-            for (auto& entry : pattern) {
-                std::cerr << token_to_string(entry) << " ";
+    void Custom_Parser::must_match(const Token& token)
+    {
+        must_match({ token });
+    }
+
+    void Custom_Parser::must_match(const std::vector<Token>& pattern)
+    {
+        if (!try_match(pattern))
+        {
+            std::string error;
+            error += "Syntax error line: " + lexer->line_numbers[pointer] + std::string(". Expected token") + (pattern.size() > 1 ? "s " : " ");
+            for (auto& entry : pattern) 
+            {
+                error += token_to_string(entry) + " ";
             }
-            if (pointer < lexer->tokens.size()) {
-                std::cerr << " Found " << token_to_string(lexer->tokens[pointer]);
+            
+            if (pointer < lexer->tokens.size()) 
+            {
+                error += " Found " + token_to_string(lexer->tokens[pointer]);
             }
-            std::cerr << std::endl;
-            // TODO - Throw custom error
-            exit(-1);
-        }
-        else {
-            return true;
+            
+            error += "\n";
+            throw std::runtime_error(error);
         }
     }
 
-    size_t Custom_Parser::get_ivalue(size_t argument_index) {
+    size_t Custom_Parser::get_ivalue(size_t argument_index) 
+    {
         return lexer->values.at(value_pointer + argument_index).ival;
     }
 
-    const std::string& Custom_Parser::get_svalue(size_t argument_index) {
+    const std::string& Custom_Parser::get_svalue(size_t argument_index) 
+    {
         return lexer->values.at(value_pointer + argument_index).sval;
     }
 
-    bool Custom_Parser::get_bvalue(size_t argument_index) {
+    bool Custom_Parser::get_bvalue(size_t argument_index) 
+    {
         return lexer->values.at(value_pointer + argument_index).bval;
     }
 
-    std::string Custom_Parser::token_to_string(Token token) {
-        switch (token) {
+    std::string Custom_Parser::token_to_string(Token token) 
+    {
+        switch (token) 
+        {
             case Token::ACTION_DEF				: return "_action";
             case Token::ANNOUNCE_DEF			: return "_announce";
             case Token::COST_DEF				: return "_announce";
@@ -64,9 +87,7 @@ namespace del {
             case Token::GOAL_DEF				: return "_goal";
             case Token::INIT_DEF				: return "initial_state";
             case Token::OBJECTS_DEF				: return "_objects";
-            case Token::OBSERVABILITY_DEF		: return "_observability";
             case Token::OWNER_DEF				: return "_owner";
-            case Token::PERCEIVABILITY_DEF		: return "_perceivability";
             case Token::PRECONDITIONS_DEF		: return "_preconditions";
             case Token::PROBLEM_DEF				: return "_problem";
             case Token::PROPOSITIONS_DEF		: return "_propositions";
@@ -89,248 +110,216 @@ namespace del {
         }
     }
 
-    void Custom_Parser::maepl() {
-        if (try_match({ Token::DOMAIN_DEF, Token::NAME, Token::LBRACK})) {
-            domain->new_domain(get_svalue(1));
+    void Custom_Parser::maepl() 
+    {
+        if (try_match({ Token::DOMAIN_DEF, Token::NAME, Token::LBRACK})) 
+        {
             domain_body();
-            if (!must_match({ Token::RBRACK })) return;
-            domain->finish_domain();
+            must_match(Token::RBRACK);
             return maepl();
         }
-        if (try_match({ Token::PROBLEM_DEF, Token::NAME, Token::LBRACK })) {
-            buffer->clear_seen_atoms();
+
+        if (try_match({ Token::PROBLEM_DEF, Token::NAME, Token::LBRACK })) 
+        {
             problem_body();
-            if (!must_match({ Token::RBRACK })) return;
-            if (buffer->is_state_reflexive()) domain->create_state_reflexive_reachables();
-            for (auto agent : buffer->get_missing_perceivables()) {
-                domain->add_perceivability(agent, { agent });
-            }
-            domain->finish_problem();
+            must_match(Token::RBRACK);
             return maepl();
         }
+
         return;
     }
 
     void Custom_Parser::domain_body() {
 
-        if (try_match({ Token::ANNOUNCE_DEF, Token::EQUALS, Token::TRUTH })) {
-            if (get_bvalue(2)) domain->set_announce_enabled();
+        if (try_match({ Token::ANNOUNCE_DEF, Token::EQUALS, Token::TRUTH })) 
+        {
+            if (get_bvalue(2))
+            {
+                buffer.announce_enabled = true;
+            }
             return domain_body();
         }
 
-        if (try_match({ Token::TYPES_DEF, Token::EQUALS, Token::LBRACK })) {
+        if (try_match({ Token::TYPES_DEF, Token::EQUALS, Token::LBRACK })) 
+        {
             variables();
-            if (!must_match({ Token::RBRACK })) return;
-            buffer->push_types();
-            domain->set_types(buffer->get_types());
+            must_match(Token::RBRACK);
+            buffer.types.set(buffer.variables_buffer);
 
-            if (!must_match({ Token::PROPOSITIONS_DEF, Token::EQUALS, Token::LBRACK })) return;
+            must_match({ Token::PROPOSITIONS_DEF, Token::EQUALS, Token::LBRACK });
             propositions();
-            buffer->get_proposition_instances();
-            if (!must_match({ Token::RBRACK })) return;
+            must_match(Token::RBRACK);
 
             return actions();
         }
-        std::cerr << "Syntax error line: " << lexer->line_numbers[pointer] << std::endl;
-        exit(-1);
+        throw "Syntax error line: " + lexer->line_numbers[pointer];
     }
 
     // Object def must come before world def and designated worlds def
     // Need to implement restrictions and proper error messages
     void Custom_Parser::problem_body() {
-        if (try_match({Token::DOMAIN_DEF, Token:: EQUALS, Token:: NAME})) {
-            domain->set_domain(get_svalue(2));
+        if (try_match({Token::DOMAIN_DEF, Token:: EQUALS, Token:: NAME}))
+		{
             return problem_body();
         }
 
-        if (try_match({ Token:: OBJECTS_DEF, Token::EQUALS, Token:: LBRACK })) {
+        if (try_match({ Token:: OBJECTS_DEF, Token::EQUALS, Token:: LBRACK }))
+		{
             objects();
-            domain->set_objects(buffer->get_objects(), buffer->get_atom_to_id());
-            if (!must_match({ Token::RBRACK })) return;
+            must_match(Token::RBRACK);
             return problem_body();
         }
 
-        if (try_match({ Token:: INIT_DEF, Token:: EQUALS, Token:: LBRACK})) {
-            buffer->clear_proposition_instances();
+        if (try_match({ Token:: INIT_DEF, Token:: EQUALS, Token:: LBRACK}))
+		{
             proposition_instances();
-            domain->set_initial_propositions(buffer->get_proposition_instances());
-            if (!must_match({ Token::RBRACK })) return;
+            buffer.rigid_propositions.set(buffer.proposition_instance_buffer);
+            must_match(Token::RBRACK);
             return problem_body();
         }
 
-        if (try_match({ Token::WORLD_DEF, Token::NAME, Token::LBRACK })) {
+        if (try_match({ Token::WORLD_DEF, Token::NAME, Token::LBRACK }))
+		{
             auto world_name = get_svalue(1);
-            buffer->clear_proposition_instances();
             proposition_instances();
-            domain->create_world(world_name, buffer->get_proposition_instances());
-            if (!must_match({ Token::RBRACK })) return;
+            buffer.state.add_world(world_name, buffer.proposition_instance_buffer);
+            must_match(Token::RBRACK);
             return problem_body();
         }
 
-        if (try_match({ Token::GOAL_DEF, Token::EQUALS, Token::LBRACK })) {
+        if (try_match({ Token::GOAL_DEF, Token::EQUALS, Token::LBRACK }))
+		{
             formula();
-            domain->set_goal(buffer->get_formula(), buffer->get_instance_to_proposition(), buffer->get_atom_to_id());
-            if (!must_match({ Token::RBRACK })) return;
+            buffer.goal = buffer.formula_buffer.get();
+            must_match(Token::RBRACK);
             return problem_body();
         }
 
-        if (try_match({ Token::DESIGNATED_WORLDS_DEF, Token::EQUALS, Token::LBRACK })) {
+        if (try_match({ Token::DESIGNATED_WORLDS_DEF, Token::EQUALS, Token::LBRACK }))
+		{
             variables();
-            domain->set_designated_worlds(buffer->get_variables());
-            if (!must_match({ Token::RBRACK })) return;
+            buffer.state.set_designated_worlds(buffer.variables_buffer);
+            must_match(Token::RBRACK);
             return problem_body();
         }
 
-        if (try_match({ Token::REACHABILITY_DEF, Token::EQUALS, Token::LBRACK })) {
+        if (try_match({ Token::REACHABILITY_DEF, Token::EQUALS, Token::LBRACK }))
+		{
             reachability_body();
-            if (!must_match({ Token::RBRACK })) return;
-            return problem_body();
-        }
-
-        if (try_match({ Token::REFLEXIVITY_DEF, Token::EQUALS, Token::TRUTH })) {
-            buffer->set_state_reflexivity(get_bvalue(2));
-            return problem_body();
-        }
-
-        if (try_match({ Token::PERCEIVABILITY_DEF, Token::EQUALS, Token::LBRACK })) {
-            perceivability_body();
-            if (!must_match({ Token::RBRACK })) return;
-            return problem_body();
-        }
-
-        if (try_match({ Token::OBSERVABILITY_DEF, Token::EQUALS, Token::LBRACK })) {
-            observability_body();
-            if (!must_match({ Token::RBRACK })) return;
+            must_match(Token::RBRACK);
             return problem_body();
         }
     }
 
     void Custom_Parser::reachability_body() {
-        if (try_match({ Token::NAME, Token::EQUALS, Token::LBRACK })) {
+        if (try_match({ Token::NAME, Token::EQUALS, Token::LBRACK }))
+		{
             auto name = get_svalue(0);
-            buffer->clear_inputs();
             bracketed_input();
-            domain->add_reachability(name, buffer->get_inputs());
-            if (!must_match({ Token::RBRACK })) return;
+            buffer.state.add_accessibility_relation(name, buffer.inputs_buffer);
+            must_match(Token::RBRACK);
             return reachability_body();
         }
         return;
     }
 
-    void Custom_Parser::perceivability_body() {
-        if (try_match({ Token::NAME, Token::EQUALS, Token::LBRACK })) {
-            auto name = get_svalue(0);
-            ordered_variables();
-            domain->add_perceivability(name, buffer->add_reflexive_perceivability(name,	buffer->get_ordered_variables()));
-            if (!must_match({ Token::RBRACK })) return;
-            return perceivability_body();
-        }
-        return;
-    }
-
-    void Custom_Parser::observability_body() {
-        if (try_match({ Token::NAME, Token::EQUALS, Token::LBRACK })) {
-            auto name = get_svalue(0);
-            ordered_variables();
-            domain->add_observability(name, buffer->get_ordered_variables());
-            if (!must_match({ Token::RBRACK })) return;
-            return observability_body();
-        }
-        return;
-    }
-
     void Custom_Parser::objects() {
-        if (try_match({ Token::NAME, Token::EQUALS, Token::LBRACK })) {
-            auto name = get_svalue(0);
+        if (try_match({ Token::NAME, Token::EQUALS, Token::LBRACK }))
+		{
+            std::string type = get_svalue(0);
             variables();
-            buffer->set_object_type(name);
-            buffer->push_objects();
-            if (!must_match({ Token::RBRACK })) return;
+            buffer.objects.add(type, buffer.variables_buffer, buffer.agents);
+            must_match(Token::RBRACK);
             return objects();
         }
         return;
     }
 
     bool Custom_Parser::proposition_instance() {
-        if (try_match({ Token::NAME, Token::LBRACK })) {
-            auto name = get_svalue(0);
+        if (try_match({ Token::NAME, Token::LBRACK }))
+		{
+            std::string name = get_svalue(0);
             ordered_variables();
-            buffer->push_proposition_instance(name);
-            if (!must_match({ Token::RBRACK })) return false;
+            buffer.proposition_instance_buffer.add(name, buffer.variables_buffer, buffer.actions.get_inputs());
+            must_match(Token::RBRACK);
             return true;
         }
         return false;
     }
 
     void Custom_Parser::bracketed_input() {
-        if (try_match({ Token::LBRACK, Token::NAME, Token::NAME, Token::RBRACK })) {
-            buffer->add_input(get_svalue(1), get_svalue(2));
+        if (try_match({ Token::LBRACK, Token::NAME, Token::NAME, Token::RBRACK }))
+		{
+            buffer.inputs_buffer.add(get_svalue(1), get_svalue(2));
             return bracketed_input();
         }
         return;
     }
 
     void Custom_Parser::input() {
-        if (try_match({ Token::NAME, Token::NAME })) {
-            buffer->add_input(get_svalue(0), get_svalue(1));
+        if (try_match({ Token::NAME, Token::NAME }))
+		{
+            buffer.inputs_buffer.add(get_svalue(0), get_svalue(1));
             return input();
         }
         return;
     }
 
     void Custom_Parser::action_body() {
-        if (try_match({ Token::OWNER_DEF, Token::EQUALS, Token::NAME, Token::NAME })) {
-            domain->set_action_owner(get_svalue(2), get_svalue(3), buffer->get_owner_input_index(get_svalue(2), get_svalue(3)));
+        if (try_match({ Token::OWNER_DEF, Token::EQUALS, Token::NAME, Token::NAME }))
+		{
+            buffer.actions.set_owner(get_svalue(2), get_svalue(3));
             return action_body();
         }
 
-        if (try_match({ Token::EVENT_DEF, Token::NAME, Token::LBRACK })) {
-            buffer->set_event_name(get_svalue(1));
+        if (try_match({ Token::EVENT_DEF, Token::NAME, Token::LBRACK }))
+		{
+            
+            buffer.events_buffer.start(get_svalue(1));
             event_body();
-            domain->create_event(
-                    buffer->get_event_name(),
-                    buffer->get_formula(),
-                    buffer->get_event_add_list(),
-                    buffer->get_event_delete_list());
-            if (!must_match({ Token::RBRACK })) return;
+            must_match(Token::RBRACK);
             return action_body();
         }
 
-        if (try_match({ Token::DESIGNATED_EVENTS_DEF, Token::EQUALS, Token::LBRACK })) {
-            buffer->clear_designated_events();
-            designated_events_body();
-            domain->set_designated_events(buffer->get_designated_events());
-            if (!must_match({ Token::RBRACK })) return;
+        if (try_match({ Token::DESIGNATED_EVENTS_DEF, Token::EQUALS, Token::LBRACK }))
+		{
+            ordered_variables();
+            buffer.actions.set_designated_events(buffer.variables_buffer);
+            must_match(Token::RBRACK);
             return action_body();
         }
 
-        if (try_match({ Token::REACHABILITY_DEF, Token::EQUALS, Token::LBRACK })) {
+        if (try_match({ Token::REACHABILITY_DEF, Token::EQUALS, Token::LBRACK }))
+		{
             action_reachability();
 
             // TODO -- If _rest not defined, add empty entry, important for agent size later on
-            if (!must_match({ Token::RBRACK })) return;
+            must_match(Token::RBRACK);
             return action_body();
         }
 
-        if (try_match({ Token::COST_DEF, Token::EQUALS, Token::INTEGER })) {
-            domain->set_action_cost(get_ivalue(2));
+        if (try_match({ Token::COST_DEF, Token::EQUALS, Token::INTEGER }))
+		{
+            buffer.actions.set_cost(get_ivalue(2));
             return action_body();
         }
     }
 
     void Custom_Parser::action_reachability() {
-        if (try_match({ Token::NAME, Token::EQUALS, Token::LBRACK })) {
+        if (try_match({ Token::NAME, Token::EQUALS, Token::LBRACK }))
+		{
             std::string agent_name = get_svalue(0);
             action_agent_reachability();
-            domain->add_edge_condition(buffer->translate_atom_to_id(agent_name), buffer->get_edge_conditions());
-            if (!must_match({ Token::RBRACK })) return;
+            buffer.actions.set_edge_conditions(agent_name, buffer.edge_condition_buffer);
+            must_match(Token::RBRACK);
             return action_reachability();
         }
 
-        if (try_match({ Token::REST_DEF, Token::EQUALS, Token::LBRACK })) {
+        if (try_match({ Token::REST_DEF, Token::EQUALS, Token::LBRACK }))
+		{
             action_agent_reachability();
-            domain->add_edge_condition(REST_INDEX, buffer->get_edge_conditions());
-            if (!must_match({ Token::RBRACK })) return;
+            buffer.actions.set_edge_conditions(REST_KEYWORD, buffer.edge_condition_buffer);
+            must_match(Token::RBRACK);
             return action_reachability();
         }
         return;
@@ -338,91 +327,91 @@ namespace del {
 
     void Custom_Parser::action_agent_reachability() {
 
-        if (try_match({ Token::LBRACK, Token::NAME, Token::NAME, Token::RBRACK, Token::EQUALS, Token::LBRACK})) {
+        if (try_match({ Token::LBRACK, Token::NAME, Token::NAME, Token::RBRACK, Token::EQUALS, Token::LBRACK}))
+		{
             std::string event0 = get_svalue(1);
             std::string event1 = get_svalue(2);
             formula_single();
-            buffer->add_edge_condition({ event0, event1, std::move(buffer->get_formula()) });
-            if (!must_match({ Token::RBRACK })) return;
+            buffer.edge_condition_buffer.add(event0, event1, std::move(buffer.formula_buffer.get()));
+            must_match(Token::RBRACK);
             action_agent_reachability();
         }
         return;
 
     }
 
-    void Custom_Parser::designated_events_body() {
-        if (try_match({ Token::NAME })) {
-            buffer->add_designated_event(get_svalue(0));
-            return designated_events_body();
-        }
-        return;
-    }
-
     void Custom_Parser::event_body() {
-        if (try_match({ Token::PRECONDITIONS_DEF, Token::EQUALS, Token::LBRACK })) {
+        if (try_match({ Token::PRECONDITIONS_DEF, Token::EQUALS, Token::LBRACK }))
+		{
             formula_single();
-            if (!must_match({ Token::RBRACK })) return;
+            buffer.events_buffer.set_preconditions(buffer.formula_buffer);
+            must_match(Token::RBRACK);
             return event_body();
         }
 
-        if (try_match({ Token::EFFECT_DELETE_DEF, Token::EQUALS, Token::LBRACK })) {
-            buffer->clear_variable_list();
+        if (try_match({ Token::EFFECT_DELETE_DEF, Token::EQUALS, Token::LBRACK }))
+		{
             proposition_instances();
-            buffer->push_event_delete_list();
-            if (!must_match({ Token::RBRACK })) return;
+            buffer.events_buffer.set_delete_list(buffer.proposition_instance_buffer);
+            must_match(Token::RBRACK);
             return event_body();
         }
 
-        if (try_match({ Token::EFFECT_ADD_DEF, Token::EQUALS, Token::LBRACK })) {
-            buffer->clear_variable_list();
+        if (try_match({ Token::EFFECT_ADD_DEF, Token::EQUALS, Token::LBRACK }))
+		{
             proposition_instances();
-            buffer->push_event_add_list();
-            if (!must_match({ Token::RBRACK })) return;
+            buffer.events_buffer.set_add_list(buffer.proposition_instance_buffer);
+            must_match(Token::RBRACK);
             return event_body();
         }
     }
 
     void Custom_Parser::formula() {
         if (proposition_instance()) {
-            buffer->push_pop_formula("Prop");
+            buffer.formula_buffer.push_pop_formula("Prop");
             return formula();
         }
 
-        if (try_match({ Token::AND, Token::LBRACK })) {
-            buffer->push_formula("And");
+        if (try_match({ Token::AND, Token::LBRACK }))
+		{
+            buffer.formula_buffer.push_formula("And");
             formula();
-            if (!must_match({ Token::RBRACK })) return;
-            buffer->pop_formula();
+            must_match(Token::RBRACK);
+            buffer.formula_buffer.pop_formula();
             return formula();
         }
 
-        if (try_match({ Token::OR, Token::LBRACK })) {
-            buffer->push_formula("Or");
+        if (try_match({ Token::OR, Token::LBRACK }))
+		{
+            buffer.formula_buffer.push_formula("Or");
             formula();
-            if (!must_match({ Token::RBRACK })) return;
-            buffer->pop_formula();
+            must_match(Token::RBRACK);
+            buffer.formula_buffer.pop_formula();
             return formula();
         }
 
-        if (try_match({ Token::NOT, Token::LBRACK })) {
-            buffer->push_formula("Not");
+        if (try_match({ Token::NOT, Token::LBRACK }))
+		{
+            buffer.formula_buffer.push_formula("Not");
             formula_single();
-            if (!must_match({ Token::RBRACK })) return;
-            buffer->pop_formula();
+            must_match(Token::RBRACK);
+            buffer.formula_buffer.pop_formula();
             return formula();
         }
 
-        if (try_match({ Token::TOP })) {
-            buffer->push_pop_formula("TOP");
+        if (try_match({ Token::TOP }))
+		{
+            buffer.formula_buffer.push_pop_formula("TOP");
             return formula();
         }
 
-        if (try_match({ Token::BELIEVES, Token::LBRACK, Token::NAME })) {
+        if (try_match({ Token::BELIEVES, Token::LBRACK, Token::NAME }))
+		{
             auto agent = get_svalue(2);
-            buffer->push_formula("Believes");
+            buffer.formula_buffer.push_formula("Believes");
             formula_single();
-            if (!must_match({ Token::RBRACK })) return;
-            buffer->pop_formula(agent);
+            must_match(Token::RBRACK);
+            buffer.formula_buffer.pop_formula(agent);
             return formula();
         }
 
@@ -431,45 +420,50 @@ namespace del {
 
     void Custom_Parser::formula_single() {
         if (proposition_instance()) {
-            buffer->push_pop_formula("Prop");
+            buffer.formula_buffer.push_pop_formula("Prop");
             return;
         }
 
-        if (try_match({ Token::AND, Token::LBRACK })) {
-            buffer->push_formula("And");
+        if (try_match({ Token::AND, Token::LBRACK }))
+		{
+            buffer.formula_buffer.push_formula("And");
             formula();
-            if (!must_match({ Token::RBRACK })) return;
-            buffer->pop_formula();
+            must_match(Token::RBRACK);
+            buffer.formula_buffer.pop_formula();
             return;
         }
 
-        if (try_match({ Token::OR, Token::LBRACK })) {
-            buffer->push_formula("Or");
+        if (try_match({ Token::OR, Token::LBRACK }))
+		{
+            buffer.formula_buffer.push_formula("Or");
             formula();
-            if (!must_match({ Token::RBRACK })) return;
-            buffer->pop_formula();
+            must_match(Token::RBRACK);
+            buffer.formula_buffer.pop_formula();
             return;
         }
 
-        if (try_match({ Token::NOT, Token::LBRACK })) {
-            buffer->push_formula("Not");
+        if (try_match({ Token::NOT, Token::LBRACK }))
+		{
+            buffer.formula_buffer.push_formula("Not");
             formula_single();
-            if (!must_match({ Token::RBRACK })) return;
-            buffer->pop_formula();
+            must_match(Token::RBRACK);
+            buffer.formula_buffer.pop_formula();
             return;
         }
 
-        if (try_match({ Token::TOP })) {
-            buffer->push_pop_formula("TOP");
+        if (try_match({ Token::TOP }))
+		{
+            buffer.formula_buffer.push_pop_formula("TOP");
             return;
         }
 
-        if (try_match({ Token::BELIEVES, Token::LBRACK, Token::NAME })) {
+        if (try_match({ Token::BELIEVES, Token::LBRACK, Token::NAME }))
+		{
             auto agent = get_svalue(2);
-            buffer->push_formula("Believes");
+            buffer.formula_buffer.push_formula("Believes");
             formula_single();
-            if (!must_match({ Token::RBRACK })) return;
-            buffer->pop_formula(agent);
+            must_match(Token::RBRACK);
+            buffer.formula_buffer.pop_formula(agent);
             return formula();
         }
 
@@ -477,62 +471,61 @@ namespace del {
     }
 
     void Custom_Parser::proposition_instances() {
-        if (try_match({ Token::NAME, Token::LBRACK })) {
+        if (try_match({ Token::NAME, Token::LBRACK }))
+		{
             auto name = get_svalue(0);
             ordered_variables();
-            buffer->push_proposition_instance(name);
-            if (!must_match({ Token::RBRACK })) return;
+            buffer.proposition_instance_buffer.add(name, buffer.variables_buffer, buffer.actions.get_inputs());
+            must_match(Token::RBRACK);
             return proposition_instances();
         }
         return;
     }
 
     void Custom_Parser::propositions() {
-        if (try_match({ Token::NAME, Token::LBRACK })) {
+        if (try_match({ Token::NAME, Token::LBRACK }))
+		{
             auto name = get_svalue(0);
-            buffer->clear_inputs();
             input();
-            domain->add_proposition(name, buffer->get_inputs());
-            if (!must_match({ Token::RBRACK })) return;
+            buffer.typed_propositions.add(name, buffer.inputs_buffer);
+            must_match(Token::RBRACK);
             return propositions();
         }
         return;
     }
 
     void Custom_Parser::actions() {
-        if (try_match({ Token::ACTION_DEF, Token::NAME, Token::LBRACK })) {
-            buffer->clear_proposition_instances();
-            buffer->clear_seen_atoms();
-            buffer->clear_inputs();
-            domain->new_action(get_svalue(1));
+        if (try_match({ Token::ACTION_DEF, Token::NAME, Token::LBRACK }))
+		{
+            buffer.actions.start(get_svalue(1));
             input();
-            domain->set_action_input(buffer->get_inputs());
-            if (!must_match({ Token::RBRACK, Token::LBRACK })) return;
+            buffer.actions.set_input(buffer.inputs_buffer);
+            must_match({ Token::RBRACK, Token::LBRACK });
             action_body();
-            domain->finish_action(buffer->get_clear_instance_to_proposition());
-            buffer->clear_proposition_instances();
-            buffer->clear_seen_atoms();
-            if (!must_match({ Token::RBRACK })) return;
+            must_match(Token::RBRACK);
             return actions();
         }
         return;
     }
 
     void Custom_Parser::variables() {
-        if (try_match({ Token::NAME })) {
-            buffer->add_variable(get_svalue(0));
+        if (try_match({ Token::NAME }))
+		{
+            buffer.variables_buffer.add(get_svalue(0));
             return variables();
         }
         return;
     }
 
     void Custom_Parser::ordered_variables() {
-        if (try_match({ Token::NAME })) {
-            buffer->add_ordered_variable(get_svalue(0));
+        if (try_match({ Token::NAME }))
+		{
+            buffer.variables_buffer.add(get_svalue(0));
             return ordered_variables();
         }
-        if (try_match({ Token::REST_DEF })) {
-            buffer->add_ordered_variable(get_svalue(0));
+        if (try_match({ Token::REST_DEF }))
+		{
+            buffer.variables_buffer.add(get_svalue(0));
             return ordered_variables();
         }
         return;

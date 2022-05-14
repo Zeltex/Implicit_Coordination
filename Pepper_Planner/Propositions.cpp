@@ -21,21 +21,26 @@ namespace del {
 
     void Propositions::insert(const Propositions& other)
     {
-        for (const Proposition& proposition : other.propositions) 
+        for (const Proposition& proposition : other.propositions)
         {
-            if (std::find(propositions.begin(), propositions.end(), proposition) == propositions.end()) 
-            {
-                propositions.push_back(proposition);
-            }
+            insert(proposition);
+        }
+    }
+
+    void Propositions::insert(const Proposition& proposition)
+    {
+        if (std::find(propositions.begin(), propositions.end(), proposition) == propositions.end())
+        {
+            propositions.push_back(proposition);
         }
     }
 
     void Propositions::remove(const Propositions& other)
     {
-        for (const auto& proposition : other.propositions) 
+        for (const auto& proposition : other.propositions)
         {
             auto result = std::find(propositions.begin(), propositions.end(), proposition);
-            if (result != propositions.end()) 
+            if (result != propositions.end())
             {
                 propositions.erase(result);
             }
@@ -50,7 +55,7 @@ namespace del {
     std::string Propositions::to_string(const Domain& domain) const
     {
         std::string result;
-        for (const Proposition& proposition : propositions) 
+        for (const Proposition& proposition : propositions)
         {
             result += ", " + domain.get_proposition_instance(proposition).to_string(domain);
         }
@@ -62,7 +67,7 @@ namespace del {
         std::string result;
         Propositions copy = *this;
         copy.sort();
-        for (const Proposition& proposition : copy.propositions) 
+        for (const Proposition& proposition : copy.propositions)
         {
             result += proposition.to_string();
         }
@@ -103,4 +108,8 @@ namespace del {
         return hash;
     }
 
+    void Propositions::reserve(size_t size)
+    {
+        propositions.reserve(size);
+    }
 }

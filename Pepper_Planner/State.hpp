@@ -7,7 +7,7 @@
 #include "World.hpp"
 #include "Types.hpp"
 #include "Misc.hpp"
-#include "Agent.hpp"
+#include "Agents.hpp"
 #include "Accessibility_Relation.hpp"
 
 namespace del {
@@ -61,30 +61,5 @@ namespace del {
 		std::vector<World> worlds;
 		std::set<World_Id> designated_worlds;
 		Accessibility_Relations accessibility_relations;
-	};
-
-	class State_Builder
-	{
-	public:
-		State_Builder();
-		void create_worlds(size_t amount_to_create);
-		World& create_world();
-		World& create_world(const World& world);
-		void set_cost(size_t cost);
-		void set_designated_worlds(const std::set<World_Id>& worlds);
-		void set_single_designated_world(World_Id world);
-		void set_world_designated(World_Id world);
-		void add_accessibility_relation(Agent_Id agent, World_Id world_from, World_Id world_to);
-		const std::vector<World>& get_worlds() const;
-
-		State to_state();
-
-	private:
-
-		size_t cost;
-		std::vector<World> worlds;
-		std::set<World_Id> designated_worlds;
-		std::vector<Agent_World_Relation> agent_world_relations;
-		//Accessibility_Relations accessibility_relations;
 	};
 }
