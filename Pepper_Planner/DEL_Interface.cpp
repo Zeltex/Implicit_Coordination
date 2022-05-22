@@ -71,7 +71,7 @@ namespace del {
 			temp_arguments.insert(domain.get_atom(argument));
 		}
 
-		auto action = Action(action_library.get_general_action(name), domain, temp_arguments);
+		auto action = Action(action_library.get_general_action(name), domain.get_propositions_lookup(), temp_arguments);
 		perform_action(action);
 
 	}

@@ -1,14 +1,26 @@
 #include "Action_Library.hpp"
+
 #include "Core.hpp"
 #include "Domain.hpp"
+#include "General_Actions.hpp"
 
 namespace del {
 
-	Action_Library::Action_Library(): amount_of_agents(0), action_counter(0), announce_enabled(false), actions() {
+	Action_Library::Action_Library(): 
+		action_counter(0), 
+		announce_enabled(false), 
+		actions() {
 	}
 
-	Action_Library::Action_Library(size_t amount_of_agents) : action_counter(0), announce_enabled(false), actions() {
-		set_amount_of_agents(amount_of_agents);
+	Action_Library::Action_Library(const General_Actions& general_actions, const Propositions_Lookup& propositions_lookup, const Atom_Lookup& atom_lookup)
+		: action_counter(0), 
+		announce_enabled(false), 
+		actions() 
+	{
+		for (const General_Action& general_action : general_actions)
+		{
+			add_general_action(general_action, propositions_lookup, atom_lookup);
+		}
 	}
 
 
@@ -31,10 +43,6 @@ namespace del {
 		}
 	}
 
-	void Action_Library::set_amount_of_agents(size_t amount_of_agents) {
-		this->amount_of_agents = amount_of_agents;
-	}
-
 	const std::vector<Action>& Action_Library::get_actions() const{
 		return actions;
 	}
@@ -47,21 +55,17 @@ namespace del {
 		actions.push_back(action);
 	}
 
-	void Action_Library::set_announce_enabled() {
-		announce_enabled = true;
-	}
+	void Action_Library::add_general_action(const General_Action& general_action, const Propositions_Lookup& propositions_lookup, const Atom_Lookup& atom_lookup) {
 
-	void Action_Library::add_general_action(const General_Action& general_action, const Domain& domain) {
-
+		general_action_name_to_id[general_action.get_name()] = general_actions.size();
 		general_actions.push_back(general_action);
-		general_action_name_to_id[general_action.get_name()] = general_actions.size() - 1;
 
 		std::vector<std::vector<Atom>> atoms;
 		std::vector<size_t> counters;
 
 		// Load all combinations of input
 		for (auto& entry : general_action.get_inputs()) {
-			auto& temp = domain.get_all_atoms_of_type(entry.get_type());
+			const Atoms& temp = atom_lookup.get_atoms(entry.get_type());
 			atoms.emplace_back(temp.begin(), temp.end());
 			counters.emplace_back(0);
 		}
@@ -74,7 +78,7 @@ namespace del {
 			for (size_t i = 0; i < counters.size(); i++) {
 				arguments.insert(atoms[i][counters[i]]);
 			}
-			actions.emplace_back(general_action, domain, arguments);
+			actions.emplace_back(general_action, propositions_lookup, arguments);
 
 			// Advance indices
 			size_t index = 0;

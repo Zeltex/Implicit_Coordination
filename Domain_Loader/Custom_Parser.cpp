@@ -368,7 +368,7 @@ namespace del {
 
     void Custom_Parser::formula() {
         if (proposition_instance()) {
-            buffer.formula_buffer.push_pop_formula("Prop");
+            buffer.formula_buffer.push_pop_formula_prop(buffer.proposition_instance_buffer);
             return formula();
         }
 
@@ -401,7 +401,7 @@ namespace del {
 
         if (try_match({ Token::TOP }))
 		{
-            buffer.formula_buffer.push_pop_formula("TOP");
+            buffer.formula_buffer.push_pop_formula_top();
             return formula();
         }
 
@@ -420,7 +420,7 @@ namespace del {
 
     void Custom_Parser::formula_single() {
         if (proposition_instance()) {
-            buffer.formula_buffer.push_pop_formula("Prop");
+            buffer.formula_buffer.push_pop_formula_prop(buffer.proposition_instance_buffer);
             return;
         }
 
@@ -453,7 +453,7 @@ namespace del {
 
         if (try_match({ Token::TOP }))
 		{
-            buffer.formula_buffer.push_pop_formula("TOP");
+            buffer.formula_buffer.push_pop_formula_top();
             return;
         }
 

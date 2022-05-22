@@ -12,8 +12,7 @@ namespace del {
 	class Graph {
 	public:
 
-		Graph() : frontier(), nodes(std::vector<Node>()) {};
-		Graph(size_t node_size) { nodes.reserve(node_size); };
+		Graph() : root(), frontier(), nodes(std::vector<Node>()) {};
 		Graph(size_t node_size, const State& state, Node_Comparator& history, const Agent& planning_agent);
 
 

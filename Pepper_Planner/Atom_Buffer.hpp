@@ -1,10 +1,11 @@
 #pragma once
 #include <string>
 #include <map>
+#include "Formula_Types.hpp"
 
 namespace del
 {
-	class Atom_Id;
+	struct Atom_Id;
 	class Inputs;
 	class General_Objects;
 	class Atom_Buffer

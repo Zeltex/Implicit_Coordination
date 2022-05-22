@@ -6,20 +6,28 @@
 namespace del {
 
 	Action::Action()
+		:args(),
+		cost(-1),
+		name("EMPTY"),
+		events(),
+		designated_events(),
+		edge_conditions()
 	{
 
 	}
 
-	Action::Action(const General_Action& other, const Domain& domain, const Atoms& arguments)
+	Action::Action(const General_Action& other, const Propositions_Lookup& propositions_lookup, const Atoms& arguments)
 		:args(arguments), 
 		cost(other.get_cost()), 
 		name(other.get_name()), 
-		events(other, arguments, domain), 
+		events(other, arguments, propositions_lookup),
 		designated_events(other, events),
-		edge_conditions(other, domain, events, arguments)
+		edge_conditions(other, propositions_lookup, events, arguments)
 	{
 		const Atom_Id& owner_atom = arguments.at(other.get_owner().second.id).get_id();
-		this->owner = domain.get_agent(owner_atom).get_id();
+
+		// TODO - Check if this owner is ever used
+		//this->owner = domain.get_agent(owner_atom).get_id();
 	}
 
 	bool Action::is_event_designated(Event_Id event) const {

@@ -1,13 +1,35 @@
-#include "State.hpp"
-#include "Domain.hpp"
-#include "Formula_Input_Impl.hpp"
 #include "Action.hpp"
 #include "Bisimulation_Context.hpp"
+#include "Domain.hpp"
+#include "Formula_Input_Impl.hpp"
+#include "General_State.hpp"
+#include "State.hpp"
 
 namespace del {
 
-	State::State(size_t number_of_agents, size_t world_count) :
-		cost(0), worlds(), designated_worlds(), accessibility_relations(world_count, number_of_agents) {
+
+	State::State(const General_State& other, const Propositions_Lookup& propositions_lookup)
+		: cost(other.cost),
+		designated_worlds(other.designated_worlds),
+		accessibility_relations(other.worlds.size(), other.agent_world_relations.size())
+	{
+		// General_World
+		for (const General_World& general_world : other.worlds)
+		{
+			worlds.push_back({ general_world, propositions_lookup });
+		}
+
+		// Agent_World_Relation
+		std::vector<Accessibility_Relation> agent_relations;
+		for (size_t i = 0; i < other.agent_world_relations.size(); ++i)
+		{
+			agent_relations.push_back({ Agent_Id{i}, other.worlds.size() });
+		}
+		for (const Agent_World_Relation& relation : other.agent_world_relations)
+		{
+			agent_relations.at(relation.agent.id).set(relation.world_from, relation.world_to);
+		}
+		accessibility_relations = { agent_relations };
 	}
 
 	State::State(const std::vector<World>& worlds, const Accessibility_Relations& accessbility_relations, const std::set<World_Id>& designated_worlds, size_t cost)

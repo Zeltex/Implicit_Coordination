@@ -9,6 +9,7 @@ namespace del {
 	class Proposition_Instance_Buffer;
 	class General_State
 	{
+	friend class State;
 	public:
 		General_State();
 		void add_world(const std::string& name, Proposition_Instance_Buffer& proposition_instance_buffer);

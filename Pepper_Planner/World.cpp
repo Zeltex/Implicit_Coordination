@@ -1,8 +1,21 @@
 #include "World.hpp"
-#include "Domain.hpp"
+
 #include "Action_Events.hpp"
+#include "Domain.hpp"
+#include "Propositions_Lookup.hpp"
 
 namespace del {
+
+
+	World::World(const General_World& other, const Propositions_Lookup& propositions_lookup)
+		: id(other.world_id),
+		true_propositions()
+	{
+		for (const Proposition_Instance& proposition_instance : other.propositions)
+		{
+			true_propositions.insert(propositions_lookup.get(proposition_instance));
+		}
+	}
 
 	World::World(const World& other, const Action_Event& action, const World_Id& id)
 		: id(id)

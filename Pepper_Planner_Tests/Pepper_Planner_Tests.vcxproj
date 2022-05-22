@@ -105,7 +105,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(VCInstallDir)UnitTest\include;$(SolutionDir)Pepper_Planner;$(SolutionDir)Formula;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -162,6 +162,7 @@
   <ItemGroup>
     <ClCompile Include="Action_Tests.cpp" />
     <ClCompile Include="Bisimulation_Context_Tests.cpp" />
+    <ClCompile Include="Loader_Integration_Tests.cpp" />
     <ClCompile Include="Planner_Action_Applicable_Tests.cpp" />
     <ClCompile Include="DEL_Operations_Bisimilar_Contraction_Tests.cpp" />
     <ClCompile Include="DEL_Operations_Perspective_Shift_Tests.cpp" />
@@ -181,9 +182,6 @@
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Formula\Formula.vcxproj">
-      <Project>{e3af9c11-7f0c-42e3-a149-a30696bab696}</Project>
-    </ProjectReference>
     <ProjectReference Include="..\Pepper_Planner\Pepper_Planner.vcxproj">
       <Project>{6bcdcbbf-d555-40e2-bfb6-248428b0d52d}</Project>
     </ProjectReference>

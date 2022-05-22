@@ -8,6 +8,8 @@ namespace del
 {
 	class Action_Events;
 	class Domain;
+	class Propositions_Lookup;
+
 	struct Edge_Conditions {
 		Edge_Conditions();
 		Edge_Conditions(const General_Edge_Conditions& other, const std::map<std::string, Event_Id>& event_name_to_id, const std::map<Proposition, Proposition>& general_to_instantiated);
@@ -26,7 +28,7 @@ namespace del
 	{
 	public:
 		Agent_Edge_Conditions();
-		Agent_Edge_Conditions(const General_Action& general_action, const Domain& domain, const Action_Events& action_events, const Atoms& arguments);
+		Agent_Edge_Conditions(const General_Action& general_action, const Propositions_Lookup& propositions_Lookup, const Action_Events& action_events, const Atoms& arguments);
 		std::optional<const Formula*> get_precondition(Agent_Id agent, Event_Id event_from, Event_Id event_to) const;
 		size_t size() const;
 	private:

@@ -11,6 +11,7 @@
 
 namespace del {
 	class General_World {
+	friend class World;
 	public:
 		General_World(const std::string& name, World_Id world_id, std::vector<Proposition_Instance> propositions);
 		const std::string& get_name() const;

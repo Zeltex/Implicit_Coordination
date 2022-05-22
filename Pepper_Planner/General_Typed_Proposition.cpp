@@ -21,4 +21,12 @@ namespace del
 
 		propositions.push_back({ name, types});
 	}
+	std::vector<General_Typed_Proposition>::const_iterator General_Typed_Propositions::begin() const
+	{
+		return propositions.begin();
+	}
+	std::vector<General_Typed_Proposition>::const_iterator General_Typed_Propositions::end() const
+	{
+		return propositions.end();
+	}
 }

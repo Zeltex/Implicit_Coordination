@@ -1,10 +1,12 @@
 #include "General_Actions.hpp"
+
 #include "Action.hpp"
-#include "Domain.hpp"
-#include "Formula_Core.hpp"
-#include "Edge_Conditions.hpp"
 #include "Atoms.hpp"
+#include "Domain.hpp"
+#include "Edge_Conditions.hpp"
+#include "Formula_Core.hpp"
 #include "General_Domain.hpp"
+#include "Propositions_Lookup.hpp"
 #include "Variables_Buffer.hpp"
 
 namespace del {
@@ -37,22 +39,9 @@ namespace del {
 		this->designated_events = designated_events;
 	}
 
-	//void General_Action::set_action_input(std::vector<std::pair<std::string, std::string>>&& inputs) {
-	//	this->inputs = inputs;
-	//}
-
-	//void General_Action::create_event(std::string name, Formula&& preconditions, const std::vector<Proposition>& add_list, const std::vector<Proposition>& delete_list) {
-	//	events.insert(name, std::move(preconditions), add_list, delete_list);
-	//}
-
 	size_t General_Action::get_cost() const {
 		return cost;
 	}
-
-
-	//const std::vector<std::pair<std::string, std::string>>& General_Action::get_inputs() const {
-	//	return inputs;
-	//}
 
 	std::pair<std::string, Atom_Id> General_Action::get_owner() const{
 		return owner;
@@ -79,29 +68,16 @@ namespace del {
 		input_to_formula = instance_to_proposition;
 	}
 
-	std::map<Proposition, Proposition> General_Action::create_converter(const Domain& domain, const std::map<size_t, Atom_Id>& arguments) const {
-		std::map<Proposition, Proposition> formula_to_domain;
-		for (auto& [prop_instance, prop] : input_to_formula) {
-			auto grounded_prop_instance = Proposition_Instance(prop_instance, arguments);
-			formula_to_domain[prop] = domain.get_proposition(grounded_prop_instance);
-		}
-		return formula_to_domain;
-	}
-
-	std::map<Proposition, Proposition> General_Action::create_converter(const Domain& domain, const Atoms& arguments) const{
+	std::map<Proposition, Proposition> General_Action::create_converter(const Propositions_Lookup& propositions_Lookup, const Atoms& arguments) const{
 		std::map<Proposition, Proposition> formula_to_domain;
 		for (auto& [prop_instance, prop] : input_to_formula) {
 			if (!prop_instance.contains_non_atom_entry()) {
 				auto grounded_prop_instance = Proposition_Instance(prop_instance, arguments);
-				formula_to_domain[prop] = domain.get_proposition(grounded_prop_instance);
+				formula_to_domain[prop] = propositions_Lookup.get(grounded_prop_instance);
 			}
 		}
 		return formula_to_domain;
 	}
-
-	//const std::map<Proposition, Proposition>& General_Action::get_converter() const {
-	//	return formula_to_domain;
-	//}
 
 	void General_Action::set_edge_conditions(const std::string agent_name, General_Edge_Conditions& edge_conditions)
 	{
@@ -144,5 +120,13 @@ namespace del {
 	const Inputs& General_Actions::get_inputs() const
 	{
 		return actions.back().get_inputs();
+	}
+	std::vector<General_Action>::const_iterator General_Actions::begin() const
+	{
+		return actions.begin();
+	}
+	std::vector<General_Action>::const_iterator General_Actions::end() const
+	{
+		return actions.end();
 	}
 }

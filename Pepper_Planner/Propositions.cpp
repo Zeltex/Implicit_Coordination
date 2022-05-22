@@ -1,5 +1,7 @@
 #include "Propositions.hpp"
 #include "Domain.hpp"
+#include "Proposition_Instance_Buffer.hpp"
+#include "Propositions_Lookup.hpp"
 
 namespace del {
 
@@ -12,6 +14,14 @@ namespace del {
     Propositions::Propositions()
     {
 
+    }
+
+    Propositions::Propositions(const Proposition_Instance_Buffer& rigid_propositions, const Propositions_Lookup& propositions_lookup)
+    {
+        for (const Proposition_Instance& instance : rigid_propositions.proposition_instances)
+        {
+            propositions.push_back(propositions_lookup.get(instance));
+        }
     }
 
     Propositions::Propositions(const std::vector<Proposition>& data_in)

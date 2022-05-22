@@ -15,7 +15,7 @@
 //
 //		general_domain.get_atoms();
 //
-//		domain = new Domain(initial_state.to_state(), objects);
+//		domain = new Domain(initial_state.to_state(), type_to_atom);
 //		for (auto& action : actions) {
 //			library.add_general_action(action, *domain);
 //		}
@@ -63,12 +63,12 @@
 //		general_propositions.emplace_back(name, inputs);
 //	}
 //
-//	void Domain_Interface_Implementation::set_objects(std::unordered_map<std::string, std::unordered_set<std::string>>&& objects, const std::unordered_map<std::string, Atom_Id>& atom_to_id) {
-//		size_t amount_of_agents = objects["agent"].size();
+//	void Domain_Interface_Implementation::set_objects(std::unordered_map<std::string, std::unordered_set<std::string>>&& type_to_atom, const std::unordered_map<std::string, Atom_Id>& atom_to_id) {
+//		size_t amount_of_agents = type_to_atom["agent"].size();
 //		library.set_amount_of_agents(amount_of_agents);
 //
-//		domain.set_objects(objects, atom_to_id);
-//		for (const auto& entry : objects["agent"]) {
+//		domain.set_objects(type_to_atom, atom_to_id);
+//		for (const auto& entry : type_to_atom["agent"]) {
 //			domain.create_agent(entry);
 //		}
 //
@@ -80,7 +80,7 @@
 //			// Check at least one atom of each input type exists
 //			bool empty_input = false;
 //			for (const auto& input : inputs) {
-//				if (objects.at(input.first).empty()) {
+//				if (type_to_atom.at(input.first).empty()) {
 //					empty_input = true;
 //					break;
 //				}
@@ -91,7 +91,7 @@
 //			std::vector<std::vector<std::string>> list_atoms;
 //			for (const auto& input : inputs) {
 //				list_atoms.emplace_back();
-//				for (const auto& object : objects.at(input.first)) {
+//				for (const auto& object : type_to_atom.at(input.first)) {
 //					list_atoms.back().push_back(object);
 //				}
 //			}

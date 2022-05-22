@@ -1,5 +1,7 @@
 #include "Formula_Buffer.hpp"
 #include "Formula_Converter.hpp"
+#include "Proposition_Instance_Buffer.hpp"
+
 #include <iostream>
 
 
@@ -11,22 +13,34 @@ namespace del
         formula = {};
         return temp;
     }
-
-    void Formula_Buffer::push_pop_formula(const std::string& type) {
-        if (formula_buffer.empty()) {
-            switch (Formula_Converter::string_to_type(type)) {
-            case Formula_Types::Top:    formula.f_top();                     break;
-            case Formula_Types::Prop:   formula.f_prop(propositions.back()); break;
-            }
-
+    void Formula_Buffer::push_pop_formula_top()
+    {
+        if (formula_buffer.empty())
+        {
+            formula.f_top();
         }
-        else {
-            switch (Formula_Converter::string_to_type(type)) {
-            case Formula_Types::Top:    formula_buffer.back().push_back(formula.f_top());                     break;
-            case Formula_Types::Prop:   formula_buffer.back().push_back(formula.f_prop(propositions.back())); break;
-            }
+        else
+        {
+            formula_buffer.back().push_back(formula.f_top());
         }
-        propositions = {};
+    }
+
+    void Formula_Buffer::push_pop_formula_prop(Proposition_Instance_Buffer& proposition_instance_buffer) {
+        std::vector<Proposition_Instance> proposition_instances = proposition_instance_buffer.get();
+        if (proposition_instances.size() != 1)
+        {
+            throw "Invalid proposition instance buffer, size" + proposition_instances.size();
+        }
+
+        Proposition proposition = proposition_instance_buffer.to_proposition(proposition_instances.front());
+        if (formula_buffer.empty()) 
+        {
+            formula.f_prop(proposition);
+        }
+        else 
+        {
+            formula_buffer.back().push_back(formula.f_prop(proposition));
+        }
     }
 
     void Formula_Buffer::push_formula(const std::string& type) {

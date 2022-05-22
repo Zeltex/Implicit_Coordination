@@ -1,7 +1,9 @@
 #include "Proposition_Instance_Buffer.hpp"
 
-#include "Propositions.hpp"
+#include "Atom_Lookup.hpp"
 #include "Inputs_Buffer.hpp"
+#include "Propositions.hpp"
+#include "Propositions_Lookup.hpp"
 
 namespace del
 {
@@ -49,6 +51,21 @@ namespace del
         std::vector<Proposition_Instance> temp = std::move(proposition_instances);
         propositions = {};
         return temp;
+    }
+
+    Proposition Proposition_Instance_Buffer::to_proposition(const Proposition_Instance& proposition_instance) const
+    {
+        return instance_to_proposition.at(proposition_instance);
+    }
+
+    std::map<Proposition, Proposition> Proposition_Instance_Buffer::create_converter(const Propositions_Lookup& propositions_lookup) const
+    {
+        std::map<Proposition, Proposition> result;
+        for (const auto& [instance, proposition] : instance_to_proposition)
+        {
+            result.insert({ proposition, propositions_lookup.get(instance) });
+        }
+        return result;
     }
 
     //Propositions Proposition_Instance_Buffer::get()

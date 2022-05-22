@@ -8,10 +8,12 @@
 
 namespace del
 {
+	class Proposition_Instance_Buffer;
 	class Formula_Buffer
 	{
 	public:
-		void push_pop_formula(const std::string& type);
+		void push_pop_formula_top();
+		void push_pop_formula_prop(Proposition_Instance_Buffer& proposition_instance_buffer);
 		void push_formula(const std::string& type);
 		std::tuple<Formula_Types, std::vector<Formula_Id>> pop_formula_info();
 		void pop_formula(const std::string& input);

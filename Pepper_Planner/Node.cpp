@@ -63,8 +63,7 @@ namespace del {
 		for (auto& parent_entry : parents) {
 			if (parent_entry.first == parent) return parent_entry.second;
 		}
-		std::cerr << "Attempted to get parent action of node without parent action" << id.id << std::endl;
-		exit(-1);
+		throw "Attempted to get parent action of node without parent action" + id.id;
 	}
 
 	bool Node::is_root_node() const {

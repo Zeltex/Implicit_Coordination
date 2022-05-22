@@ -10,9 +10,10 @@ namespace del {
     class Variables_Buffer;
     class General_Objects
     {
+    friend class Atom_Lookup;
     public:
         void add(const std::string& type, Variables_Buffer& variables_buffer, General_Agents& agents);
-        Atom_Id get_atom_id(const std::string& name);
+        Atom_Id get_atom_id(const std::string& name) const;
         const std::map<std::string, Atom_Id>& get_atom_name_to_id() const;
     private:
         std::map<std::string, std::vector<std::string>> objects;

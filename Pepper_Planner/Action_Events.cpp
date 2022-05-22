@@ -52,10 +52,10 @@ namespace del {
 
 	}
 
-	Action_Events::Action_Events(const General_Action& general_action, const Atoms& arguments, const Domain& domain)
+	Action_Events::Action_Events(const General_Action& general_action, const Atoms& arguments, const Propositions_Lookup& propositions_lookup)
 	{
 		const General_Action_Events& other = general_action.get_events();
-		auto converter = general_action.create_converter(domain, arguments);
+		auto converter = general_action.create_converter(propositions_lookup, arguments);
 
 		for (const General_Action_Event& general_action_event : other.events)
 		{

@@ -201,6 +201,12 @@
     <ClCompile Include="Atom_Buffer.cpp">
       <Filter>Source Files\Domain_Loader\Buffers</Filter>
     </ClCompile>
+    <ClCompile Include="Atom_Lookup.cpp">
+      <Filter>Source Files\DEL</Filter>
+    </ClCompile>
+    <ClCompile Include="Propositions_Lookup.cpp">
+      <Filter>Source Files\DEL</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Types.hpp">
@@ -364,6 +370,12 @@
     </ClInclude>
     <ClInclude Include="Atom_Buffer.hpp">
       <Filter>Header Files\Domain_Loader\Buffers</Filter>
+    </ClInclude>
+    <ClInclude Include="Atom_Lookup.hpp">
+      <Filter>Header Files\DEL</Filter>
+    </ClInclude>
+    <ClInclude Include="Propositions_Lookup.hpp">
+      <Filter>Header Files\DEL</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

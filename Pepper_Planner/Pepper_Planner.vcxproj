@@ -160,6 +160,7 @@
     <ClCompile Include="Action_Library.cpp" />
     <ClCompile Include="Agents.cpp" />
     <ClCompile Include="Atom_Buffer.cpp" />
+    <ClCompile Include="Atom_Lookup.cpp" />
     <ClCompile Include="Bisimulation_Context.cpp" />
     <ClCompile Include="Core.cpp" />
     <ClCompile Include="Designated_Events.cpp" />
@@ -189,6 +190,7 @@
     <ClCompile Include="Policy.cpp" />
     <ClCompile Include="Propositions.cpp" />
     <ClCompile Include="Atoms.cpp" />
+    <ClCompile Include="Propositions_Lookup.cpp" />
     <ClCompile Include="Proposition_Instance.cpp" />
     <ClCompile Include="Proposition_Instance_Buffer.cpp" />
     <ClCompile Include="State.cpp" />
@@ -217,6 +219,7 @@
     <ClInclude Include="Agents.hpp" />
     <ClInclude Include="Atoms.hpp" />
     <ClInclude Include="Atom_Buffer.hpp" />
+    <ClInclude Include="Atom_Lookup.hpp" />
     <ClInclude Include="Bisimulation_Context.hpp" />
     <ClInclude Include="Core.hpp" />
     <ClInclude Include="Designated_Events.hpp" />
@@ -245,20 +248,13 @@
     <ClInclude Include="Planner_Debug_Info.hpp" />
     <ClInclude Include="Policy.hpp" />
     <ClInclude Include="Propositions.hpp" />
+    <ClInclude Include="Propositions_Lookup.hpp" />
     <ClInclude Include="Proposition_Instance.hpp" />
     <ClInclude Include="Proposition_Instance_Buffer.hpp" />
     <ClInclude Include="State.hpp" />
     <ClInclude Include="Types.hpp" />
     <ClInclude Include="Variables_Buffer.hpp" />
     <ClInclude Include="World.hpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Domain_Loader\Domain_Loader.vcxproj">
-      <Project>{69ceba7e-8a96-478d-a9ce-611adc86c184}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\Formula\Formula.vcxproj">
-      <Project>{e3af9c11-7f0c-42e3-a149-a30696bab696}</Project>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

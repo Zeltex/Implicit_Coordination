@@ -18,11 +18,15 @@ namespace del {
         size_t id;
     };
 
+    class Proposition_Instance_Buffer;
     class Domain;
+    class Propositions_Lookup;
     class Propositions
     {
     public:
         Propositions();
+        Propositions(const Proposition_Instance_Buffer& rigid_propositions, const Propositions_Lookup& propositions_lookup);
+
         Propositions(const Propositions& data_in);
         Propositions(const std::vector<Proposition>& data_in);
         void insert(const Propositions& propositions);

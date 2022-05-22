@@ -22,9 +22,6 @@ namespace del
 			const Domain& domain,
 			const State& state);
 
-		bool is_serial() const;
-		bool is_transitive() const;
-		bool is_euclidean() const;
 		bool is_serial_transitive_euclidean() const;
 
 		bool has_direct_relation(const World_Id& from_world, const World_Id& to_world) const;

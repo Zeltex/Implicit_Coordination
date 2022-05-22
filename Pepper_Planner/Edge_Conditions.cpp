@@ -51,7 +51,7 @@ namespace del
 
 	}
 
-	Agent_Edge_Conditions::Agent_Edge_Conditions(const General_Action& general_action, const Domain& domain, const Action_Events& action_events, const Atoms& arguments)
+	Agent_Edge_Conditions::Agent_Edge_Conditions(const General_Action& general_action, const Propositions_Lookup& propositions_Lookup, const Action_Events& action_events, const Atoms& arguments)
 		: edge_conditions(general_action.get_edge_conditions().size())
 	{
 		std::map<std::string, Event_Id> event_name_to_id = action_events.get_name_to_id();
@@ -66,7 +66,7 @@ namespace del
 				{
 					converted_arguments.set(REST_INDEX, Atom{ agent.get_atom_id().id, agent.get_name() }); // TODO - Janky conversion, need a better 
 				}
-				std::map<Proposition, Proposition> general_to_instantiated = general_action.create_converter(domain, converted_arguments);
+				std::map<Proposition, Proposition> general_to_instantiated = general_action.create_converter(propositions_Lookup, converted_arguments);
 
 				edge_conditions.at(agent.get_id().id) = Edge_Conditions(general_edge_conditions, event_name_to_id, general_to_instantiated);
 			}

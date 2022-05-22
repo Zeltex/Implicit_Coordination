@@ -22,7 +22,7 @@ namespace del {
 	class Action {
 	public:
 		Action();
-		Action(const General_Action& general_action, const Domain& domain, const Atoms& arguments);
+		Action(const General_Action& general_action, const Propositions_Lookup& propositions_lookup, const Atoms& arguments);
 
 		size_t					get_cost() const;
 		const Action_Events&	get_events() const;

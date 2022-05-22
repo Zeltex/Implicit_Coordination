@@ -20,7 +20,7 @@ namespace del
 		}
 	}
 
-	Atom_Id General_Objects::get_atom_id(const std::string& name)
+	Atom_Id General_Objects::get_atom_id(const std::string& name) const
 	{
 		return atom_name_to_id.at(name);
 	}

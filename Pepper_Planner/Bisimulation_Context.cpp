@@ -244,7 +244,6 @@ namespace del::bisimulation_context {
 		}
 
 		// Set world relation
-		//Accessibility_Relations accessibility_relations(worlds.size(), state.get_number_of_agents()); 
 		std::vector<Accessibility_Relation> accessibility_relations;
 		for (size_t i = 0; i < state.get_number_of_agents(); ++i)
 		{
