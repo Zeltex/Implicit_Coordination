@@ -159,6 +159,7 @@
     <ClCompile Include="Action_Events.cpp" />
     <ClCompile Include="Action_Library.cpp" />
     <ClCompile Include="Agents.cpp" />
+    <ClCompile Include="Atom_Arguments.cpp" />
     <ClCompile Include="Atom_Buffer.cpp" />
     <ClCompile Include="Atom_Lookup.cpp" />
     <ClCompile Include="Bisimulation_Context.cpp" />
@@ -218,6 +219,7 @@
     <ClInclude Include="Action_Library.hpp" />
     <ClInclude Include="Agents.hpp" />
     <ClInclude Include="Atoms.hpp" />
+    <ClInclude Include="Atom_Arguments.hpp" />
     <ClInclude Include="Atom_Buffer.hpp" />
     <ClInclude Include="Atom_Lookup.hpp" />
     <ClInclude Include="Bisimulation_Context.hpp" />

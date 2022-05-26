@@ -1,4 +1,7 @@
 #include "Proposition_Instance.hpp"
+
+#include "Atom_Arguments.hpp"
+#include "Atom_Lookup.hpp"
 #include "Atoms.hpp"
 #include "Domain.hpp"
 
@@ -10,11 +13,11 @@ namespace del
         }
     }
 
-    Proposition_Instance::Proposition_Instance(const std::string& name) : name(name), arguments() {
-        for (auto& entry : arguments) {
-            entry = EMPTY_INDEX;
-        }
-    }
+    //Proposition_Instance::Proposition_Instance(const std::string& name) : name(name), arguments() {
+    //    for (auto& entry : arguments) {
+    //        entry = EMPTY_INDEX;
+    //    }
+    //}
 
     Proposition_Instance::Proposition_Instance(const std::string& name, const std::vector<Atom_Id>& input)
         : name(name), arguments() {
@@ -22,6 +25,21 @@ namespace del
         for (counter = 0; counter < input.size(); counter++) {
             arguments[counter] = input[counter];
         }
+        while (counter < PROPOSITION_LENGTH) {
+            arguments[counter] = EMPTY_INDEX;
+            counter++;
+        }
+    }
+
+    Proposition_Instance::Proposition_Instance(const std::string& name, const Atoms& input)
+        : name(name), arguments() {
+        size_t counter = 0;
+        for (const Atom& atom : input)
+        {
+            arguments[counter] = atom.get_id();
+            ++counter;
+        }
+
         while (counter < PROPOSITION_LENGTH) {
             arguments[counter] = EMPTY_INDEX;
             counter++;
@@ -36,6 +54,23 @@ namespace del
         }
         while (counter < PROPOSITION_LENGTH) {
             arguments[counter] = EMPTY_INDEX;
+            counter++;
+        }
+    }
+
+    Proposition_Instance::Proposition_Instance(const Proposition_Instance& other, const Atom_Arguments& input)
+        : name(other.name), arguments()
+    {
+        size_t counter = 0;
+        for (auto& entry : other.arguments) {
+            if (entry == EMPTY_INDEX)
+            {
+                arguments[counter] = entry;
+            }
+            else
+            {
+                arguments[counter] = input.get(entry);
+            }
             counter++;
         }
     }
@@ -63,10 +98,46 @@ namespace del
                 arguments[counter] = EMPTY_INDEX;
             }
             else {
-                arguments[counter] = input_arguments[entry.id].get_id();
+                arguments[counter] = input_arguments.at(entry.id).get_id();
             }
             counter++;
         }
+    }
+
+    Proposition_Instance::Proposition_Instance(const Atom_Lookup& atom_lookup, const std::string& name, const std::string& arg_0)
+        : Proposition_Instance(name, atom_lookup.get_atom(arg_0).get_id(), EMPTY_INDEX, EMPTY_INDEX, EMPTY_INDEX, EMPTY_INDEX)
+    {
+
+    }
+
+    Proposition_Instance::Proposition_Instance(const Atom_Lookup& atom_lookup, const std::string& name, const std::string& arg_0, const std::string& arg_1)
+        : Proposition_Instance(name, atom_lookup.get_atom(arg_0).get_id(), atom_lookup.get_atom(arg_1).get_id(), EMPTY_INDEX, EMPTY_INDEX, EMPTY_INDEX)
+    {
+
+    }
+
+    Proposition_Instance::Proposition_Instance(const Atom_Lookup& atom_lookup, const std::string& name, const std::string& arg_0, const std::string& arg_1, const std::string& arg_2)
+        : Proposition_Instance(name, atom_lookup.get_atom(arg_0).get_id(), atom_lookup.get_atom(arg_1).get_id(), atom_lookup.get_atom(arg_2).get_id(), EMPTY_INDEX, EMPTY_INDEX)
+    {
+
+    }
+
+    Proposition_Instance::Proposition_Instance(const Atom_Lookup& atom_lookup, const std::string& name, const std::string& arg_0, const std::string& arg_1, const std::string& arg_2, const std::string& arg_3)
+        : Proposition_Instance(name, atom_lookup.get_atom(arg_0).get_id(), atom_lookup.get_atom(arg_1).get_id(), atom_lookup.get_atom(arg_2).get_id(), atom_lookup.get_atom(arg_3).get_id(), EMPTY_INDEX)
+    {
+
+    }
+
+    Proposition_Instance::Proposition_Instance(const Atom_Lookup& atom_lookup, const std::string& name, const std::string& arg_0, const std::string& arg_1, const std::string& arg_2, const std::string& arg_3, const std::string& arg_4)
+        : Proposition_Instance(name, atom_lookup.get_atom(arg_0).get_id(), atom_lookup.get_atom(arg_1).get_id(), atom_lookup.get_atom(arg_2).get_id(), atom_lookup.get_atom(arg_3).get_id(), atom_lookup.get_atom(arg_4).get_id())
+    {
+
+    }
+
+    Proposition_Instance::Proposition_Instance(const std::string& name, const Atom_Id& arg_0, const Atom_Id& arg_1, const Atom_Id& arg_2, const Atom_Id& arg_3, const Atom_Id& arg_4)
+        : name(name), arguments({ {arg_0, arg_1, arg_2, arg_3, arg_4} })
+    {
+
     }
 
     std::string Proposition_Instance::to_string(const Domain& domain) const {

@@ -1,6 +1,8 @@
 #pragma once
 #include <vector>
 #include <map>
+#include <optional>
+
 #include "General_Actions.hpp"
 #include "General_Edge_Conditions.hpp"
 
@@ -28,9 +30,10 @@ namespace del
 	{
 	public:
 		Agent_Edge_Conditions();
-		Agent_Edge_Conditions(const General_Action& general_action, const Propositions_Lookup& propositions_Lookup, const Action_Events& action_events, const Atoms& arguments);
+		Agent_Edge_Conditions(const General_Action& general_action, const Propositions_Lookup& propositions_Lookup, const Action_Events& action_events, const Atoms& arguments, const Agents& agents);
 		std::optional<const Formula*> get_precondition(Agent_Id agent, Event_Id event_from, Event_Id event_to) const;
 		size_t size() const;
+		void set_agent_edge_condition();
 	private:
 		std::vector<Edge_Conditions> edge_conditions;
 	};

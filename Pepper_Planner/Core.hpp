@@ -1,6 +1,12 @@
 #pragma once
 namespace del {
 
+#ifdef EXPORT_TEST_FUNCTIONS
+
+#define UNITTESTAPP_EXPORT __declspec(dllexport)
+#else
+#define UNITTESTAPP_EXPORT
+#endif
 
 #if 0
 #define BISIMILAR_USE_HASH_ENABLED 1

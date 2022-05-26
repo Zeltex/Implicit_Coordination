@@ -207,6 +207,9 @@
     <ClCompile Include="Propositions_Lookup.cpp">
       <Filter>Source Files\DEL</Filter>
     </ClCompile>
+    <ClCompile Include="Atom_Arguments.cpp">
+      <Filter>Source Files\DEL</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Types.hpp">
@@ -375,6 +378,9 @@
       <Filter>Header Files\DEL</Filter>
     </ClInclude>
     <ClInclude Include="Propositions_Lookup.hpp">
+      <Filter>Header Files\DEL</Filter>
+    </ClInclude>
+    <ClInclude Include="Atom_Arguments.hpp">
       <Filter>Header Files\DEL</Filter>
     </ClInclude>
   </ItemGroup>

@@ -17,8 +17,6 @@ namespace del {
 	class DEL_Interface {
 	public:
 		DEL_Interface(std::string file_path);
-		//DEL_Interface(size_t domain_to_load);
-		//DEL_Interface(State initial_state, Action_Library library);
 		Interface_DTO get_next_action();
 
 		bool query(const Formula& query);
@@ -29,8 +27,13 @@ namespace del {
 		bool create_policy(const std::string& planning_agent, const bool is_benchmark=false);
 		bool is_solved();
 
-		const std::unordered_map<std::string, Atom_Id>& get_proposition_context();
-		std::unordered_map<std::string, size_t> get_belief_context();
+
+		const Atom_Lookup& get_atom_lookup() const;
+		const Propositions_Lookup& get_propositions_lookup() const;
+		const Agents& get_agent_lookup() const;
+
+		//const std::unordered_map<std::string, Atom_Id>& get_proposition_context();
+		//std::unordered_map<std::string, size_t> get_belief_context();
 
         //TODO Temporary access to domain
         Domain* get_domain() { return &domain; }

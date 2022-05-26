@@ -32,7 +32,7 @@ namespace del {
 
     void Custom_Parser::must_match(const Token& token)
     {
-        must_match({ token });
+        must_match(std::vector<Token>{ token });
     }
 
     void Custom_Parser::must_match(const std::vector<Token>& pattern)
@@ -172,8 +172,8 @@ namespace del {
 
         if (try_match({ Token:: INIT_DEF, Token:: EQUALS, Token:: LBRACK}))
 		{
-            proposition_instances();
-            buffer.rigid_propositions.set(buffer.proposition_instance_buffer);
+            problem_proposition_instances();
+            buffer.rigid_propositions.set_and_consume(buffer.proposition_instance_buffer);
             must_match(Token::RBRACK);
             return problem_body();
         }
@@ -181,7 +181,7 @@ namespace del {
         if (try_match({ Token::WORLD_DEF, Token::NAME, Token::LBRACK }))
 		{
             auto world_name = get_svalue(1);
-            proposition_instances();
+            problem_proposition_instances();
             buffer.state.add_world(world_name, buffer.proposition_instance_buffer);
             must_match(Token::RBRACK);
             return problem_body();
@@ -189,7 +189,8 @@ namespace del {
 
         if (try_match({ Token::GOAL_DEF, Token::EQUALS, Token::LBRACK }))
 		{
-            formula();
+            const bool is_domain = false;
+            formula(is_domain);
             buffer.goal = buffer.formula_buffer.get();
             must_match(Token::RBRACK);
             return problem_body();
@@ -216,7 +217,7 @@ namespace del {
 		{
             auto name = get_svalue(0);
             bracketed_input();
-            buffer.state.add_accessibility_relation(name, buffer.inputs_buffer);
+            buffer.state.add_accessibility_relations(name, buffer.inputs_buffer, buffer.agents);
             must_match(Token::RBRACK);
             return reachability_body();
         }
@@ -235,12 +236,19 @@ namespace del {
         return;
     }
 
-    bool Custom_Parser::proposition_instance() {
+    bool Custom_Parser::proposition_instance(bool is_domain) {
         if (try_match({ Token::NAME, Token::LBRACK }))
 		{
             std::string name = get_svalue(0);
             ordered_variables();
-            buffer.proposition_instance_buffer.add(name, buffer.variables_buffer, buffer.actions.get_inputs());
+            if (is_domain)
+            {
+                buffer.proposition_instance_buffer.add(name, buffer.variables_buffer, buffer.actions.get_inputs());
+            }
+            else 
+            {
+                buffer.proposition_instance_buffer.add(name, buffer.variables_buffer, buffer.objects);
+            }
             must_match(Token::RBRACK);
             return true;
         }
@@ -331,7 +339,8 @@ namespace del {
 		{
             std::string event0 = get_svalue(1);
             std::string event1 = get_svalue(2);
-            formula_single();
+            const bool is_domain = true;
+            formula_single(is_domain);
             buffer.edge_condition_buffer.add(event0, event1, std::move(buffer.formula_buffer.get()));
             must_match(Token::RBRACK);
             action_agent_reachability();
@@ -343,7 +352,8 @@ namespace del {
     void Custom_Parser::event_body() {
         if (try_match({ Token::PRECONDITIONS_DEF, Token::EQUALS, Token::LBRACK }))
 		{
-            formula_single();
+            const bool is_domain = true;
+            formula_single(is_domain);
             buffer.events_buffer.set_preconditions(buffer.formula_buffer);
             must_match(Token::RBRACK);
             return event_body();
@@ -351,7 +361,7 @@ namespace del {
 
         if (try_match({ Token::EFFECT_DELETE_DEF, Token::EQUALS, Token::LBRACK }))
 		{
-            proposition_instances();
+            domain_proposition_instances();
             buffer.events_buffer.set_delete_list(buffer.proposition_instance_buffer);
             must_match(Token::RBRACK);
             return event_body();
@@ -359,67 +369,67 @@ namespace del {
 
         if (try_match({ Token::EFFECT_ADD_DEF, Token::EQUALS, Token::LBRACK }))
 		{
-            proposition_instances();
+            domain_proposition_instances();
             buffer.events_buffer.set_add_list(buffer.proposition_instance_buffer);
             must_match(Token::RBRACK);
             return event_body();
         }
     }
 
-    void Custom_Parser::formula() {
-        if (proposition_instance()) {
+    void Custom_Parser::formula(bool is_domain) {
+        if (proposition_instance(is_domain)) {
             buffer.formula_buffer.push_pop_formula_prop(buffer.proposition_instance_buffer);
-            return formula();
+            return formula(is_domain);
         }
 
         if (try_match({ Token::AND, Token::LBRACK }))
 		{
             buffer.formula_buffer.push_formula("And");
-            formula();
+            formula(is_domain);
             must_match(Token::RBRACK);
             buffer.formula_buffer.pop_formula();
-            return formula();
+            return formula(is_domain);
         }
 
         if (try_match({ Token::OR, Token::LBRACK }))
 		{
             buffer.formula_buffer.push_formula("Or");
-            formula();
+            formula(is_domain);
             must_match(Token::RBRACK);
             buffer.formula_buffer.pop_formula();
-            return formula();
+            return formula(is_domain);
         }
 
         if (try_match({ Token::NOT, Token::LBRACK }))
 		{
             buffer.formula_buffer.push_formula("Not");
-            formula_single();
+            formula_single(is_domain);
             must_match(Token::RBRACK);
             buffer.formula_buffer.pop_formula();
-            return formula();
+            return formula(is_domain);
         }
 
         if (try_match({ Token::TOP }))
 		{
             buffer.formula_buffer.push_pop_formula_top();
-            return formula();
+            return formula(is_domain);
         }
 
         if (try_match({ Token::BELIEVES, Token::LBRACK, Token::NAME }))
 		{
             auto agent = get_svalue(2);
             buffer.formula_buffer.push_formula("Believes");
-            formula_single();
+            formula_single(is_domain);
             must_match(Token::RBRACK);
             buffer.formula_buffer.pop_formula(agent);
-            return formula();
+            return formula(is_domain);
         }
 
         return;
     }
 
-    void Custom_Parser::formula_single() {
-        if (proposition_instance()) {
+    void Custom_Parser::formula_single(bool is_domain) {
+        if (proposition_instance(is_domain)) {
             buffer.formula_buffer.push_pop_formula_prop(buffer.proposition_instance_buffer);
             return;
         }
@@ -427,7 +437,7 @@ namespace del {
         if (try_match({ Token::AND, Token::LBRACK }))
 		{
             buffer.formula_buffer.push_formula("And");
-            formula();
+            formula(is_domain);
             must_match(Token::RBRACK);
             buffer.formula_buffer.pop_formula();
             return;
@@ -436,7 +446,7 @@ namespace del {
         if (try_match({ Token::OR, Token::LBRACK }))
 		{
             buffer.formula_buffer.push_formula("Or");
-            formula();
+            formula(is_domain);
             must_match(Token::RBRACK);
             buffer.formula_buffer.pop_formula();
             return;
@@ -445,7 +455,7 @@ namespace del {
         if (try_match({ Token::NOT, Token::LBRACK }))
 		{
             buffer.formula_buffer.push_formula("Not");
-            formula_single();
+            formula_single(is_domain);
             must_match(Token::RBRACK);
             buffer.formula_buffer.pop_formula();
             return;
@@ -461,23 +471,35 @@ namespace del {
 		{
             auto agent = get_svalue(2);
             buffer.formula_buffer.push_formula("Believes");
-            formula_single();
+            formula_single(is_domain);
             must_match(Token::RBRACK);
             buffer.formula_buffer.pop_formula(agent);
-            return formula();
+            return formula(is_domain);
         }
 
         return;
     }
 
-    void Custom_Parser::proposition_instances() {
+    void Custom_Parser::domain_proposition_instances() {
         if (try_match({ Token::NAME, Token::LBRACK }))
-		{
+        {
             auto name = get_svalue(0);
             ordered_variables();
             buffer.proposition_instance_buffer.add(name, buffer.variables_buffer, buffer.actions.get_inputs());
             must_match(Token::RBRACK);
-            return proposition_instances();
+            return domain_proposition_instances();
+        }
+        return;
+    }
+
+    void Custom_Parser::problem_proposition_instances() {
+        if (try_match({ Token::NAME, Token::LBRACK }))
+		{
+            auto name = get_svalue(0);
+            ordered_variables();
+            buffer.proposition_instance_buffer.add(name, buffer.variables_buffer, buffer.objects);
+            must_match(Token::RBRACK);
+            return problem_proposition_instances();
         }
         return;
     }
@@ -502,6 +524,8 @@ namespace del {
             buffer.actions.set_input(buffer.inputs_buffer);
             must_match({ Token::RBRACK, Token::LBRACK });
             action_body();
+            buffer.actions.set_events(buffer.events_buffer);
+            buffer.actions.set_propositions_buffer(buffer.proposition_instance_buffer);
             must_match(Token::RBRACK);
             return actions();
         }

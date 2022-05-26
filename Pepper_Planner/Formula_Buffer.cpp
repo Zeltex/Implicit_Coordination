@@ -13,6 +13,7 @@ namespace del
         formula = {};
         return temp;
     }
+
     void Formula_Buffer::push_pop_formula_top()
     {
         if (formula_buffer.empty())

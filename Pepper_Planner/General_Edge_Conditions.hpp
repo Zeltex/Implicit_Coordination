@@ -41,6 +41,7 @@ namespace del
 	private:
 		std::map<size_t, General_Edge_Conditions> agent_edge_conditions;
 
+		// TODO - Maybe not used
 		// Atom input to domain agent mapping. Uses vector since _rest may map to multiple
 		std::map<size_t, std::vector<Agent>> atom_to_agent;
 	};

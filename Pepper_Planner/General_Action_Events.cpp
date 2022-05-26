@@ -1,6 +1,6 @@
 #include "General_Action_Events.hpp"
+
 #include "Formula_Buffer.hpp"
-#include "Proposition_Instance_Buffer.hpp"
 
 namespace del
 {
@@ -32,9 +32,36 @@ namespace del
 		proposition_delete = proposition_instances;
 	}
 
+	void General_Action_Event::set_instance_buffer(Proposition_Instance_Buffer& proposition_instance_buffer)
+	{
+		this->proposition_instance_buffer = proposition_instance_buffer.move();
+	}
+
+	General_Action_Events::General_Action_Events()
+		: events()
+	{
+
+	}
+
+	General_Action_Events::General_Action_Events(std::vector<General_Action_Event> events)
+		: events(std::move(events))
+	{
+
+	}
+
+	std::vector<General_Action_Event> General_Action_Events::get()
+	{
+		return std::move(events);
+	}
+
 	void General_Action_Events::start(const std::string& name)
 	{
 		events.push_back({ name, Event_Id{events.size()} });
+	}
+
+	void General_Action_Events::end(Proposition_Instance_Buffer& proposition_instance_buffer)
+	{
+		events.back().set_instance_buffer(proposition_instance_buffer);
 	}
 
 	void General_Action_Events::set_preconditions(Formula_Buffer& formula_buffer)

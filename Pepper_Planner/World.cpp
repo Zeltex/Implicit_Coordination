@@ -2,6 +2,7 @@
 
 #include "Action_Events.hpp"
 #include "Domain.hpp"
+#include "General_World.hpp"
 #include "Propositions_Lookup.hpp"
 
 namespace del {

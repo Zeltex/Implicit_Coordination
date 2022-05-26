@@ -19,12 +19,21 @@ namespace del {
 			worlds.push_back({ general_world, propositions_lookup });
 		}
 
-		// Agent_World_Relation
+		// Get agents size
+		std::set<Agent_Id> agents;
+		for (const Agent_World_Relation& relation : other.agent_world_relations)
+		{
+			agents.insert(relation.agent);
+		}
+
+		// Init storage
 		std::vector<Accessibility_Relation> agent_relations;
-		for (size_t i = 0; i < other.agent_world_relations.size(); ++i)
+		for (size_t i = 0; i < agents.size(); ++i)
 		{
 			agent_relations.push_back({ Agent_Id{i}, other.worlds.size() });
 		}
+
+		// Fill storage
 		for (const Agent_World_Relation& relation : other.agent_world_relations)
 		{
 			agent_relations.at(relation.agent.id).set(relation.world_from, relation.world_to);
@@ -338,5 +347,10 @@ namespace del {
 		State contracted = contract();
 		State contracted_other = other.contract();
 		return contracted == contracted_other;
+	}
+
+	size_t State::get_number_of_agents() const
+	{
+		return accessibility_relations.get_number_of_agents();
 	}
 }

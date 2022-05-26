@@ -108,7 +108,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(VCInstallDir)UnitTest\include;$(SolutionDir)Pepper_Planner;$(SolutionDir)Formula;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Domain_Loader;$(VCInstallDir)UnitTest\include;$(SolutionDir)Pepper_Planner;$(SolutionDir)Formula;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <UseFullPaths>true</UseFullPaths>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
@@ -116,7 +116,7 @@
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
-      <AdditionalLibraryDirectories>$(VCInstallDir)UnitTest\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(VCInstallDir)UnitTest\lib;$(SolutionDir)Pepper_Planner/x64/Debug;$(SolutionDir)Pepper_Planner\x64\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -160,23 +160,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Action_Tests.cpp" />
-    <ClCompile Include="Bisimulation_Context_Tests.cpp" />
     <ClCompile Include="Loader_Integration_Tests.cpp" />
-    <ClCompile Include="Planner_Action_Applicable_Tests.cpp" />
-    <ClCompile Include="DEL_Operations_Bisimilar_Contraction_Tests.cpp" />
-    <ClCompile Include="DEL_Operations_Perspective_Shift_Tests.cpp" />
-    <ClCompile Include="DEL_Operations_Product_Update_Tests.cpp" />
-    <ClCompile Include="DEL_Operations_Split_Into_Globals_Tests.cpp" />
-    <ClCompile Include="Formula_To_String_Tests.cpp" />
     <ClCompile Include="Formula_Valuation_Tests.cpp" />
-    <ClCompile Include="pch.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="Graph_Tests.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />

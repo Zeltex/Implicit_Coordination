@@ -19,6 +19,10 @@ namespace del {
 		bool operator==(const Agent& other) const {
 			return this->id == other.id;
 		}
+
+		bool operator<(const Agent& other) const {
+			return this->id < other.id;
+		}
 	private:
 		Agent_Id id;
 		Atom_Id atom_id;
@@ -30,6 +34,8 @@ namespace del {
 		Agents(const General_Agents& agents);
 		const Agent& get(const std::string& name) const;
 		const Agent& get(const Agent_Id& agent_id) const;
+		const Agent& get(const Atom_Id& atom_id) const;
+		const std::vector<Agent>& get_all() const;
 		size_t size() const;
 	private:
 		std::vector<Agent> agents;

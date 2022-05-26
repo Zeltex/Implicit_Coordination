@@ -13,7 +13,7 @@ namespace del
 		propositions_lookup(general_domain.typed_propositions, atom_lookup),
 		states(1, State{ general_domain.state, propositions_lookup }),
 		rigid_propositions(general_domain.rigid_propositions, propositions_lookup),
-		action_library(general_domain.actions, propositions_lookup, atom_lookup)
+		action_library(general_domain.actions, propositions_lookup, atom_lookup, agents)
 
 	{
 		auto converter = general_domain.proposition_instance_buffer.create_converter(propositions_lookup);
@@ -70,6 +70,11 @@ namespace del
 	const Propositions_Lookup& Domain::get_propositions_lookup() const
 	{
 		return propositions_lookup;
+	}
+
+	const Atom_Lookup& Domain::get_atom_lookup() const
+	{
+		return atom_lookup;
 	}
 
 	bool Domain::is_rigid(const Proposition& proposition) const

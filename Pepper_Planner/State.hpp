@@ -2,6 +2,7 @@
 
 #include <set>
 #include <vector>
+#include <optional>
 
 #include "Formula.hpp"
 #include "World.hpp"

@@ -1,4 +1,3 @@
-#include "pch.h"
 #include "CppUnitTest.h"
 
 #include <iostream>
@@ -16,13 +15,17 @@ namespace PepperPlannerTests
 	class Input : public Formula_Input_Interface {
 	public:
 		Input(std::unordered_map<size_t, std::unordered_set<Proposition>> propositions) : propositions(propositions) {}
-		bool valuate_prop(Proposition prop, const size_t world_id) const { 
+		bool valuate_prop(const Proposition& prop, const size_t world_id) const { 
 			auto& prop_list = propositions.at(world_id);
 
 			return std::find(prop_list.begin(), prop_list.end(), prop) != prop_list.end(); 
 		
 		}
-		virtual std::vector<size_t> get_reachable_worlds(Proposition agent_id, size_t world_id) const { return std::vector<size_t>(worlds.at(world_id)); };
+		virtual std::set<size_t> get_reachable_worlds(const Proposition& agent_id, size_t world_id) const 
+		{ 
+			return{};
+			//return std::set<size_t>(worlds.at(world_id)); 
+		}
 		std::unordered_map<size_t, std::unordered_set<Proposition>> propositions;
 		std::unordered_map<size_t, std::vector<size_t>> worlds;
 	};

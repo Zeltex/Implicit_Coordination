@@ -3,6 +3,7 @@
 #include "Propositions_Lookup.hpp"
 #include "Atom_Lookup.hpp"
 #include "General_Typed_Propositions.hpp"
+#include <assert.h>
 
 namespace del
 {
@@ -34,8 +35,9 @@ namespace del
 					const std::string& atom = list_atoms.at(i).at(indices.at(i));
 					grounded_input.insert(atom_lookup.get_atom(atom));
 				}
-
-				instance_to_proposition.insert({ Proposition_Instance(Typed_Proposition.name, grounded_input), instance_to_proposition.size() });
+				Proposition_Instance instance{Typed_Proposition.name, grounded_input };
+				instance_to_proposition.insert({ instance, instance_to_proposition.size()
+			});
 
 				// Advance indices
 				size_t index = 0;
@@ -49,6 +51,7 @@ namespace del
 
 	const Proposition& Propositions_Lookup::get(const Proposition_Instance& instance) const
 	{
+		assert(instance_to_proposition.find(instance) != instance_to_proposition.end());
 		return instance_to_proposition.at(instance);
 	}
 

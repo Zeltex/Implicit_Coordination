@@ -1,18 +1,20 @@
 #include "Action_Events.hpp"
-#include "Domain.hpp"
+
 #include "Atoms.hpp"
+#include "Propositions_Lookup.hpp"
+
+#include <assert.h>
 
 namespace del {
 
-	Action_Event::Action_Event(const General_Action_Event& other, Event_Id id, const std::map<Proposition, Proposition>& converter)
+	Action_Event::Action_Event(const General_Action_Event& other, Event_Id id, const std::map<Proposition, Proposition>& converter, const Propositions_Lookup& propositions_lookup, const Atoms& arguments)
 		: name(other.name), 
 		id(id), 
-		precondition(other.precondition, converter)
+		precondition(other.precondition, converter),
+		proposition_add(other.proposition_add, propositions_lookup, arguments),
+		proposition_delete(other.proposition_delete, propositions_lookup, arguments)
 	{
 
-		throw "TODO - Implement proposition conversion";
-		//proposition_add = other.proposition_add;
-		//proposition_delete = other.proposition_delete;
 	}
 
 	Event_Id Action_Event::get_id() const {
@@ -60,7 +62,9 @@ namespace del {
 		for (const General_Action_Event& general_action_event : other.events)
 		{
 			Event_Id id { events.size() };
-			events.emplace_back(general_action_event, id, converter);
+			Action_Event action_event{ general_action_event, id, converter, propositions_lookup, arguments };
+			events.push_back(action_event);
+			//events.emplace_back(general_action_event, id, converter, propositions_lookup);
 		}
 	}
 

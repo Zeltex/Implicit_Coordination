@@ -1,6 +1,7 @@
 #include "Formula_Component.hpp"
 #include <algorithm>
 #include <iostream>
+#include <assert.h>
 
 namespace del {
 
@@ -17,6 +18,7 @@ namespace del {
         case Formula_Types::Prop:
         {
             auto res = general_to_ground.find(other.prop);
+            assert(res != general_to_ground.end());
             if (res == general_to_ground.end()) {
                 std::cerr << "Proposition " << other.prop.to_string() << " was not found while grounding\n";
                 exit(-1);

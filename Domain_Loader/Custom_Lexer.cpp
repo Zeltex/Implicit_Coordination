@@ -1,7 +1,19 @@
 #include "Custom_Lexer.hpp"
 
+#include <direct.h>
+#include <limits>
+#include <limits.h>
+#include <iostream>
+#include <stdlib.h>
+
 namespace del {
+    using namespace std;
     Custom_Lexer::Custom_Lexer(const std::string& file_path) {
+        const size_t PATH_MAX = 32768;
+        char buff[PATH_MAX];
+        _getcwd(buff, PATH_MAX);
+        string current_working_dir(buff);
+        cout << current_working_dir << endl;
         std::ifstream file(file_path);
         if (!file) {
             throw std::runtime_error("Can't open file" + file_path);

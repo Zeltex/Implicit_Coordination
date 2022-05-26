@@ -1,6 +1,6 @@
 #include "Atoms.hpp"
 
-#include "Domain.hpp"
+#include <assert.h>
 
 namespace del
 {
@@ -28,11 +28,13 @@ namespace del
 
 	const Atom& Atoms::at(size_t index) const
 	{
+		assert(index < atoms.size());
 		return atoms.at(index);
 	}
 
 	void Atoms::set(size_t index, const Atom& atom)
 	{
+		assert(index < atoms.size());
 		atoms.at(index) = atom;
 	}
 
@@ -51,8 +53,6 @@ namespace del
 		std::string result;
 		for (const Atom& atom : atoms)
 		{
-			// TODO - Delete or reverse
-			//result += domain.get_atom(atom).get_name() + " ";
 			result += atom.get_name() + " ";
 		}
 		return result;

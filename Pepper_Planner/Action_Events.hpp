@@ -11,11 +11,13 @@
 #include "Propositions.hpp"
 
 namespace del {
-	class Domain;
 	class Atoms;
+	class Domain;
+	class Propositions_Lookup;
+
 	class Action_Event {
 	public:
-		Action_Event(const General_Action_Event& other, Event_Id id, const std::map<Proposition, Proposition>& converter);
+		Action_Event(const General_Action_Event& other, Event_Id id, const std::map<Proposition, Proposition>& converter, const Propositions_Lookup& propositions_lookup, const Atoms& arguments);
 
 		Event_Id get_id() const;
 		const Formula& get_preconditions() const;

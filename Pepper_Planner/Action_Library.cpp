@@ -4,6 +4,8 @@
 #include "Domain.hpp"
 #include "General_Actions.hpp"
 
+#include <assert.h>
+
 namespace del {
 
 	Action_Library::Action_Library(): 
@@ -12,14 +14,14 @@ namespace del {
 		actions() {
 	}
 
-	Action_Library::Action_Library(const General_Actions& general_actions, const Propositions_Lookup& propositions_lookup, const Atom_Lookup& atom_lookup)
+	Action_Library::Action_Library(const General_Actions& general_actions, const Propositions_Lookup& propositions_lookup, const Atom_Lookup& atom_lookup, const Agents& agents)
 		: action_counter(0), 
 		announce_enabled(false), 
 		actions() 
 	{
 		for (const General_Action& general_action : general_actions)
 		{
-			add_general_action(general_action, propositions_lookup, atom_lookup);
+			add_general_action(general_action, propositions_lookup, atom_lookup, agents);
 		}
 	}
 
@@ -55,7 +57,7 @@ namespace del {
 		actions.push_back(action);
 	}
 
-	void Action_Library::add_general_action(const General_Action& general_action, const Propositions_Lookup& propositions_lookup, const Atom_Lookup& atom_lookup) {
+	void Action_Library::add_general_action(const General_Action& general_action, const Propositions_Lookup& propositions_lookup, const Atom_Lookup& atom_lookup, const Agents& agents) {
 
 		general_action_name_to_id[general_action.get_name()] = general_actions.size();
 		general_actions.push_back(general_action);
@@ -78,13 +80,17 @@ namespace del {
 			for (size_t i = 0; i < counters.size(); i++) {
 				arguments.insert(atoms[i][counters[i]]);
 			}
-			actions.emplace_back(general_action, propositions_lookup, arguments);
+			Action action{ general_action, propositions_lookup, arguments, agents };
+			actions.push_back(action);
+
 
 			// Advance indices
 			size_t index = 0;
+			assert(index < counters.size() && index < atoms.size());
 			while (!done && ++counters.at(index) >= atoms.at(index).size()) {
 				counters.at(index++) = 0;
 				done = index >= counters.size();
+				assert(done || (index < counters.size() && index < atoms.size()));
 			}
 		}
 	}

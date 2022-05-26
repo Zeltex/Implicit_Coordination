@@ -2,6 +2,7 @@
 #include "General_Agents.hpp"
 
 #include <iostream>
+#include <assert.h>
 
 namespace del 
 {
@@ -39,7 +40,7 @@ namespace del
 				return entry;
 			}
 		}
-
+		assert(false);
 		std::cerr << "No agent with name: " << name << "\n";
 		exit(-1);
 	}
@@ -48,6 +49,22 @@ namespace del
 	{
 		return agents.at(agent_id.id);
 	}
+
+	const Agent& Agents::get(const Atom_Id& atom_id) const
+	{
+		for (auto& entry : agents) {
+			if (entry.get_atom_id() == atom_id) {
+				return entry;
+			}
+		}
+		assert(false);
+	}
+
+	const std::vector<Agent>& Agents::get_all() const
+	{
+		return agents;
+	}
+
 	size_t Agents::size() const
 	{
 		return agents.size();

@@ -1,10 +1,11 @@
 #pragma once
 #include <string>
 #include <vector>
-#include <Formula_Types.hpp>
-#include <Formula.hpp>
-#include <General_Atoms.hpp>
+
 #include "Atom_Buffer.hpp"
+#include "Formula_Types.hpp"
+#include "Formula.hpp"
+#include "Propositions.hpp"
 
 namespace del
 {
@@ -24,7 +25,6 @@ namespace del
 		std::vector<std::vector<Formula_Id>> formula_buffer;
 		std::vector<Formula_Types> formula_buffer_type;
 		std::vector<Proposition> propositions;
-		//General_Atoms atoms;
 		Atom_Buffer atoms;
 	};
 }

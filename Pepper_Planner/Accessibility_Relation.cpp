@@ -318,4 +318,10 @@ namespace del
 	{
 		agent_relations.at(agent.id).set(world_from, world_to);
 	}
+
+	size_t Accessibility_Relations::get_number_of_agents() const
+	{
+		return agent_relations.size();
+	}
+
 }

@@ -1,7 +1,11 @@
 #include "Edge_Conditions.hpp"
-#include "General_Edge_Conditions.hpp"
+
 #include "Action_Events.hpp"
 #include "Atoms.hpp"
+#include "Atom_Arguments.hpp"
+#include "General_Edge_Conditions.hpp"
+
+#include <cassert>
 
 namespace del
 {
@@ -51,21 +55,45 @@ namespace del
 
 	}
 
-	Agent_Edge_Conditions::Agent_Edge_Conditions(const General_Action& general_action, const Propositions_Lookup& propositions_Lookup, const Action_Events& action_events, const Atoms& arguments)
+	Agent_Edge_Conditions::Agent_Edge_Conditions(const General_Action& general_action, const Propositions_Lookup& propositions_Lookup, const Action_Events& action_events, const Atoms& arguments, const Agents& agents)
 		: edge_conditions(general_action.get_edge_conditions().size())
 	{
 		std::map<std::string, Event_Id> event_name_to_id = action_events.get_name_to_id();
 		const General_Agent_Edge_Conditions& other = general_action.get_edge_conditions();
-		Atoms converted_arguments = arguments;
+		Atom_Arguments converted_arguments = arguments;
+
+		// Find all agents contained in REST_INDEX
+		std::set<Agent> unseen_agents { agents.get_all().begin(), agents.get_all().end() };
+		for (const auto& [agent_atom, general_edge_conditions] : other.agent_edge_conditions)
+		{
+			if (agent_atom == REST_INDEX)
+			{
+				continue;
+			}
+
+			Atom atom = arguments.at(agent_atom);
+			Agent agent = agents.get(atom.get_id());
+			assert(unseen_agents.find(agent) != unseen_agents.end());
+			unseen_agents.erase(unseen_agents.find(agent));
+		}
+
 
 		for (const auto& [agent_atom, general_edge_conditions] : other.agent_edge_conditions)
 		{
-			for (const Agent& agent : other.atom_to_agent.at(agent_atom))
+			if (agent_atom == REST_INDEX)
 			{
-				if (agent_atom == REST_INDEX) 
+				for (const Agent& agent : unseen_agents)
 				{
-					converted_arguments.set(REST_INDEX, Atom{ agent.get_atom_id().id, agent.get_name() }); // TODO - Janky conversion, need a better 
+					converted_arguments.set(REST_INDEX, agent.get_atom_id());
+					std::map<Proposition, Proposition> general_to_instantiated = general_action.create_converter(propositions_Lookup, converted_arguments);
+
+					edge_conditions.at(agent.get_id().id) = Edge_Conditions(general_edge_conditions, event_name_to_id, general_to_instantiated);
 				}
+			}
+			else
+			{
+				Atom atom = arguments.at(agent_atom);
+				Agent agent = agents.get(atom.get_id());
 				std::map<Proposition, Proposition> general_to_instantiated = general_action.create_converter(propositions_Lookup, converted_arguments);
 
 				edge_conditions.at(agent.get_id().id) = Edge_Conditions(general_edge_conditions, event_name_to_id, general_to_instantiated);

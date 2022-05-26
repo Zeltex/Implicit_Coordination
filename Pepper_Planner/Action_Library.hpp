@@ -15,7 +15,7 @@ namespace del {
 	class Action_Library {
 	public:
 		Action_Library();
-		Action_Library(const General_Actions& general_actions, const Propositions_Lookup& propositions_lookup, const Atom_Lookup& atom_lookup);
+		Action_Library(const General_Actions& general_actions, const Propositions_Lookup& propositions_lookup, const Atom_Lookup& atom_lookup, const Agents& agents);
 		const std::vector<Action>& get_actions() const;
 		const General_Action& get_general_action(const std::string& name) const;
 		void add_action(const Action& action);
@@ -24,7 +24,7 @@ namespace del {
 		bool has_action() const;
 		const Action& get_next_action();
 	private:
-		void add_general_action(const General_Action& action, const Propositions_Lookup& propositions_lookup, const Atom_Lookup& atom_lookup);
+		void add_general_action(const General_Action& action, const Propositions_Lookup& propositions_lookup, const Atom_Lookup& atom_lookup, const Agents& agents);
 
 		size_t action_counter;
 

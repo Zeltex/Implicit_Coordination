@@ -3,6 +3,7 @@
 #include "Action_Events.hpp"
 
 #include <algorithm>
+#include <cassert>
 
 namespace del
 {
@@ -15,7 +16,9 @@ namespace del
 	{
 		std::map<std::string, Event_Id> event_name_to_id = action_events.get_name_to_id();
 		
-		for (const auto& entry : general_action.get_designated_events()) {
+		for (const auto& entry : general_action.get_designated_events()) 
+		{
+			assert(event_name_to_id.find(entry) != event_name_to_id.end());
 			events.push_back(event_name_to_id.at(entry));
 		}
 	}

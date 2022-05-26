@@ -1,11 +1,8 @@
 #include "DEL_Interface.hpp"
 
-namespace del {
+#include "Core.hpp"
 
-	//DEL_Interface::DEL_Interface(State initial_state, Action_Library library) 
-	//	: domain(initial_state), has_policy(false), policy(false), action_library(), pepper_id({ 0 }) {
-	//	action_library = std::move(library);
-	//}
+namespace del {
 
 	DEL_Interface::DEL_Interface(std::string file_path) :
 		has_policy(false), 
@@ -13,16 +10,8 @@ namespace del {
 		action_library(), 
 		pepper_id({ 0 }),
 		domain(Loader(file_path).get())
-		{
-		Loader loader(file_path);
-		General_Domain general_domain = loader.get();
+	{
 
-
-		// TODO - Adapt to new system
-		//auto [domain, library, goal] = domain_interface.get_loaded();
-		//this->domain = std::move(domain);
-		//this->action_library = std::move(library);
-		//this->goal = std::move(goal);
 	}
 	
 	Interface_DTO DEL_Interface::get_next_action() {
@@ -71,7 +60,7 @@ namespace del {
 			temp_arguments.insert(domain.get_atom(argument));
 		}
 
-		auto action = Action(action_library.get_general_action(name), domain.get_propositions_lookup(), temp_arguments);
+		auto action = Action(action_library.get_general_action(name), domain.get_propositions_lookup(), temp_arguments, domain.get_agents());
 		perform_action(action);
 
 	}
@@ -90,5 +79,21 @@ namespace del {
 
 	bool DEL_Interface::is_solved() {
 		return domain.get_current_state().valuate(goal, domain);
+	}
+
+
+	const Atom_Lookup& DEL_Interface::get_atom_lookup() const
+	{
+		return domain.get_atom_lookup();
+	}
+
+	const Propositions_Lookup& DEL_Interface::get_propositions_lookup() const
+	{
+		return domain.get_propositions_lookup();
+	}
+
+	const Agents& DEL_Interface::get_agent_lookup() const
+	{
+		return domain.get_agents();
 	}
 }

@@ -1,4 +1,6 @@
 #include "Propositions.hpp"
+
+#include "Atoms.hpp"
 #include "Domain.hpp"
 #include "Proposition_Instance_Buffer.hpp"
 #include "Propositions_Lookup.hpp"
@@ -21,6 +23,15 @@ namespace del {
         for (const Proposition_Instance& instance : rigid_propositions.proposition_instances)
         {
             propositions.push_back(propositions_lookup.get(instance));
+        }
+    }
+
+    Propositions::Propositions(const std::vector<Proposition_Instance>& other, const Propositions_Lookup& propositions_lookup, const Atoms& arguments)
+    {
+        for (const Proposition_Instance& instance : other)
+        {
+            Proposition_Instance grounded_instance{ instance, arguments };
+            propositions.push_back(propositions_lookup.get(grounded_instance));
         }
     }
 

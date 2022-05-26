@@ -1,11 +1,11 @@
 #include "General_State.hpp"
-#include "Variables_Buffer.hpp"
-#include "Inputs_Buffer.hpp"
-#include "General_Action_Events.hpp"
-#include "Proposition_Instance_Buffer.hpp"
-#include "General_World.hpp"
 
-#include <exception>
+#include "General_Action_Events.hpp"
+#include "General_Agents.hpp"
+#include "General_World.hpp"
+#include "Inputs_Buffer.hpp"
+#include "Proposition_Instance_Buffer.hpp"
+#include "Variables_Buffer.hpp"
 
 namespace del {
 
@@ -57,19 +57,17 @@ namespace del {
 		agent_world_relations.push_back({ agent, world_from, world_to });
 	}
 
-	void General_State::add_accessibility_relation(const std::string& agent_name, Inputs_Buffer& inputs_buffer)
+	void General_State::add_accessibility_relations(const std::string& agent_name, Inputs_Buffer& inputs_buffer, const General_Agents& general_agents)
 	{
 		Inputs inputs = inputs_buffer.get();
-		if (inputs.size() != 1)
+		for (const Input& input : inputs)
 		{
-			throw "Reachability had input size " + inputs.size();
-		}
-		Input input = inputs.get(0);
+			const std::string& world_from = input.get_type();
+			const std::string& world_to = input.get_name();
+			Agent_Id agent_id = general_agents.get(agent_name).get_id();
 
-		const std::string& world_from = input.get_type();
-		const std::string& world_to = input.get_name();
-		
-		add_accessibility_relation(get_agent_id(agent_name), get_world_id(world_from), get_world_id(world_to));
+			add_accessibility_relation(agent_id, get_world_id(world_from), get_world_id(world_to));
+		}
 	}
 
 	const std::vector<General_World>& General_State::get_worlds() const

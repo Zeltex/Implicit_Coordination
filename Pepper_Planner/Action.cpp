@@ -16,13 +16,13 @@ namespace del {
 
 	}
 
-	Action::Action(const General_Action& other, const Propositions_Lookup& propositions_lookup, const Atoms& arguments)
+	Action::Action(const General_Action& other, const Propositions_Lookup& propositions_lookup, const Atoms& arguments, const Agents& agents)
 		:args(arguments), 
 		cost(other.get_cost()), 
 		name(other.get_name()), 
 		events(other, arguments, propositions_lookup),
 		designated_events(other, events),
-		edge_conditions(other, propositions_lookup, events, arguments)
+		edge_conditions(other, propositions_lookup, events, arguments, agents)
 	{
 		const Atom_Id& owner_atom = arguments.at(other.get_owner().second.id).get_id();
 

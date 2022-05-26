@@ -1,5 +1,7 @@
 #include "Inputs_Buffer.hpp"
 
+#include <assert.h>
+
 namespace del
 {
 	Input::Input(const std::string& type, const std::string& name)
@@ -49,6 +51,13 @@ namespace del
 			}
 			++counter;
 		}
+
+		if (name == REST_KEYWORD)
+		{
+			return REST_INDEX;
+		}
+
+		assert(false);
 		throw "Input '" + name + "' not found";
 	}
 
@@ -61,6 +70,7 @@ namespace del
 	{
 		return inputs.size();
 	}
+
 	std::vector<Atom_Id> Inputs::convert_to_atoms(const std::vector<std::string>& variables) const
 	{
 		std::vector<Atom_Id> atoms;

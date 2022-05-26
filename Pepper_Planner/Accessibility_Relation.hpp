@@ -56,7 +56,8 @@ namespace del
 		std::string to_hashable_string(size_t& ref_count) const;
 		std::string to_string(const Domain& domain) const;
 		void set(Agent_Id agent, World_Id world_from, World_Id world_to);
-
+		size_t get_number_of_agents() const;
+			
 		bool is_serial_transitive_euclidean() const;
 
 	private:

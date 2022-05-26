@@ -4,9 +4,11 @@
 
 namespace del {
 
-	class Variables_Buffer;
+	class General_Agents;
 	class Inputs_Buffer;
 	class Proposition_Instance_Buffer;
+	class Variables_Buffer;
+
 	class General_State
 	{
 	friend class State;
@@ -19,11 +21,10 @@ namespace del {
 		void set_single_designated_world(World_Id world);
 		
 		void add_accessibility_relation(Agent_Id agent, World_Id world_from, World_Id world_to);
-		void add_accessibility_relation(const std::string& agent_name, Inputs_Buffer& inputs_buffer);
+		void add_accessibility_relations(const std::string& agent_name, Inputs_Buffer& inputs_buffer, const General_Agents& general_agents);
 		
 		const std::vector<General_World>& get_worlds() const;
 		World_Id get_world_id(const std::string& name) const;
-		Agent_Id get_agent_id(const std::string& name)const;
 
 		State to_state();
 
