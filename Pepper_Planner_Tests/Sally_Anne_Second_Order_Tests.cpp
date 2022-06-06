@@ -9,46 +9,48 @@ namespace PepperPlannerTests
 	TEST_CLASS(Sally_Anne_Second_Order_Tests)
 	{
 	public:
-		TEST_METHOD(Test_InitialState_Depth_0_In)
+		TEST_METHOD(Test_Second_Order_False_Belief)
 		{
 			prepare_sally_anne();
 
-			auto agent_a = tp->agent("A").id;
-			auto agent_s = tp->agent("S").id;
-			auto present_a = tp->prop("present", "A");
-			auto in_basket = tp->prop("in", "basket", "marble");
-			auto in_box = tp->prop("in", "box", "marble");
+			auto agent_a = di->agent("A").id;
+			auto agent_s = di->agent("S").id;
+			auto present_a = di->prop("present", "A");
+			auto in_basket = di->prop("in", "basket", "marble");
+			auto in_box = di->prop("in", "box", "marble");
 
 
-			tp->perform("leave", { "A" });
+			di->perform_action("leave", { "A" });
 			tp->print_state();
 
-			tp->perform("peak", { "A" });
+			di->perform_action("peak", { "A" });
 			tp->print_state();
 
-			tp->perform("move", { "basket", "box", "marble", "S" });
+			di->perform_action("move", { "basket", "box", "marble", "S" });
 			tp->print_state();
 
 			Formula f;
 			f.f_believes(agent_a, f.f_believes(agent_s, f.f_believes(agent_a, f.f_prop(in_basket))));
 
 			// Anne believes Sally believes Anne believes the marble is in the basket
-			Assert::IsTrue(tp->query(f));
+			Assert::IsTrue(di->query(f));
 
 			Formula f0;
 			f0.f_prop(in_box);
 
 			// Marble is actually in box
-			Assert::IsTrue(tp->query(f0));
+			Assert::IsTrue(di->query(f0));
 		}
 
 	private:
 
 		Test_Preparer* tp;
+		DEL_Interface* di;
 
 		void prepare_sally_anne()
 		{
 			tp = new Test_Preparer("Sally_Anne_Peak.maepl");
+			di = tp->del_interface;
 		}
 	};
 }

@@ -181,7 +181,6 @@
     <ClCompile Include="General_Typed_Proposition.cpp" />
     <ClCompile Include="General_World.cpp" />
     <ClCompile Include="Inputs_Buffer.cpp" />
-    <ClCompile Include="Interface_DTO.cpp" />
     <ClCompile Include="Misc.cpp" />
     <ClCompile Include="Node_Comparator.cpp" />
     <ClCompile Include="Planner.cpp" />
@@ -241,7 +240,6 @@
     <ClInclude Include="General_Typed_Propositions.hpp" />
     <ClInclude Include="General_World.hpp" />
     <ClInclude Include="Inputs_Buffer.hpp" />
-    <ClInclude Include="Interface_DTO.hpp" />
     <ClInclude Include="Misc.hpp" />
     <ClInclude Include="Node_Comparator.hpp" />
     <ClInclude Include="Planner.hpp" />

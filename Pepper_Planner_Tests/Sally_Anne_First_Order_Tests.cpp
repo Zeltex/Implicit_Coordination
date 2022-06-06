@@ -13,134 +13,136 @@ namespace PepperPlannerTests
 		{
 			prepare_sally_anne();
 
-			auto in_basket = tp->prop("in", "basket", "marble");
+			auto in_basket = di->prop("in", "basket", "marble");
 
 			Formula f;
 			f.f_prop(in_basket);
-			Assert::IsTrue(tp->query(f));
+			Assert::IsTrue(di->query(f));
 		}
 
 		TEST_METHOD(Test_InitialState_Depth_1_In)
 		{
 			prepare_sally_anne();
 
-			size_t agent_S = tp->agent("S").id;
-			auto in_basket = tp->prop("in", "basket", "marble");
+			size_t agent_S = di->agent("S").id;
+			auto in_basket = di->prop("in", "basket", "marble");
 
 			Formula f;
 			f.f_believes(agent_S, f.f_prop(in_basket));
-			Assert::IsTrue(tp->query(f));
+			Assert::IsTrue(di->query(f));
 		}
 
 		TEST_METHOD(Test_InitialState_Depth_0_False_In)
 		{
 			prepare_sally_anne();
 
-			auto in_box = tp->prop("in", "box", "marble");
+			auto in_box = di->prop("in", "box", "marble");
 
 			Formula f;
 			f.f_prop(in_box);
-			Assert::IsFalse(tp->query(f));
+			Assert::IsFalse(di->query(f));
 		}
 
 		TEST_METHOD(Test_InitialState_Depth_1_False_In)
 		{
 			prepare_sally_anne();
 
-			size_t agent_S = tp->agent("S").id;
-			auto in_box = tp->prop("in", "box", "marble");
+			size_t agent_S = di->agent("S").id;
+			auto in_box = di->prop("in", "box", "marble");
 
 			Formula f;
 			f.f_believes(agent_S, f.f_prop(in_box));
-			Assert::IsFalse(tp->query(f));
+			Assert::IsFalse(di->query(f));
 		}
 
 		TEST_METHOD(Test_InitialState_Depth_0_Present)
 		{
 			prepare_sally_anne();
 
-			auto in_basket = tp->prop("present", "S");
+			auto in_basket = di->prop("present", "S");
 
 			Formula f;
 			f.f_prop(in_basket);
-			Assert::IsTrue(tp->query(f));
+			Assert::IsTrue(di->query(f));
 		}
 
 		TEST_METHOD(Test_InitialState_Depth_1_Present)
 		{
 			prepare_sally_anne();
 
-			size_t agent_S = tp->agent("S").id;
-			auto in_basket = tp->prop("present", "A");
+			size_t agent_S = di->agent("S").id;
+			auto in_basket = di->prop("present", "A");
 
 			Formula f;
 			f.f_believes(agent_S, f.f_prop(in_basket));
-			Assert::IsTrue(tp->query(f));
+			Assert::IsTrue(di->query(f));
 		}
 
 		TEST_METHOD(Test_Action_0)
 		{
 			prepare_sally_anne();
-			auto present_a = tp->prop("present", "A");
+			auto present_a = di->prop("present", "A");
 
 			Formula f;
 			auto formula_id = f.f_prop(present_a);
-			Assert::IsTrue(tp->query(f));
+			Assert::IsTrue(di->query(f));
 
-			tp->perform("leave", { "A" });
+			di->perform_action("leave", { "A" });
 
 			f.f_not(formula_id);
-			Assert::IsTrue(tp->query(f));
+			Assert::IsTrue(di->query(f));
 		}
 
 		TEST_METHOD(Test_Action_1)
 		{
 			prepare_sally_anne();
-			auto agent_a = tp->agent("A").id;
-			auto agent_s = tp->agent("S").id;
-			auto present_a = tp->prop("present", "A");
-			auto in_basket = tp->prop("in", "basket", "marble");
-			auto in_box = tp->prop("in", "box", "marble");
+			auto agent_a = di->agent("A").id;
+			auto agent_s = di->agent("S").id;
+			auto present_a = di->prop("present", "A");
+			auto in_basket = di->prop("in", "basket", "marble");
+			auto in_box = di->prop("in", "box", "marble");
 
-			tp->perform("leave", { "A" });
+			di->perform_action("leave", { "A" });
 
 			Formula f0;
 			f0.f_believes(agent_a, f0.f_prop(in_basket));
 
 			// A believes marble in basket
-			Assert::IsTrue(tp->query(f0));
+			Assert::IsTrue(di->query(f0));
 
-			tp->perform("move", { "basket", "box", "marble", "S"});
+			di->perform_action("move", { "basket", "box", "marble", "S"});
 
 			// A believes marble in basket
-			Assert::IsTrue(tp->query(f0));
+			Assert::IsTrue(di->query(f0));
 
 			Formula f1;
 			f1.f_believes(agent_s, f1.f_prop(in_box));
 
 			// S believes marble in box
-			Assert::IsTrue(tp->query(f0));
+			Assert::IsTrue(di->query(f0));
 
 			Formula f2;
 			f2.f_believes(agent_s, f2.f_believes(agent_a, f2.f_prop(in_basket)));
 
 			// S believes A believe marble in basket
-			Assert::IsTrue(tp->query(f2));
+			Assert::IsTrue(di->query(f2));
 
 			Formula f3;
 			f3.f_prop(in_box);
 
 			// marble in box
-			Assert::IsTrue(tp->query(f3));
+			Assert::IsTrue(di->query(f3));
 		}
 
 	private:
 
 		Test_Preparer* tp;
+		DEL_Interface* di;
 
 		void prepare_sally_anne()
 		{
 			tp = new Test_Preparer("Sally_Anne_First_Order.maepl");
+			di = tp->del_interface;
 		}
 	};
 }
