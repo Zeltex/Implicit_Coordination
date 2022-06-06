@@ -36,8 +36,9 @@ namespace del
 					grounded_input.insert(atom_lookup.get_atom(atom));
 				}
 				Proposition_Instance instance{Typed_Proposition.name, grounded_input };
-				instance_to_proposition.insert({ instance, instance_to_proposition.size()
-			});
+				size_t id = instance_to_proposition.size();
+				instance_to_proposition.insert({ instance, id});
+				proposition_to_instance.insert({ id, instance });
 
 				// Advance indices
 				size_t index = 0;
@@ -57,6 +58,7 @@ namespace del
 
 	const Proposition_Instance& Propositions_Lookup::get_instance(const Proposition& proposition) const
 	{
+		assert(proposition_to_instance.find(proposition) != proposition_to_instance.end());
 		return proposition_to_instance.at(proposition);
 	}
 }

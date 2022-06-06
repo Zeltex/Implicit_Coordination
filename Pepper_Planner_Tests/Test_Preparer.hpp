@@ -1,14 +1,14 @@
 #pragma once
 
 #include <string>
+#include <stdio.h>
+#include <iostream>
+#include <filesystem>
+
 #include "Custom_Lexer.hpp"
 #include "Custom_Parser.hpp"
 #include "Domain.hpp"
 #include "DEL_Interface.hpp"
-
-//#include "Proposition_Instance_Buffer.cpp"
-//#include "General_World.cpp"
-//#include "General_World.hpp"
 
 namespace del
 {
@@ -17,6 +17,7 @@ namespace del
 	public:
 		Test_Preparer(const std::string& file)
 		{
+			std::filesystem::remove(output_file);
 			del_interface = new DEL_Interface(test_folder_path + file);
 			propositions_lookup = &del_interface->get_propositions_lookup();
 			atom_lookup = &del_interface->get_atom_lookup();
@@ -63,17 +64,24 @@ namespace del
 			del_interface->perform_action(name, arguments);
 		}
 
+		void print_state()
+		{
+			std::string print = del_interface->get_state_print();
+			std::ofstream file;
+			file.open(output_file, std::ios_base::app);
+			file << print << std::endl;
+			file.close();
+			std::cout << print << std::endl;
+		}
+
 	private:
 
-	void prepare_example_1()
-	{
-	}
+		DEL_Interface* del_interface;
+		const Propositions_Lookup* propositions_lookup;
+		const Atom_Lookup* atom_lookup;
+		const Agents* agent_lookup;
 
-	DEL_Interface* del_interface;
-	const Propositions_Lookup* propositions_lookup;
-	const Atom_Lookup* atom_lookup;
-	const Agents* agent_lookup;
-
-	std::string test_folder_path = "../../Test_Cases/";
+		std::string test_folder_path = "../../Test_Cases/";
+		std::string output_file = "output.txt";
 	};
 }

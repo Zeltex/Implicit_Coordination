@@ -2,6 +2,8 @@
 
 #include "Core.hpp"
 
+#include <fstream>
+
 namespace del {
 
 	DEL_Interface::DEL_Interface(std::string file_path) :
@@ -75,5 +77,10 @@ namespace del {
 	const Agents& DEL_Interface::get_agent_lookup() const
 	{
 		return domain.get_agents();
+	}
+
+	std::string DEL_Interface::get_state_print() const
+	{
+		return domain.get_current_state().to_string(domain);
 	}
 }

@@ -1,0 +1,115 @@
+_domain Pepper {
+	_types = [container, object, agent]
+	_propositions = [
+		in(container c, object o)
+		present(agent a)
+	]
+
+	_action move (container from, container to, object o, agent a) {
+		_owner = agent a
+		_designated_events = [event0]
+		_event event0 { 
+			_preconditions = ( AND(in(from, o), present(a)) )
+			_effect_add = [in(to, o)]
+			_effect_delete = [in(from, o)]
+		}
+		_event event1 {
+			_preconditions = (TOP)
+			_effect_add = [ ]
+			_effect_delete = [ ]
+		}
+		_reachability = {
+			a = {
+				(event0 event0) = (TOP)
+				(event1 event1) = (TOP)
+			}
+			_rest = {
+				(event0 event0) = (present(_rest))
+				(event1 event1) = (TOP)
+				(event0 event1) = (NOT(present(_rest)))
+			}
+		}
+	}
+	
+	_action peak (agent a) {
+		_owner = agent a
+		_designated_events = [event0]
+		_event event0 { 
+			_preconditions = ( TOP )
+			_effect_add = [present(a)]
+			_effect_delete = []
+		}
+		
+		_event event1 { 
+			_preconditions = ( TOP )
+			_effect_add = []
+			_effect_delete = []
+		}
+		
+		_reachability = {
+			a = {
+				(event0 event0) = (TOP)
+				(event1 event1) = (TOP)
+			}
+			_rest = {
+				(event0 event1) = (TOP)
+				(event1 event1) = (TOP)
+			}
+		}
+	}
+	
+	_action enter (agent a) {
+		_owner = agent a
+		_designated_events = [event0]
+		_event event0 { 
+			_preconditions = ( TOP )
+			_effect_add = [present(a)]
+			_effect_delete = []
+		}
+		_reachability = {
+			a = {
+				(event0 event0) = (TOP)
+			}
+			_rest = {
+				(event0 event0) = (TOP)
+			}
+		}
+	}
+	
+	_action leave(agent a) {
+		_owner = agent a
+		_designated_events = [event0]
+		_event event0 { 
+			_preconditions = ( TOP )
+			_effect_add = []
+			_effect_delete = [present(a)]
+		}
+		_reachability = {
+			a = {
+				(event0 event0) = (TOP)
+			}
+			_rest = {
+				(event0 event0) = (TOP)
+			}
+		}
+	}
+
+}
+_problem simple_problem {
+	_objects = {
+		container = [basket, box]
+		object = [marble]
+		agent = [S, A]
+	}
+	_initial_state = [
+	]
+	_world w0 [in(basket, marble), present(S), present(A)]
+	_goal = [ ]
+	_designated_worlds = [ w0 ]
+	_reachability = {
+		S = { (w0, w0) }
+		A = { (w0, w0) }
+	}
+}
+
+

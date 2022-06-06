@@ -27,6 +27,8 @@ namespace del {
 		bool create_policy(const std::string& planning_agent, const bool is_benchmark=false);
 		bool is_solved();
 
+		std::string get_state_print() const;
+
 
 		const Atom_Lookup& get_atom_lookup() const;
 		const Propositions_Lookup& get_propositions_lookup() const;

@@ -1,21 +1,5 @@
 #include "CppUnitTest.h"
-
-#include <iostream>
-#include <fstream>
-
-#define EXPORT_TEST_FUNCTIONS
-#include "Custom_Lexer.hpp"
-#include "Custom_Parser.hpp"
-#include "Domain.hpp"
-#include "DEL_Interface.hpp"
-
-#include "Proposition_Instance_Buffer.cpp"
-#include "General_World.cpp"
-
-#include <Loader.hpp>
-
 #include "Test_Preparer.hpp"
-
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
