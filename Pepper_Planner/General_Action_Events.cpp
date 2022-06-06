@@ -24,12 +24,12 @@ namespace del
 
 	void General_Action_Event::set_delete_list(const std::vector<Proposition_Instance>& proposition_instances)
 	{
-		proposition_add = proposition_instances;
+		proposition_delete = proposition_instances;
 	}
 	
 	void General_Action_Event::set_add_list(const std::vector<Proposition_Instance>& proposition_instances)
 	{
-		proposition_delete = proposition_instances;
+		proposition_add = proposition_instances;
 	}
 
 	void General_Action_Event::set_instance_buffer(Proposition_Instance_Buffer& proposition_instance_buffer)

@@ -18,6 +18,7 @@ namespace del
 	{
 		for (const General_Edge_Condition& general_edge_condition : other.edge_conditions)
 		{
+			assert(event_name_to_id.find(general_edge_condition.event_from) != event_name_to_id.end());
 			Event_Id event_from = event_name_to_id.at(general_edge_condition.event_from);
 			Event_Id event_to = event_name_to_id.at(general_edge_condition.event_to);
 			conditions[event_from][event_to] = Formula(general_edge_condition.condition, general_to_instantiated);

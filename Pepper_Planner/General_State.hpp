@@ -6,7 +6,7 @@ namespace del {
 
 	class General_Agents;
 	class Inputs_Buffer;
-	class Proposition_Instance_Buffer;
+	struct Proposition_Instance_Buffer;
 	class Variables_Buffer;
 
 	class General_State

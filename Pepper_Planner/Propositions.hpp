@@ -19,10 +19,10 @@ namespace del {
     };
 
     class Atoms;
-    class Proposition_Instance_Buffer;
+    struct Proposition_Instance_Buffer;
     class Domain;
     class Propositions_Lookup;
-    class Proposition_Instance;
+    struct Proposition_Instance;
     class Propositions
     {
     public:

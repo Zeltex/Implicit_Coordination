@@ -61,7 +61,8 @@ namespace del
 		bool is_serial_transitive_euclidean() const;
 
 	private:
-		size_t worlds_size;
+		// worlds_size must be after agent_relations
 		std::vector<Accessibility_Relation> agent_relations;
+		size_t worlds_size;
 	};
 }

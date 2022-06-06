@@ -8,10 +8,15 @@ namespace del
 	Atom_Arguments::Atom_Arguments(const Atoms& atoms)
 	{
 		size_t counter = 0;
-		for (const auto& entry : atoms) 
+		for (const auto& entry : atoms)
 		{
 			this->atoms.insert({ counter++, entry.get_id() });
 		}
+	}
+
+	bool Atom_Arguments::has(Atom_Id index) const
+	{
+		return atoms.find(index.id) != atoms.end();
 	}
 
 	Atom_Id Atom_Arguments::get(Atom_Id index) const

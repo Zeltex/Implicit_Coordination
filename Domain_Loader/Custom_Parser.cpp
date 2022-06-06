@@ -1,5 +1,7 @@
 #include "Custom_Parser.hpp"
 
+#include <assert.h>
+
 namespace del {
     Custom_Parser::Custom_Parser(Custom_Lexer* lexer)
             : lexer(lexer), pointer(0), value_pointer(0), tokens_size(lexer->tokens.size()) {
@@ -52,6 +54,7 @@ namespace del {
             }
             
             error += "\n";
+            assert(false);
             throw std::runtime_error(error);
         }
     }
@@ -302,6 +305,7 @@ namespace del {
             action_reachability();
 
             // TODO -- If _rest not defined, add empty entry, important for agent size later on
+            // TODO - Check if this still matters
             must_match(Token::RBRACK);
             return action_body();
         }

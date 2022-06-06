@@ -13,6 +13,7 @@ namespace del
 	{
 	public:
 		Atom_Arguments(const Atoms& atoms);
+		bool has(Atom_Id index) const;
 		Atom_Id get(Atom_Id index) const;
 		void set(size_t index, Atom_Id value);
 	private:

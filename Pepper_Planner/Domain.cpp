@@ -1,8 +1,11 @@
 #include "Domain.hpp"
 
+#include <assert.h>
+
 #include "Core.hpp"
 #include "General_Domain.hpp"
 #include "State.hpp"
+
 
 namespace del 
 {
@@ -81,4 +84,42 @@ namespace del
 	{
 		return rigid_propositions.contains(proposition);
 	}
+
+	Action_Library& Domain::get_action_library()
+	{
+		return action_library;
+	}
+
+	void Domain::perform_action(Action action) 
+	{
+		const State& current_state = get_current_state();
+		// TODO - Handle an inapplicable action here
+		std::optional<State> product_update = current_state.product_update(action, *this);
+		assert(product_update.has_value());
+
+		if (product_update.has_value())
+		{
+			product_update.value().contract();
+			add_new_current_state(product_update.value());
+			PRINT_ACTION_TO_CONSOLE(action, *(this));
+		}
+		else
+		{
+
+			throw std::invalid_argument("Performed invalid action");
+		};
+	}
+
+	void Domain::perform_action(const std::string& name, const std::vector<std::string>& arguments)
+	{
+		Atoms temp_arguments;
+		temp_arguments.reserve(arguments.size());
+		for (auto& argument : arguments) {
+			temp_arguments.insert(get_atom(argument));
+		}
+
+		auto action = Action(action_library.get_general_action(name), propositions_lookup, temp_arguments, agents);
+		perform_action(action);
+	}
+
 }

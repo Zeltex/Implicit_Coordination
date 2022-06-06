@@ -7,6 +7,8 @@
 #include "Proposition_Instance_Buffer.hpp"
 #include "Variables_Buffer.hpp"
 
+#include <assert.h>
+
 namespace del {
 
 	General_State::General_State()
@@ -49,6 +51,7 @@ namespace del {
 				return world.get_id();
 			}
 		}
+		assert(false);
 		throw "Unknown world " + name;
 	}
 

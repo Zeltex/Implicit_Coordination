@@ -12,7 +12,7 @@ namespace del
 	class Propositions_Lookup;
 	class Variables_Buffer;
 
-	class Proposition_Instance_Buffer
+	struct Proposition_Instance_Buffer
 	{
 	friend class Propositions;
 	public:

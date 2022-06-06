@@ -22,7 +22,7 @@ namespace del {
 		bool query(const Formula& query);
 
 		void perform_action(Action action);
-		void perform_action(const std::string& name, const std::string& owner, const std::vector<std::string>& arguments);
+		void perform_action(const std::string& name, const std::vector<std::string>& arguments);
 		bool create_policy(Formula goal, const std::string& planning_agent, const bool is_benchmark=false);
 		bool create_policy(const std::string& planning_agent, const bool is_benchmark=false);
 		bool is_solved();
@@ -42,7 +42,7 @@ namespace del {
 		Planner planner;
 		bool has_policy;
 		Policy policy;
-		Action_Library action_library;
+		//Action_Library action_library;
 		Agent_Id pepper_id;
 		Formula goal;
 	};

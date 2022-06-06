@@ -18,42 +18,12 @@ namespace del
 
 	void General_Agent_Edge_Conditions::insert(Atom_Id agent, General_Edge_Conditions& edge_conditions_input)
 	{
-		agent_edge_conditions.insert({ agent.id, edge_conditions_input });
+		agent_edge_conditions.insert({ agent.id, std::move(edge_conditions_input) });
+		edge_conditions_input = {};
 	}
-
-	// TODO - Verify that this is actually called
-	//void General_Agent_Edge_Conditions::finalize(const Domain& domain, const std::vector<Atom_Id>& arguments) {
-	//	std::unordered_set<std::string> seen_agents;
-
-	//	for (auto&[agent_atom, edge_condition] : agent_edge_conditions) {
-	//		if (agent_atom == REST_INDEX) {
-	//			atom_to_agent.insert({ REST_INDEX, { } });
-	//		}
-	//		else
-	//		{
-	//			const Agent& agent = domain.get_agent(arguments.at(agent_atom));
-	//			seen_agents.insert(agent.get_name());
-	//			atom_to_agent.insert({ agent_atom, { agent } });
-	//		}
-	//	}
-
-	//	for (const Agent& agent : domain.get_agents()) {
-	//		if (seen_agents.find(agent.get_name()) == seen_agents.end()) {
-	//			atom_to_agent[REST_INDEX].push_back(agent);
-	//		}
-	//	}
-	//}
 
 	size_t General_Agent_Edge_Conditions::size() const
 	{
 		return agent_edge_conditions.size();
 	}
-
-	//void General_Agent_Edge_Conditions::convert_atom_to_id() const
-	//{
-	//	for (const auto& [agent, agent_edge_conditions] : agent_edge_conditions)
-	//	{
-
-	//	}
-	//}
 }

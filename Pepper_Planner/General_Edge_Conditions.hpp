@@ -34,9 +34,7 @@ namespace del
 		friend class Agent_Edge_Conditions;
 	public:
 		void insert(Atom_Id agent, General_Edge_Conditions& edge_conditions_input);
-		//void finalize(const Domain& domain, const std::vector<Atom_Id>& arguments);
 		size_t size() const;
-		//void convert_atom_to_id() const;
 
 	private:
 		std::map<size_t, General_Edge_Conditions> agent_edge_conditions;

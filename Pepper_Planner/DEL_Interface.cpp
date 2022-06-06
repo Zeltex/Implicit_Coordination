@@ -7,7 +7,6 @@ namespace del {
 	DEL_Interface::DEL_Interface(std::string file_path) :
 		has_policy(false), 
 		policy(false), 
-		action_library(), 
 		pepper_id({ 0 }),
 		domain(Loader(file_path).get())
 	{
@@ -38,31 +37,12 @@ namespace del {
 	}
 	
 	void DEL_Interface::perform_action(Action action) {
-		const State& current_state = domain.get_current_state();
-		// TODO - Handle an inapplicable action here
-		std::optional<State> product_update = current_state.product_update(action, domain);
-		if (product_update.has_value())
-		{
-			product_update.value().contract();
-			domain.add_new_current_state(product_update.value());
-			PRINT_ACTION_TO_CONSOLE(action, *(this));
-		}
-		else
-		{
-			throw std::invalid_argument("Performed invalid action");
-		};
+		domain.perform_action(action);
 	}
 
-	void DEL_Interface::perform_action(const std::string& name, const std::string& owner, const std::vector<std::string>& arguments) {
-		Atoms temp_arguments;
-		temp_arguments.reserve(arguments.size());
-		for (auto& argument : arguments) {
-			temp_arguments.insert(domain.get_atom(argument));
-		}
-
-		auto action = Action(action_library.get_general_action(name), domain.get_propositions_lookup(), temp_arguments, domain.get_agents());
-		perform_action(action);
-
+	void DEL_Interface::perform_action(const std::string& name, const std::vector<std::string>& arguments)
+	{
+		domain.perform_action(name, arguments);
 	}
 	
 	bool DEL_Interface::create_policy(Formula goal, const std::string& planning_agent, const bool is_benchmark) {
@@ -72,7 +52,7 @@ namespace del {
 
 	bool DEL_Interface::create_policy(const std::string& planning_agent_name, const bool is_benchmark) {
 		const Agent& planning_agent = domain.get_agent(planning_agent_name);
-		policy = planner.find_policy(this->goal, action_library, domain, planning_agent, is_benchmark);
+		policy = planner.find_policy(this->goal, domain.get_action_library(), domain, planning_agent, is_benchmark);
 		has_policy = policy.is_solved();
 		return policy.is_solved();
 	}

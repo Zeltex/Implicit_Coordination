@@ -1,7 +1,10 @@
 #include "Accessibility_Relation.hpp"
 
+#include <assert.h>
+
 #include "Domain.hpp"
 #include "Action_Events.hpp"
+
 
 namespace del 
 {
@@ -29,7 +32,7 @@ namespace del
 					continue;
 				}
 
-				world_relations.at(get_index(from_conversion.new_world, to_conversion.new_world)) = other.has_direct_relation(from_conversion.old_world, from_conversion.old_world);
+				world_relations.at(get_index(from_conversion.new_world, to_conversion.new_world)) = other.has_direct_relation(from_conversion.old_world, to_conversion.old_world);
 			}
 		}
 	}
@@ -173,7 +176,7 @@ namespace del
 
 	
 	Accessibility_Relations::Accessibility_Relations(const std::vector<Accessibility_Relation>& new_agent_relations)
-		: worlds_size(new_agent_relations.size()), agent_relations(new_agent_relations)
+		: agent_relations(new_agent_relations), worlds_size(new_agent_relations.front().worlds_size)
 	{
 	}
 
@@ -204,22 +207,20 @@ namespace del
 		std::vector<World_Id> frontier;
 		frontier.assign(worlds.begin(), worlds.end());
 
-		size_t prev_size = 0;
-		size_t new_size = frontier.size();
-		while (prev_size != new_size && new_size != 0)
+		while (!frontier.empty())
 		{
-			World_Id world = frontier.back();
+			World_Id from_world = frontier.back();
 			frontier.pop_back();
 			for (const Accessibility_Relation& agent_relation : agent_relations) 
 			{
-				for (size_t i = 0; i < worlds_size; ++i)
+				for (World_Id to_world = 0; to_world < worlds_size; ++to_world)
 				{
-					size_t to_world = world.id * worlds_size + i;
-					if (agent_relation.world_relations.at(i)
-						&& unreachable_worlds.find(World_Id{ to_world }) != unreachable_worlds.end())
+					World_Id relations_index = to_world + from_world.id * worlds_size;
+					assert(relations_index < agent_relation.world_relations.size());
+					if (agent_relation.world_relations.at(relations_index.id) && unreachable_worlds.find(relations_index) != unreachable_worlds.end())
 					{
-						unreachable_worlds.erase(World_Id{ to_world });
-						frontier.push_back(World_Id{ to_world });
+						unreachable_worlds.erase(relations_index);
+						frontier.push_back(relations_index);
 					}
 				}
 			}

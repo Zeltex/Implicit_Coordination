@@ -1,6 +1,7 @@
 
 #include "CppUnitTest.h"
 
+
 #include <iostream>
 #include <fstream>
 
@@ -10,14 +11,10 @@
 #include "Domain.hpp"
 #include "DEL_Interface.hpp"
 
-#include "Proposition_Instance_Buffer.cpp"
-#include "General_World.cpp"
-//#include "Atom_Arguments.cpp"
+#include "Test_Preparer.hpp"
 
 #include <Loader.hpp>
 
-//#include "Loader.hpp"
-//#include "Domain.hpp"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -30,55 +27,60 @@ namespace PepperPlannerTests
 		TEST_METHOD(Test_Goal_Depth_0)
 		{
 			prepare_example_1();
-			Proposition goal_id = propositions_lookup->get(Proposition_Instance{ *atom_lookup, "goal", "a0", "c0" });
+			Proposition goal_id = tp->prop("goal", "a0", "c0" );
 
 			Formula f;
 			f.f_prop(goal_id);
-			Assert::IsTrue(del_interface->query(f));
+			Assert::IsTrue(tp->query(f));
 		}
 
 
 		TEST_METHOD(Test_Goal_Depth_1)
 		{
 			prepare_example_1();
-			Proposition goal_c0 = propositions_lookup->get(Proposition_Instance{ *atom_lookup, "goal", "a0", "c0" });
-			Proposition goal_x1 = propositions_lookup->get(Proposition_Instance{ *atom_lookup, "goal", "a0", "x1" });
+			size_t agent_0 = tp->agent("a0").id;
+			Proposition goal_c0 = tp->prop("goal", "a0", "c0" );
+			Proposition goal_x1 = tp->prop("goal", "a0", "x1" );
 
 			Formula f;
-			f.f_believes(0, f.f_or({ f.f_prop(goal_c0), f.f_prop(goal_x1) }));
-			Assert::IsTrue(del_interface->query(f));
+			f.f_believes(agent_0, f.f_or({ f.f_prop(goal_c0), f.f_prop(goal_x1) }));
+			Assert::IsTrue(tp->query(f));
 		}
 
 		TEST_METHOD(Test_Goal_Depth_1_False)
 		{
 			prepare_example_1();
-			size_t agent_1 = agent_lookup->get("a1").get_id().id;
-			Proposition goal_c1 = propositions_lookup->get(Proposition_Instance{ *atom_lookup, "goal", "a0", "c1" });
-			Proposition goal_c2 = propositions_lookup->get(Proposition_Instance{ *atom_lookup, "goal", "a0", "c2" });
+			size_t agent_1 = tp->agent("a1").id;
+			Proposition goal_c1 = tp->prop("goal", "a0", "c1" );
+			Proposition goal_c2 = tp->prop("goal", "a0", "c2" );
 
 			Formula f;
 			Formula_Id incorrect_formula = f.f_or({f.f_believes(agent_1, f.f_prop(goal_c1)), f.f_believes(agent_1, f.f_prop(goal_c2) )});
-			Assert::IsFalse(del_interface->query(f));
+			Assert::IsFalse(tp->query(f));
 
 			Formula_Id correct_formula = f.f_not(incorrect_formula);
-			Assert::IsTrue(del_interface->query(f));
+			Assert::IsTrue(tp->query(f));
+		}
+
+		TEST_METHOD(Test_Goal_Depth_2)
+		{
+			prepare_example_1();
+			size_t agent_0 = tp->agent("a0").id;
+			Proposition goal_c0 = tp->prop("goal", "a0", "c0");
+			Proposition goal_x1 = tp->prop("goal", "a0", "x1");
+
+			Formula f;
+			f.f_believes(agent_0, f.f_or({ f.f_prop(goal_c0), f.f_prop(goal_x1) }));
+			Assert::IsTrue(tp->query(f));
 		}
 
 	private:
 
+		Test_Preparer* tp;
+
 		void prepare_example_1()
 		{
-			del_interface = new DEL_Interface(test_folder_path + "Example_1.maepl");
-			propositions_lookup = &del_interface->get_propositions_lookup();
-			atom_lookup = &del_interface->get_atom_lookup();
-			agent_lookup = &del_interface->get_agent_lookup();
+			tp = new Test_Preparer("Example_1.maepl");
 		}
-
-		DEL_Interface* del_interface;
-		const Propositions_Lookup* propositions_lookup;
-		const Atom_Lookup* atom_lookup;
-		const Agents* agent_lookup;
-
-		std::string test_folder_path = "../../Test_Cases/";
 	};
 }

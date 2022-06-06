@@ -49,7 +49,9 @@ namespace del {
 		return actions;
 	}
 
-	const General_Action& Action_Library::get_general_action(const std::string& name) const {
+	const General_Action& Action_Library::get_general_action(const std::string& name) const 
+	{
+		assert(general_action_name_to_id.find(name) != general_action_name_to_id.end());
 		return general_actions.at(general_action_name_to_id.at(name));
 	}
 

@@ -35,24 +35,16 @@ namespace del {
 	};
 
 	struct World_Id {
+		World_Id(size_t id) :id(id) {}
+
 		size_t id;
 
-		bool operator==(const World_Id& other) const {
-			return this->id == other.id;
-		}
-
-        bool operator!=(const World_Id& other) const {
-            return this->id != other.id;
-        }
-
-		bool operator<(const  World_Id& other) const {
-			return this->id < other.id;
-		}
-
-		bool operator>(const  World_Id& other) const {
-			return this->id > other.id;
-		}
-
+		bool operator==(const World_Id& other) const { return this->id == other.id; }
+        bool operator!=(const World_Id& other) const { return this->id != other.id; }
+		bool operator<(const  World_Id& other) const { return this->id < other.id; }
+		bool operator>(const  World_Id& other) const { return this->id > other.id; }
+		bool operator+(const  World_Id& other) const { return this->id + other.id; }
+		bool operator+(const  size_t& other) const { return this->id + other; }
 		void operator++() {
 			++id;
 		}

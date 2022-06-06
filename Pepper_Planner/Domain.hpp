@@ -15,13 +15,14 @@
 namespace del {
 	class General_Agents;
 	class General_Domain;
-	class Proposition_Instance;
+	struct Proposition_Instance;
 
 	class Domain {
 	public:
 		Domain(const General_Domain& general_domain);
 
 		void						add_new_current_state(const State& state);
+		Action_Library&				get_action_library(); // TODO - Check if this can be made const
 		const Agent&				get_agent(const Atom_Id& id) const;
 		const Agent&				get_agent(const Agent_Id& id) const;
 		const Agent&				get_agent(const std::string& name) const;
@@ -36,7 +37,8 @@ namespace del {
 		bool						is_rigid(const Proposition& proposition) const;
 
 		const Atom_Lookup&			get_atom_lookup() const;
-
+		void						perform_action(const std::string& name, const std::vector<std::string>& arguments);
+		void						perform_action(Action action);
 	private:
 		// The initializer list dependens on this order
 		Agents agents;

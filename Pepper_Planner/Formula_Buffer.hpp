@@ -9,7 +9,7 @@
 
 namespace del
 {
-	class Proposition_Instance_Buffer;
+	struct Proposition_Instance_Buffer;
 	class Formula_Buffer
 	{
 	public:
