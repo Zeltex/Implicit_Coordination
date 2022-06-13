@@ -1,14 +1,14 @@
 #include "Atom_Lookup.hpp"
+
 #include "General_Objects.hpp"
+
+#include <assert.h>
 
 namespace del
 {
 	const Atoms& Atom_Lookup::get_atoms(const std::string& type) const
 	{
-		if (type_to_atom.find(type) == type_to_atom.end()) 
-		{
-			throw "No objects of type: " + type;
-		}
+		assert(type_to_atom.find(type) != type_to_atom.end());
 		return type_to_atom.at(type);
 	}
 

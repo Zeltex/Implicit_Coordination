@@ -20,25 +20,38 @@ namespace PepperPlannerTests
 			auto in_box = di->prop("in", "box", "marble");
 
 
-			di->perform_action("leave", { "A" });
+			di->perform_action("leave", { "S" });
 			tp->print_state();
 
-			di->perform_action("peak", { "A" });
+			di->perform_action("peak", { "S" });
 			tp->print_state();
 
-			di->perform_action("move", { "basket", "box", "marble", "S" });
+			di->perform_action("move", { "box", "basket", "marble", "A" });
 			tp->print_state();
 
 			Formula f;
-			f.f_believes(agent_a, f.f_believes(agent_s, f.f_believes(agent_a, f.f_prop(in_basket))));
+			//auto falseBelief = f.f_believes(agent_a, f.f_believes(agent_s, f.f_prop(in_basket)));
+			////auto falseBelief = f.f_believes(agent_a, f.f_believes(agent_s, f.f_believes(agent_a, f.f_prop(in_box))));
+			//auto sallyBelief = f.f_believes(agent_s, f.f_prop(in_box));
+			//auto anneBelief = f.f_believes(agent_a, f.f_prop(in_box));
 
-			// Anne believes Sally believes Anne believes the marble is in the basket
+
+			auto falseBelief = f.f_believes(agent_a, f.f_believes(agent_s, f.f_prop(in_box)));
+			//auto sallyBelief = f.f_believes(agent_s, f.f_prop(in_basket));
+			auto anneBelief = f.f_believes(agent_a, f.f_prop(in_basket));
+			//f.f_and({ falseBelief, sallyBelief, anneBelief });
+			f.f_and({ falseBelief, anneBelief });
+
+			// Anne believes Sally believes marble is in the box
 			Assert::IsTrue(di->query(f));
 
-			Formula f0;
-			f0.f_prop(in_box);
 
-			// Marble is actually in box
+			Assert::IsTrue(di->is_solved());
+
+			Formula f0;
+			f0.f_prop(in_basket);
+
+			// Marble is actually in basket
 			Assert::IsTrue(di->query(f0));
 		}
 

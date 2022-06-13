@@ -1,7 +1,8 @@
 #include "Action.hpp"
-#include "World.hpp"
+
 #include "Domain.hpp"
 #include "Formula_Input_Impl.hpp"
+#include "World.hpp"
 
 namespace del {
 
@@ -25,9 +26,7 @@ namespace del {
 		edge_conditions(other, propositions_lookup, events, arguments, agents)
 	{
 		const Atom_Id& owner_atom = arguments.at(other.get_owner().second.id).get_id();
-
-		// TODO - Check if this owner is ever used
-		//this->owner = domain.get_agent(owner_atom).get_id();
+		owner = agents.get(owner_atom).get_id();
 	}
 
 	bool Action::is_event_designated(Event_Id event) const {
@@ -36,10 +35,12 @@ namespace del {
 
 	bool Action::is_condition_fulfilled(Agent_Id agent, Event_Id event_from, Event_Id event_to, const State& state, const World_Id world, const Domain& domain) const {
 		auto condition = edge_conditions.get_precondition(agent, event_from, event_to);
-		if (condition.has_value()) {
-			Formula_Input_Impl input = { &state, &domain };
-			return (*condition.value()).valuate(world.id, &input);
-		} else {
+		if (condition.has_value()) 
+		{
+			return (*condition.value()).valuate(world.id, domain, state);
+		} 
+		else 
+		{
 			return false;
 		}
 	}

@@ -34,27 +34,32 @@ namespace del
 		domain.perform_action(name, arguments);
 	}
 	
-	bool DEL_Interface::create_policy(Formula goal, const std::string& planning_agent, const bool is_benchmark) 
-	{	
-		this->goal = std::move(goal);
-		return create_policy(planning_agent, is_benchmark);
-	}
+	//bool DEL_Interface::create_policy(Formula goal, const std::string& planning_agent, const bool is_benchmark) 
+	//{	
+	//	this->goal = std::move(goal);
+	//	return create_policy(planning_agent, is_benchmark);
+	//}
 
 	bool DEL_Interface::create_policy(const std::string& planning_agent_name, const bool is_benchmark) 
 	{
 		const Agent& planning_agent = domain.get_agent(planning_agent_name);
-		policy = planner.find_policy(this->goal, domain.get_action_library(), domain, planning_agent, is_benchmark);
+		policy = planner.find_policy(domain, planning_agent, is_benchmark);
 		return policy.is_solved();
 	}
 
 	bool DEL_Interface::is_solved() 
 	{
-		return domain.get_current_state().valuate(goal, domain);
+		return domain.get_current_state().valuate(domain.get_goal(), domain);
 	}
 
 	std::string DEL_Interface::get_state_print() const
 	{
 		return domain.get_current_state().to_string(domain);
+	}
+
+	std::string DEL_Interface::get_action_print(const Action& action) const
+	{
+		return action.to_string(domain);
 	}
 
 	Proposition DEL_Interface::prop(const std::string& name, const std::string& arg_0)

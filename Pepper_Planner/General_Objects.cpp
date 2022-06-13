@@ -1,6 +1,9 @@
 #include "General_Objects.hpp"
-#include "Variables_Buffer.hpp"
+
 #include "General_Agents.hpp"
+#include "Variables_Buffer.hpp"
+
+#include <assert.h>
 
 namespace del 
 {
@@ -22,6 +25,7 @@ namespace del
 
 	Atom_Id General_Objects::get_atom_id(const std::string& name) const
 	{
+		assert(atom_name_to_id.find(name) != atom_name_to_id.end());
 		return (name == REST_KEYWORD) ? Atom_Id{ REST_INDEX } :  atom_name_to_id.at(name);
 	}
 

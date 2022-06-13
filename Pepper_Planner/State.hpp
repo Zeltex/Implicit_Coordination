@@ -23,8 +23,8 @@ namespace del {
 		State(const State& other, World_Id designated_world);
 		State(const General_State& other, const Propositions_Lookup& propositions_lookup);
 
-		virtual const Propositions& get_true_propositions(size_t world_id) const;
-		virtual std::set<size_t> get_reachable_worlds(size_t agent_id, size_t world_id) const;
+		virtual const Propositions& get_true_propositions(World_Id world_id) const;
+		virtual std::set<size_t> get_reachable_worlds(Agent_Id agent_id, World_Id world_id) const;
 
 
 
@@ -41,7 +41,7 @@ namespace del {
 		State				contract() const;
 		bool				is_bisimilar_to(const State& other) const;
 		bool				is_one_reachable(Agent_Id agent, World_Id world_from, World_Id world_to) const;
-		bool				is_true(size_t world_id, const Proposition& proposition) const;
+		bool				is_true(const World_Id& world_id, const Proposition& proposition) const;
 		bool				is_world_designated(World_Id world) const;
 		void				shift_perspective(Agent_Id agent, bool is_exclusive=false);
 		std::vector<State>	split_into_globals() const;

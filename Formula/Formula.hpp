@@ -11,21 +11,23 @@
 #include "Formula_Converter.hpp"
 
 namespace del {
+	struct Agent_Id;
+	class Converter;
 
 	class Formula {
 	public:
 		Formula():root(0) {}
-		Formula(const Formula& other, const std::map<Proposition, Proposition>& general_to_ground);
+		Formula(const Formula& other, const Converter& general_to_ground);
 		std::string to_string(const Domain& domain) const;
-		bool valuate(const size_t world_id, const Formula_Input_Interface* input_interface) const;
+		bool valuate(const World_Id& world_id, const Domain& domain, const State& state) const;
 		Formula_Id f_top();
 		Formula_Id f_bot();
 		Formula_Id f_prop(Proposition proposition);
 		Formula_Id f_not(Formula_Id formula);
 		Formula_Id f_and(std::vector<Formula_Id> formulas);
 		Formula_Id f_or(std::vector<Formula_Id> formulas);
-		Formula_Id f_believes(size_t agent, Formula_Id formula);
-		Formula_Id f_believes(std::string agent, Formula_Id formula, std::unordered_map<std::string, size_t> context);
+		Formula_Id f_believes(const Agent_Id& agent, Formula_Id formula);
+		Formula_Id f_believes(std::string agent, Formula_Id formula, const std::unordered_map<std::string, Agent_Id>& context);
 		Formula_Id f_everyone_Believes(Formula_Id formula);
 		Formula_Id f_common_Knowledge(Formula_Id formula);
 

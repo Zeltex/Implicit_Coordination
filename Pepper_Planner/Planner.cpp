@@ -4,7 +4,7 @@
 #include "Domain.hpp"
 #include "Planner_Debug_Info.hpp"
 
-#include <chrono>
+#include <assert.h>
 
 namespace del {
 
@@ -13,16 +13,17 @@ namespace del {
 	// TODO - Check if we need to verify assumptions on initial state
 
 	// TODO - Add option to specify for what person the goal must be fulfilled
-	Policy Planner::find_policy(const Formula& goal_formula, 
-								Action_Library& action_library,
-								const Domain& domain, 
+	Policy Planner::find_policy(Domain& domain, 
 								Agent planning_agent,
 								const bool is_benchmark) const {
+		const Formula& goal_formula = domain.get_goal();
+		Action_Library& action_library = domain.get_action_library();
+
 		const State& initial_state = domain.get_current_state();
 		constexpr size_t initial_node_size = 10000;
 		Node_Comparator history;
 		Graph graph(initial_node_size, initial_state, history, planning_agent);
-		Debug_Info debug_info(domain);
+		Debug_Info debug_info(domain, graph);
 
 		// TODO - Need to check if states in initial frontier are solved
 		while (!graph.is_frontier_empty()) 
@@ -38,6 +39,7 @@ namespace del {
 			while (action_library.has_action()) 
 			{
 				const Action& action = action_library.get_next_action();
+				assert(action.get_owner().id < perspective_shifts.size());
 				std::optional<State> temp_state = perspective_shifts.at(action.get_owner().id).product_update(action, domain);
 				if (!temp_state.has_value())
 				{
@@ -56,7 +58,7 @@ namespace del {
 				{
 					continue;
 				}
-
+				// TODO - Can't use references for nodes, since vector reallocates memory
 				Node& action_node = graph.create_and_node(state_product_update, current_node, action);
 				debug_info.print_single(action_node);
 				history.insert(action_node);

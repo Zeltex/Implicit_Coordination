@@ -69,4 +69,15 @@ namespace del
 	{
 		return agents.size();
 	}
+
+	std::vector<Agent>::const_iterator Agents::begin() const
+	{
+		return agents.begin();
+	}
+
+	std::vector<Agent>::const_iterator Agents::end() const
+	{
+		return agents.end();
+	}
+
 }

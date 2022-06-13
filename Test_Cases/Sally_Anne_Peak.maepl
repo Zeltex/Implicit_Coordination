@@ -6,6 +6,7 @@ _domain Pepper {
 	]
 
 	_action move (container from, container to, object o, agent a) {
+		_cost = 100
 		_owner = agent a
 		_designated_events = [event0]
 		_event event0 { 
@@ -32,6 +33,7 @@ _domain Pepper {
 	}
 	
 	_action peak (agent a) {
+		_cost = 100
 		_owner = agent a
 		_designated_events = [event0]
 		_event event0 { 
@@ -59,6 +61,7 @@ _domain Pepper {
 	}
 	
 	_action enter (agent a) {
+		_cost = 100
 		_owner = agent a
 		_designated_events = [event0]
 		_event event0 { 
@@ -77,6 +80,7 @@ _domain Pepper {
 	}
 	
 	_action leave(agent a) {
+		_cost = 100
 		_owner = agent a
 		_designated_events = [event0]
 		_event event0 { 
@@ -103,8 +107,8 @@ _problem simple_problem {
 	}
 	_initial_state = [
 	]
-	_world w0 [in(basket, marble), present(S), present(A)]
-	_goal = [ ]
+	_world w0 [in(box, marble), present(S), present(A)]
+	_goal = [ AND( BELIEVES(A,  BELIEVES(S, in(box, marble))), BELIEVES(A, in(basket, marble)), BELIEVES(S, in(basket, marble)))]
 	_designated_worlds = [ w0 ]
 	_reachability = {
 		S = { (w0, w0) }

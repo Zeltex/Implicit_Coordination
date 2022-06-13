@@ -11,7 +11,7 @@ namespace del
 	class Debug_Info
 	{
 	public:
-		Debug_Info(const Domain& domain);
+		Debug_Info(const Domain& domain, const Graph& graph);
 		void print_final() const;
 		void print_all() const;
 		void print_single(const Node& node) const;

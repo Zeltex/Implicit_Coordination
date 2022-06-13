@@ -1,9 +1,10 @@
 #pragma once
+#include "Formula_Core.hpp"
+
 #include <cstddef>
 #include <vector>
 #include <optional>
 #include <string>
-//#include "Formula.hpp"
 
 namespace del {
 	struct Node_Id {
@@ -21,6 +22,9 @@ namespace del {
 	struct Agent_Id {
 		size_t id;
 
+		Agent_Id() : id(EMPTY_INDEX) {}
+		Agent_Id(size_t id) : id(id) {}
+		
 		bool operator==(const Agent_Id& other) const {
 			return this->id == other.id;
 		}
@@ -31,6 +35,11 @@ namespace del {
 
 		bool operator<(const Agent_Id& other) const {
 			return this->id < other.id;
+		}
+
+		std::string to_string() const
+		{
+			return std::to_string(id);
 		}
 	};
 

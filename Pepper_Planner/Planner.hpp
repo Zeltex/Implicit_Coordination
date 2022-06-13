@@ -19,7 +19,7 @@ namespace del {
 
 	class Planner {
 	public:
-		Policy find_policy(const Formula& formula, Action_Library& action_library, const Domain& domain, Agent planning_agent, const bool is_benchmark=false) const;
+		Policy find_policy(Domain& domain, Agent planning_agent, const bool is_benchmark=false) const;
 	private:
 		Policy extract_policy(Graph& graph) const;
 		void add_policy_entry(Policy& policy, const State& state, const Action& action, const Node_Id& node_id) const;

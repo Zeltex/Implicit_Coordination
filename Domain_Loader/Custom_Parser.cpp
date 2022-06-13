@@ -155,6 +155,7 @@ namespace del {
 
             return actions();
         }
+        assert(false);
         throw "Syntax error line: " + lexer->line_numbers[pointer];
     }
 
@@ -425,7 +426,7 @@ namespace del {
             buffer.formula_buffer.push_formula("Believes");
             formula_single(is_domain);
             must_match(Token::RBRACK);
-            buffer.formula_buffer.pop_formula(agent);
+            buffer.formula_buffer.pop_formula(buffer.agents, agent);
             return formula(is_domain);
         }
 
@@ -477,7 +478,7 @@ namespace del {
             buffer.formula_buffer.push_formula("Believes");
             formula_single(is_domain);
             must_match(Token::RBRACK);
-            buffer.formula_buffer.pop_formula(agent);
+            buffer.formula_buffer.pop_formula(buffer.agents, agent);
             return formula(is_domain);
         }
 

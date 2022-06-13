@@ -3,6 +3,7 @@
 #include "Action_Events.hpp"
 #include "Atoms.hpp"
 #include "Atom_Arguments.hpp"
+#include "Converter.hpp"
 #include "General_Edge_Conditions.hpp"
 
 #include <cassert>
@@ -14,7 +15,7 @@ namespace del
 
 	}
 
-	Edge_Conditions::Edge_Conditions(const General_Edge_Conditions& other, const std::map<std::string, Event_Id>& event_name_to_id, const std::map<Proposition, Proposition>& general_to_instantiated)
+	Edge_Conditions::Edge_Conditions(const General_Edge_Conditions& other, const std::map<std::string, Event_Id>& event_name_to_id, const Converter& general_to_instantiated)
 	{
 		for (const General_Edge_Condition& general_edge_condition : other.edge_conditions)
 		{
@@ -86,7 +87,7 @@ namespace del
 				for (const Agent& agent : unseen_agents)
 				{
 					converted_arguments.set(REST_INDEX, agent.get_atom_id());
-					std::map<Proposition, Proposition> general_to_instantiated = general_action.create_converter(propositions_Lookup, converted_arguments);
+					Converter general_to_instantiated = general_action.create_converter(propositions_Lookup, converted_arguments);
 
 					edge_conditions.at(agent.get_id().id) = Edge_Conditions(general_edge_conditions, event_name_to_id, general_to_instantiated);
 				}
@@ -95,7 +96,7 @@ namespace del
 			{
 				Atom atom = arguments.at(agent_atom);
 				Agent agent = agents.get(atom.get_id());
-				std::map<Proposition, Proposition> general_to_instantiated = general_action.create_converter(propositions_Lookup, converted_arguments);
+				Converter general_to_instantiated = general_action.create_converter(propositions_Lookup, converted_arguments);
 
 				edge_conditions.at(agent.get_id().id) = Edge_Conditions(general_edge_conditions, event_name_to_id, general_to_instantiated);
 			}

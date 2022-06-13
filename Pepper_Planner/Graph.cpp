@@ -1,7 +1,10 @@
 #include "Graph.hpp"
-#include "Node_Comparator.hpp"
-#include "Core.hpp"
+
 #include "Agents.hpp"
+#include "Core.hpp"
+#include "Node_Comparator.hpp"
+
+#include <assert.h>
 
 namespace del {
 
@@ -116,6 +119,7 @@ namespace del {
 
 	const Node& Graph::get_node(Node_Id node_id) const
 	{
+		assert(node_id.id < nodes.size());
 		return nodes.at(node_id.id);
 	}
 

@@ -27,6 +27,9 @@
     <ClCompile Include="Sally_Anne_Second_Order_Tests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Sally_Anne_Second_Order_Planner_Tests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">

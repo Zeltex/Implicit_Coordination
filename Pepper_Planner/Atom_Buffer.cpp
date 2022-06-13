@@ -1,7 +1,10 @@
 #include "Atom_Buffer.hpp"
+
 #include "Formula_Types.hpp"
 #include "Inputs_Buffer.hpp"
 #include "General_Objects.hpp"
+
+#include <assert.h>
 
 namespace del
 {
@@ -26,6 +29,7 @@ namespace del
 		}
 		else
 		{
+			assert(atoms.find(name) != atoms.end());
 			return atoms.at(name);
 		}
 	}

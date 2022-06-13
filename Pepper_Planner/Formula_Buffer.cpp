@@ -1,7 +1,10 @@
 #include "Formula_Buffer.hpp"
+
 #include "Formula_Converter.hpp"
+#include "General_Agents.hpp"
 #include "Proposition_Instance_Buffer.hpp"
 
+#include <assert.h>
 #include <iostream>
 
 
@@ -28,10 +31,7 @@ namespace del
 
     void Formula_Buffer::push_pop_formula_prop(Proposition_Instance_Buffer& proposition_instance_buffer) {
         std::vector<Proposition_Instance> proposition_instances = proposition_instance_buffer.get();
-        if (proposition_instances.size() != 1)
-        {
-            throw "Invalid proposition instance buffer, size" + proposition_instances.size();
-        }
+        assert(proposition_instances.size() == 1);
 
         Proposition proposition = proposition_instance_buffer.to_proposition(proposition_instances.front());
         if (formula_buffer.empty()) 
@@ -58,7 +58,7 @@ namespace del
         return { type, args };
     }
 
-    void Formula_Buffer::pop_formula(const std::string& input) {
+    void Formula_Buffer::pop_formula(const General_Agents& general_agents, const std::string& input) {
         Formula_Id id;
         auto [type, formula_args] = pop_formula_info();
 
@@ -67,7 +67,7 @@ namespace del
         }
 
         switch (type) {
-        case Formula_Types::Believes: id = formula.f_believes(atoms.get(input).id, formula_args[0]); break;
+        case Formula_Types::Believes: id = formula.f_believes(general_agents.get(input).get_id(), formula_args[0]); break;
         }
         if (!formula_buffer.empty()) {
             formula_buffer.back().push_back(id);
@@ -102,18 +102,21 @@ namespace del
         {
             // TODO - Implement
             std::cerr << "Unimplemented formula type belives\n";
+            assert(false);
             break;
         }
         case Formula_Types::Everyone_Believes:
         {
             // TODO - Implement
             std::cerr << "Unimplemented formula type everyone belives\n";
+            assert(false);
             break;
         }
         case Formula_Types::Common_Knowledge:
         {
             // TODO - implement
             std::cerr << "Unimplemented formula type common knowledge\n";
+            assert(false);
             break;
         }
         }

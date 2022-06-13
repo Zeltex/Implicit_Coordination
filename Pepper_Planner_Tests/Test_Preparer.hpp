@@ -23,17 +23,30 @@ namespace del
 
 		void print_state()
 		{
-			std::string print = del_interface->get_state_print();
-			std::ofstream file;
-			file.open(output_file, std::ios_base::app);
-			file << print << std::endl;
-			file.close();
-			std::cout << print << std::endl;
+			print(del_interface->get_state_print());
+
 		}
 
+		void print_action(const Action& action)
+		{
+			print(del_interface->get_action_print(action));
+		}
+	private:
+		void print(const std::string& print)
+		{
+			std::ofstream file;
+			file.open(output_file, std::ios_base::app);
+			file << print << std::endl << std::endl;
+			file.close();
+			std::cout << print << std::endl << std::endl;
+		}
+
+	public:
 		DEL_Interface* del_interface;
 
+	private:
 		std::string test_folder_path = "../../Test_Cases/";
 		std::string output_file = "output.txt";
+
 	};
 }

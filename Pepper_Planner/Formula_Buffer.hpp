@@ -9,7 +9,9 @@
 
 namespace del
 {
+	class General_Agents;
 	struct Proposition_Instance_Buffer;
+
 	class Formula_Buffer
 	{
 	public:
@@ -17,7 +19,7 @@ namespace del
 		void push_pop_formula_prop(Proposition_Instance_Buffer& proposition_instance_buffer);
 		void push_formula(const std::string& type);
 		std::tuple<Formula_Types, std::vector<Formula_Id>> pop_formula_info();
-		void pop_formula(const std::string& input);
+		void pop_formula(const General_Agents& general_agents, const std::string& input);
 		void pop_formula();
 		Formula get();
 	private:

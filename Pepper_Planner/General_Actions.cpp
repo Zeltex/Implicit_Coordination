@@ -65,16 +65,13 @@ namespace del {
 	const General_Agent_Edge_Conditions& General_Action::get_edge_conditions() const {
 		return edge_conditions;
 	}
-	std::map<Proposition, Proposition> General_Action::create_converter(const Propositions_Lookup& propositions_Lookup, const Atoms& arguments) const
+	Converter General_Action::create_converter(const Propositions_Lookup& propositions_Lookup, const Atoms& arguments) const
 	{
-		//auto atom_arguments = Atom_Arguments{ arguments };
-		//atom_arguments.set(REST_INDEX, REST_INDEX);
-		//return create_converter(propositions_Lookup, atom_arguments);
 		return create_converter(propositions_Lookup, Atom_Arguments{ arguments });
 	}
 
-	std::map<Proposition, Proposition> General_Action::create_converter(const Propositions_Lookup& propositions_Lookup, const Atom_Arguments& arguments) const{
-		std::map<Proposition, Proposition> formula_to_domain;
+	Converter General_Action::create_converter(const Propositions_Lookup& propositions_Lookup, const Atom_Arguments& arguments) const{
+		Converter formula_to_domain;
 
 		for (auto& [prop_instance, prop] : proposition_instance_buffer) 
 		{
@@ -85,9 +82,9 @@ namespace del {
 				continue;
 			}
 
-
+			// TODO - This should include converter for agent_id
 			auto grounded_prop_instance = Proposition_Instance(prop_instance, arguments);
-			formula_to_domain[prop] = propositions_Lookup.get(grounded_prop_instance);
+			formula_to_domain.set(prop, propositions_Lookup.get(grounded_prop_instance));
 		}
 		return formula_to_domain;
 	}
@@ -120,7 +117,7 @@ namespace del {
 
 	void General_Actions::set_owner(const std::string type, const std::string name)
 	{
-		General_Action action = actions.back();
+		General_Action& action = actions.back();
 		size_t index = action.inputs.get_index({ type, name });
 		action.owner = { type, index };
 	}

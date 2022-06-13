@@ -1,6 +1,9 @@
-
 #include "General_Agents.hpp"
+
 #include "General_Objects.hpp"
+
+#include <assert.h>
+
 namespace del
 {
 	General_Agent::General_Agent(Agent_Id id, Atom_Id atom_id, const std::string& name)
@@ -58,6 +61,7 @@ namespace del
 				return agent;
 			}
 		}
+		assert(false);
 		throw "Unknown agent " + name;
 	}
 

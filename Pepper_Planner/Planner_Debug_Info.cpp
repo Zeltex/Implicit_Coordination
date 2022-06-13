@@ -2,8 +2,8 @@
 
 namespace del 
 {
-	Debug_Info::Debug_Info(const Domain& domain)
-		: or_layer_size(1), and_layer_size(1), domain(&domain)
+	Debug_Info::Debug_Info(const Domain& domain, const Graph& graph)
+		: or_layer_size(1), and_layer_size(1), domain(&domain), graph(&graph)
 	{ }
 
 	void Debug_Info::print_final() const
@@ -36,7 +36,7 @@ namespace del
 
 	void Debug_Info::update_and(const State& state)
 	{
-#if DEBUG_PRINT == 1
+#if DEBUG_PRINT == 1 || 1
 		const size_t cost = state.get_cost() / 100;
 		if (and_layer_size.size() <= cost) {
 			and_layer_size.push_back(0);

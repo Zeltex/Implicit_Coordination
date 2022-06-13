@@ -97,20 +97,20 @@ namespace del {
 		return accessibility_relations.has_direct_relation(agent, world_from, world_to);
 	}
 
-	const Propositions& State::get_true_propositions(size_t world_id) const {
-		return worlds[world_id].get_true_propositions();
+	const Propositions& State::get_true_propositions(World_Id world_id) const {
+		return worlds.at(world_id.id).get_true_propositions();
 	}
 
-	bool State::is_true(size_t world_id, const Proposition& proposition) const {
-		return worlds[world_id].get_true_propositions().contains(proposition);
+	bool State::is_true(const World_Id& world_id, const Proposition& proposition) const {
+		return worlds.at(world_id.id).get_true_propositions().contains(proposition);
 	}
 
-	std::set<size_t> State::get_reachable_worlds(size_t agent_id, size_t world_id) const {
+	std::set<size_t> State::get_reachable_worlds(Agent_Id agent_id, World_Id world_id) const {
 		// Due to the serial, transitive and euclidean conditions we only need to check depth one
 		std::set<size_t> result;
 		for (const World& world : worlds)
 		{
-			if (accessibility_relations.has_direct_relation(Agent_Id{ agent_id }, World_Id{ world_id }, world.get_id()))
+			if (accessibility_relations.has_direct_relation(agent_id, world_id, world.get_id()))
 			{
 				result.insert(world.get_id().id);
 			}
@@ -119,9 +119,8 @@ namespace del {
 	}
 
 	bool State::valuate(const Formula& formula, const Domain& domain) const {
-		Formula_Input_Impl input = { this, &domain };
 		for (const auto& world : designated_worlds) {
-			if (!formula.valuate(world.id, &input)) {
+			if (!formula.valuate(world.id, domain, *this)) {
 				return false;
 			}
 		}
@@ -188,7 +187,6 @@ namespace del {
 	std::optional<State> State::product_update(const Action& action, const Domain& domain) const
 	{
 		World_Id new_world_id{ 0 };
-		Formula_Input_Impl input = { this, &domain };
 		std::vector<World> new_worlds;
 		std::set<World_Id> new_designated_worlds;
 		std::vector<World_Entry> world_conversion;
@@ -197,7 +195,7 @@ namespace del {
 		for (const World& world : worlds) {
 			for (const Action_Event& event : action.get_events()) {
 				
-				if (!event.get_preconditions().valuate(world.get_id().id, &input)) 
+				if (!event.get_preconditions().valuate(world.get_id().id, domain, *this)) 
 				{
 					continue;
 				}

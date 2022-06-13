@@ -1,7 +1,13 @@
 #include "Formula_Component.hpp"
+
+#include "Converter.hpp"
+#include "Domain.hpp"
+#include "State.hpp"
+#include "Types.hpp"
+
 #include <algorithm>
-#include <iostream>
 #include <assert.h>
+#include <iostream>
 
 namespace del {
 
@@ -12,55 +18,44 @@ namespace del {
         return prop;
     }
 
-    Formula_Component::Formula_Component(const Formula_Component& other, const std::map<Proposition, Proposition>& general_to_ground): agent(0), formula() {
+    Formula_Component::Formula_Component(const Formula_Component& other, const Converter& general_to_ground): agent(0), formula() {
         this->type = other.type;
         switch (other.type) {
         case Formula_Types::Prop:
         {
-            auto res = general_to_ground.find(other.prop);
-            assert(res != general_to_ground.end());
-            if (res == general_to_ground.end()) {
-                std::cerr << "Proposition " << other.prop.to_string() << " was not found while grounding\n";
-                exit(-1);
-            }
-            this->prop = Proposition(res->second);
+            prop = general_to_ground.convert(other.prop);
             break;
         }
         case Formula_Types::Not:
         {
-            this->formula = other.formula;
+            formula = other.formula;
             break;
         }
         case Formula_Types::And:
         {
-            this->formulas = other.formulas;
+            formulas = other.formulas;
             break;
         }
         case Formula_Types::Or:
         {
-            this->formulas = other.formulas;
+            formulas = other.formulas;
             break;
         }
         case Formula_Types::Believes:
         {
-            auto res = general_to_ground.find(other.prop);
-            if (res == general_to_ground.end()) {
-                std::cerr << "Agemt with atom id " << other.prop.to_string() << " was not found while grounding\n";
-                exit(-1);
-            }
-            this->agent = Proposition(res->second);
-            this->formula = other.formula;
+            agent = general_to_ground.convert(other.agent);
+            formula = other.formula;
             break;
         }
         case Formula_Types::Everyone_Believes:
         {
-            this->formula = other.formula;
+            formula = other.formula;
             break;
         }
         case Formula_Types::Common_Knowledge:
         {
-            this->formula = other.formula;
-            this->agent = other.agent;
+            formula = other.formula;
+            agent = other.agent;
             break;
         }
         }
@@ -68,9 +63,9 @@ namespace del {
 
     bool Formula_Component::valuate(
             const std::vector<Formula_Component>& all_formulas,
-            const size_t world_id,
-            const Formula_Input_Interface* input_interface
-    ) const
+            const World_Id& world_id,
+            const Domain& domain,
+            const State& state) const
     {
         switch (type) {
         case Formula_Types::Top:
@@ -83,16 +78,16 @@ namespace del {
         };
         case Formula_Types::Prop:
         {
-            return input_interface->valuate_prop(prop, world_id);
+            return state.is_true(world_id, prop) || domain.is_rigid(prop);
         }
         case Formula_Types::Not:
         {
-            return !all_formulas[formula.id].valuate(all_formulas, world_id, input_interface);
+            return !all_formulas[formula.id].valuate(all_formulas, world_id, domain, state);
         }
         case Formula_Types::And:
         {
             for (const auto& formula : formulas) {
-                if (!all_formulas[formula.id].valuate(all_formulas, world_id, input_interface)) {
+                if (!all_formulas[formula.id].valuate(all_formulas, world_id, domain, state)) {
                     return false;
                 }
             }
@@ -101,7 +96,7 @@ namespace del {
         case Formula_Types::Or:
         {
             for (const auto& formula : formulas) {
-                if (all_formulas[formula.id].valuate(all_formulas, world_id, input_interface)) {
+                if (all_formulas[formula.id].valuate(all_formulas, world_id, domain, state)) {
                     return true;
                 }
             }
@@ -109,9 +104,10 @@ namespace del {
         }
         case Formula_Types::Believes:
         {
-            std::set<size_t> reachables = input_interface->get_reachable_worlds(agent, world_id);
+            // TODO - Agent is proposition, should be agent id
+            std::set<size_t> reachables = state.get_reachable_worlds(agent, world_id);
             for (const auto& reachable_world : reachables) {
-                if (!all_formulas[formula.id].valuate(all_formulas, reachable_world, input_interface)) {
+                if (!all_formulas[formula.id].valuate(all_formulas, reachable_world, domain, state)) {
                     return false;
                 }
             }

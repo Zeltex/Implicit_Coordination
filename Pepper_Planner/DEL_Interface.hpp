@@ -14,6 +14,7 @@ namespace del {
 		DEL_Interface(const std::string& file_path);
 
 		std::optional<Action> get_next_action();
+		std::string get_action_print(const Action& action) const;
 		std::string get_state_print() const;
 		void perform_action(Action action);
 		void perform_action(const std::string& name, const std::vector<std::string>& arguments);
@@ -33,6 +34,5 @@ namespace del {
 		Domain domain;
 		Planner planner;
 		Policy policy;
-		Formula goal;
 	};
 }

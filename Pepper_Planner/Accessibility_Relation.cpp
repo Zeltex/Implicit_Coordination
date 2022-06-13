@@ -230,6 +230,7 @@ namespace del
 	
 	bool Accessibility_Relations::has_direct_relation(const Agent_Id& agent, const World_Id& from_world, const World_Id& to_world) const
 	{
+		assert(agent.id < agent_relations.size());
 		return agent_relations.at(agent.id).has_direct_relation(from_world, to_world);
 	}
 

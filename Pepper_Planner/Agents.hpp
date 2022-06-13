@@ -37,6 +37,8 @@ namespace del {
 		const Agent& get(const Atom_Id& atom_id) const;
 		const std::vector<Agent>& get_all() const;
 		size_t size() const;
+		std::vector<Agent>::const_iterator begin() const;
+		std::vector<Agent>::const_iterator end() const;
 	private:
 		std::vector<Agent> agents;
 	};

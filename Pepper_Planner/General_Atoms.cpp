@@ -1,6 +1,8 @@
 #include "General_Atoms.hpp"
+
 #include "Variables_Buffer.hpp"
 
+#include <assert.h>
 #include <stdexcept>
 
 namespace del
@@ -33,10 +35,7 @@ namespace del
 		// TODO - This should take the type into account aswell
 		for (const std::string& entry : variables)
 		{
-			if (contains(entry))
-			{
-				throw std::invalid_argument(entry);
-			}
+			assert(!contains(entry));
 			add(entry);
 		}
 	}

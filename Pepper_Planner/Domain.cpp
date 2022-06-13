@@ -19,7 +19,13 @@ namespace del
 		action_library(general_domain.actions, propositions_lookup, atom_lookup, agents)
 
 	{
-		auto converter = general_domain.proposition_instance_buffer.create_converter(propositions_lookup);
+		Converter converter = general_domain.proposition_instance_buffer.create_converter(propositions_lookup);
+
+		// For the goal formula, the correct agent_id's are already used, so map to self
+		for (const auto& agent : agents)
+		{
+			converter.set(agent.get_id(), agent.get_id());
+		}
 
 		goal = Formula(general_domain.goal, converter);
 
@@ -90,24 +96,21 @@ namespace del
 		return action_library;
 	}
 
+	const Formula& Domain::get_goal() const
+	{
+		return goal;
+	}
+
 	void Domain::perform_action(Action action) 
 	{
 		const State& current_state = get_current_state();
 		// TODO - Handle an inapplicable action here
 		std::optional<State> product_update = current_state.product_update(action, *this);
 		assert(product_update.has_value());
-
-		if (product_update.has_value())
-		{
-			product_update.value().contract();
-			add_new_current_state(product_update.value());
-			PRINT_ACTION_TO_CONSOLE(action, *(this));
-		}
-		else
-		{
-
-			throw std::invalid_argument("Performed invalid action");
-		};
+		
+		product_update.value().contract();
+		add_new_current_state(product_update.value());
+		PRINT_ACTION_TO_CONSOLE(action, *(this));
 	}
 
 	void Domain::perform_action(const std::string& name, const std::vector<std::string>& arguments)

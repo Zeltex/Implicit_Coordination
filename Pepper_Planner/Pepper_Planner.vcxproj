@@ -163,6 +163,7 @@
     <ClCompile Include="Atom_Buffer.cpp" />
     <ClCompile Include="Atom_Lookup.cpp" />
     <ClCompile Include="Bisimulation_Context.cpp" />
+    <ClCompile Include="Converter.cpp" />
     <ClCompile Include="Core.cpp" />
     <ClCompile Include="Designated_Events.cpp" />
     <ClCompile Include="Domain.cpp" />
@@ -222,6 +223,7 @@
     <ClInclude Include="Atom_Buffer.hpp" />
     <ClInclude Include="Atom_Lookup.hpp" />
     <ClInclude Include="Bisimulation_Context.hpp" />
+    <ClInclude Include="Converter.hpp" />
     <ClInclude Include="Core.hpp" />
     <ClInclude Include="Designated_Events.hpp" />
     <ClInclude Include="Domain.hpp" />

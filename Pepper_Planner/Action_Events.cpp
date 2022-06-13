@@ -1,13 +1,14 @@
 #include "Action_Events.hpp"
 
 #include "Atoms.hpp"
+#include "Converter.hpp"
 #include "Propositions_Lookup.hpp"
 
 #include <assert.h>
 
 namespace del {
 
-	Action_Event::Action_Event(const General_Action_Event& other, Event_Id id, const std::map<Proposition, Proposition>& converter, const Propositions_Lookup& propositions_lookup, const Atoms& arguments)
+	Action_Event::Action_Event(const General_Action_Event& other, Event_Id id, const Converter& converter, const Propositions_Lookup& propositions_lookup, const Atoms& arguments)
 		: name(other.name), 
 		id(id), 
 		precondition(other.precondition, converter),

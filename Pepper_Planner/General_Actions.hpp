@@ -4,6 +4,7 @@
 #include <string>
 
 #include "Agents.hpp"
+#include "Converter.hpp"
 #include "General_Action_Events.hpp"
 #include "General_Edge_Conditions.hpp"
 #include "Inputs_Buffer.hpp"
@@ -26,8 +27,8 @@ namespace del {
 		General_Action() : cost((size_t) - 1) {}
 		General_Action(const std::string& name);
 		
-		std::map<Proposition, Proposition> create_converter(const Propositions_Lookup& propositions_Lookup, const Atoms& arguments) const;
-		std::map<Proposition, Proposition> create_converter(const Propositions_Lookup& propositions_Lookup, const Atom_Arguments& arguments) const;
+		Converter create_converter(const Propositions_Lookup& propositions_Lookup, const Atoms& arguments) const;
+		Converter create_converter(const Propositions_Lookup& propositions_Lookup, const Atom_Arguments& arguments) const;
 		void set_cost(size_t cost);
 		void set_designated_events(std::vector<std::string> designated_events);
 		void set_edge_conditions(const std::string agent_name, General_Edge_Conditions& edge_conditions);

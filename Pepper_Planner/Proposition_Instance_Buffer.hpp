@@ -1,12 +1,15 @@
 #pragma once
-#include <string>
-#include <vector>
+
+#include "Converter.hpp"
 #include "Proposition_Instance.hpp"
 #include "Propositions.hpp"
 
+#include <map>
+#include <string>
+#include <vector>
+
 namespace del
 {
-	class Atom_Lookup;
 	class General_Objects;
 	class Inputs;
 	class Propositions_Lookup;
@@ -23,7 +26,7 @@ namespace del
 		Proposition_Instance_Buffer move();
 		std::vector<Proposition_Instance> get();
 		Proposition to_proposition(const Proposition_Instance& proposition_instance) const;
-		std::map<Proposition, Proposition> create_converter(const Propositions_Lookup& propositions_lookup) const;
+		Converter create_converter(const Propositions_Lookup& propositions_lookup) const;
 		std::map<Proposition_Instance, Proposition>::const_iterator begin() const;
 		std::map<Proposition_Instance, Proposition>::const_iterator end() const;
 	private:

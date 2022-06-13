@@ -1,11 +1,15 @@
 #include "Formula.hpp"
 
+#include "Converter.hpp"
+
 namespace del {
 
-    Formula::Formula(const Formula& other, const std::map<Proposition, Proposition>& general_to_ground) {
+    Formula::Formula(const Formula& other, const Converter& general_to_ground) 
+    {
         this->root = other.root;
-        for (const auto& entry : other.formulas) {
-            this->formulas.emplace_back(entry, general_to_ground);
+        for (const auto& entry : other.formulas) 
+        {
+            this->formulas.push_back(Formula_Component{ entry, general_to_ground });
         }
     }
 
@@ -17,13 +21,14 @@ namespace del {
         }
     }
 
-	bool Formula::valuate(const size_t world_id, const Formula_Input_Interface* input_interface) const {
-        if (formulas.empty()) {
+	bool Formula::valuate(const World_Id& world_id, const Domain& domain, const State& state) const {
+        if (formulas.empty()) 
+        {
             return true;
-        } else if (input_interface == nullptr) {
-            return false;
-        }  else {
-            return formulas[root.id].valuate(formulas, world_id, input_interface);
+        }  
+        else 
+        {
+            return formulas[root.id].valuate(formulas, world_id, domain, state);
         }
 	}
 
@@ -69,16 +74,16 @@ namespace del {
         return Formula_Id{ formulas.size() - 1 };
     }
 
-    Formula_Id Formula::f_believes(size_t agent, Formula_Id formula)
+    Formula_Id Formula::f_believes(const Agent_Id& agent, Formula_Id formula)
     {
         formulas.emplace_back(Formula_Types::Believes, agent, formula);
         root = Formula_Id{ formulas.size() - 1 };
         return Formula_Id{ formulas.size() - 1 };
     }
 
-    Formula_Id Formula::f_believes(std::string agent, Formula_Id formula, std::unordered_map<std::string, size_t> context)
+    Formula_Id Formula::f_believes(std::string agent, Formula_Id formula, const std::unordered_map<std::string, Agent_Id>& context)
     {
-        return f_believes(context[agent], formula);
+        return f_believes(context.at(agent), formula);
     }
 
     Formula_Id Formula::f_everyone_Believes(Formula_Id formula)

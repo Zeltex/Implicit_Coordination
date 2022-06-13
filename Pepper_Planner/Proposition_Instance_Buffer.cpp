@@ -116,20 +116,13 @@ namespace del
         return instance_to_proposition.at(proposition_instance);
     }
 
-    std::map<Proposition, Proposition> Proposition_Instance_Buffer::create_converter(const Propositions_Lookup& propositions_lookup) const
+    Converter Proposition_Instance_Buffer::create_converter(const Propositions_Lookup& propositions_lookup) const
     {
-        std::map<Proposition, Proposition> result;
+        Converter result;
         for (const auto& [instance, proposition] : instance_to_proposition)
         {
-            result.insert({ proposition, propositions_lookup.get(instance) });
+            result.set(proposition, propositions_lookup.get(instance));
         }
         return result;
     }
-
-    //Propositions Proposition_Instance_Buffer::get()
-    //{
-    //    Propositions temp = std::move(propositions);
-    //    propositions = {};
-    //    return temp;
-    //}
 }

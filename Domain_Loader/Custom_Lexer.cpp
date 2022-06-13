@@ -1,5 +1,6 @@
 #include "Custom_Lexer.hpp"
 
+#include <assert.h>
 #include <direct.h>
 #include <limits>
 #include <limits.h>
@@ -16,6 +17,7 @@ namespace del {
         cout << current_working_dir << endl;
         std::ifstream file(file_path);
         if (!file) {
+            assert(false);
             throw std::runtime_error("Can't open file" + file_path);
         }
         try
@@ -66,9 +68,7 @@ namespace del {
                             pointer = end_of_integer;
                             break;
                         }
-                        throw std::runtime_error("Unknown token at line " + line_number + std::string(": ") + line.substr(pointer));
-                        exit(-1);
-                        // TODO - Return custom exception
+                        assert(false);
                     }
                     }
                 }
@@ -80,6 +80,7 @@ namespace del {
         {
             file.close();
             std::cerr << exception.what();
+            assert(false);
             throw;
         }
     }
@@ -117,7 +118,7 @@ namespace del {
         if (token == "rest")				{ add_token(Token::REST_DEF); values.insert({ tokens.size() - 1, "_" + token });	return; }
         if (token == "types")				{add_token(Token:: TYPES_DEF);				return;}
         if (token == "world")				{add_token(Token:: WORLD_DEF);				return;}
-
+        assert(false);
         throw std::runtime_error("Unknown token at line" + line_number + std::string(": _") + token);
     }
 

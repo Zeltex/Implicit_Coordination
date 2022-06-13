@@ -34,6 +34,7 @@ namespace del
 			}
 			++counter;
 		}
+		assert(false);
 		throw "Input '" + other.to_string() + "' not found";
 	}
 
