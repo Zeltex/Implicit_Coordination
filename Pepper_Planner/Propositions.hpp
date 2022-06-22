@@ -1,5 +1,8 @@
 #pragma once
+
 #include "Formula_Types.hpp"
+
+#include <set>
 
 namespace del {
 
@@ -32,33 +35,17 @@ namespace del {
         Propositions(const std::vector<Proposition_Instance>& other, const Propositions_Lookup& propositions_lookup, const Atoms& arguments);
 
         Propositions(const Propositions& data_in);
-        Propositions(const std::vector<Proposition>& data_in);
         void insert(const Propositions& propositions);
         void insert(const Proposition& proposition);
         void remove(const Propositions& propositions);
         bool contains(const Proposition& proposition) const;
         std::string to_string(const Domain& domain) const;
         std::string to_signature_string() const;
-        void sort();
         size_t size() const;
         bool operator!=(const Propositions& other) const;
         std::string to_hash() const;
-        void reserve(size_t size);
 
-        std::vector<Proposition> propositions;
+        std::set<Proposition> propositions;
     private:
-    };
-}
-
-// TODO - Can probably be removed
-namespace std {
-    template<>
-    struct hash<del::Proposition>
-    {
-        size_t
-            operator()(const del::Proposition& obj) const
-        {
-            return hash<size_t>()(obj.to_hash());
-        }
     };
 }

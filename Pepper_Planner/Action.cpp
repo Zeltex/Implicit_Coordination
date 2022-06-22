@@ -49,18 +49,41 @@ namespace del {
 		return to_string(0, domain);
 	}
 
+	//std::string Action::to_string(size_t indenation, const Domain& domain) const {
+	//	return get_indentation(indenation) 
+	//		+ " Action\n(name, " 
+	//		+ name 
+	//		+ ") (owner, " 
+	//		+ std::to_string(owner.id) 
+	//		+ ") (Relations size, " 
+	//		+ std::to_string(edge_conditions.size()) 
+	//		+ ") (Designated events"
+	//		+ designated_events.to_string()
+	//		+ ")"
+	//		+ events.to_string(domain);
+	//}
+
 	std::string Action::to_string(size_t indenation, const Domain& domain) const {
-		return get_indentation(indenation) 
-			+ " Action\n(name, " 
-			+ name 
-			+ ") (owner, " 
-			+ std::to_string(owner.id) 
-			+ ") (Relations size, " 
-			+ std::to_string(edge_conditions.size()) 
-			+ ") (Designated events"
-			+ designated_events.to_string()
-			+ ")"
-			+ events.to_string(domain);
+		auto output = get_indentation(indenation)
+			+ " Action "
+			+ name
+			+ "(";
+		
+		bool first = true;
+		for (auto& arg : args)
+		{
+			if (first)
+			{
+				first = false;
+			}
+			else
+			{
+				output += ",";
+			}
+			output += arg.get_name();
+		}
+
+		return output;
 	}
 
 	std::string Action::to_compact_string(const Domain& domain) const {

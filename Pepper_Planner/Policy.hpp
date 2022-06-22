@@ -11,14 +11,14 @@ namespace del {
 	class Node_Comparator;
 	struct Policy_Entry {
 		State state;
-		std::vector<std::pair<Action, Node_Id>> actions;
+		std::vector<std::pair<Action, const Node*>> actions;
 	};
 	class Policy {
 	public:
 
 		Policy(bool solved) : solved(solved) {}
 
-		void add_entry(const State& state, const Action& action, const Node_Id& node_id);
+		void add_entry(const State& state, const Action& action, const Node* node);
 		bool is_solved() const;
 		std::optional<Action> get_action(const State& state, Agent_Id preferred_agent = { 0 }) const;
 

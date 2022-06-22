@@ -1,7 +1,6 @@
 
 
 _domain Pepper {
-	_announce_enabled = false
 	_types = [agent, pos]
 	_propositions = [
 		at(agent a, pos p)
@@ -51,106 +50,55 @@ _domain Pepper {
 }
 _problem MAPF_DU {
 _objects = {
-	agent = [a0, a1, a2, a3]
-	pos = [c0, c1, c2, c3, c4, c5, c6, c7, c8, x1, x4, x7]
+	agent = [a0, a1, a2]
+	pos = [c0, c1, c2, c3, c4, c5, c6, c7, c8, c9, x2, x7]
 }
 _initial_state = [
-	adj(c0, c1), adj(c1, c0), adj(c1, c2), adj(c2, c1), adj(c2, c3), adj(c3, c2), adj(c3, c4), adj(c4, c3), adj(c4, c5), adj(c5, c4), adj(c5, c6), adj(c6, c5), adj(c6, c7), adj(c7, c6), adj(c7, c8), adj(c8, c7), adj(c1, x1), adj(x1, c1), adj(c4, x4), adj(x4, c4), adj(c7, x7), adj(x7, c7)
+	adj(c0, c1), adj(c1, c0), adj(c1, c2), adj(c2, c1), adj(c2, c3), adj(c3, c2), adj(c3, c4), adj(c4, c3), adj(c4, c5), adj(c5, c4), adj(c5, c6), adj(c6, c5), adj(c6, c7), adj(c7, c6), adj(c7, c8), adj(c8, c7), adj(c8, c9), adj(c9, c8), adj(c2, x2), adj(x2, c2), adj(c7, x7), adj(x7, c7)
 ]
 
 
-	_world w0 [free(c0), at(a3, c1), free(c2), free(c3), at(a2, c4), free(c5), free(c6), at(a1, c7), at(a0, c8), free(x1), free(x4), free(x7), goal(a0, c1), goal(a1, c1), goal(a2, c4), goal(a3, c7)]
-	_world w1 [free(c0), at(a3, c1), free(c2), free(c3), at(a2, c4), free(c5), free(c6), at(a1, c7), at(a0, c8), free(x1), free(x4), free(x7), goal(a0, x1), goal(a1, c1), goal(a2, c4), goal(a3, c7)]
-	_world w2 [free(c0), at(a3, c1), free(c2), free(c3), at(a2, c4), free(c5), free(c6), at(a1, c7), at(a0, c8), free(x1), free(x4), free(x7), goal(a0, c1), goal(a1, x4), goal(a2, c4), goal(a3, c7)]
-	_world w3 [free(c0), at(a3, c1), free(c2), free(c3), at(a2, c4), free(c5), free(c6), at(a1, c7), at(a0, c8), free(x1), free(x4), free(x7), goal(a0, x1), goal(a1, x4), goal(a2, c4), goal(a3, c7)]
-	_world w4 [free(c0), at(a3, c1), free(c2), free(c3), at(a2, c4), free(c5), free(c6), at(a1, c7), at(a0, c8), free(x1), free(x4), free(x7), goal(a0, c1), goal(a1, c1), goal(a2, x7), goal(a3, c7)]
-	_world w5 [free(c0), at(a3, c1), free(c2), free(c3), at(a2, c4), free(c5), free(c6), at(a1, c7), at(a0, c8), free(x1), free(x4), free(x7), goal(a0, x1), goal(a1, c1), goal(a2, x7), goal(a3, c7)]
-	_world w6 [free(c0), at(a3, c1), free(c2), free(c3), at(a2, c4), free(c5), free(c6), at(a1, c7), at(a0, c8), free(x1), free(x4), free(x7), goal(a0, c1), goal(a1, x4), goal(a2, x7), goal(a3, c7)]
-	_world w7 [free(c0), at(a3, c1), free(c2), free(c3), at(a2, c4), free(c5), free(c6), at(a1, c7), at(a0, c8), free(x1), free(x4), free(x7), goal(a0, x1), goal(a1, x4), goal(a2, x7), goal(a3, c7)]
-	_world w8 [free(c0), at(a3, c1), free(c2), free(c3), at(a2, c4), free(c5), free(c6), at(a1, c7), at(a0, c8), free(x1), free(x4), free(x7), goal(a0, c1), goal(a1, c1), goal(a2, c4), goal(a3, c8)]
-	_world w9 [free(c0), at(a3, c1), free(c2), free(c3), at(a2, c4), free(c5), free(c6), at(a1, c7), at(a0, c8), free(x1), free(x4), free(x7), goal(a0, x1), goal(a1, c1), goal(a2, c4), goal(a3, c8)]
-	_world w10 [free(c0), at(a3, c1), free(c2), free(c3), at(a2, c4), free(c5), free(c6), at(a1, c7), at(a0, c8), free(x1), free(x4), free(x7), goal(a0, c1), goal(a1, x4), goal(a2, c4), goal(a3, c8)]
-	_world w11 [free(c0), at(a3, c1), free(c2), free(c3), at(a2, c4), free(c5), free(c6), at(a1, c7), at(a0, c8), free(x1), free(x4), free(x7), goal(a0, x1), goal(a1, x4), goal(a2, c4), goal(a3, c8)]
-	_world w12 [free(c0), at(a3, c1), free(c2), free(c3), at(a2, c4), free(c5), free(c6), at(a1, c7), at(a0, c8), free(x1), free(x4), free(x7), goal(a0, c1), goal(a1, c1), goal(a2, x7), goal(a3, c8)]
-	_world w13 [free(c0), at(a3, c1), free(c2), free(c3), at(a2, c4), free(c5), free(c6), at(a1, c7), at(a0, c8), free(x1), free(x4), free(x7), goal(a0, x1), goal(a1, c1), goal(a2, x7), goal(a3, c8)]
-	_world w14 [free(c0), at(a3, c1), free(c2), free(c3), at(a2, c4), free(c5), free(c6), at(a1, c7), at(a0, c8), free(x1), free(x4), free(x7), goal(a0, c1), goal(a1, x4), goal(a2, x7), goal(a3, c8)]
-	_world w15 [free(c0), at(a3, c1), free(c2), free(c3), at(a2, c4), free(c5), free(c6), at(a1, c7), at(a0, c8), free(x1), free(x4), free(x7), goal(a0, x1), goal(a1, x4), goal(a2, x7), goal(a3, c8)]
-		_goal = [ AND(stopped(a0), stopped(a1), stopped(a2), stopped(a3))]
+	_world w0 [free(c0), free(c1), at(a2, c2), free(c3), free(c4), free(c5), free(c6), at(a1, c7), free(c8), at(a0, c9), free(x2), free(x7), goal(a0, c0), goal(a1, c2), goal(a2, c7)]
+	_world w1 [free(c0), free(c1), at(a2, c2), free(c3), free(c4), free(c5), free(c6), at(a1, c7), free(c8), at(a0, c9), free(x2), free(x7), goal(a0, x2), goal(a1, c2), goal(a2, c7)]
+	_world w2 [free(c0), free(c1), at(a2, c2), free(c3), free(c4), free(c5), free(c6), at(a1, c7), free(c8), at(a0, c9), free(x2), free(x7), goal(a0, c0), goal(a1, x7), goal(a2, c7)]
+	_world w3 [free(c0), free(c1), at(a2, c2), free(c3), free(c4), free(c5), free(c6), at(a1, c7), free(c8), at(a0, c9), free(x2), free(x7), goal(a0, x2), goal(a1, x7), goal(a2, c7)]
+	_world w4 [free(c0), free(c1), at(a2, c2), free(c3), free(c4), free(c5), free(c6), at(a1, c7), free(c8), at(a0, c9), free(x2), free(x7), goal(a0, c0), goal(a1, c2), goal(a2, c9)]
+	_world w5 [free(c0), free(c1), at(a2, c2), free(c3), free(c4), free(c5), free(c6), at(a1, c7), free(c8), at(a0, c9), free(x2), free(x7), goal(a0, x2), goal(a1, c2), goal(a2, c9)]
+	_world w6 [free(c0), free(c1), at(a2, c2), free(c3), free(c4), free(c5), free(c6), at(a1, c7), free(c8), at(a0, c9), free(x2), free(x7), goal(a0, c0), goal(a1, x7), goal(a2, c9)]
+	_world w7 [free(c0), free(c1), at(a2, c2), free(c3), free(c4), free(c5), free(c6), at(a1, c7), free(c8), at(a0, c9), free(x2), free(x7), goal(a0, x2), goal(a1, x7), goal(a2, c9)]
+		_goal = [ AND(stopped(a0), stopped(a1), stopped(a2))]
 	
-		_designated_worlds = [ w0 ]
-		_reflexivity = false
-_reachability = {
-		a0 = {
-		(w0, w0), (w0, w2), (w0, w4), (w0, w6), (w0, w8), (w0, w10), (w0, w12), (w0, w14), 
-		(w1, w1), (w1, w3), (w1, w5), (w1, w7), (w1, w9), (w1, w11), (w1, w13), (w1, w15), 
-		(w2, w0), (w2, w2), (w2, w4), (w2, w6), (w2, w8), (w2, w10), (w2, w12), (w2, w14), 
-		(w3, w1), (w3, w3), (w3, w5), (w3, w7), (w3, w9), (w3, w11), (w3, w13), (w3, w15), 
-		(w4, w0), (w4, w2), (w4, w4), (w4, w6), (w4, w8), (w4, w10), (w4, w12), (w4, w14), 
-		(w5, w1), (w5, w3), (w5, w5), (w5, w7), (w5, w9), (w5, w11), (w5, w13), (w5, w15), 
-		(w6, w0), (w6, w2), (w6, w4), (w6, w6), (w6, w8), (w6, w10), (w6, w12), (w6, w14), 
-		(w7, w1), (w7, w3), (w7, w5), (w7, w7), (w7, w9), (w7, w11), (w7, w13), (w7, w15), 
-		(w8, w0), (w8, w2), (w8, w4), (w8, w6), (w8, w8), (w8, w10), (w8, w12), (w8, w14), 
-		(w9, w1), (w9, w3), (w9, w5), (w9, w7), (w9, w9), (w9, w11), (w9, w13), (w9, w15), 
-		(w10, w0), (w10, w2), (w10, w4), (w10, w6), (w10, w8), (w10, w10), (w10, w12), (w10, w14), 
-		(w11, w1), (w11, w3), (w11, w5), (w11, w7), (w11, w9), (w11, w11), (w11, w13), (w11, w15), 
-		(w12, w0), (w12, w2), (w12, w4), (w12, w6), (w12, w8), (w12, w10), (w12, w12), (w12, w14), 
-		(w13, w1), (w13, w3), (w13, w5), (w13, w7), (w13, w9), (w13, w11), (w13, w13), (w13, w15), 
-		(w14, w0), (w14, w2), (w14, w4), (w14, w6), (w14, w8), (w14, w10), (w14, w12), (w14, w14), 
-		(w15, w1), (w15, w3), (w15, w5), (w15, w7), (w15, w9), (w15, w11), (w15, w13), (w15, w15), 
-		}
-	a1 = {
-		(w0, w0), (w0, w1), (w0, w4), (w0, w5), (w0, w8), (w0, w9), (w0, w12), (w0, w13), 
-		(w1, w0), (w1, w1), (w1, w4), (w1, w5), (w1, w8), (w1, w9), (w1, w12), (w1, w13), 
-		(w2, w2), (w2, w3), (w2, w6), (w2, w7), (w2, w10), (w2, w11), (w2, w14), (w2, w15), 
-		(w3, w2), (w3, w3), (w3, w6), (w3, w7), (w3, w10), (w3, w11), (w3, w14), (w3, w15), 
-		(w4, w0), (w4, w1), (w4, w4), (w4, w5), (w4, w8), (w4, w9), (w4, w12), (w4, w13), 
-		(w5, w0), (w5, w1), (w5, w4), (w5, w5), (w5, w8), (w5, w9), (w5, w12), (w5, w13), 
-		(w6, w2), (w6, w3), (w6, w6), (w6, w7), (w6, w10), (w6, w11), (w6, w14), (w6, w15), 
-		(w7, w2), (w7, w3), (w7, w6), (w7, w7), (w7, w10), (w7, w11), (w7, w14), (w7, w15), 
-		(w8, w0), (w8, w1), (w8, w4), (w8, w5), (w8, w8), (w8, w9), (w8, w12), (w8, w13), 
-		(w9, w0), (w9, w1), (w9, w4), (w9, w5), (w9, w8), (w9, w9), (w9, w12), (w9, w13), 
-		(w10, w2), (w10, w3), (w10, w6), (w10, w7), (w10, w10), (w10, w11), (w10, w14), (w10, w15), 
-		(w11, w2), (w11, w3), (w11, w6), (w11, w7), (w11, w10), (w11, w11), (w11, w14), (w11, w15), 
-		(w12, w0), (w12, w1), (w12, w4), (w12, w5), (w12, w8), (w12, w9), (w12, w12), (w12, w13), 
-		(w13, w0), (w13, w1), (w13, w4), (w13, w5), (w13, w8), (w13, w9), (w13, w12), (w13, w13), 
-		(w14, w2), (w14, w3), (w14, w6), (w14, w7), (w14, w10), (w14, w11), (w14, w14), (w14, w15), 
-		(w15, w2), (w15, w3), (w15, w6), (w15, w7), (w15, w10), (w15, w11), (w15, w14), (w15, w15), 
-		}
-	a2 = {
-		(w0, w0), (w0, w1), (w0, w2), (w0, w3), (w0, w8), (w0, w9), (w0, w10), (w0, w11), 
-		(w1, w0), (w1, w1), (w1, w2), (w1, w3), (w1, w8), (w1, w9), (w1, w10), (w1, w11), 
-		(w2, w0), (w2, w1), (w2, w2), (w2, w3), (w2, w8), (w2, w9), (w2, w10), (w2, w11), 
-		(w3, w0), (w3, w1), (w3, w2), (w3, w3), (w3, w8), (w3, w9), (w3, w10), (w3, w11), 
-		(w4, w4), (w4, w5), (w4, w6), (w4, w7), (w4, w12), (w4, w13), (w4, w14), (w4, w15), 
-		(w5, w4), (w5, w5), (w5, w6), (w5, w7), (w5, w12), (w5, w13), (w5, w14), (w5, w15), 
-		(w6, w4), (w6, w5), (w6, w6), (w6, w7), (w6, w12), (w6, w13), (w6, w14), (w6, w15), 
-		(w7, w4), (w7, w5), (w7, w6), (w7, w7), (w7, w12), (w7, w13), (w7, w14), (w7, w15), 
-		(w8, w0), (w8, w1), (w8, w2), (w8, w3), (w8, w8), (w8, w9), (w8, w10), (w8, w11), 
-		(w9, w0), (w9, w1), (w9, w2), (w9, w3), (w9, w8), (w9, w9), (w9, w10), (w9, w11), 
-		(w10, w0), (w10, w1), (w10, w2), (w10, w3), (w10, w8), (w10, w9), (w10, w10), (w10, w11), 
-		(w11, w0), (w11, w1), (w11, w2), (w11, w3), (w11, w8), (w11, w9), (w11, w10), (w11, w11), 
-		(w12, w4), (w12, w5), (w12, w6), (w12, w7), (w12, w12), (w12, w13), (w12, w14), (w12, w15), 
-		(w13, w4), (w13, w5), (w13, w6), (w13, w7), (w13, w12), (w13, w13), (w13, w14), (w13, w15), 
-		(w14, w4), (w14, w5), (w14, w6), (w14, w7), (w14, w12), (w14, w13), (w14, w14), (w14, w15), 
-		(w15, w4), (w15, w5), (w15, w6), (w15, w7), (w15, w12), (w15, w13), (w15, w14), (w15, w15), 
-		}
-	a3 = {
-		(w0, w0), (w0, w1), (w0, w2), (w0, w3), (w0, w4), (w0, w5), (w0, w6), (w0, w7), 
-		(w1, w0), (w1, w1), (w1, w2), (w1, w3), (w1, w4), (w1, w5), (w1, w6), (w1, w7), 
-		(w2, w0), (w2, w1), (w2, w2), (w2, w3), (w2, w4), (w2, w5), (w2, w6), (w2, w7), 
-		(w3, w0), (w3, w1), (w3, w2), (w3, w3), (w3, w4), (w3, w5), (w3, w6), (w3, w7), 
-		(w4, w0), (w4, w1), (w4, w2), (w4, w3), (w4, w4), (w4, w5), (w4, w6), (w4, w7), 
-		(w5, w0), (w5, w1), (w5, w2), (w5, w3), (w5, w4), (w5, w5), (w5, w6), (w5, w7), 
-		(w6, w0), (w6, w1), (w6, w2), (w6, w3), (w6, w4), (w6, w5), (w6, w6), (w6, w7), 
-		(w7, w0), (w7, w1), (w7, w2), (w7, w3), (w7, w4), (w7, w5), (w7, w6), (w7, w7), 
-		(w8, w8), (w8, w9), (w8, w10), (w8, w11), (w8, w12), (w8, w13), (w8, w14), (w8, w15), 
-		(w9, w8), (w9, w9), (w9, w10), (w9, w11), (w9, w12), (w9, w13), (w9, w14), (w9, w15), 
-		(w10, w8), (w10, w9), (w10, w10), (w10, w11), (w10, w12), (w10, w13), (w10, w14), (w10, w15), 
-		(w11, w8), (w11, w9), (w11, w10), (w11, w11), (w11, w12), (w11, w13), (w11, w14), (w11, w15), 
-		(w12, w8), (w12, w9), (w12, w10), (w12, w11), (w12, w12), (w12, w13), (w12, w14), (w12, w15), 
-		(w13, w8), (w13, w9), (w13, w10), (w13, w11), (w13, w12), (w13, w13), (w13, w14), (w13, w15), 
-		(w14, w8), (w14, w9), (w14, w10), (w14, w11), (w14, w12), (w14, w13), (w14, w14), (w14, w15), 
-		(w15, w8), (w15, w9), (w15, w10), (w15, w11), (w15, w12), (w15, w13), (w15, w14), (w15, w15), 
-		}
+	_designated_worlds = [ w0 ]
+	_reachability = {
+			a0 = {
+			(w0, w0), (w0, w2), (w0, w4), (w0, w6), 
+			(w1, w1), (w1, w3), (w1, w5), (w1, w7), 
+			(w2, w0), (w2, w2), (w2, w4), (w2, w6), 
+			(w3, w1), (w3, w3), (w3, w5), (w3, w7), 
+			(w4, w0), (w4, w2), (w4, w4), (w4, w6), 
+			(w5, w1), (w5, w3), (w5, w5), (w5, w7), 
+			(w6, w0), (w6, w2), (w6, w4), (w6, w6), 
+			(w7, w1), (w7, w3), (w7, w5), (w7, w7), 
+			}
+			a1 = {
+			(w0, w0), (w0, w1), (w0, w4), (w0, w5), 
+			(w1, w0), (w1, w1), (w1, w4), (w1, w5), 
+			(w2, w2), (w2, w3), (w2, w6), (w2, w7), 
+			(w3, w2), (w3, w3), (w3, w6), (w3, w7), 
+			(w4, w0), (w4, w1), (w4, w4), (w4, w5), 
+			(w5, w0), (w5, w1), (w5, w4), (w5, w5), 
+			(w6, w2), (w6, w3), (w6, w6), (w6, w7), 
+			(w7, w2), (w7, w3), (w7, w6), (w7, w7), 
+			}
+			a2 = {
+			(w0, w0), (w0, w1), (w0, w2), (w0, w3), 
+			(w1, w0), (w1, w1), (w1, w2), (w1, w3), 
+			(w2, w0), (w2, w1), (w2, w2), (w2, w3), 
+			(w3, w0), (w3, w1), (w3, w2), (w3, w3), 
+			(w4, w4), (w4, w5), (w4, w6), (w4, w7), 
+			(w5, w4), (w5, w5), (w5, w6), (w5, w7), 
+			(w6, w4), (w6, w5), (w6, w6), (w6, w7), 
+			(w7, w4), (w7, w5), (w7, w6), (w7, w7), 
+			}
 	}
 }

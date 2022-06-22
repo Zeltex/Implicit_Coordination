@@ -73,7 +73,7 @@ namespace del {
 	{
 		std::string result;
 		for (auto& event : events) {
-			result += "\n<" + event.get_preconditions().to_string(domain) + ",X,X>";
+			result += "\n<<" + event.get_preconditions().to_string(domain) + ",X,X>";
 		}
 		return result;
 	}

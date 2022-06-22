@@ -8,15 +8,15 @@ namespace del {
 		std::string planning_agent = "a0";
 		std::vector<long> times;
 
-		for (size_t i = 13; i <= 15; ++i) {
+		for (size_t i = 1; i <= 27; ++i) {
 			std::string file_name = folder + "p" + std::to_string(i) + ".maepl";
 			DEL_Interface del_interface(file_name);
 			auto time_start = std::chrono::high_resolution_clock::now();
-			del_interface.create_policy(planning_agent, true);
+			bool solved = del_interface.create_policy(planning_agent, true);
 			auto time_end = std::chrono::high_resolution_clock::now();
 
 			times.push_back(std::chrono::duration_cast<std::chrono::milliseconds>(time_end - time_start).count());
-			std::cout << "P" << i << " took ms " << times.back() << std::endl << std::endl;
+			std::cout << "P" << i << " took ms " << times.back() << ", solved = " << solved << std::endl << std::endl;
 
 			std::ofstream output;
 			output.open("../Benchmarks/Benchmarks_mapfdu.csv");

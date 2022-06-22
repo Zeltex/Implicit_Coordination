@@ -1,4 +1,5 @@
 #pragma once
+#include "CppUnitTest.h"
 
 #include <string>
 #include <stdio.h>
@@ -9,6 +10,8 @@
 #include "Custom_Parser.hpp"
 #include "Domain.hpp"
 #include "DEL_Interface.hpp"
+
+using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace del
 {
@@ -31,6 +34,22 @@ namespace del
 		{
 			print(del_interface->get_action_print(action));
 		}
+
+		void execute_until_solved()
+		{
+			print_state();
+			while (!del_interface->is_solved())
+			{
+				auto next_action = del_interface->get_next_action();
+				Assert::IsTrue(next_action.has_value());
+				del_interface->perform_action(next_action.value());
+
+				print_action(next_action.value());
+				print_state();
+			}
+			Assert::IsTrue(del_interface->is_solved());
+		}
+
 	private:
 		void print(const std::string& print)
 		{

@@ -1,5 +1,6 @@
+
+
 _domain Pepper {
-	_announce_enabled = false
 	_types = [agent, pos]
 	_propositions = [
 		at(agent a, pos p)
@@ -49,55 +50,33 @@ _domain Pepper {
 }
 _problem MAPF_DU {
 _objects = {
-	agent = [a0, a1, a2]
-	pos = [c0, c1, c2, c3, c4, c5, c6, c7, c8, c9, x2, x7]
+	agent = [a0, a1]
+	pos = [c0, c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16, c17, c18, c19, c20, x10]
 }
+_initial_state = [
+	adj(c0, c1), adj(c1, c0), adj(c1, c2), adj(c2, c1), adj(c2, c3), adj(c3, c2), adj(c3, c4), adj(c4, c3), adj(c4, c5), adj(c5, c4), adj(c5, c6), adj(c6, c5), adj(c6, c7), adj(c7, c6), adj(c7, c8), adj(c8, c7), adj(c8, c9), adj(c9, c8), adj(c9, c10), adj(c10, c9), adj(c10, c11), adj(c11, c10), adj(c11, c12), adj(c12, c11), adj(c12, c13), adj(c13, c12), adj(c13, c14), adj(c14, c13), adj(c14, c15), adj(c15, c14), adj(c15, c16), adj(c16, c15), adj(c16, c17), adj(c17, c16), adj(c17, c18), adj(c18, c17), adj(c18, c19), adj(c19, c18), adj(c19, c20), adj(c20, c19), adj(c10, x10), adj(x10, c10)
+]
 
-_initial_state = [adj(c0, c1), adj(c1, c0), adj(c1, c2), adj(c2, c1), adj(c2, c3), adj(c3, c2), adj(c3, c4), adj(c4, c3), adj(c4, c5), adj(c5, c4), adj(c5, c6), adj(c6, c5), adj(c6, c7), adj(c7, c6), adj(c7, c8), adj(c8, c7), adj(c8, c9), adj(c9, c8), adj(c2, x2), adj(x2, c2), adj(c7, x7), adj(x7, c7)]
 
-_world w0 [free(c0), free(c1), at(a2, c2), free(c3), free(c4), free(c5), free(c6), at(a1, c7), free(c8), at(a0, c9), free(x2), free(x7), goal(a0, c0), goal(a1, c2), goal(a2, c7)]
-_world w1 [free(c0), free(c1), at(a2, c2), free(c3), free(c4), free(c5), free(c6), at(a1, c7), free(c8), at(a0, c9), free(x2), free(x7), goal(a0, x2), goal(a1, c2), goal(a2, c7)]
-_world w2 [free(c0), free(c1), at(a2, c2), free(c3), free(c4), free(c5), free(c6), at(a1, c7), free(c8), at(a0, c9), free(x2), free(x7), goal(a0, c0), goal(a1, x7), goal(a2, c7)]
-_world w3 [free(c0), free(c1), at(a2, c2), free(c3), free(c4), free(c5), free(c6), at(a1, c7), free(c8), at(a0, c9), free(x2), free(x7), goal(a0, x2), goal(a1, x7), goal(a2, c7)]
-_world w4 [free(c0), free(c1), at(a2, c2), free(c3), free(c4), free(c5), free(c6), at(a1, c7), free(c8), at(a0, c9), free(x2), free(x7), goal(a0, c0), goal(a1, c2), goal(a2, c9)]
-_world w5 [free(c0), free(c1), at(a2, c2), free(c3), free(c4), free(c5), free(c6), at(a1, c7), free(c8), at(a0, c9), free(x2), free(x7), goal(a0, x2), goal(a1, c2), goal(a2, c9)]
-_world w6 [free(c0), free(c1), at(a2, c2), free(c3), free(c4), free(c5), free(c6), at(a1, c7), free(c8), at(a0, c9), free(x2), free(x7), goal(a0, c0), goal(a1, x7), goal(a2, c9)]
-_world w7 [free(c0), free(c1), at(a2, c2), free(c3), free(c4), free(c5), free(c6), at(a1, c7), free(c8), at(a0, c9), free(x2), free(x7), goal(a0, x2), goal(a1, x7), goal(a2, c9)]
-
-_goal = [ AND(stopped(a0), stopped(a1), stopped(a2)) ] 
-
+	_world w0 [free(c0), free(c1), free(c2), free(c3), free(c4), free(c5), free(c6), free(c7), free(c8), free(c9), at(a1, c10), free(c11), free(c12), free(c13), free(c14), free(c15), free(c16), free(c17), free(c18), free(c19), at(a0, c20), free(x10), goal(a0, c0), goal(a1, c6)]
+	_world w1 [free(c0), free(c1), free(c2), free(c3), free(c4), free(c5), free(c6), free(c7), free(c8), free(c9), at(a1, c10), free(c11), free(c12), free(c13), free(c14), free(c15), free(c16), free(c17), free(c18), free(c19), at(a0, c20), free(x10), goal(a0, x10), goal(a1, c6)]
+	_world w2 [free(c0), free(c1), free(c2), free(c3), free(c4), free(c5), free(c6), free(c7), free(c8), free(c9), at(a1, c10), free(c11), free(c12), free(c13), free(c14), free(c15), free(c16), free(c17), free(c18), free(c19), at(a0, c20), free(x10), goal(a0, c0), goal(a1, c20)]
+	_world w3 [free(c0), free(c1), free(c2), free(c3), free(c4), free(c5), free(c6), free(c7), free(c8), free(c9), at(a1, c10), free(c11), free(c12), free(c13), free(c14), free(c15), free(c16), free(c17), free(c18), free(c19), at(a0, c20), free(x10), goal(a0, x10), goal(a1, c20)]
+		_goal = [ AND(stopped(a0), stopped(a1))]
+	
 	_designated_worlds = [ w0 ]
-	_reflexivity = false
 	_reachability = {
-		a0 = {
-		 (w0, w0), (w0, w2), (w0, w4), (w0, w6),
-		 (w1, w1), (w1, w3), (w1, w5), (w1, w7),
-		 (w2, w0), (w2, w2), (w2, w4), (w2, w6),
-		 (w3, w1), (w3, w3), (w3, w5), (w3, w7),
-		 (w4, w0), (w4, w2), (w4, w4), (w4, w6),
-		 (w5, w1), (w5, w3), (w5, w5), (w5, w7),
-		 (w6, w0), (w6, w2), (w6, w4), (w6, w6),
-		 (w7, w1), (w7, w3), (w7, w5), (w7, w7),
-		 }
-		a1 = {
-		 (w0, w0), (w0, w1), (w0, w4), (w0, w5),
-		 (w1, w0), (w1, w1), (w1, w4), (w1, w5),
-		 (w2, w2), (w2, w3), (w2, w6), (w2, w7),
-		 (w3, w2), (w3, w3), (w3, w6), (w3, w7),
-		 (w4, w0), (w4, w1), (w4, w4), (w4, w5),
-		 (w5, w0), (w5, w1), (w5, w4), (w5, w5),
-		 (w6, w2), (w6, w3), (w6, w6), (w6, w7),
-		 (w7, w2), (w7, w3), (w7, w6), (w7, w7),
-		 }
-		a2 = {
-		 (w0, w0), (w0, w1), (w0, w2), (w0, w3),
-		 (w1, w0), (w1, w1), (w1, w2), (w1, w3),
-		 (w2, w0), (w2, w1), (w2, w2), (w2, w3),
-		 (w3, w0), (w3, w1), (w3, w2), (w3, w3),
-		 (w4, w4), (w4, w5), (w4, w6), (w4, w7),
-		 (w5, w4), (w5, w5), (w5, w6), (w5, w7),
-		 (w6, w4), (w6, w5), (w6, w6), (w6, w7),
-		 (w7, w4), (w7, w5), (w7, w6), (w7, w7),
-		 }
+			a0 = {
+			(w0, w0), (w0, w2), 
+			(w1, w1), (w1, w3), 
+			(w2, w0), (w2, w2), 
+			(w3, w1), (w3, w3), 
+			}
+			a1 = {
+			(w0, w0), (w0, w1), 
+			(w1, w0), (w1, w1), 
+			(w2, w2), (w2, w3), 
+			(w3, w2), (w3, w3), 
+			}
 	}
 }

@@ -6,6 +6,21 @@
 
 namespace del {
 
+	Node::Node(State state, Node_Id id, Node* parent, Action action_from_parent, bool root) :
+		state(state), id(id), parents({ {parent, action_from_parent } }), root(root), type(Node_Type::And),
+		dead(false), solved(false), hash(0) 
+	{
+	
+	}
+
+	// TODO - Don't create dummy action (though it won't get used)
+	Node::Node(State state, Node_Id id, Node* parent, bool root) :
+		state(state), id(id), parents({ {parent, {} } }), root(root), type(Node_Type::Or),
+		dead(false), solved(false), hash(0) 
+	{
+	
+	}
+
 	bool Node::is_goal(const Formula& goal_formula, const Domain& domain) const
 	{
 		return valuate(goal_formula, domain);
@@ -19,14 +34,14 @@ namespace del {
 		return id;
 	}
 
-	void Node::add_child(Node_Id node) {
+	void Node::add_child(Node* node) {
 		for (auto& child : children) {
 			if (child == node) return;
 		}
 		children.push_back(node);
 	}
 
-	void Node::add_parent(Node_Id node, Action action) {
+	void Node::add_parent(Node* node, const Action& action) {
 		// TODO - Should maybe prioritise the parent with lowest action cost
 		for (auto& parent : parents) {
 			if (parent.first == node) return;
@@ -34,7 +49,7 @@ namespace del {
 		parents.emplace_back(node, action);
 	}
 
-	void Node::add_parent(Node_Id node) {
+	void Node::add_parent(Node* node) {
 		// TODO - Should maybe prioritise the parent with lowest action cost
 		for (auto& parent : parents) {
 			if (parent.first == node) return;
@@ -50,11 +65,11 @@ namespace del {
 		return hash;
 	}
 
-	const std::vector<std::pair<Node_Id, Action>>& Node::get_parents() const {
+	const std::vector<std::pair<Node*, Action>>& Node::get_parents() const {
 		return parents;
 	}
 
-	const std::vector<Node_Id>& Node::get_children() const {
+	const std::vector<Node*>& Node::get_children() const {
 		return children;
 	}
 
@@ -62,7 +77,7 @@ namespace del {
 		return type;
 	}
 
-	const Action& Node::get_parent_action(Node_Id parent) const {
+	const Action& Node::get_parent_action(Node* parent) const {
 		for (auto& parent_entry : parents) {
 			if (parent_entry.first == parent) return parent_entry.second;
 		}
@@ -94,7 +109,7 @@ namespace del {
 		solved = true;
 	}
 
-	bool Node::check_if_dead(Graph& graph) {
+	bool Node::check_if_dead() {
 		if (dead) {
 			return true;
 		}
@@ -103,11 +118,11 @@ namespace del {
 		}
 
 		if (type == Node_Type::And) {
-			dead |= check_if_dead_and(graph);
+			dead |= check_if_dead_and();
 			return dead;
 		}
 		else if (type == Node_Type::Or) {
-			dead |= check_if_dead_or(graph);
+			dead |= check_if_dead_or();
 			return dead;
 		}
 		else {
@@ -115,18 +130,18 @@ namespace del {
 			return true;
 		}
 	}
-	bool Node::check_if_dead_and(Graph& graph) {
+	bool Node::check_if_dead_and() {
 		for (auto child : children) {
-			if (graph.get_node(child).is_dead()) {
+			if (child->is_dead()) {
 				dead = true;
 				return true;
 			}
 		}
 		return false;
 	}
-	bool Node::check_if_dead_or(Graph& graph) {
+	bool Node::check_if_dead_or() {
 		for (auto child : children) {
-			if (!graph.get_node(child).is_dead()) {
+			if (!child->is_dead()) {
 				return false;
 			}
 		}
@@ -134,7 +149,7 @@ namespace del {
 		return true;
 	}
 
-	bool Node::check_if_solved(Graph& graph) {
+	bool Node::check_if_solved() {
 		if (solved) {
 			return true;
 		}
@@ -143,11 +158,11 @@ namespace del {
 		}
 
 		if (type == Node_Type::And) {
-			solved |= check_if_solved_and(graph);
+			solved |= check_if_solved_and();
 			return solved;
 		}
 		else if (type == Node_Type::Or) {
-			solved |= check_if_solved_or(graph);
+			solved |= check_if_solved_or();
 			return solved;
 		}
 		else {
@@ -155,18 +170,18 @@ namespace del {
 			return false;
 		}
 	}
-	bool Node::check_if_solved_or(Graph& graph) {
+	bool Node::check_if_solved_or() {
 		for (auto child : children) {
-			if (graph.get_node(child).is_solved()) {
+			if (child->is_solved()) {
 				solved = true;
 				return true;
 			}
 		}
 		return false;
 	}
-	bool Node::check_if_solved_and(Graph& graph) {
+	bool Node::check_if_solved_and() {
 		for (auto child : children) {
-			if (!graph.get_node(child).is_solved()) {
+			if (!child->is_solved()) {
 				return false;
 			}
 		}
@@ -188,7 +203,7 @@ namespace del {
 			} else {
 				parents_string += ", ";
 			}
-			parents_string += std::to_string(parent.first.id);
+			parents_string += std::to_string(parent.first->get_id().id);
 		}
 
 
@@ -206,14 +221,14 @@ namespace del {
 			} else {
 				result += ", ";
 			}
-			result += std::to_string(child.id);
+			result += std::to_string(child->get_id().id);
 		}
 
 		result += ")";
 		result += "\n--- hash: " + std::to_string(hash);
 		result += "\n--- cost: " + std::to_string(state.get_cost());
 		for (auto& parent : parents) {
-			result += "\n--- Action from parent " + std::to_string(parent.first.id) + "\n" + (type == Node_Type::Or ? "Agent split, no action" : parent.second.to_string(domain)) + " \n";
+			result += "\n--- Action from parent " + std::to_string(parent.first->get_id().id) + "\n" + (type == Node_Type::Or ? "Agent split, no action" : parent.second.to_string(domain)) + " \n";
 		}
 		result += state.to_string(domain);
 		return result;

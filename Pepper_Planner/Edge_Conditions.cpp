@@ -58,7 +58,7 @@ namespace del
 	}
 
 	Agent_Edge_Conditions::Agent_Edge_Conditions(const General_Action& general_action, const Propositions_Lookup& propositions_Lookup, const Action_Events& action_events, const Atoms& arguments, const Agents& agents)
-		: edge_conditions(general_action.get_edge_conditions().size())
+		: edge_conditions(agents.size())
 	{
 		std::map<std::string, Event_Id> event_name_to_id = action_events.get_name_to_id();
 		const General_Agent_Edge_Conditions& other = general_action.get_edge_conditions();
@@ -88,7 +88,7 @@ namespace del
 				{
 					converted_arguments.set(REST_INDEX, agent.get_atom_id());
 					Converter general_to_instantiated = general_action.create_converter(propositions_Lookup, converted_arguments);
-
+					assert(agent.get_id().id < edge_conditions.size());
 					edge_conditions.at(agent.get_id().id) = Edge_Conditions(general_edge_conditions, event_name_to_id, general_to_instantiated);
 				}
 			}

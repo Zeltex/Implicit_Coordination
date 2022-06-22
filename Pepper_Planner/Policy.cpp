@@ -1,6 +1,12 @@
 #include "Policy.hpp"
-#include "Node_Comparator.hpp"
+
 #include "Core.hpp"
+#include "Node_Comparator.hpp"
+
+
+#include <iostream>
+#include <filesystem>
+#include <fstream>
 
 namespace del {
 
@@ -43,43 +49,35 @@ namespace del {
 		return {};
 	}
 
-	void Policy::add_entry(const State& state, const Action& action, const Node_Id& node_id) {
+	void Policy::add_entry(const State& state, const Action& action, const Node* node) {
 		auto hash = state.to_hash();
-		while (true) {
-			auto potential_match = policy.find(hash);
-			if (potential_match == policy.end()) {
-				policy.insert({ hash, Policy_Entry{state, {{action, node_id}}} });
-				return;
-			}
-
-			// TODO - Need to not add duplicates
-			auto& [policy_state, policy_actions] = (*potential_match).second;
-			if (policy_state.is_bisimilar_to(state)) {
-				policy_actions.emplace_back(action, node_id);
-				return;
-			}
-			++hash;
+		auto it = policy.find(hash);
+		if (it == policy.end()) 
+		{
+			policy.insert({ hash, Policy_Entry{state, {{action, node}}} });
 		}
-
 	}
 
 	std::string Policy::to_string(const Domain& domain) const {
 		size_t indentation = 4;
 		std::string result = get_indentation(indentation) + " Policy";
 		size_t counter = 0;
-		//for (auto policy_entry : policy) {
-		//	result += "\n" 
-		//		+ get_indentation(indentation - 1) 
-		//		+ " Entry " 
-		//		+ std::to_string(counter) 
-		//		+ "\n" 
-		//		//+ policy_entry.first.to_string(indentation - 2, domain) 
-		//		+ std::to_string(policy_entry.first)
-		//		+ "\n" 
-		//		+ policy_entry.second.to_string(indentation - 2, domain) 
-		//		+ "\n";
-		//	counter++;
-		//}
+		for (auto& [hash, entry] : policy) {
+			auto temp_action_string = entry.actions.begin()->first.to_string(domain);
+			result += "\n" 
+				+ get_indentation(indentation - 1) 
+				+ " Entry " 
+				+ std::to_string(counter) 
+				+ "\n" 
+				+ std::to_string(hash)
+				+ "\n" 
+				+ entry.state.to_string(domain) 
+				+ "\n"
+				+ entry.actions.begin()->first.to_string(domain)
+				+ "\n---------------------------------\n\n";
+			std::cout << result << std::endl;
+			counter++;
+		}
 		return result;
 	}
 }

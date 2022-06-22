@@ -117,13 +117,17 @@ namespace del {
 
 	class Node;
 	struct Node_Entry {
-		Node_Entry(Node_Id id, size_t cost): id(id), cost(cost){}
-		Node_Id id;
+		Node_Entry(const Node* node, size_t cost): node(node), cost(cost){}
+		const Node* node;
 		size_t cost;
 
 	};
 	struct Node_Entry_Comparator {
 		bool operator()(const Node_Entry& lhs, const Node_Entry& rhs);
+	};
+
+	struct Node_Cost_Comparator {
+		bool operator()(const Node* lhs, const Node* rhs);
 	};
 
 	class State;

@@ -1,5 +1,7 @@
 #include "Planner_Debug_Info.hpp"
 
+#include <assert.h>
+
 namespace del 
 {
 	Debug_Info::Debug_Info(const Domain& domain, const Graph& graph)
@@ -21,17 +23,12 @@ namespace del
 #endif
 	}
 
-	void Debug_Info::print_single(const Node& node) const
+	void Debug_Info::print_single(const Node* node) const
 	{
 #if DEBUG_PRINT == 1 && PRINT_NODES == 1
 		std::cout << "\nNode " << node.id << " at depth " << action_node.get_cost() << "\n";
 		std::cout << node.to_string(domain) << std::endl;;
 #endif
-	}
-
-	void Debug_Info::print_single(const Node_Id& node) const
-	{
-		print_single(graph->get_node(node));
 	}
 
 	void Debug_Info::update_and(const State& state)
@@ -41,6 +38,7 @@ namespace del
 		if (and_layer_size.size() <= cost) {
 			and_layer_size.push_back(0);
 		}
+		assert(cost < and_layer_size.size());
 		and_layer_size[cost] ++;
 #endif
 	}

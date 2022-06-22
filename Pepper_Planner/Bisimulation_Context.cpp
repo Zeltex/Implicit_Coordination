@@ -21,19 +21,19 @@ namespace del::bisimulation_context {
 	struct Agent_World_Reachable
 	{
 		Agent_Id agent;
-		World_Id world;
+		const World* world;
 
 		bool operator!= (const Agent_World_Reachable& other) const
 		{
 			return agent != other.agent && world != other.world;
 		}
 
-		bool operator< (const Agent_World_Reachable& other) const
-		{
-			if (agent != other.agent) return agent < other.agent;
-			if (world != other.world) return world < other.world;
-			return false;
-		}
+		//bool operator< (const Agent_World_Reachable& other) const
+		//{
+		//	if (agent != other.agent) return agent < other.agent;
+		//	if (*world != *other.world) return *world < *other.world;
+		//	return false;
+		//}
 	};
 
 	struct Agent_Block_Reachable
@@ -61,6 +61,16 @@ namespace del::bisimulation_context {
 			agent_block_reachables.insert(agent_block_reachable);
 		}
 
+		bool operator!=(const Signature& other) const
+		{
+			return !(*this == other);
+		}
+
+		bool operator==(const Signature& other) const
+		{
+			return !(*this < other || other < *this);
+		}
+
 		bool operator<(const Signature& other) const
 		{
 			if (agent_block_reachables.size() != other.agent_block_reachables.size()) 
@@ -83,27 +93,35 @@ namespace del::bisimulation_context {
 		std::set<Agent_Block_Reachable> agent_block_reachables;
 	};
 
+	bool compare_worlds(const World* a, const World* b) {
+		return a < b;
+	}
 
 	struct Block 
 	{
-		void insert(const World& world) 
+		Block()
+			: worlds(compare_worlds)
 		{
-			worlds.push_back(world.get_id());
+
 		}
 
-		void remove(const World_Id& world) 
+		void insert(const World* world) 
+		{
+			worlds.insert(world);
+		}
+
+		void remove(const World* world) 
 		{
 			worlds.erase(std::find(worlds.begin(), worlds.end(), world));
 		}
 
-		Propositions get_propositions(const State& state) const
+		Propositions get_propositions() const
 		{
-			Propositions propositions = state.get_world(worlds.front()).get_true_propositions();
-			propositions.sort();
+			Propositions propositions = (*worlds.begin())->get_true_propositions();
 			return propositions;
 		}
 
-		std::vector<World_Id> worlds;
+		std::set<const World*, decltype(compare_worlds)*> worlds;
 	};
 
 	struct Agent_World_Reachables
@@ -112,7 +130,7 @@ namespace del::bisimulation_context {
 		{
 			for (const World& world_from : state.get_worlds())
 			{
-				std::set<Agent_World_Reachable> reachables;
+				std::vector<Agent_World_Reachable> reachables;
 				for (size_t i = 0; i < state.get_number_of_agents(); ++i)
 				{
 					Agent_Id agent = { i };
@@ -120,20 +138,21 @@ namespace del::bisimulation_context {
 					{
 						if (state.is_one_reachable(agent, world_from.get_id(), world_to.get_id()))
 						{
-							reachables.insert({ agent, world_to.get_id() });
+							reachables.push_back({ agent, &world_to });
 						}
 					}
 				}
-				data.insert({ world_from.get_id(), reachables });
+				data.insert({ &world_from, reachables });
 			}
 		}
 
-		const std::set<Agent_World_Reachable>& get(World_Id world) const
+		const std::vector<Agent_World_Reachable>& get(const World* world) const
 		{
 			return data.at(world);
 		}
 
-		std::map<World_Id, std::set<Agent_World_Reachable>> data;
+		// Agent_World_Reachable don't need an ordering as they will be ordered by signature
+		std::map<const World*, std::vector<Agent_World_Reachable>> data;
 	};
 
 	struct Blocks
@@ -142,10 +161,10 @@ namespace del::bisimulation_context {
 		{
 			// Extract signatures
 			std::map<std::string, Block> signature_to_block;
-			for (World world : state.get_worlds())
+			for (const World& world : state.get_worlds())
 			{
 				std::string propositions = world.get_true_propositions().to_signature_string();
-				signature_to_block[propositions].insert(world);
+				signature_to_block[propositions].insert(&world);
 			}
 
 			// Create blocks
@@ -153,13 +172,14 @@ namespace del::bisimulation_context {
 				const Block& block = kvp.second;
 				blocks.push_back(block);
 				Block_Id block_index = { blocks.size() - 1 };
-				for (auto& world : block.worlds)
+				for (const World* world : block.worlds)
 				{
 					world_to_block.insert({ world, block_index });
 				}
 			}
 		}
-		Signature get_signature(const std::set<Agent_World_Reachable>& world_reachables)
+
+		Signature get_signature(const std::vector<Agent_World_Reachable>& world_reachables)
 		{
 			Signature result;
 			for (const Agent_World_Reachable& reachable : world_reachables)
@@ -173,7 +193,7 @@ namespace del::bisimulation_context {
 		void insert_block_and_update(const Block& block) 
 		{
 			Block_Id new_block_index = { blocks.size() };
-			for (const World_Id& world : block.worlds) 
+			for (const World* world : block.worlds) 
 			{
 				Block_Id& block_index = world_to_block.at(world);
 				blocks.at(block_index.id).remove(world);
@@ -182,20 +202,20 @@ namespace del::bisimulation_context {
 			blocks.push_back(block);
 		}
 
-		const Block_Id& get_block_id(World_Id index) const { return world_to_block.at(index); }
+		const Block_Id& get_block_id(const World* world) const { return world_to_block.at(world); }
 		const Block& get_block(size_t index) const { return blocks.at(index); }
 		const Block& get_block(Block_Id index) const { return blocks.at(index.id); }
 
 		size_t size() const { return blocks.size(); }
 
 		std::vector<Block> blocks;
-		std::map<World_Id, Block_Id> world_to_block;
+		std::map<const World*, Block_Id> world_to_block;
 
 	};
 
 	State contract(const State& state)
 	{
-		Agent_World_Reachables reachables(state);
+		Agent_World_Reachables agent_world_reachables(state);
 		Blocks blocks(state);
 		size_t old_length = -1;
 		size_t new_length = blocks.size();
@@ -209,18 +229,18 @@ namespace del::bisimulation_context {
 				bool first = true;
 
 				// Extract signatures
-				for (const World_Id& world_id : block.worlds)
+				for (const World* world : block.worlds)
 				{
-					const std::set<Agent_World_Reachable>& world_reachables = reachables.get(world_id);
+					const std::vector<Agent_World_Reachable>& world_reachables = agent_world_reachables.get(world);
 					Signature signature = blocks.get_signature(world_reachables);
 					if (first)
 					{
 						blockSignature = std::move(signature);
 						first = false;
 					}
-					else
+					else if (signature != blockSignature)
 					{
-						new_blocks[signature].insert(world_id);
+						new_blocks[signature].insert(world);
 					}
 				}
 
@@ -240,7 +260,7 @@ namespace del::bisimulation_context {
 		std::vector<World> worlds;
 		for (const Block& block : blocks.blocks)
 		{
-			worlds.push_back(World(World_Id{ worlds.size() }, block.get_propositions(state)));
+			worlds.push_back(World(World_Id{ worlds.size() }, block.get_propositions()));
 		}
 
 		// Set world relation
@@ -250,11 +270,10 @@ namespace del::bisimulation_context {
 			accessibility_relations.push_back({ Agent_Id{ i }, worlds.size() });
 		}
 
-		for (const auto& kvp : reachables.data)
+		for (const auto& [world_from, agent_world_reachables_data] : agent_world_reachables.data)
 		{
-			const World_Id& world_from = kvp.first;
 			const Block_Id& block_from = blocks.get_block_id(world_from);
-			for (const Agent_World_Reachable& reachable : kvp.second)
+			for (const Agent_World_Reachable& reachable : agent_world_reachables_data)
 			{
 				const Block_Id& block_to = blocks.get_block_id(reachable.world);
 				accessibility_relations.at(reachable.agent.id).set(block_from.to_world(), block_to.to_world());
@@ -263,9 +282,10 @@ namespace del::bisimulation_context {
 
 		// Set designated worlds
 		std::set<World_Id> designated_worlds;
-		for (const World_Id& world : state.get_designated_worlds()) 
+		for (const World_Id& world_id : state.get_designated_worlds()) 
 		{
-			designated_worlds.insert(blocks.get_block_id(world).to_world());
+			const World& world = state.get_world(world_id);
+			designated_worlds.insert(blocks.get_block_id(&world).to_world());
 		}
 
 		return State(worlds, accessibility_relations, designated_worlds, state.get_cost());

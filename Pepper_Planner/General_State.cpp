@@ -12,6 +12,7 @@
 namespace del {
 
 	General_State::General_State()
+		: cost(0), worlds(), designated_worlds(), agent_world_relations()
 	{
 
 	}
@@ -22,10 +23,6 @@ namespace del {
 		// TODO - Verify that this should not be transformed
 		std::vector<Proposition_Instance> proposition = proposition_instance_buffer.get();
 		worlds.push_back(General_World(name, world_id, std::move(proposition)));
-	}
-
-	void General_State::set_cost(size_t cost) {
-		this->cost = cost;
 	}
 
 	void General_State::set_single_designated_world(World_Id world) {

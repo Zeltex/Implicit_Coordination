@@ -3,11 +3,9 @@
 #include <fstream>
 #include <set>
 
+#include "Action.hpp"
 #include "Core.hpp"
-#include "Graph.hpp"
 #include "Domain.hpp"
-#include "Policy.hpp"
-
 
 namespace del {
 

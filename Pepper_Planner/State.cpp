@@ -250,7 +250,7 @@ namespace del {
 	}
 
 	bool State::operator==(const State& other) const {
-		if (cost != other.cost || worlds.size() != other.worlds.size() || designated_worlds.size() != other.designated_worlds.size())
+		if (worlds.size() != other.worlds.size() || designated_worlds.size() != other.designated_worlds.size())
 		{
 			return false;
 		}

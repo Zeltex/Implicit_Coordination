@@ -33,12 +33,6 @@ namespace del
 	{
 		domain.perform_action(name, arguments);
 	}
-	
-	//bool DEL_Interface::create_policy(Formula goal, const std::string& planning_agent, const bool is_benchmark) 
-	//{	
-	//	this->goal = std::move(goal);
-	//	return create_policy(planning_agent, is_benchmark);
-	//}
 
 	bool DEL_Interface::create_policy(const std::string& planning_agent_name, const bool is_benchmark) 
 	{
@@ -54,7 +48,9 @@ namespace del
 
 	std::string DEL_Interface::get_state_print() const
 	{
-		return domain.get_current_state().to_string(domain);
+		State contracted_state = domain.get_current_state().contract();
+		contracted_state.shift_perspective({ 0 });
+		return contracted_state.to_string(domain) + std::string("\nHash ") + std::to_string(contracted_state.to_hash());
 	}
 
 	std::string DEL_Interface::get_action_print(const Action& action) const

@@ -12,37 +12,37 @@ namespace PepperPlannerTests
 {
 	using namespace del;
 
-	class Input : public Formula_Input_Interface {
-	public:
-		Input(std::unordered_map<size_t, std::unordered_set<Proposition>> propositions) : propositions(propositions) {}
-		bool valuate_prop(const Proposition& prop, const size_t world_id) const { 
-			auto& prop_list = propositions.at(world_id);
+	//class Input : public Formula_Input_Interface {
+	//public:
+	//	Input(std::unordered_map<size_t, std::unordered_set<Proposition>> propositions) : propositions(propositions) {}
+	//	bool valuate_prop(const Proposition& prop, const size_t world_id) const { 
+	//		auto& prop_list = propositions.at(world_id);
 
-			return std::find(prop_list.begin(), prop_list.end(), prop) != prop_list.end(); 
-		
-		}
-		virtual std::set<size_t> get_reachable_worlds(const Proposition& agent_id, size_t world_id) const 
-		{ 
-			return{};
-			//return std::set<size_t>(worlds.at(world_id)); 
-		}
-		std::unordered_map<size_t, std::unordered_set<Proposition>> propositions;
-		std::unordered_map<size_t, std::vector<size_t>> worlds;
-	};
+	//		return std::find(prop_list.begin(), prop_list.end(), prop) != prop_list.end(); 
+	//	
+	//	}
+	//	virtual std::set<size_t> get_reachable_worlds(const Proposition& agent_id, size_t world_id) const 
+	//	{ 
+	//		return{};
+	//		//return std::set<size_t>(worlds.at(world_id)); 
+	//	}
+	//	std::unordered_map<size_t, std::unordered_set<Proposition>> propositions;
+	//	std::unordered_map<size_t, std::vector<size_t>> worlds;
+	//};
 
-	Input get_input() {
-		std::unordered_map<size_t, std::unordered_set<Proposition>> propositions;
-		propositions[0] = { { 0 } };
-		Input input(propositions);
-		return std::move(input);
-	}
+	//Input get_input() {
+	//	std::unordered_map<size_t, std::unordered_set<Proposition>> propositions;
+	//	propositions[0] = { { 0 } };
+	//	Input input(propositions);
+	//	return std::move(input);
+	//}
 
-	Input get_input(std::unordered_set<Proposition>&& props) {
-		std::unordered_map<size_t, std::unordered_set<Proposition>> propositions;
-		propositions[0] = props;
-		Input input(propositions);
-		return std::move(input);
-	}
+	//Input get_input(std::unordered_set<Proposition>&& props) {
+	//	std::unordered_map<size_t, std::unordered_set<Proposition>> propositions;
+	//	propositions[0] = props;
+	//	Input input(propositions);
+	//	return std::move(input);
+	//}
 
 	TEST_CLASS(Formula_Valuation_Tests)
 	{

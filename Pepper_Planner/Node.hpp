@@ -13,26 +13,21 @@ namespace del {
 
 	public:
 		Node() = delete;
-		Node(State state, Node_Id id, Node_Id parent, Action action_from_parent, bool root) :
-			state(state), id(id), parents({ {parent, action_from_parent } }), root(root), type(Node_Type::And),
-			dead(false), solved(false), hash(0) {};
-		// TODO - Don't create dummy action (though it won't get used)
-		Node(State state, Node_Id id, Node_Id parent, bool root) :
-			state(state), id(id), parents({ {parent, {} } }), root(root), type(Node_Type::Or),
-			dead(false), solved(false), hash(0) {};
-		void add_child(Node_Id node);
-		void add_parent(Node_Id node, Action action);
-		void add_parent(Node_Id node);
+		Node(State state, Node_Id id, Node* parent, Action action_from_parent, bool root);
+		Node(State state, Node_Id id, Node* parent, bool root);
+		void add_child(Node* node);
+		void add_parent(Node* node, const Action& action);
+		void add_parent(Node* node);
 		void calculate_hash();
 		void set_dead();
 		void set_solved();
 
-		const std::vector<Node_Id>&						get_children() const;
+		const std::vector<Node*>&						get_children() const;
 		size_t											get_cost() const;
 		size_t											get_hash() const;
 		Node_Id											get_id() const;
-		const Action&									get_parent_action(Node_Id parent) const;
-		const std::vector<std::pair<Node_Id, Action>>&	get_parents() const;
+		const Action&									get_parent_action(Node* parent) const;
+		const std::vector<std::pair<Node*, Action>>&	get_parents() const;
 		const State&									get_state()const ;
 		Node_Type										get_type() const;
 
@@ -40,8 +35,8 @@ namespace del {
 		bool is_dead() const;
 		bool is_solved() const;
 		bool is_goal(const Formula& goal_formula, const Domain& domain) const;
-		bool check_if_dead(Graph& graph);
-		bool check_if_solved(Graph& graph);
+		bool check_if_dead();
+		bool check_if_solved();
 		bool valuate(const Formula& formula, const Domain& domain) const;
 		
 		std::string to_string(const Domain& domain) const;
@@ -49,19 +44,19 @@ namespace del {
 
 	private:
 
-		bool check_if_dead_and(Graph& graph);
-		bool check_if_dead_or(Graph& graph);
-		bool check_if_solved_and(Graph& graph);
-		bool check_if_solved_or(Graph& graph);
+		bool check_if_dead_and();
+		bool check_if_dead_or();
+		bool check_if_solved_and();
+		bool check_if_solved_or();
 
 		Node_Type type;
 		State state;
 		Node_Id id;
-		std::vector<std::pair<Node_Id, Action>> parents;
+		std::vector<std::pair<Node*, Action>> parents;
 		bool root;
 		bool dead;
 		bool solved;
-		std::vector<Node_Id> children;
+		std::vector<Node*> children;
 		size_t hash;
 	};
 }

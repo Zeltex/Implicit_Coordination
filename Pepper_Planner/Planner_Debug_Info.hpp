@@ -14,8 +14,7 @@ namespace del
 		Debug_Info(const Domain& domain, const Graph& graph);
 		void print_final() const;
 		void print_all() const;
-		void print_single(const Node& node) const;
-		void print_single(const Node_Id& node) const;
+		void print_single(const Node* node) const;
 		void update_and(const State& state);
 		void update_or(const State& state);
 	private:
