@@ -8,12 +8,12 @@
 #include "World.hpp"
 #include "Types.hpp"
 #include "Misc.hpp"
-#include "Agents.hpp"
 #include "Accessibility_Relation.hpp"
 
 namespace del {
 
 	class Action;
+	class Agents;
 	class Domain;
 	class General_State;
 	class State {
@@ -21,7 +21,7 @@ namespace del {
 		State();
 		State(const std::vector<World>& worlds, const Accessibility_Relations& accessbility_relations, const std::set<World_Id>& designated_worlds, size_t cost);
 		State(const State& other, World_Id designated_world);
-		State(const General_State& other, const Propositions_Lookup& propositions_lookup);
+		State(const General_State& other, const Propositions_Lookup& propositions_lookup, const Agents& agents);
 
 		virtual const Propositions& get_true_propositions(World_Id world_id) const;
 		virtual std::set<size_t> get_reachable_worlds(Agent_Id agent_id, World_Id world_id) const;

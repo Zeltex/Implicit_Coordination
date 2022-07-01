@@ -264,11 +264,7 @@ namespace del::bisimulation_context {
 		}
 
 		// Set world relation
-		std::vector<Accessibility_Relation> accessibility_relations;
-		for (size_t i = 0; i < state.get_number_of_agents(); ++i)
-		{
-			accessibility_relations.push_back({ Agent_Id{ i }, worlds.size() });
-		}
+		Accessibility_Relations accessibility_relations(worlds.size(), state.get_number_of_agents());
 
 		for (const auto& [world_from, agent_world_reachables_data] : agent_world_reachables.data)
 		{
@@ -276,7 +272,7 @@ namespace del::bisimulation_context {
 			for (const Agent_World_Reachable& reachable : agent_world_reachables_data)
 			{
 				const Block_Id& block_to = blocks.get_block_id(reachable.world);
-				accessibility_relations.at(reachable.agent.id).set(block_from.to_world(), block_to.to_world());
+				accessibility_relations.set(reachable.agent, block_from.to_world(), block_to.to_world());
 			}
 		}
 

@@ -1,44 +1,29 @@
+#include "State.hpp"
+
 #include "Action.hpp"
+#include "Agents.hpp"
 #include "Bisimulation_Context.hpp"
 #include "Domain.hpp"
 #include "Formula_Input_Impl.hpp"
 #include "General_State.hpp"
-#include "State.hpp"
 
 namespace del {
 
 
-	State::State(const General_State& other, const Propositions_Lookup& propositions_lookup)
+	State::State(const General_State& other, const Propositions_Lookup& propositions_lookup, const Agents& agents)
 		: cost(other.cost),
 		designated_worlds(other.designated_worlds),
-		accessibility_relations(other.worlds.size(), other.agent_world_relations.size())
+		accessibility_relations(other.worlds.size(), agents.size())
 	{
-		// General_World
 		for (const General_World& general_world : other.worlds)
 		{
 			worlds.push_back({ general_world, propositions_lookup });
 		}
 
-		// Get agents size
-		std::set<Agent_Id> agents;
 		for (const Agent_World_Relation& relation : other.agent_world_relations)
 		{
-			agents.insert(relation.agent);
+			accessibility_relations.set(relation.agent, relation.world_from, relation.world_to);
 		}
-
-		// Init storage
-		std::vector<Accessibility_Relation> agent_relations;
-		for (size_t i = 0; i < agents.size(); ++i)
-		{
-			agent_relations.push_back({ Agent_Id{i}, other.worlds.size() });
-		}
-
-		// Fill storage
-		for (const Agent_World_Relation& relation : other.agent_world_relations)
-		{
-			agent_relations.at(relation.agent.id).set(relation.world_from, relation.world_to);
-		}
-		accessibility_relations = { agent_relations };
 	}
 
 	State::State(const std::vector<World>& worlds, const Accessibility_Relations& accessbility_relations, const std::set<World_Id>& designated_worlds, size_t cost)
@@ -223,7 +208,7 @@ namespace del {
 
 
 		// Update accessbility relations
-		Accessibility_Relations new_accessbility_relations = accessibility_relations.product_update(world_conversion, action, domain, *this);
+		Accessibility_Relations new_accessbility_relations = accessibility_relations.product_update(world_conversion, action, domain, *this, new_world_id.id);
 
 		if (!new_accessbility_relations.is_serial_transitive_euclidean())
 		{

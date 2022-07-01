@@ -1,0 +1,33 @@
+_domain Pepper {
+	_types = [pos, agent]
+	_propositions = [
+		prop(pos p)
+	]
+}
+
+_problem Example_2 {
+_objects = {
+	agent = [a0]
+	pos = [p0]
+}
+
+_initial_state = [
+]
+
+_world w0 [prop(p0)]
+_world w1 [prop(p0)]
+_world w2 [prop(p0)]
+_world w3 [prop(p0)]
+
+_goal = [ TOP ] 
+
+		_designated_worlds = [ w0 ]
+		_reachability = {
+			a0 = {
+			 (w0, w0),
+			 (w0, w1), (w1, w1),
+			 (w0, w2), (w2, w2), 
+			 }
+		}
+	}
+	

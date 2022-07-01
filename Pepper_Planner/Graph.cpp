@@ -9,6 +9,14 @@
 
 namespace del {
 
+	Graph::~Graph()
+	{
+		for (Node* node : nodes)
+		{
+			delete node;
+		}
+	}
+
 	Graph::Graph()
 		: root(), frontier(), nodes(std::vector<Node*>()) 
 	{

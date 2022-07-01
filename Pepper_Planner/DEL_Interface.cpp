@@ -53,6 +53,11 @@ namespace del
 		return contracted_state.to_string(domain) + std::string("\nHash ") + std::to_string(contracted_state.to_hash());
 	}
 
+	const State& DEL_Interface::get_current_state() const
+	{
+		return domain.get_current_state();
+	}
+
 	std::string DEL_Interface::get_action_print(const Action& action) const
 	{
 		return action.to_string(domain);

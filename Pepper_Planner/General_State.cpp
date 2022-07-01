@@ -54,6 +54,7 @@ namespace del {
 
 	void General_State::add_accessibility_relation(Agent_Id agent, World_Id world_from, World_Id world_to)
 	{
+		agents.insert(agent);
 		agent_world_relations.push_back({ agent, world_from, world_to });
 	}
 

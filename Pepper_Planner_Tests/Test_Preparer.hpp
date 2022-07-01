@@ -10,6 +10,7 @@
 #include "Custom_Parser.hpp"
 #include "Domain.hpp"
 #include "DEL_Interface.hpp"
+#include "Types.hpp"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 

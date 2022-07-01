@@ -37,6 +37,10 @@ namespace del {
 			return this->id < other.id;
 		}
 
+		void operator++() {
+			++id;
+		}
+
 		std::string to_string() const
 		{
 			return std::to_string(id);

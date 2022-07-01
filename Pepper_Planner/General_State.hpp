@@ -31,6 +31,7 @@ namespace del {
 	private:
 
 		size_t cost;
+		std::set<Agent_Id> agents; // TODO - Implement
 		std::vector<General_World> worlds;
 		std::set<World_Id> designated_worlds;
 		std::vector<Agent_World_Relation> agent_world_relations;

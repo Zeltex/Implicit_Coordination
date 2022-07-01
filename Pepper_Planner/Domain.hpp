@@ -30,7 +30,7 @@ namespace del {
 		const Atoms&				get_atoms(const std::string& type) const;
 		const Atom&					get_atom(const std::string& atom_name) const;
 		const Atom&					get_atom(const Atom_Id& atom_id) const;
-		State						get_current_state() const;
+		const State&				get_current_state() const;
 		const Formula&				get_goal() const;
 		const Proposition&			get_proposition(const Proposition_Instance& proposition_instance) const;
 		const Proposition_Instance&	get_proposition_instance(const Proposition& proposition) const;

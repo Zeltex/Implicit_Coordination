@@ -14,7 +14,7 @@ namespace del
 		: agents(general_domain.agents),
 		atom_lookup(general_domain.objects),
 		propositions_lookup(general_domain.typed_propositions, atom_lookup),
-		states(1, State{ general_domain.state, propositions_lookup }),
+		states(1, State{ general_domain.state, propositions_lookup, agents }),
 		rigid_propositions(general_domain.rigid_propositions, propositions_lookup),
 		action_library(general_domain.actions, propositions_lookup, atom_lookup, agents)
 
@@ -36,7 +36,7 @@ namespace del
 		states.push_back(state);
 	}
 
-	State Domain::get_current_state() const {
+	const State& Domain::get_current_state() const {
 		return states.back();
 	}
 
