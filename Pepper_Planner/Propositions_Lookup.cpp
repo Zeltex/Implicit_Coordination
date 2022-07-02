@@ -1,13 +1,15 @@
-//Propositions_Lookup
-
 #include "Propositions_Lookup.hpp"
+
 #include "Atom_Lookup.hpp"
 #include "General_Typed_Propositions.hpp"
+#include "General_State.hpp"
+#include "Proposition_Instance_Buffer.hpp"
+
 #include <assert.h>
 
 namespace del
 {
-	Propositions_Lookup::Propositions_Lookup(const General_Typed_Propositions& typed_propositions, const Atom_Lookup& atom_lookup)
+	Propositions_Lookup::Propositions_Lookup(const General_Typed_Propositions& typed_propositions, const Atom_Lookup& atom_lookup, const General_State& state, const Proposition_Instance_Buffer& proposition_instance_buffer)
 	{
 
 		for (const General_Typed_Proposition& Typed_Proposition : typed_propositions)

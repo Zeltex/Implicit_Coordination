@@ -61,6 +61,62 @@ namespace del {
         }
     }
 
+    bool Formula_Component::valuate_plausability(const std::vector<Formula_Component>& all_formulas, const Propositions& propositions) const
+    {
+
+        switch (type) {
+        case Formula_Types::Top:
+        {
+            return true;
+        }
+        case Formula_Types::Bot:
+        {
+            return false;
+        };
+        case Formula_Types::Prop:
+        {
+            return propositions.contains(prop);
+        }
+        case Formula_Types::Not:
+        {
+            return true;
+        }
+        case Formula_Types::And:
+        {
+            for (const auto& formula : formulas) {
+                if (!all_formulas[formula.id].valuate_plausability(all_formulas, propositions)) {
+                    return false;
+                }
+            }
+            return formulas.size() > 0;
+        }
+        case Formula_Types::Or:
+        {
+            for (const auto& formula : formulas) {
+                if (all_formulas[formula.id].valuate_plausability(all_formulas, propositions)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        case Formula_Types::Believes:
+        {
+            return all_formulas[formula.id].valuate_plausability(all_formulas, propositions);
+        }
+        case Formula_Types::Everyone_Believes:
+        {
+            // TODO - Implement
+            return false;
+        }
+        case Formula_Types::Common_Knowledge:
+        {
+            // TODO - implement
+            return false;
+        }
+        }
+        return false;
+    }
+
     bool Formula_Component::valuate(
             const std::vector<Formula_Component>& all_formulas,
             const World_Id& world_id,

@@ -13,10 +13,10 @@ namespace del
 	Domain::Domain(const General_Domain& general_domain)
 		: agents(general_domain.agents),
 		atom_lookup(general_domain.objects),
-		propositions_lookup(general_domain.typed_propositions, atom_lookup),
+		propositions_lookup(general_domain.typed_propositions, atom_lookup, general_domain.state, general_domain.rigid_propositions),
 		states(1, State{ general_domain.state, propositions_lookup, agents }),
 		rigid_propositions(general_domain.rigid_propositions, propositions_lookup),
-		action_library(general_domain.actions, propositions_lookup, atom_lookup, agents)
+		action_library(general_domain.actions, propositions_lookup, atom_lookup, agents, rigid_propositions, states.front(), *this)
 
 	{
 		Converter converter = general_domain.proposition_instance_buffer.create_converter(propositions_lookup);

@@ -21,6 +21,18 @@ namespace del {
         }
     }
 
+    bool Formula::valuate_plausability(const Propositions& propositions) const
+    {
+        if (formulas.empty())
+        {
+            return true;
+        }
+        else
+        {
+            return formulas[root.id].valuate_plausability(formulas, propositions);
+        }
+    }
+
 	bool Formula::valuate(const World_Id& world_id, const Domain& domain, const State& state) const {
         if (formulas.empty()) 
         {

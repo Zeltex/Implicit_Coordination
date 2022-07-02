@@ -20,6 +20,7 @@ namespace del {
 		const char delim = ';';
 		std::string to_string(const std::vector<Formula_Component>& all_formulas, const Domain& domain) const;
 		bool valuate(const std::vector<Formula_Component>& all_formulas, const World_Id& world_id, const Domain& domain, const State& state) const;
+		bool valuate_plausability(const std::vector<Formula_Component>& all_formulas, const Propositions& propositions) const;
 		std::string get_string_component(const std::vector<Formula_Id>& formulas, const std::vector<Formula_Component>& all_formulas, const Domain& domain) const;
 		Formula_Types get_type() const;
 		const Proposition& get_proposition() const;

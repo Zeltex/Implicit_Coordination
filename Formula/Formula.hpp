@@ -20,6 +20,8 @@ namespace del {
 		Formula(const Formula& other, const Converter& general_to_ground);
 		std::string to_string(const Domain& domain) const;
 		bool valuate(const World_Id& world_id, const Domain& domain, const State& state) const;
+
+		bool valuate_plausability(const Propositions& propositions) const;
 		Formula_Id f_top();
 		Formula_Id f_bot();
 		Formula_Id f_prop(Proposition proposition);
