@@ -16,7 +16,7 @@ _domain Pepper {
 		_owner = agent agent
 		_designated_events = [event0]
 		_event event0 { 
-			_preconditions = ( AND( at(agent, from), free(to), adj(from, to), NOT(stopped(agent))) )
+			_preconditions = ( AND( AND( AND( at(agent, from), free(to)), adj(from, to)), NOT(stopped(agent))) )
 			_effect_add = [ at(agent, to), free(from) ]
 			_effect_delete = [ at(agent, from), free(to) ]
 		}
@@ -35,7 +35,7 @@ _domain Pepper {
 		_owner = agent agent
 		_designated_events = [event0]
 		_event event0 { 
-			_preconditions = ( AND(at(agent, p), goal(agent, p), NOT(stopped(agent)) ))
+			_preconditions = ( AND( AND( at(agent, p), goal(agent, p)), NOT(stopped(agent)) ))
 			_effect_add = [ stopped(agent) ]
 			_effect_delete = [ ]
 		}

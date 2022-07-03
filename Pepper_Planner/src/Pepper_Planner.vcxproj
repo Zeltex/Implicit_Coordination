@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>16.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{6bcdcbbf-d555-40e2-bfb6-248428b0d52d}</ProjectGuid>
+    <RootNamespace>PepperPlanner</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>$(SolutionDir)Domain_Loader;$(SolutionDir)Formula</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir)Domain_Loader;$(SolutionDir)Formula</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>$(SolutionDir)Domain_Loader;$(SolutionDir)Formula;$(SolutionDir)Pepper_Planner</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir)Domain_Loader;$(SolutionDir)Formula;$(SolutionDir)Pepper_Planner</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\Domain_Loader\Custom_Lexer.cpp" />
+    <ClCompile Include="..\Domain_Loader\Custom_Parser.cpp" />
+    <ClCompile Include="..\Domain_Loader\General_Domain.cpp" />
+    <ClCompile Include="..\Domain_Loader\Loader.cpp" />
+    <ClCompile Include="..\Formula\Formula.cpp" />
+    <ClCompile Include="..\Formula\Formula_Component.cpp" />
+    <ClCompile Include="..\Formula\Formula_Converter.cpp" />
+    <ClCompile Include="Accessibility_Relation.cpp" />
+    <ClCompile Include="Action.cpp" />
+    <ClCompile Include="Action_Events.cpp" />
+    <ClCompile Include="Action_Library.cpp" />
+    <ClCompile Include="Agents.cpp" />
+    <ClCompile Include="Atom_Arguments.cpp" />
+    <ClCompile Include="Atom_Buffer.cpp" />
+    <ClCompile Include="Atom_Lookup.cpp" />
+    <ClCompile Include="Bisimulation_Context.cpp" />
+    <ClCompile Include="Converter.cpp" />
+    <ClCompile Include="Core.cpp" />
+    <ClCompile Include="Designated_Events.cpp" />
+    <ClCompile Include="Domain.cpp" />
+    <ClCompile Include="Domain_Interface_Implementation.cpp" />
+    <ClCompile Include="DEL_Interface.cpp" />
+    <ClCompile Include="Edge_Conditions.cpp" />
+    <ClCompile Include="Formula_Buffer.cpp" />
+    <ClCompile Include="General_Action_Events.cpp" />
+    <ClCompile Include="General_Agents.cpp" />
+    <ClCompile Include="General_Atoms.cpp" />
+    <ClCompile Include="General_Edge_Conditions.cpp" />
+    <ClCompile Include="Formula_Input_Impl.cpp" />
+    <ClCompile Include="General_Actions.cpp" />
+    <ClCompile Include="General_Objects.cpp" />
+    <ClCompile Include="General_State.cpp" />
+    <ClCompile Include="General_Typed_Proposition.cpp" />
+    <ClCompile Include="General_World.cpp" />
+    <ClCompile Include="Inputs_Buffer.cpp" />
+    <ClCompile Include="Misc.cpp" />
+    <ClCompile Include="Node_Comparator.cpp" />
+    <ClCompile Include="Planner.cpp" />
+    <ClCompile Include="Graph.cpp" />
+    <ClCompile Include="Node.cpp" />
+    <ClCompile Include="Planner_Debug_Info.cpp" />
+    <ClCompile Include="Policy.cpp" />
+    <ClCompile Include="Propositions.cpp" />
+    <ClCompile Include="Atoms.cpp" />
+    <ClCompile Include="Propositions_Lookup.cpp" />
+    <ClCompile Include="Proposition_Instance.cpp" />
+    <ClCompile Include="Proposition_Instance_Buffer.cpp" />
+    <ClCompile Include="State.cpp" />
+    <ClCompile Include="Types.cpp" />
+    <ClCompile Include="Variables_Buffer.cpp" />
+    <ClCompile Include="World.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\Domain_Loader\Custom_Lexer.hpp" />
+    <ClInclude Include="..\Domain_Loader\Custom_Parser.hpp" />
+    <ClInclude Include="..\Domain_Loader\General_Domain.hpp" />
+    <ClInclude Include="..\Domain_Loader\Domain_Interface.hpp" />
+    <ClInclude Include="..\Domain_Loader\Loader.hpp" />
+    <ClInclude Include="..\Domain_Loader\Loader_Types.hpp" />
+    <ClInclude Include="..\Domain_Loader\Maepl.hpp" />
+    <ClInclude Include="..\Formula\Formula.hpp" />
+    <ClInclude Include="..\Formula\Formula_Component.hpp" />
+    <ClInclude Include="..\Formula\Formula_Converter.hpp" />
+    <ClInclude Include="..\Formula\Formula_Core.hpp" />
+    <ClInclude Include="..\Formula\Formula_Input_Interface.hpp" />
+    <ClInclude Include="..\Formula\Formula_Types.hpp" />
+    <ClInclude Include="Accessibility_Relation.hpp" />
+    <ClInclude Include="Action.hpp" />
+    <ClInclude Include="Action_Events.hpp" />
+    <ClInclude Include="Action_Library.hpp" />
+    <ClInclude Include="Agents.hpp" />
+    <ClInclude Include="Atoms.hpp" />
+    <ClInclude Include="Atom_Arguments.hpp" />
+    <ClInclude Include="Atom_Buffer.hpp" />
+    <ClInclude Include="Atom_Lookup.hpp" />
+    <ClInclude Include="Bisimulation_Context.hpp" />
+    <ClInclude Include="Converter.hpp" />
+    <ClInclude Include="Core.hpp" />
+    <ClInclude Include="Designated_Events.hpp" />
+    <ClInclude Include="Domain.hpp" />
+    <ClInclude Include="Domain_Interface_Implementation.hpp" />
+    <ClInclude Include="DEL_Interface.hpp" />
+    <ClInclude Include="Edge_Conditions.hpp" />
+    <ClInclude Include="Formula_Buffer.hpp" />
+    <ClInclude Include="General_Action_Events.hpp" />
+    <ClInclude Include="General_Agents.hpp" />
+    <ClInclude Include="General_Atoms.hpp" />
+    <ClInclude Include="General_Edge_Conditions.hpp" />
+    <ClInclude Include="Formula_Input_Impl.hpp" />
+    <ClInclude Include="General_Actions.hpp" />
+    <ClInclude Include="General_Objects.hpp" />
+    <ClInclude Include="General_State.hpp" />
+    <ClInclude Include="General_Typed_Propositions.hpp" />
+    <ClInclude Include="General_World.hpp" />
+    <ClInclude Include="Inputs_Buffer.hpp" />
+    <ClInclude Include="Misc.hpp" />
+    <ClInclude Include="Node_Comparator.hpp" />
+    <ClInclude Include="Planner.hpp" />
+    <ClInclude Include="Graph.hpp" />
+    <ClInclude Include="Node.hpp" />
+    <ClInclude Include="Planner_Debug_Info.hpp" />
+    <ClInclude Include="Policy.hpp" />
+    <ClInclude Include="Propositions.hpp" />
+    <ClInclude Include="Propositions_Lookup.hpp" />
+    <ClInclude Include="Proposition_Instance.hpp" />
+    <ClInclude Include="Proposition_Instance_Buffer.hpp" />
+    <ClInclude Include="State.hpp" />
+    <ClInclude Include="Types.hpp" />
+    <ClInclude Include="Variables_Buffer.hpp" />
+    <ClInclude Include="World.hpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

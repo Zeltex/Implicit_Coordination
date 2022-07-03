@@ -40,7 +40,7 @@ namespace PepperPlannerTests
 			//auto sallyBelief = f.f_believes(agent_s, f.f_prop(in_basket));
 			auto anneBelief = f.f_believes(agent_a, f.f_prop(in_basket));
 			//f.f_and({ falseBelief, sallyBelief, anneBelief });
-			f.f_and({ falseBelief, anneBelief });
+			f.f_and(falseBelief, anneBelief);
 
 			// Anne believes Sally believes marble is in the box
 			Assert::IsTrue(di->query(f));

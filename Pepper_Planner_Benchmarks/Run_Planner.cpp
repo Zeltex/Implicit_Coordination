@@ -23,9 +23,9 @@ namespace del {
 	void execute(DEL_Interface& del_interface) {
 		bool failed = false;
 		while (!del_interface.is_solved()) {
-			std::optional<Action> action = del_interface.get_next_action();
-			if (action.has_value()) {
-				del_interface.perform_action(action.value());
+			const Action* action = del_interface.get_next_action();
+			if (action != nullptr) {
+				del_interface.perform_action(action);
 			}
 			else 
 			{

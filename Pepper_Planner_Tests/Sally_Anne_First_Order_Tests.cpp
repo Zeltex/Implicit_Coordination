@@ -101,7 +101,7 @@ namespace PepperPlannerTests
 			auto present_a = di->prop("present", "A");
 			auto in_basket = di->prop("in", "basket", "marble");
 			auto in_box = di->prop("in", "box", "marble");
-
+			tp->print_state();
 			di->perform_action("leave", { "A" });
 
 			Formula f0;
@@ -110,6 +110,7 @@ namespace PepperPlannerTests
 			// A believes marble in basket
 			Assert::IsTrue(di->query(f0));
 
+			tp->print_state();
 			di->perform_action("move", { "basket", "box", "marble", "S"});
 
 			// A believes marble in basket

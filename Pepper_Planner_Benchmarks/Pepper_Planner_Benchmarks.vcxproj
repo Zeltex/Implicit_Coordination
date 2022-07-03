@@ -116,7 +116,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Pepper_Planner;$(SolutionDir)Domain_Loader;$(SolutionDir)Formula</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Pepper_Planner\src;$(SolutionDir)Pepper_Planner\src\DEL;$(SolutionDir)Pepper_Planner\src\del\formula;$(SolutionDir)Pepper_Planner\src\del\action;$(SolutionDir)Pepper_Planner\src\domain_loader;$(SolutionDir)Pepper_Planner\src\domain_loader\buffers;$(SolutionDir)Pepper_Planner\src\domain_loader\del;$(SolutionDir)Pepper_Planner\src\planner</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -132,7 +132,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Pepper_Planner;$(SolutionDir)Domain_Loader;$(SolutionDir)Formula</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Pepper_Planner\src;$(SolutionDir)Pepper_Planner\src\DEL;$(SolutionDir)Pepper_Planner\src\del\formula;$(SolutionDir)Pepper_Planner\src\del\action;$(SolutionDir)Pepper_Planner\src\domain_loader;$(SolutionDir)Pepper_Planner\src\domain_loader\buffers;$(SolutionDir)Pepper_Planner\src\domain_loader\del;$(SolutionDir)Pepper_Planner\src\planner</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -146,6 +146,7 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MAPF_Benchmark.cpp" />
     <ClCompile Include="Run_Planner.cpp" />
+    <ClCompile Include="Source_Files.cpp" />
     <ClCompile Include="Utils.cpp" />
   </ItemGroup>
   <ItemGroup>

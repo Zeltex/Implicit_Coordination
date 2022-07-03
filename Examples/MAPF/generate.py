@@ -23,7 +23,7 @@ _domain Pepper {
 		_owner = agent agent
 		_designated_events = [event0]
 		_event event0 { 
-			_preconditions = ( AND( at(agent, from), free(to), adj(from, to), NOT(stopped(agent))) )
+			_preconditions = ( AND( AND( AND( at(agent, from), free(to)), adj(from, to)), NOT(stopped(agent)) ) )
 			_effect_add = [ at(agent, to), free(from) ]
 			_effect_delete = [ at(agent, from), free(to) ]
 		}
@@ -42,7 +42,7 @@ _domain Pepper {
 		_owner = agent agent
 		_designated_events = [event0]
 		_event event0 { 
-			_preconditions = ( AND(at(agent, p), goal(agent, p), NOT(stopped(agent)) ))
+			_preconditions = ( AND( AND(at(agent, p), goal(agent, p)), NOT(stopped(agent)) ))
 			_effect_add = [ stopped(agent) ]
 			_effect_delete = [ ]
 		}
@@ -206,11 +206,19 @@ def print_all():
 
             output = output[:-2] + ']'
 
-        output += F"{nl}{t}{t}_goal = [ AND("
+        output += F"{nl}{t}{t}_goal = [" 
+        # AND("
+        
+        for agent in range(n_agents - 1):
+            output += "AND( "
         for agent in range(n_agents):
-            output += F"stopped(a{agent}), "
+            output += F"stopped(a{agent})"
+            if agent == 0:
+                output += ", "
+            else:
+                output += "), "
         output = output[:-2]
-        output += ")]\n\t"
+        output += "]\n\t"
         output += r"""
 	_designated_worlds = [ w0 ]
 """

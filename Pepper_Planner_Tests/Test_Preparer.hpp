@@ -6,10 +6,15 @@
 #include <iostream>
 #include <filesystem>
 
+#include "Atom_Lookup.hpp"
 #include "Custom_Lexer.hpp"
 #include "Custom_Parser.hpp"
 #include "Domain.hpp"
 #include "DEL_Interface.hpp"
+#include "General_State.hpp"
+#include "General_Typed_Propositions.hpp"
+#include "Proposition_Instance_Buffer.hpp"
+#include "Propositions_Lookup.hpp"
 #include "Types.hpp"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
@@ -31,7 +36,7 @@ namespace del
 
 		}
 
-		void print_action(const Action& action)
+		void print_action(const Action* action)
 		{
 			print(del_interface->get_action_print(action));
 		}
@@ -42,10 +47,10 @@ namespace del
 			while (!del_interface->is_solved())
 			{
 				auto next_action = del_interface->get_next_action();
-				Assert::IsTrue(next_action.has_value());
-				del_interface->perform_action(next_action.value());
+				Assert::IsTrue(next_action != nullptr);
+				del_interface->perform_action(next_action);
 
-				print_action(next_action.value());
+				print_action(next_action);
 				print_state();
 			}
 			Assert::IsTrue(del_interface->is_solved());

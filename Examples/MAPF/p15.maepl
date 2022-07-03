@@ -15,7 +15,7 @@ _domain Pepper {
 		_owner = agent agent
 		_designated_events = [event0]
 		_event event0 { 
-			_preconditions = ( AND( at(agent, from), free(to), adj(from, to), NOT(stopped(agent))) )
+			_preconditions = ( AND( AND( AND( at(agent, from), free(to)), adj(from, to)), NOT(stopped(agent)) ) )
 			_effect_add = [ at(agent, to), free(from) ]
 			_effect_delete = [ at(agent, from), free(to) ]
 		}
@@ -34,7 +34,7 @@ _domain Pepper {
 		_owner = agent agent
 		_designated_events = [event0]
 		_event event0 { 
-			_preconditions = ( AND(at(agent, p), goal(agent, p), NOT(stopped(agent)) ))
+			_preconditions = ( AND( AND(at(agent, p), goal(agent, p)), NOT(stopped(agent)) ))
 			_effect_add = [ stopped(agent) ]
 			_effect_delete = [ ]
 		}
@@ -66,7 +66,7 @@ _initial_state = [
 	_world w5 [free(c0), free(c1), free(c2), at(a2, c3), free(c4), free(c5), free(c6), free(c7), at(a1, c8), free(c9), free(c10), at(a0, c11), free(x3), free(x8), goal(a0, x3), goal(a1, c3), goal(a2, c11)]
 	_world w6 [free(c0), free(c1), free(c2), at(a2, c3), free(c4), free(c5), free(c6), free(c7), at(a1, c8), free(c9), free(c10), at(a0, c11), free(x3), free(x8), goal(a0, c0), goal(a1, x8), goal(a2, c11)]
 	_world w7 [free(c0), free(c1), free(c2), at(a2, c3), free(c4), free(c5), free(c6), free(c7), at(a1, c8), free(c9), free(c10), at(a0, c11), free(x3), free(x8), goal(a0, x3), goal(a1, x8), goal(a2, c11)]
-		_goal = [ AND(stopped(a0), stopped(a1), stopped(a2))]
+		_goal = [AND( AND( stopped(a0), stopped(a1)), stopped(a2))]
 	
 	_designated_worlds = [ w0 ]
 	_reachability = {

@@ -18,6 +18,119 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Core.cpp" />
+    <ClCompile Include="src\DEL\Accessibility_Relation.cpp" />
+    <ClCompile Include="src\DEL\Action\Action.cpp" />
+    <ClCompile Include="src\DEL\Action\Action_Events.cpp" />
+    <ClCompile Include="src\DEL\Action\Action_Library.cpp" />
+    <ClCompile Include="src\DEL\Action\Designated_Events.cpp" />
+    <ClCompile Include="src\DEL\Action\Edge_Conditions.cpp" />
+    <ClCompile Include="src\DEL\Agents.cpp" />
+    <ClCompile Include="src\DEL\Atoms.cpp" />
+    <ClCompile Include="src\DEL\Atom_Arguments.cpp" />
+    <ClCompile Include="src\DEL\Atom_Lookup.cpp" />
+    <ClCompile Include="src\DEL\Bisimulation_Context.cpp" />
+    <ClCompile Include="src\DEL\Converter.cpp" />
+    <ClCompile Include="src\DEL\Domain.cpp" />
+    <ClCompile Include="src\DEL\Formula\Formula.cpp" />
+    <ClCompile Include="src\DEL\Formula\Formula_Component.cpp" />
+    <ClCompile Include="src\DEL\Formula\Formula_Converter.cpp" />
+    <ClCompile Include="src\DEL\Formula\Formula_Input_Impl.cpp" />
+    <ClCompile Include="src\DEL\Formula\Proposition_Instance.cpp" />
+    <ClCompile Include="src\DEL\Propositions_Lookup.cpp" />
+    <ClCompile Include="src\DEL\State.cpp" />
+    <ClCompile Include="src\DEL\World.cpp" />
+    <ClCompile Include="src\DEL_Interface.cpp" />
+    <ClCompile Include="src\Domain_Interface_Implementation.cpp" />
+    <ClCompile Include="src\Domain_Loader\Buffers\Atom_Buffer.cpp" />
+    <ClCompile Include="src\Domain_Loader\Buffers\Formula_Buffer.cpp" />
+    <ClCompile Include="src\Domain_Loader\Buffers\Inputs_Buffer.cpp" />
+    <ClCompile Include="src\Domain_Loader\Buffers\Proposition_Instance_Buffer.cpp" />
+    <ClCompile Include="src\Domain_Loader\Buffers\Variables_Buffer.cpp" />
+    <ClCompile Include="src\Domain_Loader\Custom_Lexer.cpp" />
+    <ClCompile Include="src\Domain_Loader\Custom_Parser.cpp" />
+    <ClCompile Include="src\Domain_Loader\DEL\General_Actions.cpp" />
+    <ClCompile Include="src\Domain_Loader\DEL\General_Action_Events.cpp" />
+    <ClCompile Include="src\Domain_Loader\DEL\General_Agents.cpp" />
+    <ClCompile Include="src\Domain_Loader\DEL\General_Atoms.cpp" />
+    <ClCompile Include="src\Domain_Loader\DEL\General_Domain.cpp" />
+    <ClCompile Include="src\Domain_Loader\DEL\General_Edge_Conditions.cpp" />
+    <ClCompile Include="src\Domain_Loader\DEL\General_Objects.cpp" />
+    <ClCompile Include="src\Domain_Loader\DEL\General_State.cpp" />
+    <ClCompile Include="src\Domain_Loader\DEL\General_Typed_Proposition.cpp" />
+    <ClCompile Include="src\Domain_Loader\DEL\General_World.cpp" />
+    <ClCompile Include="src\Domain_Loader\Loader.cpp" />
+    <ClCompile Include="src\Misc.cpp" />
+    <ClCompile Include="src\Planner\Graph.cpp" />
+    <ClCompile Include="src\Planner\Node.cpp" />
+    <ClCompile Include="src\Planner\Node_Comparator.cpp" />
+    <ClCompile Include="src\Planner\Planner.cpp" />
+    <ClCompile Include="src\Planner\Planner_Debug_Info.cpp" />
+    <ClCompile Include="src\Policy.cpp" />
+    <ClCompile Include="src\Propositions.cpp" />
+    <ClCompile Include="src\Types.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Core.hpp" />
+    <ClInclude Include="src\DEL\Accessibility_Relation.hpp" />
+    <ClInclude Include="src\DEL\Action\Action.hpp" />
+    <ClInclude Include="src\DEL\Action\Action_Events.hpp" />
+    <ClInclude Include="src\DEL\Action\Action_Library.hpp" />
+    <ClInclude Include="src\DEL\Action\Designated_Events.hpp" />
+    <ClInclude Include="src\DEL\Action\Edge_Conditions.hpp" />
+    <ClInclude Include="src\DEL\Agents.hpp" />
+    <ClInclude Include="src\DEL\Atoms.hpp" />
+    <ClInclude Include="src\DEL\Atom_Arguments.hpp" />
+    <ClInclude Include="src\DEL\Atom_Lookup.hpp" />
+    <ClInclude Include="src\DEL\Bisimulation_Context.hpp" />
+    <ClInclude Include="src\DEL\Converter.hpp" />
+    <ClInclude Include="src\DEL\Domain.hpp" />
+    <ClInclude Include="src\DEL\Formula\Formula.hpp" />
+    <ClInclude Include="src\DEL\Formula\Formula_Component.hpp" />
+    <ClInclude Include="src\DEL\Formula\Formula_Converter.hpp" />
+    <ClInclude Include="src\DEL\Formula\Formula_Core.hpp" />
+    <ClInclude Include="src\DEL\Formula\Formula_Input_Impl.hpp" />
+    <ClInclude Include="src\DEL\Formula\Formula_Input_Interface.hpp" />
+    <ClInclude Include="src\DEL\Formula\Formula_Types.hpp" />
+    <ClInclude Include="src\DEL\Formula\Proposition_Instance.hpp" />
+    <ClInclude Include="src\DEL\Propositions_Lookup.hpp" />
+    <ClInclude Include="src\DEL\State.hpp" />
+    <ClInclude Include="src\DEL\World.hpp" />
+    <ClInclude Include="src\DEL_Interface.hpp" />
+    <ClInclude Include="src\Domain_Interface.hpp" />
+    <ClInclude Include="src\Domain_Interface_Implementation.hpp" />
+    <ClInclude Include="src\Domain_Loader\Buffers\Atom_Buffer.hpp" />
+    <ClInclude Include="src\Domain_Loader\Buffers\Formula_Buffer.hpp" />
+    <ClInclude Include="src\Domain_Loader\Buffers\Inputs_Buffer.hpp" />
+    <ClInclude Include="src\Domain_Loader\Buffers\Proposition_Instance_Buffer.hpp" />
+    <ClInclude Include="src\Domain_Loader\Buffers\Variables_Buffer.hpp" />
+    <ClInclude Include="src\Domain_Loader\Custom_Lexer.hpp" />
+    <ClInclude Include="src\Domain_Loader\Custom_Parser.hpp" />
+    <ClInclude Include="src\Domain_Loader\DEL\General_Actions.hpp" />
+    <ClInclude Include="src\Domain_Loader\DEL\General_Action_Events.hpp" />
+    <ClInclude Include="src\Domain_Loader\DEL\General_Agents.hpp" />
+    <ClInclude Include="src\Domain_Loader\DEL\General_Atoms.hpp" />
+    <ClInclude Include="src\Domain_Loader\DEL\General_Domain.hpp" />
+    <ClInclude Include="src\Domain_Loader\DEL\General_Edge_Conditions.hpp" />
+    <ClInclude Include="src\Domain_Loader\DEL\General_Objects.hpp" />
+    <ClInclude Include="src\Domain_Loader\DEL\General_State.hpp" />
+    <ClInclude Include="src\Domain_Loader\DEL\General_Typed_Propositions.hpp" />
+    <ClInclude Include="src\Domain_Loader\DEL\General_World.hpp" />
+    <ClInclude Include="src\Domain_Loader\Loader.hpp" />
+    <ClInclude Include="src\Domain_Loader\Loader_Types.hpp" />
+    <ClInclude Include="src\Domain_Loader\Maepl.hpp" />
+    <ClInclude Include="src\Memory.hpp" />
+    <ClInclude Include="src\Misc.hpp" />
+    <ClInclude Include="src\Planner\Graph.hpp" />
+    <ClInclude Include="src\Planner\Node.hpp" />
+    <ClInclude Include="src\Planner\Node_Comparator.hpp" />
+    <ClInclude Include="src\Planner\Planner.hpp" />
+    <ClInclude Include="src\Planner\Planner_Debug_Info.hpp" />
+    <ClInclude Include="src\Policy.hpp" />
+    <ClInclude Include="src\Propositions.hpp" />
+    <ClInclude Include="src\Types.hpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
@@ -121,7 +234,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)Domain_Loader;$(SolutionDir)Formula;$(SolutionDir)Pepper_Planner</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Pepper_Planner\src;$(SolutionDir)Pepper_Planner\src\DEL;$(SolutionDir)Pepper_Planner\src\del\formula;$(SolutionDir)Pepper_Planner\src\del\action;$(SolutionDir)Pepper_Planner\src\domain_loader;$(SolutionDir)Pepper_Planner\src\domain_loader\buffers;$(SolutionDir)Pepper_Planner\src\domain_loader\del;$(SolutionDir)Pepper_Planner\src\planner</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -136,8 +249,10 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Domain_Loader;$(SolutionDir)Formula;$(SolutionDir)Pepper_Planner</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Pepper_Planner\src;$(SolutionDir)Pepper_Planner\src\DEL;$(SolutionDir)Pepper_Planner\src\del\formula;$(SolutionDir)Pepper_Planner\src\del\action;$(SolutionDir)Pepper_Planner\src\domain_loader;$(SolutionDir)Pepper_Planner\src\domain_loader\buffers;$(SolutionDir)Pepper_Planner\src\domain_loader\del;$(SolutionDir)Pepper_Planner\src\planner</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalUsingDirectories>
+      </AdditionalUsingDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -146,118 +261,6 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="..\Domain_Loader\Custom_Lexer.cpp" />
-    <ClCompile Include="..\Domain_Loader\Custom_Parser.cpp" />
-    <ClCompile Include="..\Domain_Loader\General_Domain.cpp" />
-    <ClCompile Include="..\Domain_Loader\Loader.cpp" />
-    <ClCompile Include="..\Formula\Formula.cpp" />
-    <ClCompile Include="..\Formula\Formula_Component.cpp" />
-    <ClCompile Include="..\Formula\Formula_Converter.cpp" />
-    <ClCompile Include="Accessibility_Relation.cpp" />
-    <ClCompile Include="Action.cpp" />
-    <ClCompile Include="Action_Events.cpp" />
-    <ClCompile Include="Action_Library.cpp" />
-    <ClCompile Include="Agents.cpp" />
-    <ClCompile Include="Atom_Arguments.cpp" />
-    <ClCompile Include="Atom_Buffer.cpp" />
-    <ClCompile Include="Atom_Lookup.cpp" />
-    <ClCompile Include="Bisimulation_Context.cpp" />
-    <ClCompile Include="Converter.cpp" />
-    <ClCompile Include="Core.cpp" />
-    <ClCompile Include="Designated_Events.cpp" />
-    <ClCompile Include="Domain.cpp" />
-    <ClCompile Include="Domain_Interface_Implementation.cpp" />
-    <ClCompile Include="DEL_Interface.cpp" />
-    <ClCompile Include="Edge_Conditions.cpp" />
-    <ClCompile Include="Formula_Buffer.cpp" />
-    <ClCompile Include="General_Action_Events.cpp" />
-    <ClCompile Include="General_Agents.cpp" />
-    <ClCompile Include="General_Atoms.cpp" />
-    <ClCompile Include="General_Edge_Conditions.cpp" />
-    <ClCompile Include="Formula_Input_Impl.cpp" />
-    <ClCompile Include="General_Actions.cpp" />
-    <ClCompile Include="General_Objects.cpp" />
-    <ClCompile Include="General_State.cpp" />
-    <ClCompile Include="General_Typed_Proposition.cpp" />
-    <ClCompile Include="General_World.cpp" />
-    <ClCompile Include="Inputs_Buffer.cpp" />
-    <ClCompile Include="Misc.cpp" />
-    <ClCompile Include="Node_Comparator.cpp" />
-    <ClCompile Include="Planner.cpp" />
-    <ClCompile Include="Graph.cpp" />
-    <ClCompile Include="Node.cpp" />
-    <ClCompile Include="Planner_Debug_Info.cpp" />
-    <ClCompile Include="Policy.cpp" />
-    <ClCompile Include="Propositions.cpp" />
-    <ClCompile Include="Atoms.cpp" />
-    <ClCompile Include="Propositions_Lookup.cpp" />
-    <ClCompile Include="Proposition_Instance.cpp" />
-    <ClCompile Include="Proposition_Instance_Buffer.cpp" />
-    <ClCompile Include="State.cpp" />
-    <ClCompile Include="Types.cpp" />
-    <ClCompile Include="Variables_Buffer.cpp" />
-    <ClCompile Include="World.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\Domain_Loader\Custom_Lexer.hpp" />
-    <ClInclude Include="..\Domain_Loader\Custom_Parser.hpp" />
-    <ClInclude Include="..\Domain_Loader\General_Domain.hpp" />
-    <ClInclude Include="..\Domain_Loader\Domain_Interface.hpp" />
-    <ClInclude Include="..\Domain_Loader\Loader.hpp" />
-    <ClInclude Include="..\Domain_Loader\Loader_Types.hpp" />
-    <ClInclude Include="..\Domain_Loader\Maepl.hpp" />
-    <ClInclude Include="..\Formula\Formula.hpp" />
-    <ClInclude Include="..\Formula\Formula_Component.hpp" />
-    <ClInclude Include="..\Formula\Formula_Converter.hpp" />
-    <ClInclude Include="..\Formula\Formula_Core.hpp" />
-    <ClInclude Include="..\Formula\Formula_Input_Interface.hpp" />
-    <ClInclude Include="..\Formula\Formula_Types.hpp" />
-    <ClInclude Include="Accessibility_Relation.hpp" />
-    <ClInclude Include="Action.hpp" />
-    <ClInclude Include="Action_Events.hpp" />
-    <ClInclude Include="Action_Library.hpp" />
-    <ClInclude Include="Agents.hpp" />
-    <ClInclude Include="Atoms.hpp" />
-    <ClInclude Include="Atom_Arguments.hpp" />
-    <ClInclude Include="Atom_Buffer.hpp" />
-    <ClInclude Include="Atom_Lookup.hpp" />
-    <ClInclude Include="Bisimulation_Context.hpp" />
-    <ClInclude Include="Converter.hpp" />
-    <ClInclude Include="Core.hpp" />
-    <ClInclude Include="Designated_Events.hpp" />
-    <ClInclude Include="Domain.hpp" />
-    <ClInclude Include="Domain_Interface_Implementation.hpp" />
-    <ClInclude Include="DEL_Interface.hpp" />
-    <ClInclude Include="Edge_Conditions.hpp" />
-    <ClInclude Include="Formula_Buffer.hpp" />
-    <ClInclude Include="General_Action_Events.hpp" />
-    <ClInclude Include="General_Agents.hpp" />
-    <ClInclude Include="General_Atoms.hpp" />
-    <ClInclude Include="General_Edge_Conditions.hpp" />
-    <ClInclude Include="Formula_Input_Impl.hpp" />
-    <ClInclude Include="General_Actions.hpp" />
-    <ClInclude Include="General_Objects.hpp" />
-    <ClInclude Include="General_State.hpp" />
-    <ClInclude Include="General_Typed_Propositions.hpp" />
-    <ClInclude Include="General_World.hpp" />
-    <ClInclude Include="Inputs_Buffer.hpp" />
-    <ClInclude Include="Misc.hpp" />
-    <ClInclude Include="Node_Comparator.hpp" />
-    <ClInclude Include="Planner.hpp" />
-    <ClInclude Include="Graph.hpp" />
-    <ClInclude Include="Node.hpp" />
-    <ClInclude Include="Planner_Debug_Info.hpp" />
-    <ClInclude Include="Policy.hpp" />
-    <ClInclude Include="Propositions.hpp" />
-    <ClInclude Include="Propositions_Lookup.hpp" />
-    <ClInclude Include="Proposition_Instance.hpp" />
-    <ClInclude Include="Proposition_Instance_Buffer.hpp" />
-    <ClInclude Include="State.hpp" />
-    <ClInclude Include="Types.hpp" />
-    <ClInclude Include="Variables_Buffer.hpp" />
-    <ClInclude Include="World.hpp" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

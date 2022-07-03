@@ -28,7 +28,7 @@ namespace PepperPlannerTests
 			Proposition goal_x1 = di->prop("goal", "a0", "x1" );
 
 			Formula f;
-			f.f_believes(agent_0, f.f_or({ f.f_prop(goal_c0), f.f_prop(goal_x1) }));
+			f.f_believes(agent_0, f.f_or(f.f_prop(goal_c0), f.f_prop(goal_x1)));
 			Assert::IsTrue(di->query(f));
 		}
 
@@ -40,10 +40,10 @@ namespace PepperPlannerTests
 			Proposition goal_c2 = di->prop("goal", "a0", "c2" );
 
 			Formula f;
-			Formula_Id incorrect_formula = f.f_or({f.f_believes(agent_1, f.f_prop(goal_c1)), f.f_believes(agent_1, f.f_prop(goal_c2) )});
+			Formula_Component* incorrect_formula = f.f_or(f.f_believes(agent_1, f.f_prop(goal_c1)), f.f_believes(agent_1, f.f_prop(goal_c2)));
 			Assert::IsFalse(di->query(f));
 
-			Formula_Id correct_formula = f.f_not(incorrect_formula);
+			Formula_Component* correct_formula = f.f_not(incorrect_formula);
 			Assert::IsTrue(di->query(f));
 		}
 
@@ -55,7 +55,7 @@ namespace PepperPlannerTests
 			Proposition goal_x1 = di->prop("goal", "a0", "x1");
 
 			Formula f;
-			f.f_believes(agent_0, f.f_or({ f.f_prop(goal_c0), f.f_prop(goal_x1) }));
+			f.f_believes(agent_0, f.f_or(f.f_prop(goal_c0), f.f_prop(goal_x1)));
 			Assert::IsTrue(di->query(f));
 		}
 
