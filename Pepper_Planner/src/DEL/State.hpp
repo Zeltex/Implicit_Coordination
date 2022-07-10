@@ -41,6 +41,7 @@ namespace del {
 		State				contract() const;
 		bool				is_bisimilar_to(const State& other) const;
 		bool				is_one_reachable(Agent_Id agent, World_Id world_from, World_Id world_to) const;
+		bool				is_one_reachable(Agent_Id agent, const World* world_from, const World* world_to) const;
 		bool				is_true(const World_Id& world_id, const Proposition& proposition) const;
 		bool				is_world_designated(World_Id world) const;
 		void				shift_perspective(Agent_Id agent, bool is_exclusive=false);

@@ -63,7 +63,6 @@ namespace del {
 
 				for (State& global_state : state_product_update.split_into_globals()) 
 				{
-					global_state.remove_unreachable_worlds();
 					global_state = global_state.contract();
 
 					Node* child_node = history.does_bisimilar_exist_or(graph, global_state);

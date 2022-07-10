@@ -20,7 +20,6 @@ namespace del {
 		for (size_t agent = 0; agent < state.get_number_of_agents(); ++agent) {
 			State temp = state;
 			temp.shift_perspective(Agent_Id{ agent });
-			temp.remove_unreachable_worlds();
 			temp = temp.contract();
 			agent_hashes.emplace_back(temp.to_hash());
 			agent_states.push_back(std::move(temp));

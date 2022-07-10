@@ -6,6 +6,7 @@
 #include <set>
 #include <map>
 #include <algorithm>
+#include <deque>
 
 namespace del::bisimulation_context {
 
@@ -128,21 +129,33 @@ namespace del::bisimulation_context {
 	{
 		Agent_World_Reachables(const State& state)
 		{
-			for (const World& world_from : state.get_worlds())
+			std::deque<const World*> frontier;
+			for (const World_Id& world_id : state.get_designated_worlds())
 			{
+				frontier.push_back(&state.get_world(world_id));
+			}
+
+			while (!frontier.empty())
+			{
+				const World* world_from = frontier.back();
+				frontier.pop_back();
 				std::vector<Agent_World_Reachable> reachables;
 				for (size_t i = 0; i < state.get_number_of_agents(); ++i)
 				{
 					Agent_Id agent = { i };
 					for (const World& world_to : state.get_worlds())
 					{
-						if (state.is_one_reachable(agent, world_from.get_id(), world_to.get_id()))
+						if (state.is_one_reachable(agent, world_from, &world_to))
 						{
 							reachables.push_back({ agent, &world_to });
 						}
+						if (data.find(&world_to) == data.end() && std::find(frontier.begin(), frontier.end(), &world_to) == frontier.end())
+						{
+							frontier.push_back(&world_to);
+						}
 					}
 				}
-				data.insert({ &world_from, reachables });
+				data.insert({ world_from, std::move(reachables) });
 			}
 		}
 
@@ -157,19 +170,19 @@ namespace del::bisimulation_context {
 
 	struct Blocks
 	{
-		Blocks(const State& state) 
+		Blocks(const Agent_World_Reachables& agent_world_reachables)
 		{
 			// Extract signatures
 			std::map<std::string, Block> signature_to_block;
-			for (const World& world : state.get_worlds())
+			for (const auto& [world, reachables] : agent_world_reachables.data)
 			{
-				std::string propositions = world.get_true_propositions().to_signature_string();
-				signature_to_block[propositions].insert(&world);
+				std::string propositions = world->get_true_propositions().to_signature_string();
+				signature_to_block[propositions].insert(world);
 			}
 
-			// Create blocks
-			for (const std::pair<std::string, Block>& kvp : signature_to_block) {
-				const Block& block = kvp.second;
+			// Create blocks, sorted by map
+			for (const auto& [propositions, block] : signature_to_block) 
+			{
 				blocks.push_back(block);
 				Block_Id block_index = { blocks.size() - 1 };
 				for (const World* world : block.worlds)
@@ -216,7 +229,7 @@ namespace del::bisimulation_context {
 	State contract(const State& state)
 	{
 		Agent_World_Reachables agent_world_reachables(state);
-		Blocks blocks(state);
+		Blocks blocks(agent_world_reachables);
 		size_t old_length = -1;
 		size_t new_length = blocks.size();
 		while (new_length != old_length)

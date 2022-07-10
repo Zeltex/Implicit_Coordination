@@ -72,9 +72,11 @@ namespace del {
 				}
 			}
 		}
+	}
 
-		// TODO - Might make this optional for optimisation
-		remove_unreachable_worlds();
+	bool State::is_one_reachable(Agent_Id agent, const World* world_from, const World* world_to) const
+	{
+		return accessibility_relations.has_direct_relation(agent, world_from->get_id(), world_to->get_id());
 	}
 
 	bool State::is_one_reachable(Agent_Id agent, World_Id world_from, World_Id world_to) const
@@ -217,8 +219,6 @@ namespace del {
 		else
 		{
 			State result(new_worlds, new_accessbility_relations, new_designated_worlds, cost + action->get_cost());
-			result.remove_unreachable_worlds();
-
 			return result;
 		}
 	}
