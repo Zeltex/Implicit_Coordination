@@ -33,7 +33,7 @@ namespace del
 
 	void Debug_Info::update_and(const State& state)
 	{
-#if DEBUG_PRINT == 1 || 1
+#if DEBUG_PRINT == 1
 		const size_t cost = state.get_cost() / 100;
 		if (and_layer_size.size() <= cost) {
 			and_layer_size.push_back(0);
@@ -45,7 +45,7 @@ namespace del
 
 	void Debug_Info::update_or(const State& state)
 	{
-#if DEBUG_PRINT == 1 ||1
+#if DEBUG_PRINT == 1
 		const size_t cost = state.get_cost() / 100;
 		if (or_layer_size.size() <= cost) {
 			or_layer_size.push_back(0);

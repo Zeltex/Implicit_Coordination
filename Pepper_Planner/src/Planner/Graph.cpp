@@ -35,7 +35,7 @@ namespace del {
 
 		for (State& global : state.split_into_globals()) 
 		{
-			NodeOr* node = create_or_node(root, global.get_designated_worlds());
+			NodeOr* node = create_or_node(std::move(global), root);
 			history.insert(node);
 			add_to_frontier(node);
 		}
@@ -53,10 +53,9 @@ namespace del {
 		return frontier.empty();
 	}
 
-	NodeOr* Graph::create_or_node(NodeAnd* parent, const std::set<World_Id>& designated_worlds)
+	NodeOr* Graph::create_or_node(State state, NodeAnd* parent)
 	{
-		assert(designated_worlds.size() == 1);
-		NodeOr* node = new NodeOr(Node_Id{ nodes.size() }, parent, *designated_worlds.begin());
+		NodeOr* node = new NodeOr(std::move(state), Node_Id{ nodes.size() }, parent);
 		node->calculate_hash();
 		nodes.push_back(node);
 		parent->add_child(node);
@@ -65,7 +64,7 @@ namespace del {
 
 	NodeAnd* Graph::create_and_node(State state, NodeOr* parent, const Action* action_from_parent)
 	{
-		NodeAnd* node = new NodeAnd(state, Node_Id{ nodes.size() }, parent);
+		NodeAnd* node = new NodeAnd(std::move(state), Node_Id{ nodes.size() }, parent);
 		node->calculate_hash();
 		nodes.push_back(node);
 		parent->add_child(node, action_from_parent);

@@ -48,10 +48,9 @@ namespace del {
 		return nullptr;
 	}
 
-	void Policy::add_entry(const State& state, World_Id designated_world, const Action* action, const NodeBase* node)
+	void Policy::add_entry(const State& state, const Action* action, const NodeBase* node)
 	{
 		State perspective_shifted = state;
-		perspective_shifted.set_single_designated(designated_world);
 		perspective_shifted.shift_perspective(action->get_owner());
 
 		std::vector<State> shifted_states = perspective_shifted.split_into_globals();
@@ -65,15 +64,6 @@ namespace del {
 			{
 				policy.insert({ hash, Policy_Entry{shifted_state, {{action, node}}} });
 			}
-		}
-	}
-
-	void Policy::add_entry(const State& state, const Action* action, const NodeBase* node) {
-		auto hash = state.to_hash();
-		auto it = policy.find(hash);
-		if (it == policy.end()) 
-		{
-			policy.insert({ hash, Policy_Entry{state, {{action, node}}} });
 		}
 	}
 

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "NodeBase.hpp"
+#include "State.hpp"
 
 #include <set>
 
@@ -14,8 +15,7 @@ namespace del
 		friend class NodeAnd;
 	public:
 
-		NodeOr(Node_Id id, NodeAnd* parent, World_Id designated_world);
-		NodeOr(Node_Id id, NodeAnd* parent, std::set<World_Id>& designated_worlds);
+		NodeOr(State state, Node_Id id, NodeAnd* parent);
 
 		void add_child(NodeAnd* node, const Action* action);
 		void add_parent(NodeAnd* node);
@@ -39,7 +39,7 @@ namespace del
 		State& get_state() override;
 		const State& get_state() const override;
 
-		World_Id designated_world;
+		State state;
 		std::vector<NodeAnd*> parents;
 		std::vector<std::pair<NodeAnd*, const Action*>> children;
 	};

@@ -127,10 +127,10 @@ namespace del::bisimulation_context {
 
 	struct Agent_World_Reachables
 	{
-		Agent_World_Reachables(const State& state)
+		Agent_World_Reachables(const State& state, const std::set<World_Id>& designated_worlds)
 		{
 			std::deque<const World*> frontier;
-			for (const World_Id& world_id : state.get_designated_worlds())
+			for (const World_Id& world_id : designated_worlds)
 			{
 				frontier.push_back(&state.get_world(world_id));
 			}
@@ -226,9 +226,9 @@ namespace del::bisimulation_context {
 
 	};
 
-	State contract(const State& state)
+	State contract(const State& state, const std::set<World_Id>& designated_worlds)
 	{
-		Agent_World_Reachables agent_world_reachables(state);
+		Agent_World_Reachables agent_world_reachables(state, designated_worlds);
 		Blocks blocks(agent_world_reachables);
 		size_t old_length = -1;
 		size_t new_length = blocks.size();
@@ -290,13 +290,13 @@ namespace del::bisimulation_context {
 		}
 
 		// Set designated worlds
-		std::set<World_Id> designated_worlds;
-		for (const World_Id& world_id : state.get_designated_worlds()) 
+		std::set<World_Id> new_designated_worlds;
+		for (const World_Id& world_id : designated_worlds) 
 		{
 			const World& world = state.get_world(world_id);
-			designated_worlds.insert(blocks.get_block_id(&world).to_world());
+			new_designated_worlds.insert(blocks.get_block_id(&world).to_world());
 		}
 
-		return State(worlds, accessibility_relations, designated_worlds, state.get_cost());
+		return State(worlds, accessibility_relations, new_designated_worlds, state.get_cost());
 	}
 }

@@ -28,7 +28,7 @@ namespace del {
 		bool is_frontier_empty() const;
 		void add_to_frontier(NodeOr* node);
 		NodeAnd* create_and_node(State state, NodeOr* parent, const Action* action_from_parent);
-		NodeOr* create_or_node(NodeAnd* parent, const std::set<World_Id>& designated_worlds);
+		NodeOr* create_or_node(State state, NodeAnd* parent);
 		NodeAnd* create_root_node(const State& state);
 
 		std::vector<NodeBase*>& get_nodes();

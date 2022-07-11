@@ -147,35 +147,6 @@ namespace del {
 		return cost;
 	}
 
-	void State::remove_unreachable_worlds() {
-		std::set<World_Id> unreachable_worlds = accessibility_relations.get_unreachable_worlds(designated_worlds);
-		std::map<World_Id, World_Id> world_old_to_new;
-		std::vector<World> new_worlds;
-		new_worlds.reserve(unreachable_worlds.size());
-
-		for (const World& old_world : worlds)
-		{
-			if (unreachable_worlds.find(old_world.get_id()) == unreachable_worlds.end()) 
-			{
-				World_Id new_world_id{ new_worlds.size() };
-				world_old_to_new.insert({ old_world.get_id(), new_world_id });
-				World new_world(old_world);
-				new_world.set_id(new_world_id);
-				new_worlds.push_back(new_world);
-			}
-		}
-		worlds = new_worlds;
-		accessibility_relations.convert_world_ids(world_old_to_new);
-
-		std::set<World_Id> new_designated_worlds;
-		for (auto& world : designated_worlds) 
-		{
-			new_designated_worlds.insert(world_old_to_new.at(world));
-		}
-		designated_worlds = new_designated_worlds;
-	}
-
-
 	std::optional<State> State::product_update(const Action* action, const Domain& domain) const
 	{
 		return product_update(action, domain, designated_worlds);
@@ -244,11 +215,9 @@ namespace del {
 	{
 		std::vector<State> result;
 		for (const World_Id& designated_world : designated_worlds) {
-			State new_state = State(*this, designated_world);
-			new_state.remove_unreachable_worlds();
-			result.push_back(std::move(new_state));
+			result.emplace_back(std::move(contract({ designated_world })));
 		}
-		return result;
+		return std::move(result);
 	}
 
 	bool State::operator==(const State& other) const {
@@ -341,9 +310,14 @@ namespace del {
 		return result;
 	}
 
+	State State::contract(const std::set<World_Id>& designated_worlds) const
+	{
+		return bisimulation_context::contract(*this, designated_worlds);
+	}
+
 	State State::contract() const
 	{
-		return bisimulation_context::contract(*this);
+		return bisimulation_context::contract(*this, designated_worlds);
 	}
 
 	bool State::is_bisimilar_to(const State& other) const

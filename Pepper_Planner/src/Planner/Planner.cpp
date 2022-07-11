@@ -61,18 +61,16 @@ namespace del {
 				history.insert(action_node);
 				debug_info.update_and(state_product_update);
 
-
-				for (State& global_state : state_product_update.split_into_globals()) 
+				auto globals = state_product_update.split_into_globals();
+				for (State& global_state : globals) 
 				{
-					global_state = global_state.contract();
-
 					if (history.does_bisimilar_exist(global_state, action_node))
 					{
 						continue;
 					}
 
 					debug_info.update_or(global_state);
-					NodeOr* global_agent_node = graph.create_or_node(action_node, global_state.get_designated_worlds());
+					NodeOr* global_agent_node = graph.create_or_node(std::move(global_state), action_node);
 					if (global_agent_node->is_goal(goal_formula, domain)) 
 					{
 						global_agent_node->set_solved();

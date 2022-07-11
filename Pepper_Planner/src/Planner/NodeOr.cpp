@@ -11,17 +11,11 @@
 
 namespace del
 {
-	NodeOr::NodeOr(Node_Id id, NodeAnd* parent, World_Id designated_world)
-		: designated_world(designated_world)
+	NodeOr::NodeOr(State state, Node_Id id, NodeAnd* parent)
+		: state(std::move(state))
 	{
 		this->id = id;
 		parents.push_back(parent);
-	}
-
-	NodeOr::NodeOr(Node_Id id, NodeAnd* parent, std::set<World_Id>& designated_worlds)
-		: NodeOr(id, parent, *designated_worlds.begin())
-	{
-		assert(designated_worlds.size() == 1);
 	}
 
 	void NodeOr::add_parent(NodeAnd* node)
@@ -31,7 +25,7 @@ namespace del
 
 	void NodeOr::calculate_hash()
 	{
-		hash = get_state().to_hash({ designated_world });
+		hash = get_state().to_hash();
 	}
 
 	std::optional<State> NodeOr::product_update(const Action* action, const Domain& domain, const std::set<World_Id>& designated_worlds) const
@@ -43,6 +37,7 @@ namespace del
 	{
 		std::vector<std::set<World_Id>> result;
 		const State& state = get_state();
+		auto designated_world = *state.get_designated_worlds().begin();
 		for (Agent_Id agent = 0; agent < state.get_number_of_agents(); ++agent)
 		{
 			result.emplace_back(std::move(state.get_reachable_worlds(agent, designated_world)));
@@ -192,7 +187,7 @@ namespace del
 				continue;
 			}
 
-			policy.add_entry(parents.front()->get_state(), designated_world, action, this);
+			policy.add_entry(get_state(), action, this);
 
 			return child->extract_policy(policy);
 		}
@@ -242,16 +237,14 @@ namespace del
 		return get_state().get_cost();
 	}
 
-	// Note - Designated worlds must be updated before state can be used
 	const State& NodeOr::get_state() const
 	{
-		return parents.front()->get_state();
+		return state;
 	}
 
-	// Note - Designated worlds must be updated before state can be used
 	State& NodeOr::get_state()
 	{
-		return parents.front()->get_state();
+		return state;
 	}
 
 	bool NodeOr::is_goal(const Formula& goal_formula, const Domain& domain) const
@@ -271,6 +264,6 @@ namespace del
 
 	bool NodeOr::valuate(const Formula& formula, const Domain& domain) const
 	{
-		return get_state().valuate(formula, domain, designated_world);
+		return get_state().valuate(formula, domain);
 	}
 }

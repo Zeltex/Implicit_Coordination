@@ -20,7 +20,6 @@ namespace del {
 
 		Policy(bool solved) : solved(solved) {}
 
-		void add_entry(const State& state, World_Id designated_world, const Action* action, const NodeBase* node);
 		void add_entry(const State& state, const Action* action, const NodeBase* node);
 		bool is_solved() const;
 		const Action* get_action(const State& state, Agent_Id preferred_agent = { 0 }) const;

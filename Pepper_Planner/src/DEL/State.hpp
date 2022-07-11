@@ -26,8 +26,6 @@ namespace del {
 		virtual const Propositions& get_true_propositions(World_Id world_id) const;
 		virtual std::set<World_Id> get_reachable_worlds(Agent_Id agent_id, World_Id world_id) const;
 
-
-
 		std::vector<State>			get_all_perspective_shifts(size_t number_of_agents) const;
 		size_t						get_cost() const;
 		const std::set<World_Id>&	get_designated_worlds() const;
@@ -39,6 +37,7 @@ namespace del {
 		std::optional<State>		product_update(const Action* action, const Domain& domain) const;
 		std::optional<State>		product_update(const Action* action, const Domain& domain, const std::set<World_Id>& designated_worlds) const;
 
+		State				contract(const std::set<World_Id>& designated_worlds) const;
 		State				contract() const;
 		bool				is_bisimilar_to(const State& other) const;
 		bool				is_one_reachable(Agent_Id agent, World_Id world_from, World_Id world_to) const;
@@ -47,7 +46,6 @@ namespace del {
 		bool				is_world_designated(World_Id world) const;
 		void				shift_perspective(Agent_Id agent, bool is_exclusive=false);
 		std::vector<State>	split_into_globals() const;
-		void				remove_unreachable_worlds();
 		void				set_single_designated(World_Id world);
 		bool				valuate(const Formula& formula, const Domain& domain) const;
 		bool				valuate(const Formula& formula, const Domain& domain, const World_Id& designated_world) const;
