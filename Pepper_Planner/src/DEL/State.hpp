@@ -24,7 +24,7 @@ namespace del {
 		State(const General_State& other, const Propositions_Lookup& propositions_lookup, const Agents& agents);
 
 		virtual const Propositions& get_true_propositions(World_Id world_id) const;
-		virtual std::set<size_t> get_reachable_worlds(Agent_Id agent_id, World_Id world_id) const;
+		virtual std::set<World_Id> get_reachable_worlds(Agent_Id agent_id, World_Id world_id) const;
 
 
 
@@ -37,6 +37,7 @@ namespace del {
 		const std::vector<World>&	get_worlds() const;
 		size_t						get_worlds_count() const;
 		std::optional<State>		product_update(const Action* action, const Domain& domain) const;
+		std::optional<State>		product_update(const Action* action, const Domain& domain, const std::set<World_Id>& designated_worlds) const;
 
 		State				contract() const;
 		bool				is_bisimilar_to(const State& other) const;
@@ -47,9 +48,12 @@ namespace del {
 		void				shift_perspective(Agent_Id agent, bool is_exclusive=false);
 		std::vector<State>	split_into_globals() const;
 		void				remove_unreachable_worlds();
+		void				set_single_designated(World_Id world);
 		bool				valuate(const Formula& formula, const Domain& domain) const;
+		bool				valuate(const Formula& formula, const Domain& domain, const World_Id& designated_world) const;
 
 		bool operator==(const State& other) const;
+		size_t to_hash(const std::set<World_Id>& designated_worlds) const;
 		size_t to_hash() const;
 		std::string to_string(const Domain& domain) const;
 		std::string to_string(size_t indentation, const Domain& domain) const;

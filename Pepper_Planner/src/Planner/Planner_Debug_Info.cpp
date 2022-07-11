@@ -23,7 +23,7 @@ namespace del
 #endif
 	}
 
-	void Debug_Info::print_single(const Node* node) const
+	void Debug_Info::print_single(const NodeBase* node) const
 	{
 #if DEBUG_PRINT == 1 && PRINT_NODES == 1
 		std::cout << "\nNode " << node.id << " at depth " << action_node.get_cost() << "\n";

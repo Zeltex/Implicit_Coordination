@@ -110,9 +110,7 @@ namespace del {
 	}
 
 
-	void Action_Library::load_actions(const State& state, const Domain& domain) {
-		// TODO - These actions should be saved in a map so that each action is only generated once
-		//announce_actions = std::move(get_announce_actions(state, domain));
+	void Action_Library::load_actions() {
 		action_counter = 0;
 	}
 

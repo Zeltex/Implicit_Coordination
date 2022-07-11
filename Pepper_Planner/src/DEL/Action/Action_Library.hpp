@@ -20,7 +20,7 @@ namespace del {
 		const General_Action& get_general_action(const std::string& name) const;
 		void add_action(const Action& action);
 
-		void load_actions(const State& state, const Domain& domain);
+		void load_actions();
 		bool has_action() const;
 		const Action* get_next_action();
 	private:

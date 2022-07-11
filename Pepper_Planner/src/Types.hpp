@@ -119,10 +119,10 @@ namespace del {
 		World_Id new_world;
 	};
 
-	class Node;
+	class NodeBase;
 	struct Node_Entry {
-		Node_Entry(const Node* node, size_t cost): node(node), cost(cost){}
-		const Node* node;
+		Node_Entry(const NodeBase* node, size_t cost): node(node), cost(cost){}
+		const NodeBase* node;
 		size_t cost;
 
 	};
@@ -130,8 +130,9 @@ namespace del {
 		bool operator()(const Node_Entry& lhs, const Node_Entry& rhs);
 	};
 
+	class NodeOr;
 	struct Node_Cost_Comparator {
-		bool operator()(const Node* lhs, const Node* rhs);
+		bool operator()(const NodeOr* lhs, const NodeOr* rhs);
 	};
 
 	class State;

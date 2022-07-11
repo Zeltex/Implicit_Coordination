@@ -36,13 +36,11 @@
     <ClCompile Include="src\DEL\Formula\Formula.cpp" />
     <ClCompile Include="src\DEL\Formula\Formula_Component.cpp" />
     <ClCompile Include="src\DEL\Formula\Formula_Converter.cpp" />
-    <ClCompile Include="src\DEL\Formula\Formula_Input_Impl.cpp" />
     <ClCompile Include="src\DEL\Formula\Proposition_Instance.cpp" />
     <ClCompile Include="src\DEL\Propositions_Lookup.cpp" />
     <ClCompile Include="src\DEL\State.cpp" />
     <ClCompile Include="src\DEL\World.cpp" />
     <ClCompile Include="src\DEL_Interface.cpp" />
-    <ClCompile Include="src\Domain_Interface_Implementation.cpp" />
     <ClCompile Include="src\Domain_Loader\Buffers\Atom_Buffer.cpp" />
     <ClCompile Include="src\Domain_Loader\Buffers\Formula_Buffer.cpp" />
     <ClCompile Include="src\Domain_Loader\Buffers\Inputs_Buffer.cpp" />
@@ -63,7 +61,9 @@
     <ClCompile Include="src\Domain_Loader\Loader.cpp" />
     <ClCompile Include="src\Misc.cpp" />
     <ClCompile Include="src\Planner\Graph.cpp" />
-    <ClCompile Include="src\Planner\Node.cpp" />
+    <ClCompile Include="src\Planner\NodeAnd.cpp" />
+    <ClCompile Include="src\Planner\NodeBase.cpp" />
+    <ClCompile Include="src\Planner\NodeOr.cpp" />
     <ClCompile Include="src\Planner\Node_Comparator.cpp" />
     <ClCompile Include="src\Planner\Planner.cpp" />
     <ClCompile Include="src\Planner\Planner_Debug_Info.cpp" />
@@ -90,8 +90,6 @@
     <ClInclude Include="src\DEL\Formula\Formula_Component.hpp" />
     <ClInclude Include="src\DEL\Formula\Formula_Converter.hpp" />
     <ClInclude Include="src\DEL\Formula\Formula_Core.hpp" />
-    <ClInclude Include="src\DEL\Formula\Formula_Input_Impl.hpp" />
-    <ClInclude Include="src\DEL\Formula\Formula_Input_Interface.hpp" />
     <ClInclude Include="src\DEL\Formula\Formula_Types.hpp" />
     <ClInclude Include="src\DEL\Formula\Proposition_Instance.hpp" />
     <ClInclude Include="src\DEL\Propositions_Lookup.hpp" />
@@ -99,7 +97,6 @@
     <ClInclude Include="src\DEL\World.hpp" />
     <ClInclude Include="src\DEL_Interface.hpp" />
     <ClInclude Include="src\Domain_Interface.hpp" />
-    <ClInclude Include="src\Domain_Interface_Implementation.hpp" />
     <ClInclude Include="src\Domain_Loader\Buffers\Atom_Buffer.hpp" />
     <ClInclude Include="src\Domain_Loader\Buffers\Formula_Buffer.hpp" />
     <ClInclude Include="src\Domain_Loader\Buffers\Inputs_Buffer.hpp" />
@@ -123,7 +120,9 @@
     <ClInclude Include="src\Memory.hpp" />
     <ClInclude Include="src\Misc.hpp" />
     <ClInclude Include="src\Planner\Graph.hpp" />
-    <ClInclude Include="src\Planner\Node.hpp" />
+    <ClInclude Include="src\Planner\NodeAnd.hpp" />
+    <ClInclude Include="src\Planner\NodeBase.hpp" />
+    <ClInclude Include="src\Planner\NodeOr.hpp" />
     <ClInclude Include="src\Planner\Node_Comparator.hpp" />
     <ClInclude Include="src\Planner\Planner.hpp" />
     <ClInclude Include="src\Planner\Planner_Debug_Info.hpp" />

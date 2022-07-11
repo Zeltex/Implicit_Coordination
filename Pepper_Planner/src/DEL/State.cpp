@@ -4,8 +4,8 @@
 #include "Agents.hpp"
 #include "Bisimulation_Context.hpp"
 #include "Domain.hpp"
-#include "Formula_Input_Impl.hpp"
 #include "General_State.hpp"
+#include "Types.hpp"
 
 namespace del {
 
@@ -92,14 +92,14 @@ namespace del {
 		return worlds.at(world_id.id).get_true_propositions().contains(proposition);
 	}
 
-	std::set<size_t> State::get_reachable_worlds(Agent_Id agent_id, World_Id world_id) const {
+	std::set<World_Id> State::get_reachable_worlds(Agent_Id agent_id, World_Id world_id) const {
 		// Due to the serial, transitive and euclidean conditions we only need to check depth one
-		std::set<size_t> result;
+		std::set<World_Id> result;
 		for (const World& world : worlds)
 		{
 			if (accessibility_relations.has_direct_relation(agent_id, world_id, world.get_id()))
 			{
-				result.insert(world.get_id().id);
+				result.insert(world.get_id());
 			}
 		}
 		return result;
@@ -112,6 +112,11 @@ namespace del {
 			}
 		}
 		return true;
+	}
+
+	bool State::valuate(const Formula& formula, const Domain& domain, const World_Id& designated_world) const
+	{
+		return formula.valuate(designated_world.id, domain, *this);
 	}
 
 	const std::vector<World>& State::get_worlds() const {
@@ -173,6 +178,11 @@ namespace del {
 
 	std::optional<State> State::product_update(const Action* action, const Domain& domain) const
 	{
+		return product_update(action, domain, designated_worlds);
+	}
+
+	std::optional<State> State::product_update(const Action* action, const Domain& domain, const std::set<World_Id>& designated_worlds) const
+	{
 		World_Id new_world_id{ 0 };
 		std::vector<World> new_worlds;
 		std::set<World_Id> new_designated_worlds;
@@ -190,8 +200,10 @@ namespace del {
 				// Create world
 				new_worlds.push_back(World(world, action_event, new_world_id));
 
+				bool is_world_designated = designated_worlds.find(world.get_id()) != designated_worlds.end();
+
 				// Set designated
-				if (is_world_designated(world.get_id()) && action->is_event_designated(action_event.get_id())) 
+				if (is_world_designated && action->is_event_designated(action_event.get_id()))
 				{
 					new_designated_worlds.insert(new_world_id);
 					unassigned_designated_worlds.erase(world.get_id());
@@ -221,6 +233,11 @@ namespace del {
 			State result(new_worlds, new_accessbility_relations, new_designated_worlds, cost + action->get_cost());
 			return result;
 		}
+	}
+	void State::set_single_designated(World_Id world)
+	{
+		designated_worlds.clear();
+		designated_worlds.insert(world);
 	}
 
 	std::vector<State> State::split_into_globals() const
@@ -266,8 +283,12 @@ namespace del {
 
 		return true;
 	}
+	size_t State::to_hash() const
+	{
+		return to_hash(designated_worlds);
+	}
 
-	size_t State::to_hash() const {
+	size_t State::to_hash(const std::set<World_Id>& designated_worlds) const {
 		std::vector<std::string> hashes;
 		size_t relations_size = 0;
 		std::string relations_string = accessibility_relations.to_hashable_string(relations_size);

@@ -51,7 +51,7 @@ namespace del
 				del_interface->perform_action(next_action);
 
 				print_action(next_action);
-				print_state();
+				//print_state();
 			}
 			Assert::IsTrue(del_interface->is_solved());
 		}

@@ -4,7 +4,7 @@
 #include <vector>
 
 #include "Formula_Types.hpp"
-#include "Formula_Input_Interface.hpp"
+
 #include "Propositions.hpp"
 #include "Types.hpp"
 

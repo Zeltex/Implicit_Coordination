@@ -48,13 +48,44 @@ namespace del {
 		return nullptr;
 	}
 
-	void Policy::add_entry(const State& state, const Action* action, const Node* node) {
+	void Policy::add_entry(const State& state, World_Id designated_world, const Action* action, const NodeBase* node)
+	{
+		State perspective_shifted = state;
+		perspective_shifted.set_single_designated(designated_world);
+		perspective_shifted.shift_perspective(action->get_owner());
+
+		std::vector<State> shifted_states = perspective_shifted.split_into_globals();
+		for (State& shifted_state : shifted_states)
+		{
+			shifted_state.shift_perspective(action->get_owner());
+			shifted_state = shifted_state.contract();
+			
+			auto hash = shifted_state.to_hash();
+			if (policy.find(hash) == policy.end())
+			{
+				policy.insert({ hash, Policy_Entry{shifted_state, {{action, node}}} });
+			}
+		}
+	}
+
+	void Policy::add_entry(const State& state, const Action* action, const NodeBase* node) {
 		auto hash = state.to_hash();
 		auto it = policy.find(hash);
 		if (it == policy.end()) 
 		{
 			policy.insert({ hash, Policy_Entry{state, {{action, node}}} });
 		}
+	}
+
+	bool Policy::try_visit(NodeBase* node)
+	{
+		if (visited.find(node) != visited.end())
+		{
+			return false;
+		}
+
+		visited.insert(node);
+		return true;
 	}
 
 	std::string Policy::to_string(const Domain& domain) const {

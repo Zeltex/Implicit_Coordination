@@ -2,6 +2,10 @@
 
 #include "Agents.hpp"
 #include "Core.hpp"
+#include "Domain.hpp"
+#include "NodeBase.hpp"
+#include "NodeAnd.hpp"
+#include "NodeOr.hpp"
 #include "Node_Comparator.hpp"
 #include "State.hpp"
 
@@ -11,14 +15,14 @@ namespace del {
 
 	Graph::~Graph()
 	{
-		for (Node* node : nodes)
+		for (NodeBase* node : nodes)
 		{
 			delete node;
 		}
 	}
 
 	Graph::Graph()
-		: root(), frontier(), nodes(std::vector<Node*>()) 
+		: root(), frontier(), nodes(std::vector<NodeBase*>()) 
 	{
 	
 	};
@@ -26,20 +30,20 @@ namespace del {
 	Graph::Graph(size_t node_size, const State& state, Node_Comparator& history, const Agent& planning_agent) 
 	{
 		nodes.reserve(node_size); 
-		Node* root = create_root_node(state);
+		NodeAnd* root = create_root_node(state);
 		history.insert(root);
 
 		for (State& global : state.split_into_globals()) 
 		{
-			Node* node = create_or_node(global, root);
+			NodeOr* node = create_or_node(root, global.get_designated_worlds());
 			history.insert(node);
 			add_to_frontier(node);
 		}
 	}
 
-	Node* Graph::get_next_from_frontier() 
+	NodeOr* Graph::get_next_from_frontier() 
 	{
-		Node* node = frontier.top();
+		NodeOr* node = frontier.top();
 		frontier.pop();
 		return node;
 	}
@@ -49,62 +53,50 @@ namespace del {
 		return frontier.empty();
 	}
 
-	Node* Graph::create_or_node(State state, Node* parent) 
+	NodeOr* Graph::create_or_node(NodeAnd* parent, const std::set<World_Id>& designated_worlds)
 	{
-		Node* node = new Node(state, Node_Id{ nodes.size() }, parent, false);
-		nodes.push_back(node);
+		assert(designated_worlds.size() == 1);
+		NodeOr* node = new NodeOr(Node_Id{ nodes.size() }, parent, *designated_worlds.begin());
 		node->calculate_hash();
+		nodes.push_back(node);
 		parent->add_child(node);
 		return node;
 	}
 
-	Node* Graph::create_and_node(State state, Node* parent, const Action* action_from_parent)
+	NodeAnd* Graph::create_and_node(State state, NodeOr* parent, const Action* action_from_parent)
 	{
-		Node* node = new Node(state, Node_Id{ nodes.size() }, parent, action_from_parent, false);
-		nodes.push_back(node);
+		NodeAnd* node = new NodeAnd(state, Node_Id{ nodes.size() }, parent);
 		node->calculate_hash();
-		parent->add_child(node);
+		nodes.push_back(node);
+		parent->add_child(node, action_from_parent);
 		return node;
 	}
 
-	Node* Graph::create_root_node(State state) 
+	NodeAnd* Graph::create_root_node(const State& state)
 	{
-		// The dummy action makes sure root is and-node
-		Node* node = new Node(state, Node_Id{ nodes.size() }, nullptr, nullptr, true);
+		NodeAnd* node = new NodeAnd(state, Node_Id{ nodes.size() });
+		node->calculate_hash(); 
 		nodes.push_back(node);
-		node->calculate_hash();
 		root = node;
 		return node;
 	}
 
-	void Graph::add_to_frontier(Node* node)
+	void Graph::add_to_frontier(NodeOr* node)
 	{
 		frontier.push(node);
 	}
 
-	void Graph::set_parent_child(Node* parent, Node* child, const Action* action)
-	{
-		child->add_parent(parent, action);
-		parent->add_child(child);
-	}
-
-	void Graph::set_parent_child(Node* parent, Node* child) 
-	{
-		child->add_parent(parent);
-		parent->add_child(child);
-	}
-
-	const std::vector<Node*>& Graph::get_const_nodes() const 
+	const std::vector<NodeBase*>& Graph::get_const_nodes() const 
 	{
 		return nodes;
 	}
 
-	std::vector<Node*>& Graph::get_nodes() 
+	std::vector<NodeBase*>& Graph::get_nodes() 
 	{
 		return nodes;
 	}
 
-	Node* Graph::get_root_node() 
+	NodeAnd* Graph::get_root_node()
 	{
 		return root;
 	}

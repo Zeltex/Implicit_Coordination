@@ -120,7 +120,7 @@ namespace del {
         case Formula_Types::Believes:
         {
             // TODO - Agent is proposition, should be agent id
-            std::set<size_t> reachables = state.get_reachable_worlds(agent, world_id);
+            std::set<World_Id> reachables = state.get_reachable_worlds(agent, world_id);
             for (const auto& reachable_world : reachables) {
                 if (!((Formula_Component*)data1)->valuate(reachable_world, domain, state))
                 {

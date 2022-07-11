@@ -1,6 +1,8 @@
 #include "Types.hpp"
+
 #include "Domain.hpp"
-#include "Node.hpp"
+#include "NodeOr.hpp"
+#include "NodeBase.hpp"
 #include "State.hpp"
 
 namespace del {
@@ -9,7 +11,7 @@ namespace del {
 		return lhs.cost > rhs.cost;
 	}
 
-	bool Node_Cost_Comparator::operator()(const Node* lhs, const Node* rhs) 
+	bool Node_Cost_Comparator::operator()(const NodeOr* lhs, const NodeOr* rhs)
 	{
 		return lhs->get_cost() > rhs->get_cost();
 	}

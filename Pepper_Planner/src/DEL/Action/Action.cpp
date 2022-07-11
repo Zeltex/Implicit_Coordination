@@ -1,7 +1,6 @@
 #include "Action.hpp"
 
 #include "Domain.hpp"
-#include "Formula_Input_Impl.hpp"
 #include "Formula_Types.hpp"
 #include "World.hpp"
 
@@ -84,7 +83,7 @@ namespace del {
 			output += arg.get_name();
 		}
 
-		return output;
+		return output + ")";
 	}
 
 	std::string Action::to_compact_string(const Domain& domain) const {

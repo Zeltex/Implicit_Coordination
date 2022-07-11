@@ -5,26 +5,25 @@
 #include "Types.hpp"
 
 namespace del {
+	class Action;
 	class Graph;
 	class State;
-	class Node;
+	class NodeOr;
+	class NodeAnd;
 
 	class Node_Comparator
 	{
 	public:
 		Node_Comparator() {};
-		Node_Comparator(Node* node);
-		Node* does_bisimilar_exist_and(const Graph& graph, const State& state) const;
-		Node* does_bisimilar_exist_or(const Graph& graph, const State& state) const;
-		void insert(Node* node);
+		Node_Comparator(NodeAnd* root_node);
+		bool does_bisimilar_exist(const State& state, NodeOr* parent, const Action* action) const;
+		bool does_bisimilar_exist(const State& state, NodeAnd* parent) const;
+		void insert(NodeAnd* node);
+		void insert(NodeOr* node);
 
 	private:
-		Node* does_bisimilar_exist(const Graph& graph, const State& state, const std::unordered_map<size_t, Node*>& visited) const;
-		Node* does_bisimilar_exist_brute(const Graph& graph, const State& state, Node_Type type) const;
-		void insert(Node* node, std::unordered_map<size_t, Node*>& visited);
-
-		std::unordered_map<size_t, Node*> visited_and;
-		std::unordered_map<size_t, Node*> visited_or;
+		std::unordered_map<size_t, NodeAnd*> visited_and;
+		std::unordered_map<size_t, NodeOr*> visited_or;
 	};
 }
 
