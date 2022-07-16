@@ -17,6 +17,11 @@ namespace del {
         bool operator!=(const Node_Id& other) const {
             return this->id != other.id;
         }
+
+		std::string to_string() const
+		{
+			return std::to_string(id);
+		}
 	};
 
 	struct Agent_Id {

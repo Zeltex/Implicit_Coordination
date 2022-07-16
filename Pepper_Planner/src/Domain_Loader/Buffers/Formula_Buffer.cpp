@@ -10,9 +10,9 @@
 
 namespace del
 {
-    Formula Formula_Buffer::get()
+    General_Formula Formula_Buffer::get()
     {
-        Formula temp = std::move(formula);
+        General_Formula temp = std::move(formula);
         formula.reset();
         return std::move(temp);
     }
@@ -23,11 +23,9 @@ namespace del
     }
 
     void Formula_Buffer::push_pop_formula_prop(Proposition_Instance_Buffer& proposition_instance_buffer) {
-        std::vector<Proposition_Instance> proposition_instances = proposition_instance_buffer.get();
+        std::vector<General_Proposition_Instance> proposition_instances = proposition_instance_buffer.get();
         assert(proposition_instances.size() == 1);
-
-        Proposition proposition = proposition_instance_buffer.to_proposition(proposition_instances.front());
-        formula_buffer.push_back(formula.f_prop(proposition));
+        formula_buffer.push_back(formula.f_prop(std::move(proposition_instances.front())));
     }
 
     void Formula_Buffer::push_formula(const std::string& type) {
@@ -38,9 +36,9 @@ namespace del
     void Formula_Buffer::pop_formula_believes(const General_Agents& general_agents, const std::string& input) {
         assert(formula_buffer_type.back() == Formula_Types::Believes);
         formula_buffer_type.pop_back();
-        Formula_Component* data = formula_buffer.back();
+        General_Formula_Component* data = formula_buffer.back();
         formula_buffer.pop_back();
-        Formula_Component* new_formula = formula.f_believes(general_agents.get(input).get_id(), data);
+        General_Formula_Component* new_formula = formula.f_believes(input, data);
         formula_buffer.push_back(new_formula);
     }
 

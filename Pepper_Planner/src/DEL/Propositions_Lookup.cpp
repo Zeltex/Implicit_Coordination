@@ -20,9 +20,9 @@ namespace del
 			for (const std::string& input : inputs) 
 			{
 				list_atoms.emplace_back();
-				for (const Atom& atom : atom_lookup.get_atoms(input)) 
+				for (const Atom* atom : *atom_lookup.get_atoms(input)) 
 				{
-					list_atoms.back().push_back(atom.get_name());
+					list_atoms.back().push_back(atom->get_name());
 				}
 			}
 
@@ -34,12 +34,10 @@ namespace del
 				for (size_t i = 0; i < indices.size(); ++i) {
 					const std::string& input_type = inputs.at(i);
 					const std::string& atom = list_atoms.at(i).at(indices.at(i));
-					grounded_input.insert(atom_lookup.get_atom(atom));
+					grounded_input.insert(atom_lookup.get(atom));
 				}
-				Proposition_Instance instance{Typed_Proposition.name, grounded_input };
-				size_t id = instance_to_proposition.size();
-				instance_to_proposition.insert({ instance, id});
-				proposition_to_instance.insert({ id, instance });
+				Proposition_Instance instance{Typed_Proposition.name, grounded_input, propositions.size() };
+				propositions.insert(instance);
 
 				// Advance indices
 				size_t index = 0;
@@ -51,15 +49,16 @@ namespace del
 		}
 	}
 
-	const Proposition& Propositions_Lookup::get(const Proposition_Instance& instance) const
+	const Proposition_Instance* Propositions_Lookup::get(const General_Proposition_Instance& general_instance, const Atom_Lookup& atom_lookup) const
 	{
-		assert(instance_to_proposition.find(instance) != instance_to_proposition.end());
-		return instance_to_proposition.at(instance);
+		Proposition_Instance instance{ general_instance, atom_lookup };
+		return get(instance);
 	}
 
-	const Proposition_Instance& Propositions_Lookup::get_instance(const Proposition& proposition) const
+	const Proposition_Instance* Propositions_Lookup::get(const Proposition_Instance& instance) const
 	{
-		assert(proposition_to_instance.find(proposition) != proposition_to_instance.end());
-		return proposition_to_instance.at(proposition);
+		auto it = propositions.find(instance);
+		assert(it != propositions.end());
+		return (it == propositions.end() ? nullptr : &*it);
 	}
 }

@@ -21,12 +21,12 @@ namespace del {
 		:args(arguments), 
 		cost(other.get_cost()), 
 		name(other.get_name()), 
-		events(other, arguments, propositions_lookup),
+		events(other, arguments, propositions_lookup, agents),
 		designated_events(other, events),
 		edge_conditions(other, propositions_lookup, events, arguments, agents)
 	{
-		const Atom_Id& owner_atom = arguments.at(other.get_owner().second.id).get_id();
-		owner = agents.get(owner_atom).get_id();
+		const Atom* owner_atom = arguments.at(other.get_owner().second.id);
+		owner = agents.get(owner_atom);
 	}
 
 	bool Action::is_event_designated(Event_Id event) const {
@@ -45,8 +45,8 @@ namespace del {
 		}
 	}
 
-	std::string Action::to_string(const Domain& domain) const {
-		return to_string(0, domain);
+	std::string Action::to_string() const {
+		return to_string(0);
 	}
 
 	//std::string Action::to_string(size_t indenation, const Domain& domain) const {
@@ -63,31 +63,17 @@ namespace del {
 	//		+ events.to_string(domain);
 	//}
 
-	std::string Action::to_string(size_t indenation, const Domain& domain) const {
-		auto output = get_indentation(indenation)
+	std::string Action::to_string(size_t indenation) const {
+		return get_indentation(indenation)
 			+ " Action "
 			+ name
-			+ "(";
-		
-		bool first = true;
-		for (auto& arg : args)
-		{
-			if (first)
-			{
-				first = false;
-			}
-			else
-			{
-				output += ",";
-			}
-			output += arg.get_name();
-		}
-
-		return output + ")";
+			+ "("
+			+ args.to_string()
+			+ ")";
 	}
 
-	std::string Action::to_compact_string(const Domain& domain) const {
-		return std::to_string(owner.id) + events.to_compact_string(domain);
+	std::string Action::to_compact_string() const {
+		return owner->get_name() + events.to_compact_string();
 	}
 
 	size_t Action::get_cost() const {
@@ -98,7 +84,7 @@ namespace del {
 		return events;
 	}
 
-	Agent_Id Action::get_owner() const {
+	const Agent* Action::get_owner() const {
 		return owner;
 	}
 

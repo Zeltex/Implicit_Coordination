@@ -1,8 +1,12 @@
 #include "Formula_Component.hpp"
 
-#include "Converter.hpp"
+#include "Agents.hpp"
+#include "Atom_Lookup.hpp"
+#include "Converter_Base.hpp"
 #include "Domain.hpp"
 #include "Formula.hpp"
+#include "General_Formula_Component.hpp"
+#include "Proposition_Instance.hpp"
 #include "State.hpp"
 #include "Types.hpp"
 
@@ -10,29 +14,58 @@
 #include <assert.h>
 #include <iostream>
 
-namespace del {
+namespace del
+{
 
 
     Formula_Component& Formula_Component::operator=(const Formula_Component& other)
     {
-        int hej = 0;
+        type = other.type;
+        data0 = other.data0;
+        data1 = other.data1;
         return *this;
     }
 
-    Formula_Component::Formula_Component(const Formula_Component& other, const Converter& general_to_ground) 
-        : type(other.type), data0(other.data0), data1(other.data1)
+    Formula_Component::Formula_Component(Formula& formula, const General_Formula_Component* other, const Converter_Base* converter)
     {
-
-        switch (other.type) {
+        type = other->type;
+        switch (type)
+        {
         case Formula_Types::Prop:
         {
-            prop = general_to_ground.convert(other.prop);
+            data0 = converter->convert(&other->prop);
+            break;
+        }
+        case Formula_Types::Not:
+        {
+            data0 = &formula.formulas.emplace_back(formula, other->data0, converter);
+            break;
+        }
+        case Formula_Types::And:
+        {
+            data0 = &formula.formulas.emplace_back(formula, other->data0, converter);
+            data1 = &formula.formulas.emplace_back(formula, other->data1, converter);
+            break;
+        }
+        case Formula_Types::Or:
+        {
+            data0 = &formula.formulas.emplace_back(formula, other->data0, converter);
+            data1 = &formula.formulas.emplace_back(formula, other->data1, converter);
             break;
         }
         case Formula_Types::Believes:
         {
-            agent = general_to_ground.convert(other.agent);
+            data1 = &formula.formulas.emplace_back(formula, other->data1, converter);
+            data0 = converter->convert(other->agent);
             break;
+        }
+        case Formula_Types::Bot:
+        case Formula_Types::Top:
+        case Formula_Types::Everyone_Believes:
+        case Formula_Types::Common_Knowledge:
+        default:
+        {
+            return;
         }
         }
     }
@@ -51,7 +84,7 @@ namespace del {
         };
         case Formula_Types::Prop:
         {
-            return propositions.contains(prop);
+            return propositions.contains((Proposition_Instance*)data0);
         }
         case Formula_Types::Not:
         {
@@ -101,7 +134,7 @@ namespace del {
         };
         case Formula_Types::Prop:
         {
-            return state.is_true(world_id, prop) || domain.is_rigid(prop);
+            return state.is_true(world_id, (Proposition_Instance*)data0) || domain.is_rigid((Proposition_Instance*)data0);
         }
         case Formula_Types::Not:
         {
@@ -120,7 +153,7 @@ namespace del {
         case Formula_Types::Believes:
         {
             // TODO - Agent is proposition, should be agent id
-            std::set<World_Id> reachables = state.get_reachable_worlds(agent, world_id);
+            std::set<World_Id> reachables = state.get_reachable_worlds((Agent*)data0, world_id);
             for (const auto& reachable_world : reachables) {
                 if (!((Formula_Component*)data1)->valuate(reachable_world, domain, state))
                 {
@@ -143,6 +176,15 @@ namespace del {
         return false;
     }
 
+    Formula_Component::Formula_Component(Formula_Types type, const Proposition_Instance* prop) :
+        type(type), data0(prop), data1(nullptr)
+    {
+    };
+
+    Formula_Component::Formula_Component(Formula_Types type, const Agent* agent, Formula_Component* formula) :
+        type(type), data0(agent), data1(formula)
+    {
+    };
 
     Formula_Component::Formula_Component(Formula_Types type, Formula_Component* input0, Formula_Component* input1) :
         type(type), data0(input0), data1(input1) 
@@ -150,7 +192,7 @@ namespace del {
     
     }
 
-    Formula_Component* Formula_Component::copy(Formula* formula, const Converter& general_to_ground) const
+ /*   Formula_Component* Formula_Component::copy(Formula* formula, const Converter& general_to_ground) const
     {
         switch (type) {
         case Formula_Types::Top:
@@ -163,7 +205,7 @@ namespace del {
         };
         case Formula_Types::Prop:
         {
-            return formula->f_prop(general_to_ground.convert(prop));
+            return formula->f_prop(general_to_ground.convert((Proposition_Instance*)data0));
         }
         case Formula_Types::Not:
         {
@@ -185,7 +227,7 @@ namespace del {
         case Formula_Types::Believes:
         {
             return formula->f_believes(
-                general_to_ground.convert(agent),
+                general_to_ground.convert((Agent*)data0),
                 ((Formula_Component*)data1)->copy(formula, general_to_ground));
         }
         case Formula_Types::Everyone_Believes:
@@ -204,9 +246,9 @@ namespace del {
             return nullptr;
         }
         }
-    }
+    }*/
 
-    std::string Formula_Component::to_string(const Domain& domain) const
+    std::string Formula_Component::to_string() const
     {
         std::string result;
 
@@ -221,31 +263,31 @@ namespace del {
         };
         case Formula_Types::Prop:
         {
-            return prop.to_string();
+            return ((Proposition_Instance*)data0)->to_string();
         }
         case Formula_Types::Not:
         {
-            return "Not(" + ((Formula_Component*)data0)->to_string(domain) + ")";
+            return "Not(" + ((Formula_Component*)data0)->to_string() + ")";
         }
         case Formula_Types::And:
         {
-            return "And(" + ((Formula_Component*)data0)->to_string(domain) + ", " + ((Formula_Component*)data1)->to_string(domain);
+            return "And(" + ((Formula_Component*)data0)->to_string() + ", " + ((Formula_Component*)data1)->to_string();
         }
         case Formula_Types::Or:
         {
-            return "Or(" + ((Formula_Component*)data0)->to_string(domain) + ", " + ((Formula_Component*)data1)->to_string(domain);
+            return "Or(" + ((Formula_Component*)data0)->to_string() + ", " + ((Formula_Component*)data1)->to_string();
         }
         case Formula_Types::Believes:
         {
-            return "Believes_" + agent.to_string() + "(" + ((Formula_Component*)data1)->to_string(domain) + ")";
+            return "Believes_" + ((Agent*)data0)->to_string() + "(" + ((Formula_Component*)data1)->to_string() + ")";
         }
         case Formula_Types::Everyone_Believes:
         {
-            return "Everyone_Believes(" + ((Formula_Component*)data0)->to_string(domain) + ")";
+            return "Everyone_Believes(" + ((Formula_Component*)data0)->to_string() + ")";
         }
         case Formula_Types::Common_Knowledge:
         {
-            return "Common_Knowledge(" + ((Formula_Component*)data0)->to_string(domain) + ")";
+            return "Common_Knowledge(" + ((Formula_Component*)data0)->to_string() + ")";
         }
         }
         return "UNKNOWN TYPE";

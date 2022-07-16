@@ -24,12 +24,12 @@ namespace del {
 		bool is_solved();
 		bool query(const Formula& query);
 
-		Proposition prop(const std::string& name, const std::string& arg_0);
-		Proposition prop(const std::string& name, const std::string& arg_0, const std::string& arg_1);
-		Proposition prop(const std::string& name, const std::string& arg_0, const std::string& arg_1, const std::string& arg_2);
-		Proposition prop(const std::string& name, const std::string& arg_0, const std::string& arg_1, const std::string& arg_2, const std::string& arg_3);
-		Proposition prop(const std::string& name, const std::string& arg_0, const std::string& arg_1, const std::string& arg_2, const std::string& arg_3, const std::string& arg_4);
-		Agent_Id agent(const std::string& name);
+		const Proposition_Instance* prop(const std::string& name, const std::string& arg_0);
+		const Proposition_Instance* prop(const std::string& name, const std::string& arg_0, const std::string& arg_1);
+		const Proposition_Instance* prop(const std::string& name, const std::string& arg_0, const std::string& arg_1, const std::string& arg_2);
+		const Proposition_Instance* prop(const std::string& name, const std::string& arg_0, const std::string& arg_1, const std::string& arg_2, const std::string& arg_3);
+		const Proposition_Instance* prop(const std::string& name, const std::string& arg_0, const std::string& arg_1, const std::string& arg_2, const std::string& arg_3, const std::string& arg_4);
+		const Agent* agent(const std::string& name);
 
 	private:
 		Domain domain;

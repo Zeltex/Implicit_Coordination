@@ -1,9 +1,10 @@
 #pragma once
 
-#include <vector>
+#include <memory>
 #include <string>
+#include <vector>
 
-#include "Formula.hpp"
+#include "General_Formula.hpp"
 #include "Types.hpp"
 #include "Propositions.hpp"
 #include "Proposition_Instance.hpp"
@@ -18,16 +19,16 @@ namespace del
 	friend class Action_Event;
 	public:
 		General_Action_Event(const std::string& name, Event_Id id);
-		void set_add_list(const std::vector<Proposition_Instance>& proposition_instances);
-		void set_delete_list(const std::vector<Proposition_Instance>& proposition_instances);
+		void set_add_list(const std::vector<General_Proposition_Instance>& proposition_instances);
+		void set_delete_list(const std::vector<General_Proposition_Instance>& proposition_instances);
 		void set_instance_buffer(Proposition_Instance_Buffer& proposition_instance_buffer);
-		void set_precondition(Formula&& formula);
+		void set_precondition(General_Formula&& formula);
 	private:
 		std::string name;
 		Event_Id id;
-		Formula precondition;
-		std::vector<Proposition_Instance> proposition_add;
-		std::vector<Proposition_Instance> proposition_delete;
+		General_Formula precondition;
+		std::vector<General_Proposition_Instance> proposition_add;
+		std::vector<General_Proposition_Instance> proposition_delete;
 		Proposition_Instance_Buffer proposition_instance_buffer;
 	};
 
@@ -36,16 +37,15 @@ namespace del
 	friend class Action_Events;
 	public:
 		General_Action_Events();
-		General_Action_Events(std::vector<General_Action_Event*> events);
+		General_Action_Events(std::vector<std::unique_ptr<General_Action_Event>> events);
 		void end(Proposition_Instance_Buffer& proposition_instance_buffer);
-		std::vector<General_Action_Event*> get();
+		std::vector<std::unique_ptr<General_Action_Event>> get();
 		void start(const std::string& name);
 		void set_preconditions(Formula_Buffer& formula_buffer);
 		void set_delete_list(Proposition_Instance_Buffer& proposition_instance_buffer);
 		void set_add_list(Proposition_Instance_Buffer& proposition_instance_buffer);
-		//void insert(std::string name, Formula&& preconditions, const Propositions& add_list, const Propositions& delete_list);
 		size_t size() const;
 	private:
-		std::vector<General_Action_Event*> events;
+		std::vector<std::unique_ptr<General_Action_Event>> events;
 	};
 }

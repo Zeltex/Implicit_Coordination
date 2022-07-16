@@ -2,7 +2,6 @@
 
 #include "Action.hpp"
 #include "Atoms.hpp"
-#include "Atom_Arguments.hpp"
 #include "Domain.hpp"
 #include "Edge_Conditions.hpp"
 #include "Formula_Core.hpp"
@@ -65,34 +64,10 @@ namespace del {
 	const General_Agent_Edge_Conditions& General_Action::get_edge_conditions() const {
 		return edge_conditions;
 	}
-	Converter General_Action::create_converter(const Propositions_Lookup& propositions_Lookup, const Atoms& arguments) const
-	{
-		return create_converter(propositions_Lookup, Atom_Arguments{ arguments });
-	}
-
-	Converter General_Action::create_converter(const Propositions_Lookup& propositions_Lookup, const Atom_Arguments& arguments) const{
-		Converter formula_to_domain;
-
-		for (auto& [prop_instance, prop] : proposition_instance_buffer) 
-		{
-			if (prop_instance.contains_non_atom_entry()
-				&& (!arguments.has(REST_INDEX) 
-					|| arguments.get(REST_INDEX) == REST_INDEX))
-			{
-				continue;
-			}
-
-			// TODO - This should include converter for agent_id
-			auto grounded_prop_instance = Proposition_Instance(prop_instance, arguments);
-			formula_to_domain.set(prop, propositions_Lookup.get(grounded_prop_instance));
-		}
-		return formula_to_domain;
-	}
 
 	void General_Action::set_edge_conditions(const std::string agent_name, General_Edge_Conditions& edge_conditions)
 	{
-		Atom_Id atom_id{ inputs.get_index(agent_name) };
-		this->edge_conditions.insert(atom_id, edge_conditions);
+		this->edge_conditions.insert(agent_name, edge_conditions);
 	}
 
 	void General_Action::set_events(General_Action_Events& general_action_events)
@@ -105,18 +80,9 @@ namespace del {
 		this->proposition_instance_buffer.set_and_consume(proposition_instance_buffer);
 	}
 
-
-	General_Actions::~General_Actions()
-	{
-		for (auto entry : actions)
-		{
-			delete entry;
-		}
-	}
-
 	void General_Actions::start(const std::string name)
 	{
-		actions.push_back(new General_Action(name));
+		actions.push_back(std::make_unique<General_Action>(name));
 	}
 
 	void General_Actions::set_input(Inputs_Buffer& inputs_buffer)
@@ -154,25 +120,16 @@ namespace del {
 		actions.back()->set_propositions_buffer(proposition_instance_buffer);
 	}
 
-	std::vector<General_Action*> General_Actions::get()
+	std::vector<std::unique_ptr<General_Action>> General_Actions::get()
 	{
-		std::vector<General_Action*> temp = std::move(actions);
-		actions = {};
+		auto temp = std::move(actions);
+		actions.clear();
 		return std::move(temp);
+
 	}
 
 	const Inputs& General_Actions::get_inputs() const
 	{
 		return actions.back()->get_inputs();
-	}
-
-	std::vector<General_Action*>::const_iterator General_Actions::begin() const
-	{
-		return actions.begin();
-	}
-	
-	std::vector<General_Action*>::const_iterator General_Actions::end() const
-	{
-		return actions.end();
 	}
 }

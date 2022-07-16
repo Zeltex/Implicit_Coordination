@@ -2,6 +2,7 @@
 
 #include "Action.hpp"
 #include "Agents.hpp"
+#include "Atom_Lookup.hpp"
 #include "Bisimulation_Context.hpp"
 #include "Domain.hpp"
 #include "General_State.hpp"
@@ -10,14 +11,14 @@
 namespace del {
 
 
-	State::State(const General_State& other, const Propositions_Lookup& propositions_lookup, const Agents& agents)
+	State::State(const General_State& other, const Propositions_Lookup& propositions_lookup, const Agents& agents, const Atom_Lookup& atom_lookup)
 		: cost(other.cost),
 		designated_worlds(other.designated_worlds),
 		accessibility_relations(other.worlds.size(), agents.size())
 	{
 		for (const General_World& general_world : other.worlds)
 		{
-			worlds.push_back({ general_world, propositions_lookup });
+			worlds.push_back({ general_world, propositions_lookup, atom_lookup});
 		}
 
 		for (const Agent_World_Relation& relation : other.agent_world_relations)
@@ -38,21 +39,7 @@ namespace del {
 		this->designated_worlds.insert(designated_world);
 	}
 
-	std::vector<State> State::get_all_perspective_shifts(size_t number_of_agents) const
-	{
-		std::vector<State> perspective_shifts;
-		perspective_shifts.reserve(number_of_agents);
-
-		for (size_t i = 0; i < number_of_agents; ++i)
-		{
-			State temp_state = *this;
-			temp_state.shift_perspective(Agent_Id{ i });
-			perspective_shifts.push_back(temp_state);
-		}
-		return perspective_shifts;
-	}
-
-	void State::shift_perspective(Agent_Id agent, bool is_exclusive) 
+	void State::shift_perspective(const Agent* agent, bool is_exclusive) 
 	{
 		std::set<World_Id> designated_copy;
 		while (designated_copy.size() != designated_worlds.size())
@@ -88,13 +75,14 @@ namespace del {
 		return worlds.at(world_id.id).get_true_propositions();
 	}
 
-	bool State::is_true(const World_Id& world_id, const Proposition& proposition) const {
+	bool State::is_true(const World_Id& world_id, const Proposition_Instance* proposition) const {
 		return worlds.at(world_id.id).get_true_propositions().contains(proposition);
 	}
 
-	std::set<World_Id> State::get_reachable_worlds(Agent_Id agent_id, World_Id world_id) const {
+	std::set<World_Id> State::get_reachable_worlds(const Agent* agent, World_Id world_id) const {
 		// Due to the serial, transitive and euclidean conditions we only need to check depth one
 		std::set<World_Id> result;
+		Agent_Id agent_id = agent->get_id();
 		for (const World& world : worlds)
 		{
 			if (accessibility_relations.has_direct_relation(agent_id, world_id, world.get_id()))

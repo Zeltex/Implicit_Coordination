@@ -21,7 +21,7 @@ namespace del {
 	public:
 		~Graph();
 		Graph();
-		Graph(size_t node_size, const State& state, Node_Comparator& history, const Agent& planning_agent);
+		Graph(size_t node_size, const State& state, Node_Comparator& history, const Agent* planning_agent);
 
 
 		NodeOr* get_next_from_frontier();
@@ -31,9 +31,8 @@ namespace del {
 		NodeOr* create_or_node(State state, NodeAnd* parent);
 		NodeAnd* create_root_node(const State& state);
 
-		std::vector<NodeBase*>& get_nodes();
-		const std::vector<NodeBase*>& get_const_nodes() const;
 		NodeAnd* get_root_node();
+		void calculate_value();
 
 		std::string to_string(const Domain& domain) const;
 	private:

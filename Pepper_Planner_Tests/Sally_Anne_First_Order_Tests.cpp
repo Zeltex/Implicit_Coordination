@@ -24,7 +24,7 @@ namespace PepperPlannerTests
 		{
 			prepare_sally_anne();
 
-			size_t agent_S = di->agent("S").id;
+			const Agent* agent_S = di->agent("S");
 			auto in_basket = di->prop("in", "basket", "marble");
 
 			Formula f;
@@ -47,7 +47,7 @@ namespace PepperPlannerTests
 		{
 			prepare_sally_anne();
 
-			size_t agent_S = di->agent("S").id;
+			const Agent* agent_S = di->agent("S");
 			auto in_box = di->prop("in", "box", "marble");
 
 			Formula f;
@@ -70,7 +70,7 @@ namespace PepperPlannerTests
 		{
 			prepare_sally_anne();
 
-			size_t agent_S = di->agent("S").id;
+			const Agent* agent_S = di->agent("S");
 			auto in_basket = di->prop("present", "A");
 
 			Formula f;
@@ -96,8 +96,8 @@ namespace PepperPlannerTests
 		TEST_METHOD(Test_Action_1)
 		{
 			prepare_sally_anne();
-			auto agent_a = di->agent("A").id;
-			auto agent_s = di->agent("S").id;
+			const Agent* agent_a = di->agent("A");
+			const Agent* agent_s = di->agent("S");
 			auto present_a = di->prop("present", "A");
 			auto in_basket = di->prop("in", "basket", "marble");
 			auto in_box = di->prop("in", "box", "marble");

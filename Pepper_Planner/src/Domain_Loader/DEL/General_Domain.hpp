@@ -38,7 +38,7 @@ namespace del {
         // Problem
         General_State state;
         Proposition_Instance_Buffer rigid_propositions;
-        Formula goal;
+        General_Formula goal;
         General_Objects objects;
         General_Agents agents;
 

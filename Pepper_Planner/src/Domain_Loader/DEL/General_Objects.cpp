@@ -43,4 +43,9 @@ namespace del
 		}
 		return atoms;
 	}
+
+	size_t General_Objects::size() const
+	{
+		return atom_name_to_id.size();
+	}
 }

@@ -1,8 +1,8 @@
 #include "Policy.hpp"
 
+#include "Agents.hpp"
 #include "Core.hpp"
 #include "Node_Comparator.hpp"
-
 
 #include <iostream>
 #include <filesystem>
@@ -14,12 +14,13 @@ namespace del {
 		return solved;
 	}
 
-	const Action* Policy::get_action(const State& state, Agent_Id preferred_agent) const {
+	const Action* Policy::get_action(const State& state, const Agents* agents, Agent_Id preferred_agent) const {
 		std::vector<size_t> agent_hashes;
 		std::vector<State> agent_states;
-		for (size_t agent = 0; agent < state.get_number_of_agents(); ++agent) {
+		for (auto& agent : *agents)
+		{ 
 			State temp = state;
-			temp.shift_perspective(Agent_Id{ agent });
+			temp.shift_perspective(&agent);
 			temp = temp.contract();
 			agent_hashes.emplace_back(temp.to_hash());
 			agent_states.push_back(std::move(temp));
@@ -36,7 +37,7 @@ namespace del {
 				auto& [policy_state, policy_actions] = (*potential_match).second;
 				if (policy_state.is_bisimilar_to(agent_states[agent_counter])) {
 					for (auto& [policy_action, policy_node] : policy_actions) {
-						if (policy_action->get_owner().id == agent_counter) {
+						if (policy_action->get_owner()->get_id().id == agent_counter) {
 							return policy_action;
 						}
 					}
@@ -83,7 +84,7 @@ namespace del {
 		std::string result = get_indentation(indentation) + " Policy";
 		size_t counter = 0;
 		for (auto& [hash, entry] : policy) {
-			auto temp_action_string = entry.actions.begin()->first->to_string(domain);
+			auto temp_action_string = entry.actions.begin()->first->to_string();
 			result += "\n" 
 				+ get_indentation(indentation - 1) 
 				+ " Entry " 
@@ -93,7 +94,7 @@ namespace del {
 				+ "\n" 
 				+ entry.state.to_string(domain) 
 				+ "\n"
-				+ entry.actions.begin()->first->to_string(domain)
+				+ entry.actions.begin()->first->to_string()
 				+ "\n---------------------------------\n\n";
 			std::cout << result << std::endl;
 			counter++;

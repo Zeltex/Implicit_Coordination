@@ -6,6 +6,7 @@
 
 namespace del {
 	class Action_Event;
+	class Atom_Lookup;
 	class Domain;
 	class General_World;
 	class Propositions_Lookup;
@@ -13,7 +14,7 @@ namespace del {
 	class World {
 	public:
 
-		World(const General_World& other, const Propositions_Lookup& propositions_lookup);
+		World(const General_World& other, const Propositions_Lookup& propositions_lookup, const Atom_Lookup& atom_lookup);
 		World(const World& other, const Action_Event& action, const World_Id& id);
 		World(World_Id id) : id(id), true_propositions() {}
 		World(World_Id id, Propositions true_propositions) :

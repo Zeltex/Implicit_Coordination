@@ -14,7 +14,7 @@ namespace PepperPlannerTests
 			prepare_example_2();
 			const State& state = di->get_current_state();
 
-			auto& agent = di->agent("a0");
+			const Agent* agent = di->agent("a0");
 			auto& designated_worlds = state.get_designated_worlds();
 
 			Assert::AreEqual(designated_worlds.size(), (size_t)1);
@@ -34,7 +34,7 @@ namespace PepperPlannerTests
 			prepare_example_2();
 			State state = di->get_current_state();
 
-			auto& agent = di->agent("a0");
+			const Agent* agent = di->agent("a0");
 
 			state.shift_perspective(agent);
 
@@ -48,7 +48,7 @@ namespace PepperPlannerTests
 			prepare_example_2();
 			State state = di->get_current_state();
 
-			auto& agent = di->agent("a0");
+			const Agent* agent = di->agent("a0");
 
 			state.shift_perspective(agent, true);
 

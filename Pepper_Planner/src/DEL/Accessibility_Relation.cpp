@@ -2,8 +2,9 @@
 
 #include <assert.h>
 
-#include "Domain.hpp"
 #include "Action_Events.hpp"
+#include "Agents.hpp"
+#include "Domain.hpp"
 
 
 namespace del 
@@ -80,10 +81,16 @@ namespace del
 		return unreachable_worlds;
 	}
 	
-	bool Accessibility_Relations::has_direct_relation(const Agent_Id& agent, const World_Id& from_world, const World_Id& to_world) const
+	bool Accessibility_Relations::has_direct_relation(Agent_Id agent, const World_Id& from_world, const World_Id& to_world) const
 	{
 		assert(agent.id < agents_size);
 		return relations.at(get_index(agent, from_world, to_world));
+	}
+
+	bool Accessibility_Relations::has_direct_relation(const Agent* agent, const World_Id& from_world, const World_Id& to_world) const
+	{
+		assert(agent != nullptr);
+		return has_direct_relation(agent->get_id(), from_world, to_world);
 	}
 
 	Accessibility_Relations Accessibility_Relations::product_update(
@@ -95,8 +102,6 @@ namespace del
 	{
 
 		size_t new_worlds_size_squared = new_worlds_size * new_worlds_size;
-
-		// TODO - Could be done more efficiently if world_conversions were sorted
 
 		std::vector<bool> result(agents_size * new_worlds_size * new_worlds_size, false);
 		for (Agent_Id agent = 0; agent < agents_size; ++agent)
@@ -189,7 +194,7 @@ namespace del
 							result += "\n";
 						}
 						result += "("
-							+ domain.get_agent(agent).get_name() + ", "
+							+ domain.get_agent(agent)->get_name() + ", "
 							+ std::to_string(world_from) + ", "
 							+ std::to_string(world_to) + ")";
 					}

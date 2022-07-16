@@ -204,7 +204,20 @@ namespace del
 
 	std::string NodeAnd::to_string(const Domain& domain) const
 	{
-		return "";
+		std::string result = "Node AND " + id.to_string() + "\nParents ";
+		for (auto& parent : parents)
+		{
+			result += parent->get_id().to_string() + " ";
+		}
+
+		result += "\nChildren ";
+
+		for (auto& child : children)
+		{
+			result += child->get_id().to_string() + " ";
+		}	
+			
+		return result + "\n" + state.to_string(domain);
 	}
 
 	bool NodeAnd::valuate(const Formula& formula, const Domain& domain) const

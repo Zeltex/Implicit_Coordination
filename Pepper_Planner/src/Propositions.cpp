@@ -1,7 +1,10 @@
 #include "Propositions.hpp"
 
+#include "Atom_Lookup.hpp"
 #include "Atoms.hpp"
+#include "Converter_Base.hpp"
 #include "Domain.hpp"
+#include "General_Proposition_Instance.hpp"
 #include "Proposition_Instance_Buffer.hpp"
 #include "Propositions_Lookup.hpp"
 
@@ -19,32 +22,45 @@ namespace del {
 
 	}
 
-	Propositions::Propositions(const Proposition_Instance_Buffer& rigid_propositions, const Propositions_Lookup& propositions_lookup)
+	Propositions::Propositions(const std::vector<General_Proposition_Instance>& other, const Converter_Base* converter)
 	{
-		for (const Proposition_Instance& instance : rigid_propositions.proposition_instances)
+		for (auto& general_instance : other)
 		{
-			propositions.insert(propositions_lookup.get(instance));
+			propositions.insert(converter->convert(&general_instance));
 		}
 	}
 
-	Propositions::Propositions(const std::vector<Proposition_Instance>& other, const Propositions_Lookup& propositions_lookup, const Atoms& arguments)
+	Propositions::Propositions(const Proposition_Instance_Buffer& other, const Converter_Base* converter)
+		: Propositions(other.proposition_instances, converter)
 	{
-		for (const Proposition_Instance& instance : other)
-		{
-			Proposition_Instance grounded_instance{ instance, arguments };
-			propositions.insert(propositions_lookup.get(grounded_instance));
-		}
+
 	}
+
+	//Propositions::Propositions(const Proposition_Instance_Buffer& rigid_propositions, const Propositions_Lookup& propositions_lookup, const Atom_Lookup& atom_lookup)
+	//{
+	//	for (const General_Proposition_Instance& instance : rigid_propositions.proposition_instances)
+	//	{
+	//		propositions.insert(propositions_lookup.get(instance, atom_lookup));
+	//	}
+	//}
+
+	//Propositions::Propositions(const std::vector<Proposition_Instance>& other, const Propositions_Lookup& propositions_lookup, const Atoms& arguments)
+	//{
+	//	for (const Proposition_Instance& instance : other)
+	//	{
+	//		propositions.insert(propositions_lookup.get(instance, arguments));
+	//	}
+	//}
 
 	void Propositions::insert(const Propositions& other)
 	{
-		for (const Proposition& proposition : other.propositions)
+		for (const Proposition_Instance* proposition : other.propositions)
 		{
 			propositions.insert(proposition);
 		}
 	}
 
-	void Propositions::insert(const Proposition& proposition)
+	void Propositions::insert(const Proposition_Instance* proposition)
 	{
 		propositions.insert(proposition);
 	}
@@ -61,17 +77,17 @@ namespace del {
 		}
 	}
 
-	bool Propositions::contains(const Proposition& proposition) const
+	bool Propositions::contains(const Proposition_Instance* proposition) const
 	{
 		return propositions.find(proposition) != propositions.end();
 	}
 
-	std::string Propositions::to_string(const Domain& domain) const
+	std::string Propositions::to_string() const
 	{
 		std::string result;
-		for (const Proposition& proposition : propositions)
+		for (const Proposition_Instance* proposition : propositions)
 		{
-			result += ", " + domain.get_proposition_instance(proposition).to_string(domain);
+			result += ", " + proposition->to_string();
 		}
 		return result;
 	}
@@ -79,9 +95,9 @@ namespace del {
 	std::string Propositions::to_signature_string() const
 	{
 		std::string result;
-		for (const Proposition& proposition : propositions)
+		for (const Proposition_Instance* proposition : propositions)
 		{
-			result += proposition.to_string();
+			result += proposition->to_string();
 		}
 		return result;
 	}
@@ -94,12 +110,15 @@ namespace del {
 	bool Propositions::operator!=(const Propositions& other) const
 	{
 		if (propositions.size() != other.propositions.size()) return true;
-		std::set<Proposition>::const_iterator props1 = propositions.begin();
-		std::set<Proposition>::const_iterator props2 = other.propositions.begin();
+		std::set<const Proposition_Instance*>::const_iterator props1 = propositions.begin();
+		std::set<const Proposition_Instance*>::const_iterator props2 = other.propositions.begin();
 
 		for (; props1 != propositions.end(); ++props1, ++props2) 
 		{
-			if (*props1 != *props2) return true;
+			if (*props1 != *props2)
+			{
+				return true;
+			}
 		}
 		return false;
 	}
@@ -107,9 +126,9 @@ namespace del {
 	std::string Propositions::to_hash() const
 	{
 		std::string hash;
-		for (const Proposition& prop : propositions)
+		for (const Proposition_Instance* prop : propositions)
 		{
-			hash += prop.to_hash();
+			hash += prop->to_hash();
 		}
 		return hash;
 	}

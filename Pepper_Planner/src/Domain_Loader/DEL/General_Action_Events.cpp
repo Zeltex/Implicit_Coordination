@@ -11,23 +11,17 @@ namespace del
 
 	}
 
-	//General_Action_Event::General_Action_Event(const std::string& name, Event_Id id, Formula&& precondition, const Propositions& proposition_add, const Propositions& proposition_delete) :
-	//	name(name), id(id), precondition(std::move(precondition)), proposition_add(proposition_add), proposition_delete(proposition_delete) 
-	//{
-	//
-	//}
-
-	void General_Action_Event::set_precondition(Formula&& formula)
+	void General_Action_Event::set_precondition(General_Formula&& formula)
 	{
 		precondition = std::move(formula);
 	}
 
-	void General_Action_Event::set_delete_list(const std::vector<Proposition_Instance>& proposition_instances)
+	void General_Action_Event::set_delete_list(const std::vector<General_Proposition_Instance>& proposition_instances)
 	{
 		proposition_delete = proposition_instances;
 	}
 	
-	void General_Action_Event::set_add_list(const std::vector<Proposition_Instance>& proposition_instances)
+	void General_Action_Event::set_add_list(const std::vector<General_Proposition_Instance>& proposition_instances)
 	{
 		proposition_add = proposition_instances;
 	}
@@ -43,13 +37,13 @@ namespace del
 
 	}
 
-	General_Action_Events::General_Action_Events(std::vector<General_Action_Event*> events)
+	General_Action_Events::General_Action_Events(std::vector<std::unique_ptr<General_Action_Event>> events)
 		: events(std::move(events))
 	{
 
 	}
 
-	std::vector<General_Action_Event*> General_Action_Events::get()
+	std::vector<std::unique_ptr<General_Action_Event>> General_Action_Events::get()
 	{
 		return std::move(events);
 	}

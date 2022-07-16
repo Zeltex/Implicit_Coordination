@@ -1,12 +1,15 @@
 #include "Formula.hpp"
 
-#include "Converter.hpp"
+#include "Atom_Lookup.hpp"
+#include "Converter_Base.hpp"
+#include "General_Formula.hpp"
+#include "Propositions_Lookup.hpp"
 
 #include <assert.h>
 
 namespace del {
 
-    Formula::Formula(const Formula& other, const Converter& general_to_ground) 
+    Formula::Formula(const General_Formula& other, const Converter_Base* converter)
     {
         formulas.resize(other.formulas.size());
         if (other.formulas.empty())
@@ -14,7 +17,7 @@ namespace del {
             return;
         }
 
-        other.formulas.back().copy(this, general_to_ground);
+        root = &formulas.emplace_back(*this, &other.formulas.back(), converter);
     }
 
 
@@ -36,11 +39,11 @@ namespace del {
         formulas = {}; 
     }
 
-    std::string Formula::to_string(const Domain& domain) const {
+    std::string Formula::to_string() const {
         if (formulas.empty()) {
             return Formula_Converter::type_to_string(Formula_Types::Top);
         } else {
-            return formulas.back().to_string(domain);
+            return root->to_string();
         }
     }
 
@@ -79,7 +82,7 @@ namespace del {
         return &formulas.back();
     }
 
-    Formula_Component* Formula::f_prop(Proposition proposition)
+    Formula_Component* Formula::f_prop(const Proposition_Instance* proposition)
     {
         formulas.emplace_back(Formula_Types::Prop, proposition);
         return &formulas.back();
@@ -103,7 +106,7 @@ namespace del {
         return &formulas.back();
     }
 
-    Formula_Component* Formula::f_believes(const Agent_Id& agent, Formula_Component* formula)
+    Formula_Component* Formula::f_believes(const Agent* agent, Formula_Component* formula)
     {
         formulas.emplace_back(Formula_Types::Believes, agent, formula);
         return &formulas.back();

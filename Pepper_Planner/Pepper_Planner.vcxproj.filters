@@ -18,11 +18,10 @@
     <ClCompile Include="src\DEL\Formula\Proposition_Instance.cpp" />
     <ClCompile Include="src\DEL\Accessibility_Relation.cpp" />
     <ClCompile Include="src\DEL\Agents.cpp" />
-    <ClCompile Include="src\DEL\Atom_Arguments.cpp" />
     <ClCompile Include="src\DEL\Atom_Lookup.cpp" />
     <ClCompile Include="src\DEL\Atoms.cpp" />
     <ClCompile Include="src\DEL\Bisimulation_Context.cpp" />
-    <ClCompile Include="src\DEL\Converter.cpp" />
+    <ClCompile Include="src\DEL\Converter_Action.cpp" />
     <ClCompile Include="src\DEL\Domain.cpp" />
     <ClCompile Include="src\DEL\Propositions_Lookup.cpp" />
     <ClCompile Include="src\DEL\State.cpp" />
@@ -52,6 +51,10 @@
     <ClCompile Include="src\Planner\NodeBase.cpp" />
     <ClCompile Include="src\Planner\NodeOr.cpp" />
     <ClCompile Include="src\Planner\NodeAnd.cpp" />
+    <ClCompile Include="src\Domain_Loader\DEL\General_Formula.cpp" />
+    <ClCompile Include="src\Domain_Loader\DEL\General_Formula_Component.cpp" />
+    <ClCompile Include="src\Domain_Loader\DEL\General_Proposition_Instance.cpp" />
+    <ClCompile Include="src\DEL\Converter_Problem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Core.hpp" />
@@ -72,11 +75,10 @@
     <ClInclude Include="src\DEL\Formula\Proposition_Instance.hpp" />
     <ClInclude Include="src\DEL\Accessibility_Relation.hpp" />
     <ClInclude Include="src\DEL\Agents.hpp" />
-    <ClInclude Include="src\DEL\Atom_Arguments.hpp" />
     <ClInclude Include="src\DEL\Atom_Lookup.hpp" />
     <ClInclude Include="src\DEL\Atoms.hpp" />
     <ClInclude Include="src\DEL\Bisimulation_Context.hpp" />
-    <ClInclude Include="src\DEL\Converter.hpp" />
+    <ClInclude Include="src\DEL\Converter_Action.hpp" />
     <ClInclude Include="src\DEL\Domain.hpp" />
     <ClInclude Include="src\DEL\Propositions_Lookup.hpp" />
     <ClInclude Include="src\DEL\State.hpp" />
@@ -106,10 +108,13 @@
     <ClInclude Include="src\DEL\Formula\Formula_Core.hpp" />
     <ClInclude Include="src\DEL\Formula\Formula_Types.hpp" />
     <ClInclude Include="src\Domain_Loader\Loader_Types.hpp" />
-    <ClInclude Include="src\Domain_Loader\Maepl.hpp" />
-    <ClInclude Include="src\Domain_Interface.hpp" />
     <ClInclude Include="src\Planner\NodeBase.hpp" />
     <ClInclude Include="src\Planner\NodeOr.hpp" />
     <ClInclude Include="src\Planner\NodeAnd.hpp" />
+    <ClInclude Include="src\Domain_Loader\DEL\General_Formula.hpp" />
+    <ClInclude Include="src\Domain_Loader\DEL\General_Formula_Component.hpp" />
+    <ClInclude Include="src\Domain_Loader\DEL\General_Proposition_Instance.hpp" />
+    <ClInclude Include="src\DEL\Converter_Base.hpp" />
+    <ClInclude Include="src\DEL\Converter_Problem.hpp" />
   </ItemGroup>
 </Project>

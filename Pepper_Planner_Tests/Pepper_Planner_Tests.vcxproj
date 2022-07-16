@@ -166,7 +166,6 @@
     <ClCompile Include="Formula_Valuation_Tests.cpp" />
     <ClCompile Include="Sally_Anne_Second_Order_Planner_Tests.cpp" />
     <ClCompile Include="Sally_Anne_Second_Order_Tests.cpp" />
-    <ClCompile Include="Source_Files.cpp" />
     <ClCompile Include="Test_MAPF_Planner.cpp" />
   </ItemGroup>
   <ItemGroup>

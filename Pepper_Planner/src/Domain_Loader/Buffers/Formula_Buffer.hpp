@@ -4,7 +4,8 @@
 
 #include "Atom_Buffer.hpp"
 #include "Formula_Types.hpp"
-#include "Formula.hpp"
+#include "General_Formula.hpp"
+#include "General_Formula_Component.hpp"
 #include "Propositions.hpp"
 
 namespace del
@@ -20,10 +21,10 @@ namespace del
 		void push_formula(const std::string& type);
 		void pop_formula_believes(const General_Agents& general_agents, const std::string& input);
 		void pop_formula();
-		Formula get();
+		General_Formula get();
 	private:
-		Formula formula;
-		std::deque<Formula_Component*> formula_buffer;
+		General_Formula formula;
+		std::deque<General_Formula_Component*> formula_buffer;
 		std::deque<Formula_Types> formula_buffer_type;
 	};
 }

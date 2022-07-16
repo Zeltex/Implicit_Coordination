@@ -1,22 +1,22 @@
-#include "Graph.hpp"
-#include "Formula.hpp"
+#include "Run_Planner.hpp"
+
 #include <iostream>
 #include <chrono>
 #include <ctime>    
 #include <time.h>
 
 
-#include "World.hpp"
-#include "Formula.hpp"
-#include "Formula_Component.hpp"
 #include "Action.hpp"
 #include "Action_Library.hpp"
-#include "Planner.hpp"
 #include "Domain.hpp"
 #include "DEL_Interface.hpp"
+#include "Formula.hpp"
+#include "Formula_Component.hpp"
+#include "Graph.hpp"
 #include "Loader.hpp"
+#include "Planner.hpp"
+#include "World.hpp"
 
-#include "Run_Planner.hpp"
 
 namespace del {
 

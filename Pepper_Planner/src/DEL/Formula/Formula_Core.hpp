@@ -9,9 +9,3 @@
 #define REST_KEYWORD		"_rest"
 #define VAR_KEYWORD			"_var"
 #define AGENT_STRING		"agent"
-
-namespace del {
-    struct Atom_Id;
-
-    using prop_array = std::array<Atom_Id, PROPOSITION_LENGTH>;
-}

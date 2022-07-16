@@ -8,6 +8,7 @@
 namespace del
 {
 	class Action;
+	class Agents;
 	class NodeAnd;
 
 	class NodeOr : public NodeBase
@@ -20,7 +21,7 @@ namespace del
 		void add_child(NodeAnd* node, const Action* action);
 		void add_parent(NodeAnd* node);
 		const std::vector<std::pair<NodeAnd*, const Action*>>& get_children() const;
-		std::vector<std::set<World_Id>> get_all_perspectives() const;
+		std::vector<std::set<World_Id>> get_all_perspectives(const Agents* agents) const;
 		std::optional<State> product_update(const Action* action, const Domain& domain, const std::set<World_Id>& designated_worlds) const;
 
 		virtual void calculate_hash() override;

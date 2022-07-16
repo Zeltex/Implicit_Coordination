@@ -15,7 +15,7 @@ namespace del {
 
 	// TODO - Add option to specify for what person the goal must be fulfilled
 	Policy Planner::find_policy(Domain& domain, 
-								Agent planning_agent,
+								const Agent* planning_agent,
 								const bool is_benchmark) const {
 		const Formula& goal_formula = domain.get_goal();
 		Action_Library& action_library = domain.get_action_library();
@@ -33,16 +33,14 @@ namespace del {
 			
 			NodeOr* current_node = graph.get_next_from_frontier();
 			debug_info.print_single(current_node);
-			//const State& current_state = current_node->get_state();
 			action_library.load_actions();
-			//std::vector<State> perspective_shifts = current_state.get_all_perspective_shifts(domain.get_agents().size());
-			std::vector<std::set<World_Id>> perspective_shifts = current_node->get_all_perspectives();
+			std::vector<std::set<World_Id>> perspective_shifts = current_node->get_all_perspectives(domain.get_agents());
 
 			while (action_library.has_action()) 
 			{
 				const Action* action = action_library.get_next_action();
-				assert(action->get_owner().id < perspective_shifts.size());
-				auto& perspective = perspective_shifts.at(action->get_owner().id);
+				assert(action->get_owner()->get_id().id < perspective_shifts.size());
+				auto& perspective = perspective_shifts.at(action->get_owner()->get_id().id);
 				std::optional<State> temp_state = current_node->product_update(action, domain, perspective);
 				if (!temp_state.has_value())
 				{
@@ -95,6 +93,7 @@ namespace del {
 		}
 		debug_info.print_final();
 		std::cout << "No policy found\n";
+		std::cout << graph.to_string(domain);
 		return Policy(false);
 	}
 
@@ -113,35 +112,12 @@ namespace del {
 				return Policy(true);
 			} else 
 			{
-				calculate_value(graph);
+				graph.calculate_value();
 				Policy policy(true);
 				graph.get_root_node()->extract_policy(policy);
 				return policy;
 			}
 		}
 		return {};
-	}
-
-	void Planner::calculate_value(Graph& graph) const
-	{
-		std::deque<NodeBase*> frontier;
-		for (auto& node : graph.get_nodes())
-		{
-			if (node->is_leaf())
-			{
-				frontier.push_back(node);
-			}
-		}
-
-		while (!frontier.empty())
-		{
-			auto node = frontier.front();
-			frontier.pop_front();
-			node->calculate_value(frontier);
-			if (node->is_root_node() && node->has_value())
-			{
-				break;
-			}
-		}
 	}
 }

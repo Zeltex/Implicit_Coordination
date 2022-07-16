@@ -8,6 +8,7 @@
 #include "Misc.hpp"
 
 namespace del {
+	class Agents;
 	class Node_Comparator;
 	class NodeBase;
 
@@ -22,7 +23,7 @@ namespace del {
 
 		void add_entry(const State& state, const Action* action, const NodeBase* node);
 		bool is_solved() const;
-		const Action* get_action(const State& state, Agent_Id preferred_agent = { 0 }) const;
+		const Action* get_action(const State& state, const Agents* agents, Agent_Id preferred_agent = { 0 }) const;
 		bool try_visit(NodeBase* node);
 
 		std::string to_string(const Domain& domain) const;

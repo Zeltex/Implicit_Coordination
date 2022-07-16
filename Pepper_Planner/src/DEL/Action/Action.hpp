@@ -27,15 +27,15 @@ namespace del {
 		size_t					get_cost() const;
 		const Action_Events&	get_events() const;
 		std::string				get_name() const;
-		Agent_Id				get_owner() const;
+		const Agent*			get_owner() const;
 
 		bool is_event_designated(Event_Id event) const;
 		bool is_condition_fulfilled(Agent_Id agent, Event_Id event_from, Event_Id event_to, const State& state, const World_Id world, const Domain& domain) const;
 
 
-		std::string to_string(const Domain& domain) const;
-		std::string to_string(size_t indentation, const Domain& domain) const;
-		std::string to_compact_string(const Domain& domain) const;
+		std::string to_string() const;
+		std::string to_string(size_t indentation) const;
+		std::string to_compact_string() const;
 
 		// Args is mainly debug
 		Atoms args;
@@ -45,7 +45,7 @@ namespace del {
 		// Events must be above designated_events and edge_conditions, for the initializer list ordering
 		Action_Events events;
 		Designated_Events designated_events;
-		Agent_Id owner;
+		const Agent* owner;
 		std::string name;
 		Agent_Edge_Conditions edge_conditions;
 

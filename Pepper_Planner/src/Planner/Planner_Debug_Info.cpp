@@ -1,4 +1,5 @@
 #include "Planner_Debug_Info.hpp"
+#include "Core.hpp"
 
 #include <assert.h>
 
@@ -11,7 +12,7 @@ namespace del
 	void Debug_Info::print_final() const
 	{
 #if DEBUG_PRINT == 1
-		report_memory_usage();
+		//report_memory_usage();
 		print_debug_layer();
 #endif
 	}
@@ -25,9 +26,9 @@ namespace del
 
 	void Debug_Info::print_single(const NodeBase* node) const
 	{
-#if DEBUG_PRINT == 1 && PRINT_NODES == 1
-		std::cout << "\nNode " << node.id << " at depth " << action_node.get_cost() << "\n";
-		std::cout << node.to_string(domain) << std::endl;;
+#if DEBUG_PRINT == 1 && PRINT_NODES == 1 && 0
+		std::cout << "\nNode " << node->get_id().id << " at depth " << node->get_cost() << "\n";
+		std::cout << node->to_string(*domain) << std::endl;;
 #endif
 	}
 

@@ -2,9 +2,9 @@
 
 #include <map>
 #include <string>
+#include <memory>
 
 #include "Agents.hpp"
-#include "Converter.hpp"
 #include "General_Action_Events.hpp"
 #include "General_Edge_Conditions.hpp"
 #include "Inputs_Buffer.hpp"
@@ -27,8 +27,6 @@ namespace del {
 		General_Action() : cost((size_t) - 1) {}
 		General_Action(const std::string& name);
 		
-		Converter create_converter(const Propositions_Lookup& propositions_Lookup, const Atoms& arguments) const;
-		Converter create_converter(const Propositions_Lookup& propositions_Lookup, const Atom_Arguments& arguments) const;
 		void set_cost(size_t cost);
 		void set_designated_events(std::vector<std::string> designated_events);
 		void set_edge_conditions(const std::string agent_name, General_Edge_Conditions& edge_conditions);
@@ -61,7 +59,6 @@ namespace del {
 	class General_Actions 
 	{
 	public:
-		~General_Actions();
 		void start(const std::string name);
 		void set_cost(size_t cost);
 		void set_designated_events(Variables_Buffer& variables_buffer);
@@ -70,13 +67,11 @@ namespace del {
 		void set_input(Inputs_Buffer& inputs_buffer);
 		void set_owner(const std::string type, const std::string name);
 		void set_propositions_buffer(Proposition_Instance_Buffer& proposition_instance_buffer);
-		std::vector<General_Action*> get();
+		std::vector<std::unique_ptr<General_Action>> get();
 
 
 		const Inputs& get_inputs() const;
-		std::vector<General_Action*>::const_iterator begin() const;
-		std::vector<General_Action*>::const_iterator end() const;
 	private:
-		std::vector<General_Action*> actions;
+		std::vector<std::unique_ptr<General_Action>> actions;
 	};
 }

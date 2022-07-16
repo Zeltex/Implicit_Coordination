@@ -21,8 +21,8 @@ namespace del {
 	{
 		World_Id world_id{ worlds.size() };
 		// TODO - Verify that this should not be transformed
-		std::vector<Proposition_Instance> proposition = proposition_instance_buffer.get();
-		worlds.push_back(General_World(name, world_id, std::move(proposition)));
+		std::vector<General_Proposition_Instance> propositions = proposition_instance_buffer.get();
+		worlds.push_back(General_World(name, world_id, std::move(propositions)));
 	}
 
 	void General_State::set_single_designated_world(World_Id world) {

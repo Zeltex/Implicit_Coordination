@@ -13,8 +13,8 @@ namespace PepperPlannerTests
 		{
 			prepare_sally_anne();
 
-			auto agent_a = di->agent("A").id;
-			auto agent_s = di->agent("S").id;
+			auto agent_a = di->agent("A");
+			auto agent_s = di->agent("S");
 			auto present_a = di->prop("present", "A");
 			auto in_basket = di->prop("in", "basket", "marble");
 			auto in_box = di->prop("in", "box", "marble");

@@ -8,6 +8,7 @@
 #include "Action_Library.hpp"
 #include "Agents.hpp"
 #include "Atom_Lookup.hpp"
+#include "Converter_Problem.hpp"
 #include "Formula.hpp"
 #include "Propositions_Lookup.hpp"
 #include "State.hpp"
@@ -24,28 +25,26 @@ namespace del {
 
 		void						add_new_current_state(const State& state);
 		Action_Library&				get_action_library(); // TODO - Check if this can be made const
-		const Agent&				get_agent(const Atom_Id& id) const;
-		const Agent&				get_agent(const Agent_Id& id) const;
-		const Agent&				get_agent(const std::string& name) const;
-		const Agents&				get_agents() const;
-		const Atoms&				get_atoms(const std::string& type) const;
-		const Atom&					get_atom(const std::string& atom_name) const;
-		const Atom&					get_atom(const Atom_Id& atom_id) const;
+		const Agent*				get_agent(size_t index) const;
+		const Agent*				get_agent(Agent_Id id) const;
+		const Agent*				get_agent(const std::string& name) const;
+		const Agents*				get_agents() const;
+		const Atoms*				get_atoms(const std::string& type) const;
+		const Atom*					get(const std::string& atom_name) const;
 		const State&				get_current_state() const;
 		const Formula&				get_goal() const;
-		const Proposition&			get_proposition(const Proposition_Instance& proposition_instance) const;
-		const Proposition_Instance&	get_proposition_instance(const Proposition& proposition) const;
 		const Propositions_Lookup&	get_propositions_lookup() const;
-		bool						is_rigid(const Proposition& proposition) const;
+		bool						is_rigid(const Proposition_Instance* proposition) const;
 
 		const Atom_Lookup&			get_atom_lookup() const;
 		void						perform_action(const std::string& name, const std::vector<std::string>& arguments);
 		void						perform_action(const Action* action);
 	private:
 		// The initializer list dependens on this order
-		Agents agents;
 		Atom_Lookup atom_lookup;
+		Agents agents;
 		Propositions_Lookup propositions_lookup;
+		Converter_Problem converter_problem;
 		std::vector<State> states;
 		Formula goal;
 		Propositions rigid_propositions;

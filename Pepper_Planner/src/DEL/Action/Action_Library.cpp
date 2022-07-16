@@ -30,17 +30,17 @@ namespace del {
 		general_actions = std::move(general_actions_in.get());
 
 		size_t id_counter = 0;
-		for (General_Action* general_action : general_actions)
+		for (auto& general_action : general_actions)
 		{
 			general_action_name_to_id[general_action->get_name()] = id_counter++;
 
-			std::vector<std::vector<Atom>> atoms;
+			std::vector<std::vector<const Atom*>> atoms;
 			std::vector<size_t> counters;
 
 			// Load all combinations of input
 			for (auto& entry : general_action->get_inputs()) {
-				const Atoms& temp = atom_lookup.get_atoms(entry.get_type());
-				atoms.emplace_back(temp.begin(), temp.end());
+				const Atoms* temp = atom_lookup.get_atoms(entry.get_type());
+				atoms.emplace_back(temp->begin(), temp->end());
 				counters.emplace_back(0);
 			}
 
@@ -50,7 +50,7 @@ namespace del {
 
 				Atoms arguments;
 				for (size_t i = 0; i < counters.size(); i++) {
-					arguments.insert(atoms[i][counters[i]]);
+					arguments.insert(atoms.at(i).at(counters[i]));
 				}
 				actions_to_check.emplace_back(*general_action, propositions_lookup, arguments, agents);
 

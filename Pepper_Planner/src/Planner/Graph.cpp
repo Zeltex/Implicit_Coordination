@@ -22,12 +22,12 @@ namespace del {
 	}
 
 	Graph::Graph()
-		: root(), frontier(), nodes(std::vector<NodeBase*>()) 
+		: root(), frontier(), nodes() 
 	{
 	
 	};
 
-	Graph::Graph(size_t node_size, const State& state, Node_Comparator& history, const Agent& planning_agent) 
+	Graph::Graph(size_t node_size, const State& state, Node_Comparator& history, const Agent* planning_agent) 
 	{
 		nodes.reserve(node_size); 
 		NodeAnd* root = create_root_node(state);
@@ -85,14 +85,28 @@ namespace del {
 		frontier.push(node);
 	}
 
-	const std::vector<NodeBase*>& Graph::get_const_nodes() const 
+	void Graph::calculate_value()
 	{
-		return nodes;
-	}
+		std::deque<NodeBase*> frontier;
+		for (auto& node : nodes)
+		{
+			if (node->is_leaf())
+			{
+				frontier.push_back(node);
+			}
+		}
 
-	std::vector<NodeBase*>& Graph::get_nodes() 
-	{
-		return nodes;
+		while (!frontier.empty())
+		{
+			auto node = frontier.front();
+			frontier.pop_front();
+			node->calculate_value(frontier);
+			if (node->is_root_node() && node->has_value())
+			{
+				break;
+			}
+		}
+
 	}
 
 	NodeAnd* Graph::get_root_node()

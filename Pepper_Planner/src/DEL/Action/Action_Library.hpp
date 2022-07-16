@@ -31,7 +31,7 @@ namespace del {
 
 		std::vector<Action> announce_actions;
 		std::vector<Action> actions;
-		std::vector<General_Action*> general_actions;
+		std::vector<std::unique_ptr<General_Action>> general_actions;
 		std::unordered_map<std::string, size_t> general_action_name_to_id;
 	};
 }

@@ -10,8 +10,9 @@
 namespace del
 {
 	class Action;
-	class State;
 	class Action_Event;
+	class Agent;
+	class State;
 	class Domain;
 
 	class Accessibility_Relations
@@ -21,7 +22,8 @@ namespace del
 		Accessibility_Relations(std::vector<bool>&& new_agent_relations, size_t world_count, size_t agent_count);
 		std::set<World_Id> get_unreachable_worlds(const std::set<World_Id>& worlds) const;
 		void convert_world_ids(const std::map<World_Id, World_Id>& world_old_to_new);
-		bool has_direct_relation(const Agent_Id& agent, const World_Id& from_world, const World_Id& to_world) const;
+		bool has_direct_relation(Agent_Id agent, const World_Id& from_world, const World_Id& to_world) const;
+		bool has_direct_relation(const Agent* agent, const World_Id& from_world, const World_Id& to_world) const;
 		Accessibility_Relations product_update(const std::vector<World_Entry>& world_conversion, const Action* action, const Domain& domain, const State& state, const size_t& new_worlds_size) const;
 		bool operator== (const Accessibility_Relations& other) const;		
 		bool operator!= (const Accessibility_Relations& other) const;

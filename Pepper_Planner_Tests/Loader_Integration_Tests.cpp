@@ -12,7 +12,7 @@ namespace PepperPlannerTests
 		TEST_METHOD(Test_Goal_Depth_0)
 		{
 			prepare_example_1();
-			Proposition goal_id = di->prop("goal", "a0", "c0" );
+			const Proposition_Instance* goal_id = di->prop("goal", "a0", "c0" );
 
 			Formula f;
 			f.f_prop(goal_id);
@@ -23,9 +23,9 @@ namespace PepperPlannerTests
 		TEST_METHOD(Test_Goal_Depth_1)
 		{
 			prepare_example_1();
-			size_t agent_0 = di->agent("a0").id;
-			Proposition goal_c0 = di->prop("goal", "a0", "c0" );
-			Proposition goal_x1 = di->prop("goal", "a0", "x1" );
+			const Agent* agent_0 = di->agent("a0");
+			const Proposition_Instance* goal_c0 = di->prop("goal", "a0", "c0" );
+			const Proposition_Instance* goal_x1 = di->prop("goal", "a0", "x1" );
 
 			Formula f;
 			f.f_believes(agent_0, f.f_or(f.f_prop(goal_c0), f.f_prop(goal_x1)));
@@ -35,9 +35,9 @@ namespace PepperPlannerTests
 		TEST_METHOD(Test_Goal_Depth_1_False)
 		{
 			prepare_example_1();
-			size_t agent_1 = di->agent("a1").id;
-			Proposition goal_c1 = di->prop("goal", "a0", "c1" );
-			Proposition goal_c2 = di->prop("goal", "a0", "c2" );
+			const Agent* agent_1 = di->agent("a1");
+			const Proposition_Instance* goal_c1 = di->prop("goal", "a0", "c1" );
+			const Proposition_Instance* goal_c2 = di->prop("goal", "a0", "c2" );
 
 			Formula f;
 			Formula_Component* incorrect_formula = f.f_or(f.f_believes(agent_1, f.f_prop(goal_c1)), f.f_believes(agent_1, f.f_prop(goal_c2)));
@@ -50,9 +50,9 @@ namespace PepperPlannerTests
 		TEST_METHOD(Test_Goal_Depth_2)
 		{
 			prepare_example_1();
-			size_t agent_0 = di->agent("a0").id;
-			Proposition goal_c0 = di->prop("goal", "a0", "c0");
-			Proposition goal_x1 = di->prop("goal", "a0", "x1");
+			const Agent* agent_0 = di->agent("a0");
+			const Proposition_Instance* goal_c0 = di->prop("goal", "a0", "c0");
+			const Proposition_Instance* goal_x1 = di->prop("goal", "a0", "x1");
 
 			Formula f;
 			f.f_believes(agent_0, f.f_or(f.f_prop(goal_c0), f.f_prop(goal_x1)));

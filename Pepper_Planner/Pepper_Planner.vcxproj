@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\DEL\Converter_Problem.cpp" />
     <ClCompile Include="src\Core.cpp" />
     <ClCompile Include="src\DEL\Accessibility_Relation.cpp" />
     <ClCompile Include="src\DEL\Action\Action.cpp" />
@@ -28,10 +29,9 @@
     <ClCompile Include="src\DEL\Action\Edge_Conditions.cpp" />
     <ClCompile Include="src\DEL\Agents.cpp" />
     <ClCompile Include="src\DEL\Atoms.cpp" />
-    <ClCompile Include="src\DEL\Atom_Arguments.cpp" />
     <ClCompile Include="src\DEL\Atom_Lookup.cpp" />
     <ClCompile Include="src\DEL\Bisimulation_Context.cpp" />
-    <ClCompile Include="src\DEL\Converter.cpp" />
+    <ClCompile Include="src\DEL\Converter_Action.cpp" />
     <ClCompile Include="src\DEL\Domain.cpp" />
     <ClCompile Include="src\DEL\Formula\Formula.cpp" />
     <ClCompile Include="src\DEL\Formula\Formula_Component.cpp" />
@@ -54,7 +54,10 @@
     <ClCompile Include="src\Domain_Loader\DEL\General_Atoms.cpp" />
     <ClCompile Include="src\Domain_Loader\DEL\General_Domain.cpp" />
     <ClCompile Include="src\Domain_Loader\DEL\General_Edge_Conditions.cpp" />
+    <ClCompile Include="src\Domain_Loader\DEL\General_Formula.cpp" />
+    <ClCompile Include="src\Domain_Loader\DEL\General_Formula_Component.cpp" />
     <ClCompile Include="src\Domain_Loader\DEL\General_Objects.cpp" />
+    <ClCompile Include="src\Domain_Loader\DEL\General_Proposition_Instance.cpp" />
     <ClCompile Include="src\Domain_Loader\DEL\General_State.cpp" />
     <ClCompile Include="src\Domain_Loader\DEL\General_Typed_Proposition.cpp" />
     <ClCompile Include="src\Domain_Loader\DEL\General_World.cpp" />
@@ -72,6 +75,7 @@
     <ClCompile Include="src\Types.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\DEL\Converter_Problem.hpp" />
     <ClInclude Include="src\Core.hpp" />
     <ClInclude Include="src\DEL\Accessibility_Relation.hpp" />
     <ClInclude Include="src\DEL\Action\Action.hpp" />
@@ -81,10 +85,10 @@
     <ClInclude Include="src\DEL\Action\Edge_Conditions.hpp" />
     <ClInclude Include="src\DEL\Agents.hpp" />
     <ClInclude Include="src\DEL\Atoms.hpp" />
-    <ClInclude Include="src\DEL\Atom_Arguments.hpp" />
     <ClInclude Include="src\DEL\Atom_Lookup.hpp" />
     <ClInclude Include="src\DEL\Bisimulation_Context.hpp" />
-    <ClInclude Include="src\DEL\Converter.hpp" />
+    <ClInclude Include="src\DEL\Converter_Action.hpp" />
+    <ClInclude Include="src\DEL\Converter_Base.hpp" />
     <ClInclude Include="src\DEL\Domain.hpp" />
     <ClInclude Include="src\DEL\Formula\Formula.hpp" />
     <ClInclude Include="src\DEL\Formula\Formula_Component.hpp" />
@@ -96,7 +100,6 @@
     <ClInclude Include="src\DEL\State.hpp" />
     <ClInclude Include="src\DEL\World.hpp" />
     <ClInclude Include="src\DEL_Interface.hpp" />
-    <ClInclude Include="src\Domain_Interface.hpp" />
     <ClInclude Include="src\Domain_Loader\Buffers\Atom_Buffer.hpp" />
     <ClInclude Include="src\Domain_Loader\Buffers\Formula_Buffer.hpp" />
     <ClInclude Include="src\Domain_Loader\Buffers\Inputs_Buffer.hpp" />
@@ -110,13 +113,15 @@
     <ClInclude Include="src\Domain_Loader\DEL\General_Atoms.hpp" />
     <ClInclude Include="src\Domain_Loader\DEL\General_Domain.hpp" />
     <ClInclude Include="src\Domain_Loader\DEL\General_Edge_Conditions.hpp" />
+    <ClInclude Include="src\Domain_Loader\DEL\General_Formula.hpp" />
+    <ClInclude Include="src\Domain_Loader\DEL\General_Formula_Component.hpp" />
     <ClInclude Include="src\Domain_Loader\DEL\General_Objects.hpp" />
+    <ClInclude Include="src\Domain_Loader\DEL\General_Proposition_Instance.hpp" />
     <ClInclude Include="src\Domain_Loader\DEL\General_State.hpp" />
     <ClInclude Include="src\Domain_Loader\DEL\General_Typed_Propositions.hpp" />
     <ClInclude Include="src\Domain_Loader\DEL\General_World.hpp" />
     <ClInclude Include="src\Domain_Loader\Loader.hpp" />
     <ClInclude Include="src\Domain_Loader\Loader_Types.hpp" />
-    <ClInclude Include="src\Domain_Loader\Maepl.hpp" />
     <ClInclude Include="src\Memory.hpp" />
     <ClInclude Include="src\Misc.hpp" />
     <ClInclude Include="src\Planner\Graph.hpp" />

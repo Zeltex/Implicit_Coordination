@@ -1,34 +1,23 @@
 #include "Action_Events.hpp"
 
+#include "Agents.hpp"
 #include "Atoms.hpp"
-#include "Converter.hpp"
+#include "Converter_Base.hpp"
+#include "Converter_Action.hpp"
 #include "Propositions_Lookup.hpp"
 
 #include <assert.h>
 
 namespace del {
 
-	Action_Event::Action_Event(const General_Action_Event* other, Event_Id id, const Converter& converter, const Propositions_Lookup& propositions_lookup, const Atoms& arguments)
+	Action_Event::Action_Event(const std::unique_ptr<General_Action_Event>& other, Event_Id id, const Converter_Base* converter, const Propositions_Lookup& propositions_lookup, const Atoms& arguments)
 		: name(other->name), 
 		id(id), 
 		precondition(other->precondition, converter),
-		proposition_add(other->proposition_add, propositions_lookup, arguments),
-		proposition_delete(other->proposition_delete, propositions_lookup, arguments)
+		proposition_add(other->proposition_add, converter),
+		proposition_delete(other->proposition_delete, converter)
 	{
 
-	}
-
-	Action_Event::Action_Event(const Action_Event& other)
-		: id(0)
-	{
-		assert(false);
-		int hej = 0;
-	}
-	Action_Event Action_Event::operator=(const Action_Event& other)
-	{
-		int hej = 0;
-		assert(false);
-		return Action_Event{ other };
 	}
 
 	Event_Id Action_Event::get_id() const {
@@ -51,15 +40,15 @@ namespace del {
 		return name;
 	}
 
-	std::string Action_Event::to_string(const Domain& domain) const {
+	std::string Action_Event::to_string() const {
 		return "Event " 
 			+ std::to_string(id.id) 
 			+ ": (Preconditions: " 
-			+ precondition.to_string(domain) 
+			+ precondition.to_string() 
 			+ ") (Add list"
-			+ proposition_add.to_string(domain)
+			+ proposition_add.to_string()
 			+ ") (Delete list, "
-			+ proposition_delete.to_string(domain)
+			+ proposition_delete.to_string()
 			+ ")";
 	}
 
@@ -68,33 +57,34 @@ namespace del {
 
 	}
 
-	Action_Events::Action_Events(const General_Action& general_action, const Atoms& arguments, const Propositions_Lookup& propositions_lookup)
+	Action_Events::Action_Events(const General_Action& general_action, const Atoms& arguments, const Propositions_Lookup& propositions_lookup, const Agents& agents)
 	{
+		Converter_Action converter{propositions_lookup, general_action.get_inputs(), arguments, agents};
+
 		const General_Action_Events& other = general_action.get_events();
-		auto converter = general_action.create_converter(propositions_lookup, arguments);
 		events.reserve(general_action.get_events().size());
 
-		for (const General_Action_Event* general_action_event : other.events)
+		for (auto& general_action_event : other.events)
 		{
 			Event_Id id { events.size() };
-			events.emplace_back(general_action_event, id, converter, propositions_lookup, arguments);
+			events.emplace_back(general_action_event, id, &converter, propositions_lookup, arguments);
 		}
 	}
 
-	std::string Action_Events::to_compact_string(const Domain& domain) const
+	std::string Action_Events::to_compact_string() const
 	{
 		std::string result;
 		for (auto& event : events) {
-			result += "\n<<" + event.get_preconditions().to_string(domain) + ",X,X>";
+			result += "\n<<" + event.get_preconditions().to_string() + ",X,X>";
 		}
 		return result;
 	}
 
-	std::string Action_Events::to_string(const Domain& domain) const
+	std::string Action_Events::to_string() const
 	{
 		std::string result;
 		for (const Action_Event& event : events) {
-			result += "\n" + event.to_string(domain);
+			result += "\n" + event.to_string();
 		}
 		return result;
 	}

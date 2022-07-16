@@ -2,9 +2,6 @@
 
 #include <string>
 #include <list>
-#include <unordered_set>
-#include <memory>
-#include <map>
 
 #include "Formula_Types.hpp"
 #include "Formula_Component.hpp"
@@ -12,9 +9,13 @@
 
 namespace del {
 	struct Agent_Id;
-	class Converter;
+	class Atom_Lookup;
+	class Converter_Base;
+	class General_Formula;
+	class Propositions_Lookup;
 
 	class Formula {
+		friend struct Formula_Component;
 	public:
 		Formula(const Formula& other) = delete;
 		Formula(Formula&& other);
@@ -23,18 +24,18 @@ namespace del {
 		Formula& operator=(Formula&& other) noexcept;
 
 		Formula() {}
-		Formula(const Formula& other, const Converter& general_to_ground);
+		Formula(const General_Formula& other, const Converter_Base* converter);
 		void reset();
 
-		std::string to_string(const Domain& domain) const;
+		std::string to_string() const;
 		bool valuate(const World_Id& world_id, const Domain& domain, const State& state) const;
 
 		bool valuate_plausability(const Propositions& propositions) const;
 		Formula_Component* f_top();
 		Formula_Component* f_bot();
-		Formula_Component* f_prop(Proposition proposition);
+		Formula_Component* f_prop(const Proposition_Instance* proposition);
 		Formula_Component* f_not(Formula_Component* formula);
-		Formula_Component* f_believes(const Agent_Id& agent, Formula_Component* formula);
+		Formula_Component* f_believes(const Agent* agent, Formula_Component* formula);
 		Formula_Component* f_everyone_Believes(Formula_Component* formula);
 		Formula_Component* f_common_Knowledge(Formula_Component* formula);
 		Formula_Component* f_and(Formula_Component* input0, Formula_Component* input1);
@@ -43,6 +44,7 @@ namespace del {
 
 	private:
 		std::list<Formula_Component> formulas;
+		Formula_Component* root;
 	};
 	
 }

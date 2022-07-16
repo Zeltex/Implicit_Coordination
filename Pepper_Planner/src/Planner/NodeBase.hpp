@@ -17,6 +17,7 @@ namespace del
 	class NodeBase
 	{
 	public:
+		virtual ~NodeBase() {}
 
 		virtual int calculate_value(std::deque<NodeBase*>& frontier) = 0;
 		virtual void calculate_hash() = 0;

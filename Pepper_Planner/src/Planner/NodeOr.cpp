@@ -1,6 +1,7 @@
 #include "NodeOr.hpp"
 
 #include "Action.hpp"
+#include "Agents.hpp"
 #include "Graph.hpp"
 #include "NodeAnd.hpp"
 #include "Policy.hpp"
@@ -33,14 +34,16 @@ namespace del
 		return get_state().product_update(action, domain, designated_worlds);
 	}
 
-	std::vector<std::set<World_Id>> NodeOr::get_all_perspectives() const
+	std::vector<std::set<World_Id>> NodeOr::get_all_perspectives(const Agents* agents) const
 	{
 		std::vector<std::set<World_Id>> result;
 		const State& state = get_state();
 		auto designated_world = *state.get_designated_worlds().begin();
-		for (Agent_Id agent = 0; agent < state.get_number_of_agents(); ++agent)
+		for (auto& agent : *agents)
 		{
-			result.emplace_back(std::move(state.get_reachable_worlds(agent, designated_world)));
+		//for (Agent_Id agent = 0; agent < state.get_number_of_agents(); ++agent)
+		//{
+			result.emplace_back(std::move(state.get_reachable_worlds(&agent, designated_world)));
 		}
 		return result;
 	}
@@ -124,7 +127,7 @@ namespace del
 					continue;
 				}
 
-				temp_value += action->get_cost();
+				temp_value += (int)action->get_cost();
 
 				if (best_value == EMPTY_VALUE || temp_value < best_value)
 				{
@@ -259,7 +262,20 @@ namespace del
 
 	std::string NodeOr::to_string(const Domain& domain) const
 	{
-		return "";
+		std::string result = "Node OR " + id.to_string() + "\nParents ";
+		for (auto& parent : parents)
+		{
+			result += parent->get_id().to_string() + " ";
+		}
+
+		result += "\nChildren ";
+
+		for (auto& [child, action]: children)
+		{
+			result += "(" + child->get_id().to_string() + " " + action->to_string() + ") ";
+		}
+
+		return result + "\n" + state.to_string(domain);
 	}
 
 	bool NodeOr::valuate(const Formula& formula, const Domain& domain) const

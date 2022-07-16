@@ -3,7 +3,6 @@
 #include <memory>
 
 #include "General_Domain.hpp"
-#include "Domain_Interface.hpp"
 #include "Custom_Lexer.hpp"
 
 namespace del {
@@ -34,15 +33,14 @@ namespace del {
         void domain_body();
         void domain_proposition_instances();
         void event_body();
-        bool formula(bool is_domain);
-        //void formula_single(bool is_domain);
+        bool formula();
         void input();
         void maepl();
         void objects();
         void ordered_variables();
         void problem_body();
         void problem_proposition_instances();
-        bool proposition_instance(bool is_domain);
+        bool proposition_instance();
         void propositions();
         void reachability_body();
         void variables();

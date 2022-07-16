@@ -1,6 +1,7 @@
 #include "World.hpp"
 
 #include "Action_Events.hpp"
+#include "Atom_Lookup.hpp"
 #include "Domain.hpp"
 #include "General_World.hpp"
 #include "Propositions_Lookup.hpp"
@@ -8,13 +9,13 @@
 namespace del {
 
 
-	World::World(const General_World& other, const Propositions_Lookup& propositions_lookup)
+	World::World(const General_World& other, const Propositions_Lookup& propositions_lookup, const Atom_Lookup& atom_lookup)
 		: id(other.world_id),
 		true_propositions()
 	{
-		for (const Proposition_Instance& proposition_instance : other.propositions)
+		for (const General_Proposition_Instance& proposition_instance : other.propositions)
 		{
-			true_propositions.insert(propositions_lookup.get(proposition_instance));
+			true_propositions.insert(propositions_lookup.get(proposition_instance, atom_lookup));
 		}
 	}
 
@@ -47,19 +48,9 @@ namespace del {
 	}
 
 	std::string World::to_string(const Domain& domain) const{
-		std::string result = "World " + std::to_string(id.id) + ": ";
-		bool first = true;
-		for (const Proposition& proposition : true_propositions.propositions) {
-			if (first) {
-				first = false;
-			}
-			else {
-				result += ";";
-			}
-			result += domain.get_proposition_instance(proposition).to_string(domain);
-		}
-		return result;
+		return "World " + std::to_string(id.id) + ": " + true_propositions.to_string();
 	}
+
 	void World::set_id(World_Id id) {
 		this->id = std::move(id);
 	}

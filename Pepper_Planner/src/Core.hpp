@@ -59,9 +59,9 @@ namespace del {
 	class Action;
 	class Domain;
 	
-	void print_action_to_console(const Action& action, const Domain& domain);
-	#define PRINT_ACTION_TO_CONSOLE(action, domain) print_action_to_console(action, domain)
+	void print_action_to_console(const Action& action);
+	#define PRINT_ACTION_TO_CONSOLE(action) print_action_to_console(action)
 #else
-	#define PRINT_ACTION_TO_CONSOLE(action, domain)
+	#define PRINT_ACTION_TO_CONSOLE(action)
 #endif
 }
