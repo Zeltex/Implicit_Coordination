@@ -47,7 +47,7 @@ namespace del {
 		return true_propositions;
 	}
 
-	std::string World::to_string(const Domain& domain) const{
+	std::string World::to_string() const{
 		return "World " + std::to_string(id.id) + ": " + true_propositions.to_string();
 	}
 

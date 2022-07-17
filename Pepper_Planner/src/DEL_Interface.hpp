@@ -17,8 +17,8 @@ namespace del {
 		std::string get_action_print(const Action* action) const;
 		std::string get_state_print() const;
 		const State& get_current_state() const;
-		void perform_action(const Action* action);
-		void perform_action(const std::string& name, const std::vector<std::string>& arguments);
+		bool perform_action(const Action* action);
+		bool perform_action(const std::string& name, const std::vector<std::string>& arguments);
 		bool create_policy(Formula goal, const std::string& planning_agent, const bool is_benchmark=false);
 		bool create_policy(const std::string& planning_agent, const bool is_benchmark=false);
 		bool is_solved();

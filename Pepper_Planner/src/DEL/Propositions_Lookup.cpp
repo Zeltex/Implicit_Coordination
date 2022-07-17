@@ -40,10 +40,10 @@ namespace del
 				propositions.insert(instance);
 
 				// Advance indices
-				size_t index = 0;
+				size_t index = indices.size() - 1;
 				while (!done && ++indices.at(index) >= list_atoms.at(index).size()) {
-					indices.at(index++) = 0;
-					done = index >= indices.size();
+					indices.at(index) = 0;
+					done = index-- == 0;
 				}
 			}
 		}

@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <set>
 #include <string>
 
 namespace del
@@ -11,6 +12,7 @@ namespace del
 	class General_Typed_Proposition
 	{
 	friend class Propositions_Lookup;
+	friend class General_Typed_Propositions;
 	public:
 		General_Typed_Proposition(const std::string& name, std::vector<std::string> type_inputs);
 	private:
@@ -20,11 +22,19 @@ namespace del
 
 	class General_Typed_Propositions
 	{
+	private:
+		struct Comparator
+		{
+			bool operator()(const General_Typed_Proposition& lhs, const General_Typed_Proposition rhs) const
+			{
+				return lhs.name < rhs.name;
+			}
+		};
 	public:
 		void add(const std::string& name, Inputs_Buffer& inputs_buffer);
-		std::vector<General_Typed_Proposition>::const_iterator begin() const;
-		std::vector<General_Typed_Proposition>::const_iterator end() const;
+		std::set<General_Typed_Proposition>::const_iterator begin() const;
+		std::set<General_Typed_Proposition>::const_iterator end() const;
 	private:
-		std::vector<General_Typed_Proposition> propositions;
+		std::set<General_Typed_Proposition, Comparator> propositions;
 	};
 }

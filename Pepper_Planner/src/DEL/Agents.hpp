@@ -14,7 +14,6 @@ namespace del {
 	class Agent {
 	public:
 		Agent(const General_Agent& other, Agent_Id id, const Atom* atom);
-		//Agent(Agent_Id id, Atom_Id atom_id, std::string name) : id(id), atom_id(atom_id), name(name) {}
 		Agent_Id get_id() const;
 		const Atom* get_atom() const;
 		std::string get_name() const;

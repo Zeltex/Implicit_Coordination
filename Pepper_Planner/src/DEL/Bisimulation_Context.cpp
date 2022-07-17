@@ -1,4 +1,6 @@
 #include "Bisimulation_Context.hpp"
+
+#include "Agents.hpp"
 #include "Core.hpp"
 #include "Types.hpp"
 #include "General_State.hpp"
@@ -140,14 +142,13 @@ namespace del::bisimulation_context {
 				const World* world_from = frontier.back();
 				frontier.pop_back();
 				std::vector<Agent_World_Reachable> reachables;
-				for (size_t i = 0; i < state.get_number_of_agents(); ++i)
+				for (const Agent& agent : *(state.get_agents()))
 				{
-					Agent_Id agent = { i };
 					for (const World& world_to : state.get_worlds())
 					{
-						if (state.is_one_reachable(agent, world_from, &world_to))
+						if (state.is_one_reachable(agent.get_id(), world_from, &world_to))
 						{
-							reachables.push_back({ agent, &world_to });
+							reachables.push_back({ agent.get_id(), &world_to });
 						}
 						if (data.find(&world_to) == data.end() && std::find(frontier.begin(), frontier.end(), &world_to) == frontier.end())
 						{
@@ -277,7 +278,7 @@ namespace del::bisimulation_context {
 		}
 
 		// Set world relation
-		Accessibility_Relations accessibility_relations(worlds.size(), state.get_number_of_agents());
+		Accessibility_Relations accessibility_relations(worlds.size(), state.get_agents());
 
 		for (const auto& [world_from, agent_world_reachables_data] : agent_world_reachables.data)
 		{

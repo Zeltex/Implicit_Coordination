@@ -19,13 +19,13 @@ namespace del
 			types.push_back(input.get_type());
 		}
 
-		propositions.push_back({ name, types});
+		propositions.insert({ name, types});
 	}
-	std::vector<General_Typed_Proposition>::const_iterator General_Typed_Propositions::begin() const
+	std::set<General_Typed_Proposition>::const_iterator General_Typed_Propositions::begin() const
 	{
 		return propositions.begin();
 	}
-	std::vector<General_Typed_Proposition>::const_iterator General_Typed_Propositions::end() const
+	std::set<General_Typed_Proposition>::const_iterator General_Typed_Propositions::end() const
 	{
 		return propositions.end();
 	}

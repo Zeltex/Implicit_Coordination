@@ -1,5 +1,7 @@
 #include "Custom_Lexer.hpp"
 
+#include "Core.hpp"
+
 #include <assert.h>
 #include <direct.h>
 #include <limits>
@@ -14,7 +16,8 @@ namespace del {
         char buff[PATH_MAX];
         _getcwd(buff, PATH_MAX);
         string current_working_dir(buff);
-        cout << current_working_dir << endl;
+        PRINT("cwd: " + current_working_dir);
+        PRINT("file: " + file_path);
         std::ifstream file(file_path);
         if (!file) {
             assert(false);
@@ -28,7 +31,6 @@ namespace del {
             tokens.reserve(current_allocation);
             line_numbers.reserve(current_allocation);
             while (std::getline(file, line)) {
-
                 if (tokens.size() >= current_allocation) {
                     current_allocation = tokens.size() * 2;
                     tokens.reserve(current_allocation);
@@ -83,6 +85,7 @@ namespace del {
             assert(false);
             throw;
         }
+        PRINT("Lexer done");
     }
 
     void Custom_Lexer::add_token(const Token& token) {

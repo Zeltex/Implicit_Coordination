@@ -9,9 +9,9 @@ namespace del
 		friend class Formula;
 	public:
 		General_Formula(const General_Formula& other) = delete;
-		General_Formula(General_Formula&& other) noexcept;
+		General_Formula(General_Formula&& other);
 		General_Formula operator=(const General_Formula& other) = delete;
-		General_Formula& operator=(General_Formula&& other) noexcept;
+		General_Formula& operator=(General_Formula&& other);
 
 		General_Formula() {}
 

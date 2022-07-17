@@ -114,12 +114,12 @@ namespace del {
 		return root;
 	}
 
-	std::string Graph::to_string(const Domain& domain) const 
+	std::string Graph::to_string() const 
 	{
 		std::string result = "Graph: (root, " + std::to_string(root->get_id().id) + ") (frontier";
 		result += ")";
 		for (auto node : nodes) {
-			result += "\n\n\n" + node->to_string(domain);
+			result += "\n\n\n" + node->to_string();
 		}
 		return result;
 	}

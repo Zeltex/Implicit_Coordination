@@ -30,7 +30,7 @@ namespace del
 		virtual bool is_leaf() const override;
 		virtual void propagate_dead() override;
 		virtual void propagate_solved() override;
-		virtual std::string to_string(const Domain& domain) const override;
+		virtual std::string to_string() const override;
 		virtual bool valuate(const Formula& formula, const Domain& domain) const override;
 
 	private:

@@ -10,13 +10,13 @@
 namespace del 
 {
 
-	Accessibility_Relations::Accessibility_Relations(size_t world_count, size_t agent_count)
-		: worlds_size(world_count), worlds_size_squared(world_count * world_count), agents_size(agent_count), relations(agent_count * world_count * world_count)
+	Accessibility_Relations::Accessibility_Relations(size_t world_count, const Agents* agents)
+		: worlds_size(world_count), worlds_size_squared(world_count * world_count), agents(agents), relations(agents->size() * world_count * world_count)
 	{
 	}
 	
-	Accessibility_Relations::Accessibility_Relations(std::vector<bool>&& new_agent_relations, size_t world_count, size_t agent_count)
-		: worlds_size(world_count), worlds_size_squared(world_count * world_count), agents_size(agent_count), relations(std::move(new_agent_relations))
+	Accessibility_Relations::Accessibility_Relations(std::vector<bool>&& new_agent_relations, size_t world_count, const Agents* agents)
+		: worlds_size(world_count), worlds_size_squared(world_count * world_count), agents(agents), relations(std::move(new_agent_relations))
 	{
 
 	}
@@ -41,6 +41,7 @@ namespace del
 	void Accessibility_Relations::convert_world_ids(const std::map<World_Id, World_Id>& world_old_to_new)
 	{
 		std::vector<bool> new_relations(relations.size(), false);
+		size_t agents_size = agents->size();
 		for (size_t agent = 0; agent < agents_size; ++agent)
 		{
 			for (const auto& [world_old_from, world_new_from] : world_old_to_new)
@@ -60,6 +61,7 @@ namespace del
 		std::vector<World_Id> frontier;
 		frontier.assign(worlds.begin(), worlds.end());
 
+		size_t agents_size = agents->size();
 		while (!frontier.empty())
 		{
 			World_Id from_world = frontier.back();
@@ -83,7 +85,7 @@ namespace del
 	
 	bool Accessibility_Relations::has_direct_relation(Agent_Id agent, const World_Id& from_world, const World_Id& to_world) const
 	{
-		assert(agent.id < agents_size);
+		assert(agent.id < agents->size());
 		return relations.at(get_index(agent, from_world, to_world));
 	}
 
@@ -103,6 +105,7 @@ namespace del
 
 		size_t new_worlds_size_squared = new_worlds_size * new_worlds_size;
 
+		size_t agents_size = agents->size();
 		std::vector<bool> result(agents_size * new_worlds_size * new_worlds_size, false);
 		for (Agent_Id agent = 0; agent < agents_size; ++agent)
 		{
@@ -127,7 +130,7 @@ namespace del
 				}
 			}
 		}
-		return Accessibility_Relations(std::move(result), new_worlds_size, agents_size);
+		return Accessibility_Relations(std::move(result), new_worlds_size, agents);
 	}
 	
 	bool Accessibility_Relations::operator== (const Accessibility_Relations& other) const
@@ -157,7 +160,7 @@ namespace del
 
 	std::string Accessibility_Relations::to_hashable_string(size_t& ref_count) const
 	{
-		std::string result = std::to_string(agents_size) + std::to_string(worlds_size);
+		std::string result = std::to_string(agents->size()) + std::to_string(worlds_size);
 		size_t count = 0;
 		for (const bool& relation : relations)
 		{
@@ -171,18 +174,18 @@ namespace del
 		return result;
 	}
 
-	std::string Accessibility_Relations::to_string(const Domain& domain) const
+	std::string Accessibility_Relations::to_string() const
 	{
 		std::string result;
 		bool first = true;
 		size_t index = 0;
-		for (Agent_Id agent = 0; agent < agents_size; ++agent)
+		for (auto& agent : *agents)
 		{
 			for (size_t world_from = 0; world_from < worlds_size; ++world_from)
 			{
 				for (size_t world_to = 0; world_to < worlds_size; ++world_to)
 				{
-					assert(index == get_index(agent, world_from, world_to));
+					assert(index == get_index(agent.get_id(), world_from, world_to));
 					if (relations.at(index))
 					{
 						if (first)
@@ -194,7 +197,7 @@ namespace del
 							result += "\n";
 						}
 						result += "("
-							+ domain.get_agent(agent)->get_name() + ", "
+							+ agent.get_name() + ", "
 							+ std::to_string(world_from) + ", "
 							+ std::to_string(world_to) + ")";
 					}
@@ -210,7 +213,7 @@ namespace del
 	bool Accessibility_Relations::is_serial_transitive_euclidean() const
 	{
 		size_t index = 0;
-
+		size_t agents_size = agents->size();
 		for (Agent_Id agent = 0; agent < agents_size; ++agent)
 		{
 			for (World_Id world_from = 0; world_from < worlds_size; ++world_from)
@@ -259,9 +262,8 @@ namespace del
 		relations.at(get_index(agent, world_from, world_to)) = true;
 	}
 
-	size_t Accessibility_Relations::get_number_of_agents() const
+	const Agents* Accessibility_Relations::get_agents() const
 	{
-		return agents_size;
+		return agents;
 	}
-
 }

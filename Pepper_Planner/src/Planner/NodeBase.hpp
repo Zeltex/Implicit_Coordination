@@ -30,7 +30,7 @@ namespace del
 		virtual bool is_leaf() const = 0;
 		virtual void propagate_dead() = 0;
 		virtual void propagate_solved() = 0;
-		virtual std::string to_string(const Domain& domain) const = 0;
+		virtual std::string to_string() const = 0;
 		virtual bool valuate(const Formula& formula, const Domain& domain) const = 0;
 
 		void set_dead();
@@ -49,9 +49,9 @@ namespace del
 		virtual const State& get_state() const = 0;
 
 		Node_Id id;
-		bool root;
-		bool dead;
-		bool solved;
+		bool root = false;
+		bool dead = false;
+		bool solved = false;
 		size_t hash = EMPTY_INDEX;
 		int value = UNKNOWN_VALUE;
 	};

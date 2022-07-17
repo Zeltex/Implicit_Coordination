@@ -28,7 +28,7 @@ namespace del {
 		
 		const Propositions& get_true_propositions() const;
 
-		std::string to_string(const Domain& domain) const;
+		std::string to_string() const;
 		void set_id(World_Id id);
 		bool operator!=(const World& other) const;
 		std::string to_hash() const;

@@ -8,11 +8,11 @@
 #include "State.hpp"
 
 
-namespace del 
+namespace del
 {
 
 	Domain::Domain(std::unique_ptr<General_Domain> general_domain)
-		: 
+		:
 		atom_lookup(general_domain->objects),
 		agents(general_domain->agents, atom_lookup),
 		propositions_lookup(general_domain->typed_propositions, atom_lookup, general_domain->state, general_domain->rigid_propositions),
@@ -26,16 +26,18 @@ namespace del
 
 	}
 
-	void Domain::add_new_current_state(const State& state) 
+	void Domain::add_new_current_state(const State& state)
 	{
 		states.push_back(state);
 	}
 
-	const State& Domain::get_current_state() const {
+	const State& Domain::get_current_state() const
+	{
 		return states.back();
 	}
 
-	const Agents* Domain::get_agents() const {
+	const Agents* Domain::get_agents() const
+	{
 		return &agents;
 	}
 
@@ -49,15 +51,18 @@ namespace del
 		return agents.get(id);
 	}
 
-	const Agent* Domain::get_agent(const std::string& name) const {
+	const Agent* Domain::get_agent(const std::string& name) const
+	{
 		return agents.get(name);
 	}
 
-	const Atoms* Domain::get_atoms(const std::string& type) const {
+	const Atoms* Domain::get_atoms(const std::string& type) const
+	{
 		return atom_lookup.get_atoms(type);
 	}
 
-	const Atom* Domain::get(const std::string& atom_name) const {
+	const Atom* Domain::get(const std::string& atom_name) const
+	{
 		return atom_lookup.get(atom_name);
 	}
 
@@ -86,28 +91,32 @@ namespace del
 		return goal;
 	}
 
-	void Domain::perform_action(const Action* action)
+	bool Domain::perform_action(const Action* action)
 	{
+		PRINT_ACTION_TO_CONSOLE(*action);
 		const State& current_state = get_current_state();
-		// TODO - Handle an inapplicable action here
 		std::optional<State> product_update = current_state.product_update(action, *this);
-		assert(product_update.has_value());
-		
+		if (!product_update.has_value())
+		{
+			return false;
+		}
+
 		product_update.value().contract();
 		add_new_current_state(product_update.value());
-		PRINT_ACTION_TO_CONSOLE(*action);
+		return true;
 	}
 
-	void Domain::perform_action(const std::string& name, const std::vector<std::string>& arguments)
+	bool Domain::perform_action(const std::string& name, const std::vector<std::string>& arguments)
 	{
 		Atoms temp_arguments;
 		temp_arguments.reserve(arguments.size());
-		for (auto& argument : arguments) {
+		for (auto& argument : arguments)
+		{
 			temp_arguments.insert(get(argument));
 		}
 
 		auto action = Action(action_library.get_general_action(name), propositions_lookup, temp_arguments, agents);
-		perform_action(&action);
+		return perform_action(&action);
 	}
 
 }

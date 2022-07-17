@@ -1,5 +1,7 @@
 #include "Custom_Parser.hpp"
 
+#include "Core.hpp"
+
 #include <assert.h>
 
 namespace del {
@@ -12,6 +14,8 @@ namespace del {
     {
 
         maepl();
+
+        PRINT("Parser done");
     }
 
     std::unique_ptr<General_Domain> Custom_Parser::get()

@@ -14,7 +14,7 @@ namespace del {
 	State::State(const General_State& other, const Propositions_Lookup& propositions_lookup, const Agents& agents, const Atom_Lookup& atom_lookup)
 		: cost(other.cost),
 		designated_worlds(other.designated_worlds),
-		accessibility_relations(other.worlds.size(), agents.size())
+		accessibility_relations(other.worlds.size(), &agents)
 	{
 		for (const General_World& general_world : other.worlds)
 		{
@@ -269,12 +269,12 @@ namespace del {
 		return std::hash<std::string>()(hash);
 	}
 
-	std::string State::to_string(const Domain& domain) const {
-		return to_string(3, domain);
+	std::string State::to_string() const {
+		return to_string(3);
 	}
 
 
-	std::string State::to_string(size_t indentation, const Domain& domain) const {
+	std::string State::to_string(size_t indentation) const {
 		std::string result = get_indentation(indentation) + " State\n" + get_indentation(indentation - 1) + " Sizes: " +
 			") (worlds, " + std::to_string(worlds.size()) +
 			") (designated worlds, " + std::to_string(designated_worlds.size()) +
@@ -290,10 +290,10 @@ namespace del {
 			result += std::to_string(designated_world.id);
 		}
 		result += "\n" + get_indentation(indentation - 1) + " ({Agent}, {World from}, {World to}) Relations";
-		result += "\n" + accessibility_relations.to_string(domain);
+		result += "\n" + accessibility_relations.to_string();
 		result += "\n" + get_indentation(indentation - 1) + " World {id}: {propositions}";
 		for (const auto& world : worlds) {
-			result += "\n" + world.to_string(domain);
+			result += "\n" + world.to_string();
 		}
 		return result;
 	}
@@ -315,8 +315,8 @@ namespace del {
 		return contracted == contracted_other;
 	}
 
-	size_t State::get_number_of_agents() const
+	const Agents* State::get_agents() const
 	{
-		return accessibility_relations.get_number_of_agents();
+		return accessibility_relations.get_agents();
 	}
 }

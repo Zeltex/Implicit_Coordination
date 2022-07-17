@@ -37,8 +37,8 @@ namespace del {
 		bool						is_rigid(const Proposition_Instance* proposition) const;
 
 		const Atom_Lookup&			get_atom_lookup() const;
-		void						perform_action(const std::string& name, const std::vector<std::string>& arguments);
-		void						perform_action(const Action* action);
+		bool						perform_action(const std::string& name, const std::vector<std::string>& arguments);
+		bool						perform_action(const Action* action);
 	private:
 		// The initializer list dependens on this order
 		Atom_Lookup atom_lookup;

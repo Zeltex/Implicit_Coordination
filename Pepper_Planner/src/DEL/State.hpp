@@ -32,7 +32,6 @@ namespace del {
 		size_t						get_cost() const;
 		const std::set<World_Id>&	get_designated_worlds() const;
 		size_t						get_designated_worlds_count() const;
-		size_t						get_number_of_agents() const;
 		const World&				get_world(World_Id world) const;
 		const std::vector<World>&	get_worlds() const;
 		size_t						get_worlds_count() const;
@@ -55,8 +54,10 @@ namespace del {
 		bool operator==(const State& other) const;
 		size_t to_hash(const std::set<World_Id>& designated_worlds) const;
 		size_t to_hash() const;
-		std::string to_string(const Domain& domain) const;
-		std::string to_string(size_t indentation, const Domain& domain) const;
+		std::string to_string() const;
+		std::string to_string(size_t indentation) const;
+		const Agents* get_agents() const;
+
 
 	private:
 

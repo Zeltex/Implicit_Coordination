@@ -34,11 +34,13 @@ namespace del
         case Formula_Types::Prop:
         {
             data0 = converter->convert(&other->prop);
+            data1 = nullptr;
             break;
         }
         case Formula_Types::Not:
         {
             data0 = &formula.formulas.emplace_back(formula, other->data0, converter);
+            data1 = nullptr;
             break;
         }
         case Formula_Types::And:
@@ -65,6 +67,8 @@ namespace del
         case Formula_Types::Common_Knowledge:
         default:
         {
+            data0 = nullptr;
+            data1 = nullptr;
             return;
         }
         }

@@ -26,7 +26,7 @@ namespace del
 			Atoms type_atoms;
 			for (const std::string& atom_name : object_atoms)
 			{
-				atoms.emplace_back(atom_name);
+				atoms.emplace_back(atom_name, atoms.size());
 				const Atom* atom = &atoms.back();
 				type_atoms.insert(atom);
 				name_to_atom.insert({ atom_name, atom });

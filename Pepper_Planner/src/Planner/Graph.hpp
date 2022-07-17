@@ -34,7 +34,7 @@ namespace del {
 		NodeAnd* get_root_node();
 		void calculate_value();
 
-		std::string to_string(const Domain& domain) const;
+		std::string to_string() const;
 	private:
 		NodeAnd* root;
 		std::priority_queue<NodeOr*, std::vector<NodeOr*>, Node_Cost_Comparator> frontier;

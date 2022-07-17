@@ -161,6 +161,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Accessbility_Tests.cpp" />
+    <ClCompile Include="Propositions_Tests.cpp" />
     <ClCompile Include="Sally_Anne_First_Order_Tests.cpp" />
     <ClCompile Include="Loader_Integration_Tests.cpp" />
     <ClCompile Include="Formula_Valuation_Tests.cpp" />

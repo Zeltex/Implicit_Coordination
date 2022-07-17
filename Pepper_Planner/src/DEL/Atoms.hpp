@@ -9,10 +9,12 @@ namespace del
 	class Atom
 	{
 	public:
-		Atom(const std::string& name);
+		Atom(const std::string& name, size_t id);
 		const std::string& get_name() const;
+		const size_t& get_id() const;
 	private:
-		std::string name;
+		const std::string name;
+		const size_t id;
 	};
 
 	class Atoms

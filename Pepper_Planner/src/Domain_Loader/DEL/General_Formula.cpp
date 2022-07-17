@@ -6,14 +6,14 @@
 namespace del
 {
 
-    General_Formula& General_Formula::operator=(General_Formula&& other) noexcept
+    General_Formula& General_Formula::operator=(General_Formula&& other)
     {
         formulas = std::move(other.formulas);
         other.formulas = {};
         return *this;
     }
 
-    General_Formula::General_Formula(General_Formula&& other) noexcept
+    General_Formula::General_Formula(General_Formula&& other)
     {
         formulas = std::move(other.formulas);
         other.formulas = {};

@@ -135,6 +135,11 @@ namespace del
 		return result + ")";
 	}
 
+	size_t Proposition_Instance::get_id() const
+	{
+		return id;
+	}
+
 	bool Proposition_Instance::operator==(const Proposition_Instance& other) const
 	{
 		if (this->name != other.name || this->arguments.size() != other.arguments.size())
@@ -157,16 +162,31 @@ namespace del
 
 	bool Proposition_Instance::operator < (const Proposition_Instance& other) const
 	{
-		//if (id == EMPTY_INDEX || other.id == EMPTY_INDEX)
-		//{
-			if (name < other.name) return true;
-			if (name > other.name) return false;
-			return arguments < other.arguments;
-		//}
-		//else
-		//{
-		//	return id < other.id;
-		//}
+		if (name < other.name) return true;
+		if (name > other.name) return false;
+		auto it1 = arguments.begin();
+		auto it2 = other.arguments.begin();
+
+		for (; it1 != arguments.end(); ++it1, ++it2)
+		{
+			if (*it1 == nullptr)
+			{
+				return *it2 != nullptr;
+			}
+			else if (*it2 == nullptr)
+			{
+				return false;
+			}
+			else if ((*it1)->get_id() < (*it2)->get_id())
+			{
+				return true;
+			}
+			else if ((*it1)->get_id() > (*it2)->get_id())
+			{
+				return false;
+			}
+		}
+		return false;
 	}
 
 	//std::string Proposition_Instance::to_hash() const

@@ -4,8 +4,8 @@
 
 namespace del
 {
-	Atom::Atom(const std::string& name)
-		: name(name)
+	Atom::Atom(const std::string& name, size_t id)
+		: name(name), id(id)
 	{
 
 	}
@@ -13,6 +13,11 @@ namespace del
 	const std::string& Atom::get_name() const
 	{
 		return name;
+	}
+
+	const size_t& Atom::get_id() const
+	{
+		return id;
 	}
 	
 	const Atom* Atoms::at(size_t index) const

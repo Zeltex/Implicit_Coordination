@@ -1,5 +1,6 @@
 #include "Planner.hpp"
 
+#include "Core.hpp"
 #include "Node_Comparator.hpp"
 #include "Memory.hpp"
 #include "Domain.hpp"
@@ -93,7 +94,7 @@ namespace del {
 		}
 		debug_info.print_final();
 		std::cout << "No policy found\n";
-		std::cout << graph.to_string(domain);
+		std::cout << graph.to_string();
 		return Policy(false);
 	}
 
@@ -108,6 +109,7 @@ namespace del {
 		if (graph.get_root_node()->is_solved()) {
 			std::cout << "Policy found\n";
 			std::cout << "is benchmark " << is_benchmark <<  std::endl;
+			PRINT(graph.to_string());
 			if (is_benchmark) {
 				return Policy(true);
 			} else 

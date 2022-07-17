@@ -28,6 +28,7 @@ namespace del
         Proposition_Instance(const std::string& name, const Atom* arg_0, const Atom* arg_1, const Atom* arg_2, const Atom* arg_3, const Atom* arg_4);
         std::string to_string() const;
         std::string to_hash() const;
+        size_t get_id() const;
         bool operator==(const Proposition_Instance& other) const;
         bool operator!=(const Proposition_Instance& other) const;
         bool operator<(const Proposition_Instance& other) const;

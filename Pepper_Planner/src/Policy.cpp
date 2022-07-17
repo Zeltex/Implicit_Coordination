@@ -79,7 +79,7 @@ namespace del {
 		return true;
 	}
 
-	std::string Policy::to_string(const Domain& domain) const {
+	std::string Policy::to_string() const {
 		size_t indentation = 4;
 		std::string result = get_indentation(indentation) + " Policy";
 		size_t counter = 0;
@@ -92,7 +92,7 @@ namespace del {
 				+ "\n" 
 				+ std::to_string(hash)
 				+ "\n" 
-				+ entry.state.to_string(domain) 
+				+ entry.state.to_string() 
 				+ "\n"
 				+ entry.actions.begin()->first->to_string()
 				+ "\n---------------------------------\n\n";

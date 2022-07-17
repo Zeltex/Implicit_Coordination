@@ -24,14 +24,14 @@ namespace del
 		return domain.get_current_state().valuate(query, domain);
 	}
 	
-	void DEL_Interface::perform_action(const Action* action)
+	bool DEL_Interface::perform_action(const Action* action)
 	{	
-		domain.perform_action(action);
+		return domain.perform_action(action);
 	}
 
-	void DEL_Interface::perform_action(const std::string& name, const std::vector<std::string>& arguments)
+	bool DEL_Interface::perform_action(const std::string& name, const std::vector<std::string>& arguments)
 	{
-		domain.perform_action(name, arguments);
+		return domain.perform_action(name, arguments);
 	}
 
 	bool DEL_Interface::create_policy(const std::string& planning_agent_name, const bool is_benchmark) 
@@ -50,7 +50,7 @@ namespace del
 	{
 		State contracted_state = domain.get_current_state().contract();
 		contracted_state.shift_perspective(domain.get_agent(Agent_Id{ 0 }));
-		return contracted_state.to_string(domain) + std::string("\nHash ") + std::to_string(contracted_state.to_hash());
+		return contracted_state.to_string() + std::string("\nHash ") + std::to_string(contracted_state.to_hash());
 	}
 
 	const State& DEL_Interface::get_current_state() const

@@ -36,22 +36,6 @@ namespace del {
 
 	}
 
-	//Propositions::Propositions(const Proposition_Instance_Buffer& rigid_propositions, const Propositions_Lookup& propositions_lookup, const Atom_Lookup& atom_lookup)
-	//{
-	//	for (const General_Proposition_Instance& instance : rigid_propositions.proposition_instances)
-	//	{
-	//		propositions.insert(propositions_lookup.get(instance, atom_lookup));
-	//	}
-	//}
-
-	//Propositions::Propositions(const std::vector<Proposition_Instance>& other, const Propositions_Lookup& propositions_lookup, const Atoms& arguments)
-	//{
-	//	for (const Proposition_Instance& instance : other)
-	//	{
-	//		propositions.insert(propositions_lookup.get(instance, arguments));
-	//	}
-	//}
-
 	void Propositions::insert(const Propositions& other)
 	{
 		for (const Proposition_Instance* proposition : other.propositions)

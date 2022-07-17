@@ -21,7 +21,7 @@ namespace del {
 		Formula(Formula&& other);
 		Formula operator=(const Formula& other) = delete;
 
-		Formula& operator=(Formula&& other) noexcept;
+		Formula& operator=(Formula&& other);
 
 		Formula() {}
 		Formula(const General_Formula& other, const Converter_Base* converter);

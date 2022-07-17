@@ -26,7 +26,7 @@ namespace del {
 		const Action* get_action(const State& state, const Agents* agents, Agent_Id preferred_agent = { 0 }) const;
 		bool try_visit(NodeBase* node);
 
-		std::string to_string(const Domain& domain) const;
+		std::string to_string() const;
 	private:
 		bool solved;
 		std::unordered_map<size_t, Policy_Entry> policy;

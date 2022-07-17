@@ -61,7 +61,9 @@ namespace del {
 	
 	void print_action_to_console(const Action& action);
 	#define PRINT_ACTION_TO_CONSOLE(action) print_action_to_console(action)
+	#define PRINT(msg) std::cout << msg << std::endl;
 #else
 	#define PRINT_ACTION_TO_CONSOLE(action)
+	#define PRINT(msg)
 #endif
 }

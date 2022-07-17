@@ -202,7 +202,7 @@ namespace del
 		return children.empty();
 	}
 
-	std::string NodeAnd::to_string(const Domain& domain) const
+	std::string NodeAnd::to_string() const
 	{
 		std::string result = "Node AND " + id.to_string() + "\nParents ";
 		for (auto& parent : parents)
@@ -216,8 +216,23 @@ namespace del
 		{
 			result += child->get_id().to_string() + " ";
 		}	
-			
-		return result + "\n" + state.to_string(domain);
+	
+		result += "\n";
+
+		if (solved)
+		{
+			result += "Solved";
+		}
+		else if (dead)
+		{
+			result += "Dead";
+		}
+		else
+		{
+			result += "Unknown";
+		}
+
+		return result + "\n" + state.to_string();
 	}
 
 	bool NodeAnd::valuate(const Formula& formula, const Domain& domain) const
