@@ -20,8 +20,6 @@ namespace PepperPlannerTests
 			Assert::AreEqual(designated_worlds.size(), (size_t)1);
 			auto it = designated_worlds.begin();
 
-			//const World_Id& designated_world = *(designated_worlds.begin());
-
 			Assert::AreEqual(it->id, (size_t)0);
 
 			auto& reachable_worlds = state.get_reachable_worlds(agent, *it);

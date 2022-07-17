@@ -189,16 +189,6 @@ namespace del
 		return false;
 	}
 
-	//std::string Proposition_Instance::to_hash() const
-	//{
-	//	std::string hash = name;
-	//	for (auto& arg : arguments)
-	//	{
-	//		if (arg != nullptr) hash += arg.id);
-	//	}
-	//	return hash;
-	//}
-
 	void Proposition_Instance::flood_null(size_t counter)
 	{
 		while (counter < PROPOSITION_LENGTH)

@@ -75,22 +75,9 @@ namespace del
             break;
         }
         case Formula_Types::Believes:
-        {
-            std::cerr << "This function should never be called with Believes\n";
-            assert(false);
-            break;
-        }
         case Formula_Types::Everyone_Believes:
-        {
-            // TODO - Implement
-            std::cerr << "Unimplemented formula type everyone belives\n";
-            assert(false);
-            break;
-        }
         case Formula_Types::Common_Knowledge:
         {
-            // TODO - implement
-            std::cerr << "Unimplemented formula type common knowledge\n";
             assert(false);
             break;
         }

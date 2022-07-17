@@ -16,7 +16,6 @@ namespace del {
 		General_State();
 		void add_world(const std::string& name, Proposition_Instance_Buffer& proposition_instance_buffer);
 
-		void set_cost(size_t cost);
 		void set_designated_worlds(Variables_Buffer& variables_buffer);
 		void set_single_designated_world(World_Id world);
 		
@@ -26,15 +25,11 @@ namespace del {
 		const std::vector<General_World>& get_worlds() const;
 		World_Id get_world_id(const std::string& name) const;
 
-		State to_state();
-
 	private:
 
 		size_t cost;
-		std::set<Agent_Id> agents; // TODO - Implement
 		std::vector<General_World> worlds;
 		std::set<World_Id> designated_worlds;
 		std::vector<Agent_World_Relation> agent_world_relations;
-		//Accessibility_Relations accessibility_relations;
 	};
 }

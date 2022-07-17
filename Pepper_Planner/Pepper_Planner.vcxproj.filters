@@ -34,7 +34,6 @@
     <ClCompile Include="src\Domain_Loader\DEL\General_Action_Events.cpp" />
     <ClCompile Include="src\Domain_Loader\DEL\General_Actions.cpp" />
     <ClCompile Include="src\Domain_Loader\DEL\General_Agents.cpp" />
-    <ClCompile Include="src\Domain_Loader\DEL\General_Atoms.cpp" />
     <ClCompile Include="src\Domain_Loader\DEL\General_Domain.cpp" />
     <ClCompile Include="src\Domain_Loader\DEL\General_Edge_Conditions.cpp" />
     <ClCompile Include="src\Domain_Loader\DEL\General_Objects.cpp" />
@@ -91,7 +90,6 @@
     <ClInclude Include="src\Domain_Loader\DEL\General_Action_Events.hpp" />
     <ClInclude Include="src\Domain_Loader\DEL\General_Actions.hpp" />
     <ClInclude Include="src\Domain_Loader\DEL\General_Agents.hpp" />
-    <ClInclude Include="src\Domain_Loader\DEL\General_Atoms.hpp" />
     <ClInclude Include="src\Domain_Loader\DEL\General_Domain.hpp" />
     <ClInclude Include="src\Domain_Loader\DEL\General_Edge_Conditions.hpp" />
     <ClInclude Include="src\Domain_Loader\DEL\General_Objects.hpp" />

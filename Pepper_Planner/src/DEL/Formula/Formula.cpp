@@ -31,16 +31,12 @@ namespace del
 		return *this;
 	}
 
-	// TODO - 
-	// Will never be called, compiler doesn't know this though
-	// So can't mark delete
 	Formula::Formula(Formula&& other)
 	{
-		assert(false);
-		//std::cerr << "Called "
-		exit(1);
 		formulas = std::move(other.formulas);
+		root = other.root;
 		other.formulas = {};
+		other.root = nullptr;
 	}
 
 	void Formula::reset()

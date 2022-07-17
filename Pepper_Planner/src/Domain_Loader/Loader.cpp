@@ -1,7 +1,5 @@
 #include "Loader.hpp"
 
-
-//extern int yylex(); 
 extern int yyparse();
 extern FILE* yyin;
 extern int line_num;

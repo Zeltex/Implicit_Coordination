@@ -13,7 +13,6 @@
 #include "Formula_Converter.hpp"
 #include "General_Actions.hpp"
 #include "General_Agents.hpp"
-#include "General_Atoms.hpp"
 #include "General_Objects.hpp"
 #include "General_State.hpp"
 #include "General_Typed_Propositions.hpp"

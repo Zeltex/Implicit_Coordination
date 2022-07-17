@@ -20,7 +20,6 @@ namespace del {
 	class Graph {
 	public:
 		~Graph();
-		Graph();
 		Graph(size_t node_size, const State& state, Node_Comparator& history, const Agent* planning_agent);
 
 

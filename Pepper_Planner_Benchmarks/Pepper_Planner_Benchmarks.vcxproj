@@ -146,8 +146,6 @@
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MAPF_Benchmark.cpp" />
-    <ClCompile Include="Run_Planner.cpp" />
-    <ClCompile Include="Source_Files.cpp" />
     <ClCompile Include="Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -157,7 +155,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MAPF_Benchmark.hpp" />
-    <ClInclude Include="Run_Planner.hpp" />
     <ClInclude Include="Utils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

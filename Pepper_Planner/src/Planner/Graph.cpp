@@ -21,23 +21,31 @@ namespace del {
 		}
 	}
 
-	Graph::Graph()
-		: root(), frontier(), nodes() 
-	{
-	
-	};
-
 	Graph::Graph(size_t node_size, const State& state, Node_Comparator& history, const Agent* planning_agent) 
 	{
 		nodes.reserve(node_size); 
 		NodeAnd* root = create_root_node(state);
 		history.insert(root);
+		if (!state.is_valid())
+		{
+			std::cerr << "Initial state is invalid" << std::endl;
+			return;
+		}
 
 		for (State& global : state.split_into_globals()) 
 		{
+			if (!global.is_valid())
+			{
+				std::cerr << "Global of initial state is invalid" << std::endl;
+				return;
+			}
+
 			NodeOr* node = create_or_node(std::move(global), root);
 			history.insert(node);
-			add_to_frontier(node);
+			if (!(node->check_if_solved() || node->check_if_dead()))
+			{
+				add_to_frontier(node);
+			}
 		}
 	}
 

@@ -24,7 +24,7 @@ namespace del {
 		Domain(std::unique_ptr<General_Domain> general_domain);
 
 		void						add_new_current_state(const State& state);
-		Action_Library&				get_action_library(); // TODO - Check if this can be made const
+		Action_Library&				get_action_library();
 		const Agent*				get_agent(size_t index) const;
 		const Agent*				get_agent(Agent_Id id) const;
 		const Agent*				get_agent(const std::string& name) const;

@@ -167,11 +167,11 @@ namespace del {
             return actions();
         }
         assert(false);
-        throw "Syntax error line: " + lexer->line_numbers[pointer];
+        std::cerr << "Syntax error line: " << lexer->line_numbers[pointer] << std::endl;
+        throw;
     }
 
     // Object def must come before world def and designated worlds def
-    // Need to implement restrictions and proper error messages
     void Custom_Parser::problem_body() {
         if (try_match({Token::DOMAIN_DEF, Token:: EQUALS, Token:: NAME}))
 		{
@@ -307,9 +307,6 @@ namespace del {
         if (try_match({ Token::REACHABILITY_DEF, Token::EQUALS, Token::LBRACK }))
 		{
             action_reachability();
-
-            // TODO -- If _rest not defined, add empty entry, important for agent size later on
-            // TODO - Check if this still matters
             must_match(Token::RBRACK);
             return action_body();
         }
@@ -393,7 +390,7 @@ namespace del {
             buffer->formula_buffer.push_formula("And");
             if (!formula() || !formula())
             {
-                // And must have exactly 2 children
+                std::cerr << "And must have exactly 2 children" << std::endl;
                 assert(false);
                 exit(1);
             }
@@ -407,7 +404,7 @@ namespace del {
             buffer->formula_buffer.push_formula("Or");
             if (!formula() || !formula())
             {
-                // And must have exactly 2 children
+                std::cerr << "And must have exactly 2 children" << std::endl;
                 assert(false);
                 exit(1);
             }
@@ -421,7 +418,7 @@ namespace del {
             buffer->formula_buffer.push_formula("Not");
             if (!formula())
             {
-                // Not must have 1 child
+                std::cerr << "Not must have 1 child" << std::endl;
                 assert(false);
                 exit(1);
             }
@@ -442,7 +439,7 @@ namespace del {
             buffer->formula_buffer.push_formula("Believes");
             if (!formula())
             {
-                // Believes must have 1 child
+                std::cerr << "Believes must have 1 child" << std::endl;
                 assert(false);
                 exit(1);
             }

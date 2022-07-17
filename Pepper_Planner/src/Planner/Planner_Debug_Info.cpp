@@ -12,7 +12,6 @@ namespace del
 	void Debug_Info::print_final() const
 	{
 #if DEBUG_PRINT == 1
-		//report_memory_usage();
 		print_debug_layer();
 #endif
 	}

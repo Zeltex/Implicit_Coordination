@@ -20,7 +20,6 @@ namespace del {
 	void General_State::add_world(const std::string& name, Proposition_Instance_Buffer& proposition_instance_buffer)
 	{
 		World_Id world_id{ worlds.size() };
-		// TODO - Verify that this should not be transformed
 		std::vector<General_Proposition_Instance> propositions = proposition_instance_buffer.get();
 		worlds.push_back(General_World(name, world_id, std::move(propositions)));
 	}
@@ -54,7 +53,6 @@ namespace del {
 
 	void General_State::add_accessibility_relation(Agent_Id agent, World_Id world_from, World_Id world_to)
 	{
-		agents.insert(agent);
 		agent_world_relations.push_back({ agent, world_from, world_to });
 	}
 

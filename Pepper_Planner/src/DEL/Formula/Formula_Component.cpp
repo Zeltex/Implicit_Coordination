@@ -61,10 +61,13 @@ namespace del
             data0 = converter->convert(other->agent);
             break;
         }
-        case Formula_Types::Bot:
-        case Formula_Types::Top:
         case Formula_Types::Everyone_Believes:
         case Formula_Types::Common_Knowledge:
+        {
+            assert(false);
+        }
+        case Formula_Types::Bot:
+        case Formula_Types::Top:
         default:
         {
             data0 = nullptr;
@@ -109,13 +112,9 @@ namespace del
             return ((Formula_Component*)data1)->valuate_plausability(propositions);
         }
         case Formula_Types::Everyone_Believes:
-        {
-            // TODO - Implement
-            return false;
-        }
         case Formula_Types::Common_Knowledge:
         {
-            // TODO - implement
+            assert(false);
             return false;
         }
         }
@@ -156,7 +155,6 @@ namespace del
         }
         case Formula_Types::Believes:
         {
-            // TODO - Agent is proposition, should be agent id
             std::set<World_Id> reachables = state.get_reachable_worlds((Agent*)data0, world_id);
             for (const auto& reachable_world : reachables) {
                 if (!((Formula_Component*)data1)->valuate(reachable_world, domain, state))
@@ -167,13 +165,9 @@ namespace del
             return !reachables.empty();
         }
         case Formula_Types::Everyone_Believes:
-        {
-            // TODO - Implement
-            return false;
-        }
         case Formula_Types::Common_Knowledge:
         {
-            // TODO - implement
+            assert(false);
             return false;
         }
         }
@@ -195,62 +189,6 @@ namespace del
     {
     
     }
-
- /*   Formula_Component* Formula_Component::copy(Formula* formula, const Converter& general_to_ground) const
-    {
-        switch (type) {
-        case Formula_Types::Top:
-        {
-            return formula->f_top();
-        }
-        case Formula_Types::Bot:
-        {
-            return formula->f_bot();
-        };
-        case Formula_Types::Prop:
-        {
-            return formula->f_prop(general_to_ground.convert((Proposition_Instance*)data0));
-        }
-        case Formula_Types::Not:
-        {
-            return formula->f_not(
-                ((Formula_Component*)data0)->copy(formula, general_to_ground));
-        }
-        case Formula_Types::And:
-        {
-            return formula->f_and(
-                ((Formula_Component*)data0)->copy(formula, general_to_ground),
-                ((Formula_Component*)data1)->copy(formula, general_to_ground));
-        }
-        case Formula_Types::Or:
-        {
-            return formula->f_or(
-                ((Formula_Component*)data0)->copy(formula, general_to_ground),
-                ((Formula_Component*)data1)->copy(formula, general_to_ground));
-        }
-        case Formula_Types::Believes:
-        {
-            return formula->f_believes(
-                general_to_ground.convert((Agent*)data0),
-                ((Formula_Component*)data1)->copy(formula, general_to_ground));
-        }
-        case Formula_Types::Everyone_Believes:
-        {
-            assert(false);
-            return nullptr;
-        }
-        case Formula_Types::Common_Knowledge:
-        {
-            assert(false);
-            return nullptr;
-        }
-        default:
-        {
-            assert(false);
-            return nullptr;
-        }
-        }
-    }*/
 
     std::string Formula_Component::to_string() const
     {

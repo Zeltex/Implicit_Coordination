@@ -14,7 +14,7 @@ namespace del
 
 		for (const General_Typed_Proposition& Typed_Proposition : typed_propositions)
 		{
-			// Convert object set to indicable list
+			// Convert object set to indixable list
 			std::vector<std::vector<std::string>> list_atoms;
 			const std::vector<std::string>& inputs = Typed_Proposition.type_inputs;
 			for (const std::string& input : inputs) 

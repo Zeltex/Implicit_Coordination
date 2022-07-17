@@ -22,7 +22,6 @@ namespace del
 		void add(const std::string& name, Variables_Buffer& variables_buffer);
 		Proposition_Instance_Buffer move();
 		std::vector<General_Proposition_Instance> get();
-		//Converter create_converter(const Propositions_Lookup& propositions_lookup) const;
 	private:
 
 		std::vector<General_Proposition_Instance> proposition_instances;

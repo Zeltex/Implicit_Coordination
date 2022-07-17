@@ -30,13 +30,6 @@ namespace del::bisimulation_context {
 		{
 			return agent != other.agent && world != other.world;
 		}
-
-		//bool operator< (const Agent_World_Reachable& other) const
-		//{
-		//	if (agent != other.agent) return agent < other.agent;
-		//	if (*world != *other.world) return *world < *other.world;
-		//	return false;
-		//}
 	};
 
 	struct Agent_Block_Reachable
@@ -165,7 +158,7 @@ namespace del::bisimulation_context {
 			return data.at(world);
 		}
 
-		// Agent_World_Reachable don't need an ordering as they will be ordered by signature
+		// Agent_World_Reachable doesn't need an ordering as they will be ordered by signature
 		std::map<const World*, std::vector<Agent_World_Reachable>> data;
 	};
 

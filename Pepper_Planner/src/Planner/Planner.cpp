@@ -9,12 +9,6 @@
 #include <assert.h>
 
 namespace del {
-
-	// TODO - Node references may become invalid if more nodes are added to graph (du to vector reallocation), make sure this is not the case.
-
-	// TODO - Check if we need to verify assumptions on initial state
-
-	// TODO - Add option to specify for what person the goal must be fulfilled
 	Policy Planner::find_policy(Domain& domain, 
 								const Agent* planning_agent,
 								const bool is_benchmark) const {
@@ -27,7 +21,6 @@ namespace del {
 		Graph graph(initial_node_size, initial_state, history, planning_agent);
 		Debug_Info debug_info(domain, graph);
 
-		// TODO - Need to check if states in initial frontier are solved
 		while (!graph.is_frontier_empty()) 
 		{
 			debug_info.print_all();

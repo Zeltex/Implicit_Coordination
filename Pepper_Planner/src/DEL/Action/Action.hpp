@@ -37,10 +37,9 @@ namespace del {
 		std::string to_string(size_t indentation) const;
 		std::string to_compact_string() const;
 
-		// Args is mainly debug
-		Atoms args;
 
 	private:
+		Atoms args;
 		size_t cost;
 		// Events must be above designated_events and edge_conditions, for the initializer list ordering
 		Action_Events events;

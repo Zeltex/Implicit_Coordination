@@ -49,23 +49,8 @@ namespace del {
 		return to_string(0);
 	}
 
-	//std::string Action::to_string(size_t indenation, const Domain& domain) const {
-	//	return get_indentation(indenation) 
-	//		+ " Action\n(name, " 
-	//		+ name 
-	//		+ ") (owner, " 
-	//		+ std::to_string(owner.id) 
-	//		+ ") (Relations size, " 
-	//		+ std::to_string(edge_conditions.size()) 
-	//		+ ") (Designated events"
-	//		+ designated_events.to_string()
-	//		+ ")"
-	//		+ events.to_string(domain);
-	//}
-
 	std::string Action::to_string(size_t indenation) const {
 		return get_indentation(indenation)
-			+ " Action "
 			+ name
 			+ "("
 			+ args.to_string()

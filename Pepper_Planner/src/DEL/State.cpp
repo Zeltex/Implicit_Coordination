@@ -75,6 +75,11 @@ namespace del {
 		return worlds.at(world_id.id).get_true_propositions();
 	}
 
+	bool State::is_valid() const
+	{
+		return accessibility_relations.is_serial_transitive_euclidean();
+	}
+
 	bool State::is_true(const World_Id& world_id, const Proposition_Instance* proposition) const {
 		return worlds.at(world_id.id).get_true_propositions().contains(proposition);
 	}

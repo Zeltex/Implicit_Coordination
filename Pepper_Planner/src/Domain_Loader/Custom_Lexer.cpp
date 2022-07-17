@@ -93,7 +93,6 @@ namespace del {
         tokens.push_back(token);
     }
 
-// TODO - Optimise with a trie like datastructure
     void Custom_Lexer::handle_def(const std::string& line, size_t& pointer) {
         pointer++;
         size_t end_of_token = get_end_of_name(line, pointer);
@@ -121,8 +120,9 @@ namespace del {
         if (token == "rest")				{ add_token(Token::REST_DEF); values.insert({ tokens.size() - 1, "_" + token });	return; }
         if (token == "types")				{add_token(Token:: TYPES_DEF);				return;}
         if (token == "world")				{add_token(Token:: WORLD_DEF);				return;}
+        std::cerr << "Unknown token at line" << line_number << ": _" << token << std::endl;
         assert(false);
-        throw std::runtime_error("Unknown token at line" + line_number + std::string(": _") + token);
+        throw;
     }
 
     size_t Custom_Lexer::get_end_of_name(const std::string& line, const size_t& pointer) const {

@@ -9,6 +9,7 @@ namespace del
 	class Inputs;
 
 	// E.g. at(agent, pos)
+	// name="agent", type_inputs={"agent", "pos"}
 	class General_Typed_Proposition
 	{
 	friend class Propositions_Lookup;

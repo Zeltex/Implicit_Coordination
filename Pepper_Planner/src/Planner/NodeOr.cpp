@@ -41,8 +41,6 @@ namespace del
 		auto designated_world = *state.get_designated_worlds().begin();
 		for (auto& agent : *agents)
 		{
-		//for (Agent_Id agent = 0; agent < state.get_number_of_agents(); ++agent)
-		//{
 			result.emplace_back(std::move(state.get_reachable_worlds(&agent, designated_world)));
 		}
 		return result;

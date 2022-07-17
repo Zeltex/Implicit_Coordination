@@ -54,14 +54,4 @@ namespace del
         proposition_instances = {};
         return temp;
     }
-
-    //Converter Proposition_Instance_Buffer::create_converter(const Propositions_Lookup& propositions_lookup) const
-    //{
-    //    Converter result;
-    //    for (const auto& [instance, proposition] : instance_to_proposition)
-    //    {
-    //        result.set(proposition, propositions_lookup.get(instance));
-    //    }
-    //    return result;
-    //}
 }
