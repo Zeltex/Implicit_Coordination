@@ -14,7 +14,7 @@
 #include <ctime>    
 #include <numeric>
 
-#include "MAPF_Benchmark.hpp"
+#include "Run.hpp"
 #include "Utils.h"
 
 int string_to_index(char* arg)
@@ -41,30 +41,46 @@ int main(int argc, char* argv[])
 		return 0;
 	}
 
-	if (argc == 3)
+	if (argc == 4)
 	{
-		size_t start_index = string_to_index(argv[1]);
-		size_t end_index = string_to_index(argv[2]);
-
-		if (start_index == -1 || end_index == -1)
+		std::string type(argv[1]);
+		if (type == "mapf")
 		{
-			std::cout << "Running benchmark '" << argv[1] << "'" << std::endl;
-			del::run_benchmark(std::string(argv[1]), std::string(argv[2]));
-			return 0;
+			size_t start_index = string_to_index(argv[2]);
+			size_t end_index = string_to_index(argv[3]);
+			if (start_index != -1 && end_index != -1)
+			{
+				del::run_mapf_benchmark("../Examples/MAPF/", start_index, end_index);
+				return 0;
+			}
 		}
-		else
+		else if (type == "coin")
 		{
-			std::cout << "Running MAPF benchmark from " << start_index << " to " << end_index << std::endl;
-			del::run_mapf_benchmark("../Examples/MAPF/", start_index, end_index);
+			size_t start_index = string_to_index(argv[2]);
+			size_t end_index = string_to_index(argv[3]);
+			if (start_index != -1 && end_index != -1)
+			{
+				del::run_coin_flip_benchmark("../Examples/Coin_Flip/", start_index, end_index);
+				return 0;
+			}
+
+		}
+		else if (type == "single")
+		{
+
+			std::cout << "Running benchmark '" << argv[1] << "'" << std::endl;
+			del::run_single_benchmark(std::string(argv[2]), std::string(argv[3]));
 			return 0;
 		}
 	}
 
 	std::cout << "Incorrect parameters, Format:" << std::endl;
-	std::cout << "./Release/Pepper_Planner {filename} {planning_agent}" << std::endl;
-	std::cout << "./Release/Pepper_Planner {mapf_start_index} {mapf_end_index}" << std::endl;
+	std::cout << "./Release/Pepper_Planner single {filename} {planning_agent}" << std::endl;
+	std::cout << "./Release/Pepper_Planner mapf {mapf_start_index} {mapf_end_index}" << std::endl;
+	std::cout << "./Release/Pepper_Planner coin {mapf_start_index} {mapf_end_index}" << std::endl;
 	std::cout << "Examples:" << std::endl;
-	std::cout << "./Release/Pepper_Planner \"../Examples/MAPF/p1.maepl\" \"a0\"" << std::endl;
-	std::cout << "./Release/Pepper_Planner 1 27" << std::endl;
+	std::cout << "./Release/Pepper_Planner single \"../Examples/MAPF/p1.maepl\" \"a0\"" << std::endl;
+	std::cout << "./Release/Pepper_Planner mapf 1 27" << std::endl;
+	std::cout << "./Release/Pepper_Planner coin 1 27" << std::endl;
 	return 1;
 }

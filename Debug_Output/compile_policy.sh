@@ -1,1 +1,0 @@
-dot -Tpng Policy.dot > Policy.png

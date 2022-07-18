@@ -52,8 +52,7 @@ namespace del {
     {
         if (!try_match(pattern))
         {
-            std::string error;
-            error += "Syntax error line: " + lexer->line_numbers[pointer] + std::string(". Expected token") + (pattern.size() > 1 ? "s " : " ");
+            std::string error = "Syntax error line: " + std::to_string(lexer->line_numbers[pointer]) + std::string(". Expected token") + (pattern.size() > 1 ? "s " : " ");
             for (auto& entry : pattern) 
             {
                 error += token_to_string(entry) + " ";
@@ -61,10 +60,10 @@ namespace del {
             
             if (pointer < lexer->tokens.size()) 
             {
-                error += " Found " + token_to_string(lexer->tokens[pointer]);
+                error += std::string(" Found ") + token_to_string(lexer->tokens[pointer]);
             }
             
-            error += "\n";
+            error += std::string("\n");
             assert(false);
             throw std::runtime_error(error);
         }

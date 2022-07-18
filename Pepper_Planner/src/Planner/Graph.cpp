@@ -42,7 +42,7 @@ namespace del {
 
 			NodeOr* node = create_or_node(std::move(global), root);
 			history.insert(node);
-			if (!(node->check_if_solved() || node->check_if_dead()))
+			if (!node->check_if_solved())
 			{
 				add_to_frontier(node);
 			}

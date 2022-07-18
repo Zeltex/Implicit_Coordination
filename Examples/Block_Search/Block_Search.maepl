@@ -1,0 +1,77 @@
+_domain Pepper {
+	_announce_enabled = true
+	_types = [container, object, agent]
+	_propositions = [
+		in(container c, object o)
+		perceives(agent a, agent b)
+		reachable(agent a, container c)
+	]
+
+	_action perceive (container c, object o) {
+	_cost = 100
+		_owner = agent agent
+		_designated_events = [event0, event1]
+		_event event0 { 
+			_preconditions = ( AND(reachable(agent, c), in(c, o)) )
+			_effect_add = []
+			_effect_delete = []
+		}
+		_event event1 { 
+			_preconditions = ( AND(reachable(agent, c), NOT(in(c, o))) )
+			_effect_add = [ ]
+			_effect_delete = [ ]
+		}
+		_reachability = {
+			agent = {
+				(event0) (event1)
+			}
+			_rest = {
+				(event0 event1)
+			}
+		}
+	}
+}
+_problem Block_Search {
+	_objects = {
+		container = [b1, b2, b3, b4]
+		object = [cr, ch]
+		agent = [R, H]
+	}
+	_initial_state = [ reachable(R, b1), reachable(R, b2), reachable(H, b3), reachable(H, b4)
+	]
+	_world w0 [in(b1, cr), in(b2, ch), perceives(R, H), perceives(H, R), perceives(H, H), perceives(R, R)]
+	_world w1 [in(b1, cr), in(b3, ch), perceives(R, H), perceives(H, R), perceives(H, H), perceives(R, R)]
+	_world w2 [in(b1, cr), in(b4, ch), perceives(R, H), perceives(H, R), perceives(H, H), perceives(R, R)]
+	_world w3 [in(b2, cr), in(b1, ch), perceives(R, H), perceives(H, R), perceives(H, H), perceives(R, R)]
+	_world w4 [in(b2, cr), in(b3, ch), perceives(R, H), perceives(H, R), perceives(H, H), perceives(R, R)]
+	_world w5 [in(b2, cr), in(b4, ch), perceives(R, H), perceives(H, R), perceives(H, H), perceives(R, R)]
+	_world w6 [in(b3, cr), in(b1, ch), perceives(R, H), perceives(H, R), perceives(H, H), perceives(R, R)]
+	_world w7 [in(b3, cr), in(b2, ch), perceives(R, H), perceives(H, R), perceives(H, H), perceives(R, R)]
+	_world w8 [in(b3, cr), in(b4, ch), perceives(R, H), perceives(H, R), perceives(H, H), perceives(R, R)]
+	_world w9 [in(b4, cr), in(b1, ch), perceives(R, H), perceives(H, R), perceives(H, H), perceives(R, R)]
+	_world w10 [in(b4, cr), in(b2, ch), perceives(R, H), perceives(H, R), perceives(H, H), perceives(R, R)]
+	_world w11 [in(b4, cr), in(b3, ch), perceives(R, H), perceives(H, R), perceives(H, H), perceives(R, R)]
+	_goal = [ AND(
+				
+				OR(	BELIEVES(H, in(b1, ch)),
+					BELIEVES(H, in(b2, ch)),
+					BELIEVES(H, in(b3, ch)),
+					BELIEVES(H, in(b4, ch))),
+				OR(	BELIEVES(R, in(b1, cr)),
+					BELIEVES(R, in(b2, cr)),
+					BELIEVES(R, in(b3, cr)),
+					BELIEVES(R, in(b4, cr)))) ]
+
+	_designated_worlds = [ w0 ]
+	_reflexivity = false
+	_reachability = {
+		R = {
+		 (w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10 w11)
+		 }
+		H = {
+		 (w0, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10 w11)
+		 }
+	}
+}
+
+
