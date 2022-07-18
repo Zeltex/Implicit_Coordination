@@ -33,6 +33,12 @@ namespace del {
 
 	}
 
+	State::State(std::vector<World>&& worlds, Accessibility_Relations&& accessbility_relations, std::set<World_Id>&& designated_worlds, size_t cost)
+		: cost(cost), worlds(std::move(worlds)), designated_worlds(std::move(designated_worlds)), accessibility_relations(std::move(accessbility_relations))
+	{
+
+	}
+
 	State::State(const State& other, World_Id designated_world)
 		: cost(other.cost), worlds(other.worlds), accessibility_relations(other.accessibility_relations)
 	{
@@ -149,8 +155,11 @@ namespace del {
 	{
 		World_Id new_world_id{ 0 };
 		std::vector<World> new_worlds;
-		std::set<World_Id> new_designated_worlds;
 		std::vector<World_Entry> world_conversion;
+		new_worlds.reserve(worlds.size() * 2);
+		world_conversion.reserve(worlds.size() * 2);
+
+		std::set<World_Id> new_designated_worlds;
 		std::set<World_Id> unassigned_designated_worlds = designated_worlds;
 
 		for (const World& world : worlds) {
@@ -162,7 +171,7 @@ namespace del {
 				}
 
 				// Create world
-				new_worlds.push_back(World(world, action_event, new_world_id));
+				new_worlds.emplace_back(world, action_event, new_world_id);
 
 				bool is_world_designated = designated_worlds.find(world.get_id()) != designated_worlds.end();
 
@@ -207,10 +216,11 @@ namespace del {
 	std::vector<State> State::split_into_globals() const
 	{
 		std::vector<State> result;
+		result.reserve(designated_worlds.size());
 		for (const World_Id& designated_world : designated_worlds) {
 			result.emplace_back(std::move(contract({ designated_world })));
 		}
-		return std::move(result);
+		return result;
 	}
 
 	bool State::operator==(const State& other) const {

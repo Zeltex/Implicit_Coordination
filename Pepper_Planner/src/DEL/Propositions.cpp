@@ -81,7 +81,7 @@ namespace del {
 		std::string result;
 		for (const Proposition_Instance* proposition : propositions)
 		{
-			result += proposition->to_string();
+			result += std::to_string(proposition->get_id());
 		}
 		return result;
 	}

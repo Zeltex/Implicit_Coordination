@@ -17,14 +17,12 @@ namespace del {
 		World(const General_World& other, const Propositions_Lookup& propositions_lookup, const Atom_Lookup& atom_lookup);
 		World(const World& other, const Action_Event& action, const World_Id& id);
 		World(World_Id id) : id(id), true_propositions() {}
-		World(World_Id id, Propositions true_propositions) :
+		World(World_Id id, const Propositions& true_propositions) :
 			id(id), true_propositions(true_propositions) {}
 
 		World_Id get_id() const;
 		void add_true_propositions(const Propositions& propositions);
 		void remove_true_propositions(const Propositions& propositions);
-
-		World create_copy(World_Id id) const;
 		
 		const Propositions& get_true_propositions() const;
 

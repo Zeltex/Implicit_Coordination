@@ -31,10 +31,6 @@ namespace del {
 		return id;
 	}
 
-	World World::create_copy(World_Id id) const {
-		return World(id, true_propositions);
-	}
-
 	void World::add_true_propositions(const Propositions& propositions) {
 		true_propositions.insert(propositions);
 	}

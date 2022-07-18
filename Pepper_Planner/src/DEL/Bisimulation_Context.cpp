@@ -9,6 +9,7 @@
 #include <map>
 #include <algorithm>
 #include <deque>
+#include <queue>
 
 namespace del::bisimulation_context {
 
@@ -111,10 +112,9 @@ namespace del::bisimulation_context {
 			worlds.erase(std::find(worlds.begin(), worlds.end(), world));
 		}
 
-		Propositions get_propositions() const
+		const Propositions& get_propositions() const
 		{
-			Propositions propositions = (*worlds.begin())->get_true_propositions();
-			return propositions;
+			return (*worlds.begin())->get_true_propositions();
 		}
 
 		std::set<const World*, decltype(compare_worlds)*> worlds;
@@ -125,15 +125,19 @@ namespace del::bisimulation_context {
 		Agent_World_Reachables(const State& state, const std::set<World_Id>& designated_worlds)
 		{
 			std::deque<const World*> frontier;
+			std::set<const World*> visited;
+			//std::priority_queue<const World*> frontier;
 			for (const World_Id& world_id : designated_worlds)
 			{
-				frontier.push_back(&state.get_world(world_id));
+				auto world = &state.get_world(world_id);
+				frontier.push_back(world);
+				visited.insert(world);
 			}
 
 			while (!frontier.empty())
 			{
-				const World* world_from = frontier.back();
-				frontier.pop_back();
+				const World* world_from = frontier.front();
+				frontier.pop_front();
 				std::vector<Agent_World_Reachable> reachables;
 				for (const Agent& agent : *(state.get_agents()))
 				{
@@ -143,7 +147,7 @@ namespace del::bisimulation_context {
 						{
 							reachables.push_back({ agent.get_id(), &world_to });
 						}
-						if (data.find(&world_to) == data.end() && std::find(frontier.begin(), frontier.end(), &world_to) == frontier.end())
+						if (visited.insert(&world_to).second)
 						{
 							frontier.push_back(&world_to);
 						}
@@ -265,9 +269,10 @@ namespace del::bisimulation_context {
 		// Set world propositions
 
 		std::vector<World> worlds;
+		worlds.reserve(blocks.size());
 		for (const Block& block : blocks.blocks)
 		{
-			worlds.push_back(World(World_Id{ worlds.size() }, block.get_propositions()));
+			worlds.emplace_back(World_Id{ worlds.size() }, block.get_propositions());
 		}
 
 		// Set world relation
@@ -291,6 +296,6 @@ namespace del::bisimulation_context {
 			new_designated_worlds.insert(blocks.get_block_id(&world).to_world());
 		}
 
-		return State(worlds, accessibility_relations, new_designated_worlds, state.get_cost());
+		return State(std::move(worlds), std::move(accessibility_relations), std::move(new_designated_worlds), state.get_cost());
 	}
 }

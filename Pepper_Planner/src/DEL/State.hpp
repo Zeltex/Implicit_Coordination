@@ -22,6 +22,7 @@ namespace del {
 	public:
 		State();
 		State(const std::vector<World>& worlds, const Accessibility_Relations& accessbility_relations, const std::set<World_Id>& designated_worlds, size_t cost);
+		State(std::vector<World>&& worlds, Accessibility_Relations&& accessbility_relations, std::set<World_Id>&& designated_worlds, size_t cost);
 		State(const State& other, World_Id designated_world);
 		State(const General_State& other, const Propositions_Lookup& propositions_lookup, const Agents& agents, const Atom_Lookup& atom_lookup);
 
