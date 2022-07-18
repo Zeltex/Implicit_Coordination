@@ -280,11 +280,13 @@ namespace del {
 
 
 	std::string State::to_string(size_t indentation) const {
-		std::string result = get_indentation(indentation) + " State\n" + get_indentation(indentation - 1) + " Sizes: " +
+		std::string indent_n(indentation, '-');
+		std::string indent_n1(indentation - 1, '-');
+		std::string result = indent_n + " State\n" + indent_n1 + " Sizes: " +
 			") (worlds, " + std::to_string(worlds.size()) +
 			") (designated worlds, " + std::to_string(designated_worlds.size()) +
 			") (cost, " + std::to_string(cost) + ")\n";
-		result += get_indentation(indentation - 1) + " Designated worlds: ";
+		result += indent_n1 + " Designated worlds: ";
 		bool first = true;
 		for (const auto& designated_world : designated_worlds) {
 			if (first) {
@@ -294,9 +296,9 @@ namespace del {
 			}
 			result += std::to_string(designated_world.id);
 		}
-		result += "\n" + get_indentation(indentation - 1) + " ({Agent}, {World from}, {World to}) Relations";
+		result += "\n" + indent_n1 + " ({Agent}, {World from}, {World to}) Relations";
 		result += "\n" + accessibility_relations.to_string();
-		result += "\n" + get_indentation(indentation - 1) + " World {id}: {propositions}";
+		result += "\n" + indent_n1 + " World {id}: {propositions}";
 		for (const auto& world : worlds) {
 			result += "\n" + world.to_string();
 		}

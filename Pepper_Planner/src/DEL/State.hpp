@@ -2,7 +2,6 @@
 
 #include "Accessibility_Relation.hpp"
 #include "Formula.hpp"
-#include "Misc.hpp"
 #include "Proposition_Instance.hpp"
 #include "Types.hpp"
 #include "World.hpp"

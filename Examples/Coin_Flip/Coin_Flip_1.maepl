@@ -42,7 +42,7 @@ _problem Coin_Flip {
 		tyControl = [p]
 	}
 	_initial_state = [adj(n0 n1) agentNumb(n0 a0) agentNumb(n1 a1) ]
-	_world w0 [ prop(n1)]
+	_world w0 [ prop(n0)]
 	_goal = [prop(n1)]
 
 	_designated_worlds = [ w0 ]

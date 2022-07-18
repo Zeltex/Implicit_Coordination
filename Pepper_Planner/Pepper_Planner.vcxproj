@@ -20,7 +20,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\DEL\Converter_Problem.cpp" />
-    <ClCompile Include="src\Core.cpp" />
     <ClCompile Include="src\DEL\Accessibility_Relation.cpp" />
     <ClCompile Include="src\DEL\Action\Action.cpp" />
     <ClCompile Include="src\DEL\Action\Action_Events.cpp" />
@@ -61,7 +60,6 @@
     <ClCompile Include="src\Domain_Loader\DEL\General_Typed_Proposition.cpp" />
     <ClCompile Include="src\Domain_Loader\DEL\General_World.cpp" />
     <ClCompile Include="src\Domain_Loader\Loader.cpp" />
-    <ClCompile Include="src\Misc.cpp" />
     <ClCompile Include="src\Planner\Graph.cpp" />
     <ClCompile Include="src\Planner\NodeAnd.cpp" />
     <ClCompile Include="src\Planner\NodeBase.cpp" />
@@ -69,9 +67,9 @@
     <ClCompile Include="src\Planner\Node_Comparator.cpp" />
     <ClCompile Include="src\Planner\Planner.cpp" />
     <ClCompile Include="src\Planner\Planner_Debug_Info.cpp" />
-    <ClCompile Include="src\Policy.cpp" />
-    <ClCompile Include="src\Propositions.cpp" />
-    <ClCompile Include="src\Types.cpp" />
+    <ClCompile Include="src\DEL\Policy.cpp" />
+    <ClCompile Include="src\DEL\Propositions.cpp" />
+    <ClCompile Include="src\DEL\Types.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\DEL\Converter_Problem.hpp" />
@@ -120,8 +118,6 @@
     <ClInclude Include="src\Domain_Loader\DEL\General_World.hpp" />
     <ClInclude Include="src\Domain_Loader\Loader.hpp" />
     <ClInclude Include="src\Domain_Loader\Loader_Types.hpp" />
-    <ClInclude Include="src\Memory.hpp" />
-    <ClInclude Include="src\Misc.hpp" />
     <ClInclude Include="src\Planner\Graph.hpp" />
     <ClInclude Include="src\Planner\NodeAnd.hpp" />
     <ClInclude Include="src\Planner\NodeBase.hpp" />
@@ -129,9 +125,9 @@
     <ClInclude Include="src\Planner\Node_Comparator.hpp" />
     <ClInclude Include="src\Planner\Planner.hpp" />
     <ClInclude Include="src\Planner\Planner_Debug_Info.hpp" />
-    <ClInclude Include="src\Policy.hpp" />
-    <ClInclude Include="src\Propositions.hpp" />
-    <ClInclude Include="src\Types.hpp" />
+    <ClInclude Include="src\DEL\Policy.hpp" />
+    <ClInclude Include="src\DEL\Propositions.hpp" />
+    <ClInclude Include="src\DEL\Types.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

@@ -44,7 +44,7 @@ result2 = """]
 	}
 	_initial_state = ["""
 result3 = """]
-	_world w0 [ prop(n1)]
+	_world w0 [ prop(n0)]
 	_goal = ["""
 result4 = """]
 

@@ -74,6 +74,13 @@ int main(int argc, char* argv[])
 		}
 	}
 
+	std::cout << "Received";
+	for (size_t i = 0; i < argc; ++i)
+	{
+		std::cout << argv[i] << " ";
+	}
+
+	std::cout << std::endl;
 	std::cout << "Incorrect parameters, Format:" << std::endl;
 	std::cout << "./Release/Pepper_Planner single {filename} {planning_agent}" << std::endl;
 	std::cout << "./Release/Pepper_Planner mapf {mapf_start_index} {mapf_end_index}" << std::endl;

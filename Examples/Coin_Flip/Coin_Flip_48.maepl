@@ -42,7 +42,7 @@ _problem Coin_Flip {
 		tyControl = [p]
 	}
 	_initial_state = [adj(n0 n1) adj(n1 n2) adj(n2 n3) adj(n3 n4) adj(n4 n5) adj(n5 n6) adj(n6 n7) adj(n7 n8) adj(n8 n9) adj(n9 n10) adj(n10 n11) adj(n11 n12) adj(n12 n13) adj(n13 n14) adj(n14 n15) adj(n15 n16) adj(n16 n17) adj(n17 n18) adj(n18 n19) adj(n19 n20) adj(n20 n21) adj(n21 n22) adj(n22 n23) adj(n23 n24) adj(n24 n25) adj(n25 n26) adj(n26 n27) adj(n27 n28) adj(n28 n29) adj(n29 n30) adj(n30 n31) adj(n31 n32) adj(n32 n33) adj(n33 n34) adj(n34 n35) adj(n35 n36) adj(n36 n37) adj(n37 n38) adj(n38 n39) adj(n39 n40) adj(n40 n41) adj(n41 n42) adj(n42 n43) adj(n43 n44) adj(n44 n45) adj(n45 n46) adj(n46 n47) adj(n47 n48) agentNumb(n0 a0) agentNumb(n1 a1) agentNumb(n2 a0) agentNumb(n3 a1) agentNumb(n4 a0) agentNumb(n5 a1) agentNumb(n6 a0) agentNumb(n7 a1) agentNumb(n8 a0) agentNumb(n9 a1) agentNumb(n10 a0) agentNumb(n11 a1) agentNumb(n12 a0) agentNumb(n13 a1) agentNumb(n14 a0) agentNumb(n15 a1) agentNumb(n16 a0) agentNumb(n17 a1) agentNumb(n18 a0) agentNumb(n19 a1) agentNumb(n20 a0) agentNumb(n21 a1) agentNumb(n22 a0) agentNumb(n23 a1) agentNumb(n24 a0) agentNumb(n25 a1) agentNumb(n26 a0) agentNumb(n27 a1) agentNumb(n28 a0) agentNumb(n29 a1) agentNumb(n30 a0) agentNumb(n31 a1) agentNumb(n32 a0) agentNumb(n33 a1) agentNumb(n34 a0) agentNumb(n35 a1) agentNumb(n36 a0) agentNumb(n37 a1) agentNumb(n38 a0) agentNumb(n39 a1) agentNumb(n40 a0) agentNumb(n41 a1) agentNumb(n42 a0) agentNumb(n43 a1) agentNumb(n44 a0) agentNumb(n45 a1) agentNumb(n46 a0) agentNumb(n47 a1) agentNumb(n48 a0) ]
-	_world w0 [ prop(n1)]
+	_world w0 [ prop(n0)]
 	_goal = [prop(n48)]
 
 	_designated_worlds = [ w0 ]

@@ -5,7 +5,6 @@
 
 #include "State.hpp"
 #include "Action.hpp"
-#include "Misc.hpp"
 
 namespace del {
 	class Agents;

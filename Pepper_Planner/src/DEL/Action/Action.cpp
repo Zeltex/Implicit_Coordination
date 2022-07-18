@@ -49,8 +49,8 @@ namespace del {
 		return to_string(0);
 	}
 
-	std::string Action::to_string(size_t indenation) const {
-		return get_indentation(indenation)
+	std::string Action::to_string(size_t indentation) const {
+		return std::string(indentation, '-')
 			+ name
 			+ "("
 			+ args.to_string()

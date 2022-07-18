@@ -2,7 +2,6 @@
 
 #include "Core.hpp"
 #include "Node_Comparator.hpp"
-#include "Memory.hpp"
 #include "Domain.hpp"
 #include "Planner_Debug_Info.hpp"
 

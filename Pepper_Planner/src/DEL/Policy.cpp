@@ -81,12 +81,14 @@ namespace del {
 
 	std::string Policy::to_string() const {
 		size_t indentation = 4;
-		std::string result = get_indentation(indentation) + " Policy";
+		std::string indent_n(indentation, '-');
+		std::string indent_n1(indentation - 1, '-');
+		std::string result = indent_n + " Policy";
 		size_t counter = 0;
 		for (auto& [hash, entry] : policy) {
 			auto temp_action_string = entry.actions.begin()->first->to_string();
 			result += "\n" 
-				+ get_indentation(indentation - 1) 
+				+ indent_n1
 				+ " Entry " 
 				+ std::to_string(counter) 
 				+ "\n" 

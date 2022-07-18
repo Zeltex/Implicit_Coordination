@@ -93,7 +93,7 @@ namespace del
 
 	bool Domain::perform_action(const Action* action)
 	{
-		PRINT_ACTION_TO_CONSOLE(*action);
+		PRINT_ACTION_TO_CONSOLE(action);
 		const State& current_state = get_current_state();
 		std::optional<State> product_update = current_state.product_update(action, *this);
 		if (!product_update.has_value())
