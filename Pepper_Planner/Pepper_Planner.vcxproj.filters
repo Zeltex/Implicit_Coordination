@@ -8,7 +8,6 @@
     <ClCompile Include="src\DEL\Action\Action.cpp" />
     <ClCompile Include="src\DEL\Action\Action_Events.cpp" />
     <ClCompile Include="src\DEL\Action\Action_Library.cpp" />
-    <ClCompile Include="src\DEL\Action\Designated_Events.cpp" />
     <ClCompile Include="src\DEL\Action\Edge_Conditions.cpp" />
     <ClCompile Include="src\DEL\Formula\Formula.cpp" />
     <ClCompile Include="src\DEL\Formula\Formula_Component.cpp" />
@@ -62,7 +61,6 @@
     <ClInclude Include="src\DEL\Action\Action.hpp" />
     <ClInclude Include="src\DEL\Action\Action_Events.hpp" />
     <ClInclude Include="src\DEL\Action\Action_Library.hpp" />
-    <ClInclude Include="src\DEL\Action\Designated_Events.hpp" />
     <ClInclude Include="src\DEL\Action\Edge_Conditions.hpp" />
     <ClInclude Include="src\DEL\Formula\Formula.hpp" />
     <ClInclude Include="src\DEL\Formula\Formula_Component.hpp" />

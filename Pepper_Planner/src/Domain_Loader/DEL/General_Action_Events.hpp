@@ -17,6 +17,7 @@ namespace del
 	class General_Action_Event
 	{
 	friend class Action_Event;
+	friend class General_Action_Events;
 	public:
 		General_Action_Event(const std::string& name, Event_Id id);
 		void set_add_list(const std::vector<General_Proposition_Instance>& proposition_instances);
@@ -24,6 +25,7 @@ namespace del
 		void set_instance_buffer(Proposition_Instance_Buffer& proposition_instance_buffer);
 		void set_precondition(General_Formula&& formula);
 	private:
+		bool designated;
 		std::string name;
 		Event_Id id;
 		General_Formula precondition;
@@ -44,6 +46,7 @@ namespace del
 		void set_preconditions(Formula_Buffer& formula_buffer);
 		void set_delete_list(Proposition_Instance_Buffer& proposition_instance_buffer);
 		void set_add_list(Proposition_Instance_Buffer& proposition_instance_buffer);
+		void set_designated_events(Variables_Buffer& variables_buffer);
 		size_t size() const;
 	private:
 		std::vector<std::unique_ptr<General_Action_Event>> events;

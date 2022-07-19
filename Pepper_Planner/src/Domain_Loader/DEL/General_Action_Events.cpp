@@ -1,12 +1,16 @@
 #include "General_Action_Events.hpp"
 
 #include "Formula_Buffer.hpp"
+#include "Variables_Buffer.hpp"
+
+#include <assert.h>
+#include <iostream>
 
 namespace del
 {
 
 	General_Action_Event::General_Action_Event(const std::string& name, Event_Id id)
-		: name(name), id(id)
+		: name(name), id(id), designated(false)
 	{
 
 	}
@@ -76,5 +80,29 @@ namespace del
 	void General_Action_Events::set_add_list(Proposition_Instance_Buffer& proposition_instance_buffer)
 	{
 		events.back()->set_add_list(proposition_instance_buffer.get());
+	}
+
+	void General_Action_Events::set_designated_events(Variables_Buffer& variables_buffer)
+	{
+		std::vector<std::string> designated_events = variables_buffer.get();
+		for (auto& name : designated_events)
+		{
+			bool found = false;
+			for (auto& entry : events)
+			{
+				if (name == entry->name)
+				{
+					entry->designated = true;
+					found = true;
+					break;
+				}
+			}
+
+			if (!found)
+			{
+				std::cout << "Attempted to set non-existent event designated: '" << name << "'" << std::endl;
+				assert(false);
+			}
+		}
 	}
 }

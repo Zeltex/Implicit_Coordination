@@ -9,7 +9,6 @@
 #include "Agents.hpp"
 #include "Edge_Conditions.hpp"
 #include "Action_Events.hpp"
-#include "Designated_Events.hpp"
 #include "Atoms.hpp"
 
 
@@ -28,7 +27,6 @@ namespace del {
 		std::string				get_name() const;
 		const Agent*			get_owner() const;
 
-		bool is_event_designated(Event_Id event) const;
 		bool is_condition_fulfilled(Agent_Id agent, Event_Id event_from, Event_Id event_to, const State& state, const World_Id world, const Domain& domain) const;
 
 
@@ -40,9 +38,8 @@ namespace del {
 	private:
 		Atoms args;
 		size_t cost;
-		// Events must be above designated_events and edge_conditions, for the initializer list ordering
+		// Events must be above edge_conditions, for the initializer list ordering
 		Action_Events events;
-		Designated_Events designated_events;
 		const Agent* owner;
 		std::string name;
 		Agent_Edge_Conditions edge_conditions;

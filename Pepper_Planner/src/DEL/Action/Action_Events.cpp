@@ -10,8 +10,9 @@
 
 namespace del {
 
-	Action_Event::Action_Event(const std::unique_ptr<General_Action_Event>& other, Event_Id id, const Converter_Base* converter, const Propositions_Lookup& propositions_lookup, const Atoms& arguments)
-		: name(other->name), 
+	Action_Event::Action_Event(const std::unique_ptr<General_Action_Event>& other, Event_Id id, const Converter_Base* converter, const Propositions_Lookup& propositions_lookup, const Atoms& arguments) :
+		designated(other->designated),
+		name(other->name), 
 		id(id), 
 		precondition(other->precondition, converter),
 		proposition_add(other->proposition_add, converter),
@@ -50,6 +51,11 @@ namespace del {
 			+ ") (Delete list, "
 			+ proposition_delete.to_string()
 			+ ")";
+	}
+
+	bool Action_Event::is_designated() const
+	{
+		return designated;
 	}
 
 	Action_Events::Action_Events()

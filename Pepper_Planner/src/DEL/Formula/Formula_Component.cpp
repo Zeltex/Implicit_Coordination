@@ -155,14 +155,16 @@ namespace del
         }
         case Formula_Types::Believes:
         {
-            std::set<World_Id> reachables = state.get_reachable_worlds((Agent*)data0, world_id);
-            for (const auto& reachable_world : reachables) {
-                if (!((Formula_Component*)data1)->valuate(reachable_world, domain, state))
+            auto agent = ((Agent*)data0)->get_id();
+            for (auto& world : state.get_worlds())
+            {
+                if (state.is_one_reachable(agent, world_id, world.get_id())
+                    && !((Formula_Component*)data1)->valuate(world.get_id(), domain, state))
                 {
                     return false;
                 }
             }
-            return !reachables.empty();
+            return true;
         }
         case Formula_Types::Everyone_Believes:
         case Formula_Types::Common_Knowledge:

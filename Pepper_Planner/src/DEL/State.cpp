@@ -176,13 +176,13 @@ namespace del {
 				bool is_world_designated = designated_worlds.find(world.get_id()) != designated_worlds.end();
 
 				// Set designated
-				if (is_world_designated && action->is_event_designated(action_event.get_id()))
+				if (is_world_designated && action_event.is_designated())
 				{
 					new_designated_worlds.insert(new_world_id);
 					unassigned_designated_worlds.erase(world.get_id());
 				}
 
-				world_conversion.push_back({ world.get_id(), action_event.get_id(), new_world_id });
+				world_conversion.emplace_back(world.get_id(), action_event.get_id(), new_world_id);
 				++new_world_id;
 			}
 		}
@@ -283,6 +283,31 @@ namespace del {
 
 		return std::hash<std::string>()(hash);
 	}
+
+	//size_t State::to_hash(const std::set<World_Id>& designated_worlds) const
+	//{
+	//	std::string hash;
+	//	hash.reserve(accessibility_relations.get_agents()->size() * worlds.size() * worlds.size() * sizeof(size_t));
+	//	size_t relations_size = 0;
+	//	hash += accessibility_relations.to_hashable_string(relations_size);
+
+	//	//hashes.reserve(worlds.size() + designated_worlds.size() + relations_size);
+
+	//	hash += std::to_string(worlds.size());
+	//	hash += std::to_string(designated_worlds.size());
+	//	hash += std::to_string(relations_size);
+
+	//	for (auto& world : worlds)
+	//	{
+	//		hash += world.to_hash();
+	//	}
+	//	for (auto& designated_world : designated_worlds)
+	//	{
+	//		hash += std::to_string(designated_world.id);
+	//	}
+	//	return std::hash<std::string>()(hash);
+	//}
+
 
 	std::string State::to_string() const {
 		return to_string(3);

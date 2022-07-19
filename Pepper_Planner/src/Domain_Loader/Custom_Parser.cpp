@@ -288,7 +288,6 @@ namespace del {
 
         if (try_match({ Token::EVENT_DEF, Token::NAME, Token::LBRACK }))
 		{
-            
             buffer->events_buffer.start(get_svalue(1));
             event_body();
             must_match(Token::RBRACK);
@@ -298,7 +297,7 @@ namespace del {
         if (try_match({ Token::DESIGNATED_EVENTS_DEF, Token::EQUALS, Token::LBRACK }))
 		{
             ordered_variables();
-            buffer->actions.set_designated_events(buffer->variables_buffer);
+            buffer->events_buffer.set_designated_events(buffer->variables_buffer);
             must_match(Token::RBRACK);
             return action_body();
         }

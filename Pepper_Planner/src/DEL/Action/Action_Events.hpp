@@ -28,8 +28,10 @@ namespace del {
 		const Propositions& get_delete_list() const;
 		std::string get_name() const;
 		std::string to_string() const;
+		bool is_designated() const;
 
 	private:
+		bool designated;
 		std::string name;
 		Event_Id id;
 		Formula precondition;

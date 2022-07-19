@@ -37,12 +37,11 @@ namespace del {
 
 		const Inputs& get_inputs() const;
 
-		size_t														get_cost() const;
-		const std::vector<std::string>&								get_designated_events() const;
-		const General_Agent_Edge_Conditions&						get_edge_conditions() const;
-		const General_Action_Events&								get_events() const;
-		std::string													get_name() const;
-		std::pair<std::string, Atom_Id>								get_owner() const;
+		size_t									get_cost() const;
+		const General_Agent_Edge_Conditions&	get_edge_conditions() const;
+		const General_Action_Events&			get_events() const;
+		std::string								get_name() const;
+		std::pair<std::string, Atom_Id>			get_owner() const;
 
 	private:
 
@@ -50,7 +49,6 @@ namespace del {
 		std::string name;
 		std::pair<std::string, Atom_Id> owner;
 		General_Action_Events events;
-		std::vector<std::string> designated_events;
 		Inputs inputs;
 		General_Agent_Edge_Conditions edge_conditions;
 		Proposition_Instance_Buffer proposition_instance_buffer;
@@ -61,7 +59,6 @@ namespace del {
 	public:
 		void start(const std::string name);
 		void set_cost(size_t cost);
-		void set_designated_events(Variables_Buffer& variables_buffer);
 		void set_edge_conditions(const std::string agent_name, General_Edge_Conditions& edge_conditions);
 		void set_events(General_Action_Events& general_action_events);
 		void set_input(Inputs_Buffer& inputs_buffer);

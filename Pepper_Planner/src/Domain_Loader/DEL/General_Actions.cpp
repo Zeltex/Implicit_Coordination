@@ -37,10 +37,6 @@ namespace del {
 		this->name = name;
 	}
 
-	void General_Action::set_designated_events(std::vector<std::string> designated_events) {
-		this->designated_events = designated_events;
-	}
-
 	size_t General_Action::get_cost() const {
 		return cost;
 	}
@@ -51,10 +47,6 @@ namespace del {
 
 	std::string General_Action::get_name() const {
 		return name;
-	}
-
-	const std::vector<std::string>& General_Action::get_designated_events() const {
-		return designated_events;
 	}
 
 	const General_Action_Events& General_Action::get_events() const {
@@ -93,11 +85,6 @@ namespace del {
 	void General_Actions::set_owner(const std::string type, const std::string name)
 	{
 		actions.back()->owner = { type, actions.back()->inputs.get_index({type, name}) };
-	}
-
-	void General_Actions::set_designated_events(Variables_Buffer& variables_buffer)
-	{
-		actions.back()->designated_events = variables_buffer.get();
 	}
 
 	void General_Actions::set_cost(size_t cost)

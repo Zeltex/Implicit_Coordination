@@ -10,7 +10,6 @@ result1 = """_domain Pepper {
 	_action throw (number n1, number n2, tyControl tc, agent a) {
 		_cost = 100
 		_owner = agent a
-		_designated_events = [event0, event1]
 		_event event0 { 
 			_preconditions = ( AND(AND(prop(n1), adj(n1, n2)), agentNumb(n1, a)) )
 			_effect_add = [ prop(n2), propControl(tc) ]
@@ -21,6 +20,7 @@ result1 = """_domain Pepper {
 			_effect_add = [ prop(n2) ]
 			_effect_delete = [ prop(n1), propControl(tc) ]
 		}
+		_designated_events = [event0, event1]
 		_reachability = {
 			a = {
 				(event0, event0) = (TOP), 

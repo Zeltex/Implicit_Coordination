@@ -11,7 +11,6 @@ namespace del {
 		cost(-1),
 		name("EMPTY"),
 		events(),
-		designated_events(),
 		edge_conditions()
 	{
 
@@ -22,15 +21,10 @@ namespace del {
 		cost(other.get_cost()), 
 		name(other.get_name()), 
 		events(other, arguments, propositions_lookup, agents),
-		designated_events(other, events),
 		edge_conditions(other, propositions_lookup, events, arguments, agents)
 	{
 		const Atom* owner_atom = arguments.at(other.get_owner().second.id);
 		owner = agents.get(owner_atom);
-	}
-
-	bool Action::is_event_designated(Event_Id event) const {
-		return designated_events.contains(event);
 	}
 
 	bool Action::is_condition_fulfilled(Agent_Id agent, Event_Id event_from, Event_Id event_to, const State& state, const World_Id world, const Domain& domain) const {
