@@ -10,14 +10,26 @@
 
 namespace del {
 
-	Propositions::Propositions(const Propositions& other)
+	Propositions::Propositions(const Propositions& other, const Propositions& delete_list, const Propositions& add_list)
 		: propositions(other.propositions)
 	{
+		for (const auto& proposition : delete_list.propositions)
+		{
+			auto result = propositions.find(proposition);
+			if (result != propositions.end())
+			{
+				propositions.erase(result);
+			}
+		}
 
+		for (const Proposition_Instance* proposition : add_list.propositions)
+		{
+			propositions.insert(proposition);
+		}
 	}
 
-	Propositions::Propositions()
-		: propositions()
+	Propositions::Propositions(const Propositions& other)
+		: propositions(other.propositions)
 	{
 
 	}
@@ -36,29 +48,20 @@ namespace del {
 
 	}
 
-	void Propositions::insert(const Propositions& other)
+	Propositions::Propositions(std::set<const Proposition_Instance*, Comparator> data_in)
+		: propositions(std::move(data_in))
 	{
-		for (const Proposition_Instance* proposition : other.propositions)
-		{
-			propositions.insert(proposition);
-		}
+
 	}
 
-	void Propositions::insert(const Proposition_Instance* proposition)
+	Propositions Propositions::combine(const Propositions& other) const
 	{
-		propositions.insert(proposition);
-	}
-
-	void Propositions::remove(const Propositions& other)
-	{
-		for (const auto& proposition : other.propositions)
+		auto new_propositions = propositions;
+		for (auto& prop : other)
 		{
-			auto result = propositions.find(proposition);
-			if (result != propositions.end())
-			{
-				propositions.erase(result);
-			}
+			new_propositions.insert(prop);
 		}
+		return Propositions(new_propositions);
 	}
 
 	bool Propositions::contains(const Proposition_Instance* proposition) const
@@ -115,5 +118,15 @@ namespace del {
 			hash += prop->to_hash();
 		}
 		return hash;
+	}
+
+	std::set<const Proposition_Instance*, Propositions::Comparator>::const_iterator Propositions::begin() const
+	{
+		return propositions.begin();
+	}
+
+	std::set<const Proposition_Instance*, Propositions::Comparator>::const_iterator Propositions::end() const
+	{
+		return propositions.end();
 	}
 }

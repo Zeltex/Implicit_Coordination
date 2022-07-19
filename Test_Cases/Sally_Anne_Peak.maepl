@@ -8,7 +8,6 @@ _domain Pepper {
 	_action move (container from, container to, object o, agent a) {
 		_cost = 100
 		_owner = agent a
-		_designated_events = [event0]
 		_event event0 { 
 			_preconditions = ( AND(in(from, o), present(a)) )
 			_effect_add = [in(to, o)]
@@ -19,6 +18,7 @@ _domain Pepper {
 			_effect_add = [ ]
 			_effect_delete = [ ]
 		}
+		_designated_events = [event0]
 		_reachability = {
 			a = {
 				(event0 event0) = (TOP)
@@ -35,7 +35,6 @@ _domain Pepper {
 	_action peak (agent a) {
 		_cost = 100
 		_owner = agent a
-		_designated_events = [event0]
 		_event event0 { 
 			_preconditions = ( TOP )
 			_effect_add = [present(a)]
@@ -48,6 +47,7 @@ _domain Pepper {
 			_effect_delete = []
 		}
 		
+		_designated_events = [event0]
 		_reachability = {
 			a = {
 				(event0 event0) = (TOP)
@@ -63,12 +63,12 @@ _domain Pepper {
 	_action enter (agent a) {
 		_cost = 100
 		_owner = agent a
-		_designated_events = [event0]
 		_event event0 { 
 			_preconditions = ( TOP )
 			_effect_add = [present(a)]
 			_effect_delete = []
 		}
+		_designated_events = [event0]
 		_reachability = {
 			a = {
 				(event0 event0) = (TOP)
@@ -82,12 +82,12 @@ _domain Pepper {
 	_action leave(agent a) {
 		_cost = 100
 		_owner = agent a
-		_designated_events = [event0]
 		_event event0 { 
 			_preconditions = ( TOP )
 			_effect_add = []
 			_effect_delete = [present(a)]
 		}
+		_designated_events = [event0]
 		_reachability = {
 			a = {
 				(event0 event0) = (TOP)

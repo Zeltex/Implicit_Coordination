@@ -116,12 +116,13 @@ namespace del {
 		Event_Id event_to;
 	};
 
+	class World;
 	struct World_Entry {
-		World_Entry(World_Id old_world, Event_Id old_event, World_Id new_world) : 
+		World_Entry(const World* old_world, Event_Id old_event, const World* new_world) :
 			old_world(old_world), old_event(old_event), new_world(new_world) {}
-		World_Id old_world;
+		const World* old_world;
 		Event_Id old_event;
-		World_Id new_world;
+		const World* new_world;
 	};
 
 	class NodeBase;

@@ -8,7 +8,8 @@
 #include "General_State.hpp"
 #include "Types.hpp"
 
-namespace del {
+namespace del
+{
 
 
 	State::State(const General_State& other, const Propositions_Lookup& propositions_lookup, const Agents& agents, const Atom_Lookup& atom_lookup)
@@ -16,9 +17,10 @@ namespace del {
 		designated_worlds(other.designated_worlds),
 		accessibility_relations(other.worlds.size(), &agents)
 	{
+		Converter_Problem converter(&propositions_lookup, &atom_lookup, &agents);
 		for (const General_World& general_world : other.worlds)
 		{
-			worlds.push_back({ general_world, propositions_lookup, atom_lookup});
+			worlds.emplace_back(general_world, &converter);
 		}
 
 		for (const Agent_World_Relation& relation : other.agent_world_relations)
@@ -45,26 +47,10 @@ namespace del {
 		this->designated_worlds.insert(designated_world);
 	}
 
-	void State::shift_perspective(const Agent* agent, bool is_exclusive) 
+	State State::shift_and_contract(const Agent* agent) const
 	{
-		std::set<World_Id> designated_copy;
-		while (designated_copy.size() != designated_worlds.size())
-		{
-			designated_copy = designated_worlds;
-			for (const World_Id& designated : designated_copy) {
-				if (is_exclusive) 
-				{
-					designated_worlds.erase(designated);
-				}
-
-				for (const World& world : worlds) {
-					if (accessibility_relations.has_direct_relation(agent, designated, world.get_id()))
-					{
-						designated_worlds.insert(world.get_id());
-					}
-				}
-			}
-		}
+		auto worlds = get_reachable_worlds(agent);
+		return contract(worlds);
 	}
 
 	bool State::is_one_reachable(Agent_Id agent, const World* world_from, const World* world_to) const
@@ -77,20 +63,29 @@ namespace del {
 		return accessibility_relations.has_direct_relation(agent, world_from, world_to);
 	}
 
-	const Propositions& State::get_true_propositions(World_Id world_id) const {
-		return worlds.at(world_id.id).get_true_propositions();
-	}
-
 	bool State::is_valid() const
 	{
 		return accessibility_relations.is_serial_transitive_euclidean();
 	}
 
-	bool State::is_true(const World_Id& world_id, const Proposition_Instance* proposition) const {
-		return worlds.at(world_id.id).get_true_propositions().contains(proposition);
+	std::set<World_Id> State::get_reachable_worlds(const Agent* agent) const
+	{
+		std::set<World_Id> result;
+		for (auto designated_world : designated_worlds)
+		{
+			for (auto& world : worlds)
+			{
+				if (is_one_reachable(agent->get_id(), designated_world, world.get_id()))
+				{
+					result.insert(world.get_id());
+				}
+			}
+		}
+		return result;
 	}
 
-	std::set<World_Id> State::get_reachable_worlds(const Agent* agent, World_Id world_id) const {
+	std::set<World_Id> State::get_reachable_worlds(const Agent* agent, World_Id world_id) const
+	{
 		// Due to the serial, transitive and euclidean conditions we only need to check depth one
 		std::set<World_Id> result;
 		Agent_Id agent_id = agent->get_id();
@@ -104,45 +99,40 @@ namespace del {
 		return result;
 	}
 
-	bool State::valuate(const Formula& formula, const Domain& domain) const {
-		for (const auto& world : designated_worlds) {
-			if (!formula.valuate(world.id, domain, *this)) {
+	bool State::valuate(const Formula& formula, const Domain& domain) const
+	{
+		for (const auto& world : designated_worlds)
+		{
+			if (!formula.valuate(&get_world(world), domain, *this))
+			{
 				return false;
 			}
 		}
 		return true;
 	}
 
-	bool State::valuate(const Formula& formula, const Domain& domain, const World_Id& designated_world) const
+	bool State::valuate(const Formula& formula, const Domain& domain, const World* designated_world) const
 	{
-		return formula.valuate(designated_world.id, domain, *this);
+		return formula.valuate(designated_world, domain, *this);
 	}
 
-	const std::vector<World>& State::get_worlds() const {
+	const std::vector<World>& State::get_worlds() const
+	{
 		return worlds;
 	}
 
-	bool State::is_world_designated(World_Id world) const {
-		return find(designated_worlds.begin(), designated_worlds.end(), world) != designated_worlds.end();
-	}
-
-	size_t State::get_worlds_count() const {
-		return worlds.size();
-	}
-
-	size_t State::get_designated_worlds_count() const {
-		return designated_worlds.size();
-	}
-
-	const std::set<World_Id>& State::get_designated_worlds() const {
+	const std::set<World_Id>& State::get_designated_worlds() const
+	{
 		return designated_worlds;
 	}
 
-	const World& State::get_world(World_Id world) const {
+	const World& State::get_world(World_Id world) const
+	{
 		return worlds[world.id];
 	}
 
-	size_t State::get_cost() const {
+	size_t State::get_cost() const
+	{
 		return cost;
 	}
 
@@ -156,16 +146,25 @@ namespace del {
 		World_Id new_world_id{ 0 };
 		std::vector<World> new_worlds;
 		std::vector<World_Entry> world_conversion;
-		new_worlds.reserve(worlds.size() * 2);
+
+		// Must reserve enough memory to not invalidate World_Entry pointers
+		new_worlds.reserve(worlds.size() * action->get_events().size());
 		world_conversion.reserve(worlds.size() * 2);
 
 		std::set<World_Id> new_designated_worlds;
-		std::set<World_Id> unassigned_designated_worlds = designated_worlds;
+		std::vector<bool> unassigned_designated_worlds(worlds.size(), false);
 
-		for (const World& world : worlds) {
-			for (const Action_Event& action_event : action->get_events()) {
-				
-				if (!action_event.get_preconditions().valuate(world.get_id().id, domain, *this)) 
+		for (auto& designated_world : designated_worlds)
+		{
+			unassigned_designated_worlds.at(designated_world.id) = true;
+		}
+
+		for (const World& world : worlds)
+		{
+			for (const Action_Event& action_event : action->get_events())
+			{
+
+				if (!action_event.get_preconditions().valuate(&world, domain, *this))
 				{
 					continue;
 				}
@@ -179,16 +178,16 @@ namespace del {
 				if (is_world_designated && action_event.is_designated())
 				{
 					new_designated_worlds.insert(new_world_id);
-					unassigned_designated_worlds.erase(world.get_id());
+					unassigned_designated_worlds.at(world.get_id().id) = false;
 				}
 
-				world_conversion.emplace_back(world.get_id(), action_event.get_id(), new_world_id);
+				world_conversion.emplace_back(&world, action_event.get_id(), &new_worlds.back());
 				++new_world_id;
 			}
 		}
 
 		// Some designated world did not have associated designated event
-		if (!unassigned_designated_worlds.empty())
+		if (std::find(unassigned_designated_worlds.begin(), unassigned_designated_worlds.end(), true) != unassigned_designated_worlds.end())
 		{
 			return {};
 		}
@@ -207,29 +206,26 @@ namespace del {
 			return result;
 		}
 	}
-	void State::set_single_designated(World_Id world)
-	{
-		designated_worlds.clear();
-		designated_worlds.insert(world);
-	}
 
 	std::vector<State> State::split_into_globals() const
 	{
 		std::vector<State> result;
 		result.reserve(designated_worlds.size());
-		for (const World_Id& designated_world : designated_worlds) {
+		for (const World_Id& designated_world : designated_worlds)
+		{
 			result.emplace_back(std::move(contract({ designated_world })));
 		}
 		return result;
 	}
 
-	bool State::operator==(const State& other) const {
+	bool State::operator==(const State& other) const
+	{
 		if (worlds.size() != other.worlds.size() || designated_worlds.size() != other.designated_worlds.size())
 		{
 			return false;
 		}
 
-		for (size_t i = 0; i < worlds.size(); i++) 
+		for (size_t i = 0; i < worlds.size(); i++)
 		{
 			if (worlds[i] != other.worlds[i])
 			{
@@ -242,13 +238,13 @@ namespace del {
 
 		for (; it1 != designated_worlds.end(); ++it1, ++it2)
 		{
-			if (*it1 != *it2) 
+			if (*it1 != *it2)
 			{
 				return false;
 			}
 		}
 
-		if (accessibility_relations != other.accessibility_relations) 
+		if (accessibility_relations != other.accessibility_relations)
 		{
 			return false;
 		}
@@ -260,7 +256,8 @@ namespace del {
 		return to_hash(designated_worlds);
 	}
 
-	size_t State::to_hash(const std::set<World_Id>& designated_worlds) const {
+	size_t State::to_hash(const std::set<World_Id>& designated_worlds) const
+	{
 		std::vector<std::string> hashes;
 		size_t relations_size = 0;
 		std::string relations_string = accessibility_relations.to_hashable_string(relations_size);
@@ -271,10 +268,12 @@ namespace del {
 		hashes.push_back(std::to_string(designated_worlds.size()));
 		hashes.push_back(std::to_string(relations_size));
 
-		for (auto& world : worlds) {
+		for (auto& world : worlds)
+		{
 			hashes.emplace_back(std::move(world.to_hash()));
 		}
-		for (auto& designated_world : designated_worlds) {
+		for (auto& designated_world : designated_worlds)
+		{
 			hashes.emplace_back(std::to_string(designated_world.id));
 		}
 		std::string hash = relations_string;
@@ -309,12 +308,14 @@ namespace del {
 	//}
 
 
-	std::string State::to_string() const {
+	std::string State::to_string() const
+	{
 		return to_string(3);
 	}
 
 
-	std::string State::to_string(size_t indentation) const {
+	std::string State::to_string(size_t indentation) const
+	{
 		std::string indent_n(indentation, '-');
 		std::string indent_n1(indentation - 1, '-');
 		std::string result = indent_n + " State\n" + indent_n1 + " Sizes: " +
@@ -323,10 +324,14 @@ namespace del {
 			") (cost, " + std::to_string(cost) + ")\n";
 		result += indent_n1 + " Designated worlds: ";
 		bool first = true;
-		for (const auto& designated_world : designated_worlds) {
-			if (first) {
+		for (const auto& designated_world : designated_worlds)
+		{
+			if (first)
+			{
 				first = false;
-			} else {
+			}
+			else
+			{
 				result += ", ";
 			}
 			result += std::to_string(designated_world.id);
@@ -334,7 +339,8 @@ namespace del {
 		result += "\n" + indent_n1 + " ({Agent}, {World from}, {World to}) Relations";
 		result += "\n" + accessibility_relations.to_string();
 		result += "\n" + indent_n1 + " World {id}: {propositions}";
-		for (const auto& world : worlds) {
+		for (const auto& world : worlds)
+		{
 			result += "\n" + world.to_string();
 		}
 		return result;
@@ -348,13 +354,6 @@ namespace del {
 	State State::contract() const
 	{
 		return bisimulation_context::contract(*this, designated_worlds);
-	}
-
-	bool State::is_bisimilar_to(const State& other) const
-	{
-		State contracted = contract();
-		State contracted_other = other.contract();
-		return contracted == contracted_other;
 	}
 
 	const Agents* State::get_agents() const

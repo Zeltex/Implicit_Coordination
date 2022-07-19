@@ -19,9 +19,7 @@ namespace del {
 		std::vector<State> agent_states;
 		for (auto& agent : *agents)
 		{ 
-			State temp = state;
-			temp.shift_perspective(&agent);
-			temp = temp.contract();
+			State temp = state.shift_and_contract(&agent);
 			agent_hashes.emplace_back(temp.to_hash());
 			agent_states.push_back(std::move(temp));
 		}
@@ -34,15 +32,12 @@ namespace del {
 					break;
 				}
 
-				auto& [policy_state, policy_actions] = (*potential_match).second;
-				if (policy_state.is_bisimilar_to(agent_states[agent_counter])) {
-					for (auto& [policy_action, policy_node] : policy_actions) {
-						if (policy_action->get_owner()->get_id().id == agent_counter) {
-							return policy_action;
-						}
+				auto& [policy_state, policy_actions] = potential_match->second;
+				for (auto& [policy_action, policy_node] : policy_actions) {
+					if (policy_action->get_owner()->get_id().id == agent_counter) {
+						return policy_action;
 					}
 				}
-				++hash;
 			}
 			++agent_counter;
 		}
@@ -51,14 +46,12 @@ namespace del {
 
 	void Policy::add_entry(const State& state, const Action* action, const NodeBase* node)
 	{
-		State perspective_shifted = state;
-		perspective_shifted.shift_perspective(action->get_owner());
+		State perspective_shifted = state.shift_and_contract(action->get_owner());
 
 		std::vector<State> shifted_states = perspective_shifted.split_into_globals();
 		for (State& shifted_state : shifted_states)
 		{
-			shifted_state.shift_perspective(action->get_owner());
-			shifted_state = shifted_state.contract();
+			shifted_state.shift_and_contract(action->get_owner());
 			
 			auto hash = shifted_state.to_hash();
 			if (policy.find(hash) == policy.end())

@@ -20,7 +20,7 @@ namespace del
 	class Converter_Problem : public Converter_Base
 	{
 	public:
-		Converter_Problem(const Propositions_Lookup& propositions_lookup, const Atom_Lookup& atom_lookup, const Agents& agents);
+		Converter_Problem(const Propositions_Lookup* propositions_lookup, const Atom_Lookup* atom_lookup, const Agents* agents);
 
 		const Proposition_Instance* convert(const General_Proposition_Instance* general_instance) const override;
 		const Agent* convert(const std::string& agent) const override;

@@ -1,6 +1,7 @@
 #include "Edge_Conditions.hpp"
 
 #include "Action_Events.hpp"
+#include "Agents.hpp"
 #include "Atoms.hpp"
 #include "Converter_Base.hpp"
 #include "Converter_Action.hpp"
@@ -16,7 +17,7 @@ namespace del
 	}
 
 	Edge_Conditions::Edge_Conditions(size_t agents)
-		: conditions() 
+		: conditions()
 	{
 
 	}
@@ -36,13 +37,15 @@ namespace del
 	void Edge_Conditions::insert(Event_Id event_from, Event_Id event_to, Formula&& condition)
 	{
 		auto it = conditions.find(event_from.id);
-		if (it == conditions.end()) {
+		if (it == conditions.end())
+		{
 			conditions.emplace(event_from.id, std::move(std::map<Event_Id, Formula>{}));
 		}
 		conditions[event_from.id][event_to.id] = std::move(condition);
 	}
 
-	const Formula* Edge_Conditions::get_condition(Event_Id event_from, Event_Id event_to) const {
+	const Formula* Edge_Conditions::get_condition(Event_Id event_from, Event_Id event_to) const
+	{
 		auto it1 = conditions.find(event_from.id);
 		if (it1 == conditions.end())
 		{
@@ -50,7 +53,7 @@ namespace del
 		}
 
 		auto it2 = it1->second.find(event_to.id);
-		if (it2 == it1->second.end()) 
+		if (it2 == it1->second.end())
 		{
 			return nullptr;
 		}
@@ -58,7 +61,7 @@ namespace del
 		return &it2->second;
 	}
 
-	Agent_Edge_Conditions::Agent_Edge_Conditions() 
+	Agent_Edge_Conditions::Agent_Edge_Conditions()
 	{
 
 	}
@@ -68,7 +71,7 @@ namespace del
 	{
 
 		Converter_Action converter_action{ propositions_lookup, general_action.get_inputs(), arguments, agents };
-	
+
 
 		std::map<std::string, Event_Id> event_name_to_id = action_events.get_name_to_id();
 		const General_Agent_Edge_Conditions& other = general_action.get_edge_conditions();
@@ -112,8 +115,8 @@ namespace del
 		}
 	}
 
-	const Formula* Agent_Edge_Conditions::get_precondition(Agent_Id agent, Event_Id event_from, Event_Id event_to) const
+	const Formula* Agent_Edge_Conditions::get_precondition(const Agent* agent, Event_Id event_from, Event_Id event_to) const
 	{
-		return edge_conditions.at(agent.id).get_condition(event_from, event_to);
+		return edge_conditions.at(agent->get_id().id).get_condition(event_from, event_to);
 	}
 }

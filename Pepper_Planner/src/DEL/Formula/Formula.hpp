@@ -28,7 +28,7 @@ namespace del {
 		void reset();
 
 		std::string to_string() const;
-		bool valuate(const World_Id& world_id, const Domain& domain, const State& state) const;
+		bool valuate(const World* world, const Domain& domain, const State& state) const;
 
 		bool valuate_plausability(const Propositions& propositions) const;
 		Formula_Component* f_top();

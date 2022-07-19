@@ -5,6 +5,7 @@
 #include "Action_Events.hpp"
 #include "Agents.hpp"
 #include "Domain.hpp"
+#include "World.hpp"
 
 
 namespace del 
@@ -36,6 +37,11 @@ namespace del
 	size_t Accessibility_Relations::get_index(const Agent_Id& agent, const World_Id& from_world, const World_Id& to_world, const size_t worlds_size, const size_t worlds_size_squared) const
 	{
 		return agent.id * worlds_size_squared + from_world.id * worlds_size + to_world.id;
+	}
+
+	size_t Accessibility_Relations::get_index(const Agent* agent, const World* from_world, const World* to_world, const size_t worlds_size, const size_t worlds_size_squared) const
+	{
+		return get_index(agent->get_id(), from_world->get_id(), to_world->get_id(), worlds_size, worlds_size_squared);
 	}
 
 	void Accessibility_Relations::convert_world_ids(const std::map<World_Id, World_Id>& world_old_to_new)
@@ -89,10 +95,10 @@ namespace del
 		return relations.at(get_index(agent, from_world, to_world));
 	}
 
-	bool Accessibility_Relations::has_direct_relation(const Agent* agent, const World_Id& from_world, const World_Id& to_world) const
+	bool Accessibility_Relations::has_direct_relation(const Agent* agent, const World* from_world, const World* to_world) const
 	{
 		assert(agent != nullptr);
-		return has_direct_relation(agent->get_id(), from_world, to_world);
+		return has_direct_relation(agent->get_id(), from_world->get_id(), to_world->get_id());
 	}
 
 	Accessibility_Relations Accessibility_Relations::product_update(
@@ -107,23 +113,23 @@ namespace del
 
 		size_t agents_size = agents->size();
 		std::vector<bool> result(agents_size * new_worlds_size * new_worlds_size, false);
-		for (Agent_Id agent = 0; agent < agents_size; ++agent)
+		for (auto& agent : *agents)
 		{
 			for (const World_Entry& from_conversion : world_conversion)
 			{
 				for (const World_Entry& to_conversion : world_conversion)
 				{
-					if (!action->is_condition_fulfilled(agent, from_conversion.old_event, to_conversion.old_event, state, from_conversion.old_world, domain))
+					if (!action->is_condition_fulfilled(&agent, from_conversion.old_event, to_conversion.old_event, state, from_conversion.old_world, domain))
 					{
 						continue;
 					}
 
-					if (!has_direct_relation(agent, from_conversion.old_world, to_conversion.old_world))
+					if (!has_direct_relation(&agent, from_conversion.old_world, to_conversion.old_world))
 					{
 						continue;
 					}
 					
-					size_t index = get_index(agent, from_conversion.new_world, to_conversion.new_world, new_worlds_size, new_worlds_size_squared);
+					size_t index = get_index(&agent, from_conversion.new_world, to_conversion.new_world, new_worlds_size, new_worlds_size_squared);
 
 					assert(index < result.size());
 					result.at(index) = true;

@@ -48,8 +48,7 @@ namespace del
 
 	std::string DEL_Interface::get_state_print() const
 	{
-		State contracted_state = domain.get_current_state().contract();
-		contracted_state.shift_perspective(domain.get_agent(Agent_Id{ 0 }));
+		State contracted_state = domain.get_current_state().shift_and_contract(domain.get_agent(Agent_Id{ 0 }));
 		return contracted_state.to_string() + std::string("\nHash ") + std::to_string(contracted_state.to_hash());
 	}
 

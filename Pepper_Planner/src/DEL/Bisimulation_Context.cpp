@@ -126,7 +126,6 @@ namespace del::bisimulation_context {
 		{
 			std::deque<const World*> frontier;
 			std::set<const World*> visited;
-			//std::priority_queue<const World*> frontier;
 			for (const World_Id& world_id : designated_worlds)
 			{
 				auto world = &state.get_world(world_id);

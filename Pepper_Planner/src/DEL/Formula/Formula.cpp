@@ -68,7 +68,7 @@ namespace del
 		}
 	}
 
-	bool Formula::valuate(const World_Id& world_id, const Domain& domain, const State& state) const
+	bool Formula::valuate(const World* world, const Domain& domain, const State& state) const
 	{
 		if (formulas.empty())
 		{
@@ -76,7 +76,7 @@ namespace del
 		}
 		else
 		{
-			return root->valuate(world_id, domain, state);
+			return root->valuate(world, domain, state);
 		}
 	}
 

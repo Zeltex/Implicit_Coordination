@@ -12,12 +12,12 @@ namespace del {
 	class Domain;
 	class Formula;
 	struct General_Formula_Component;
-	struct World_Id;
+	class World;
 
 	struct Formula_Component {
 		const char delim = ';';
 		std::string to_string() const;
-		bool valuate(const World_Id& world_id, const Domain& domain, const State& state) const;
+		bool valuate(const World* world, const Domain& domain, const State& state) const;
 		bool valuate_plausability(const Propositions& propositions) const;
 
 		Formula_Component() = default;

@@ -24,7 +24,7 @@ namespace del {
 		Propositions all_propositions = rigid_propositions;
 		for (const World& world : state.get_worlds())
 		{
-			all_propositions.insert(world.get_true_propositions());
+			all_propositions = all_propositions.combine(world.get_true_propositions());
 		}
 
 		general_actions = std::move(general_actions_in.get());
@@ -93,7 +93,7 @@ namespace del {
 
 					for (const Action_Event& _event : action.get_events())
 					{
-						all_propositions.insert(_event.get_add_list());
+						all_propositions = all_propositions.combine(_event.get_add_list());
 					}
 
 					plausible_actions.emplace_back(std::move(*it));

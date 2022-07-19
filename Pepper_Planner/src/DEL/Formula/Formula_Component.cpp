@@ -9,6 +9,7 @@
 #include "Proposition_Instance.hpp"
 #include "State.hpp"
 #include "Types.hpp"
+#include "World.hpp"
 
 #include <algorithm>
 #include <assert.h>
@@ -122,7 +123,7 @@ namespace del
     }
 
     bool Formula_Component::valuate(
-            const World_Id& world_id,
+            const World* world,
             const Domain& domain,
             const State& state) const
     {
@@ -137,29 +138,29 @@ namespace del
         };
         case Formula_Types::Prop:
         {
-            return state.is_true(world_id, (Proposition_Instance*)data0) || domain.is_rigid((Proposition_Instance*)data0);
+            return world->is_true((Proposition_Instance*)data0) || domain.is_rigid((Proposition_Instance*)data0);
         }
         case Formula_Types::Not:
         {
-            return !((Formula_Component*)data0)->valuate(world_id, domain, state);
+            return !((Formula_Component*)data0)->valuate(world, domain, state);
         }
         case Formula_Types::And:
         {
-            return ((Formula_Component*)data0)->valuate(world_id, domain, state)
-                && ((Formula_Component*)data1)->valuate(world_id, domain, state);
+            return ((Formula_Component*)data0)->valuate(world, domain, state)
+                && ((Formula_Component*)data1)->valuate(world, domain, state);
         }
         case Formula_Types::Or:
         {
-            return ((Formula_Component*)data0)->valuate(world_id, domain, state)
-                || ((Formula_Component*)data1)->valuate(world_id, domain, state);
+            return ((Formula_Component*)data0)->valuate(world, domain, state)
+                || ((Formula_Component*)data1)->valuate(world, domain, state);
         }
         case Formula_Types::Believes:
         {
             auto agent = ((Agent*)data0)->get_id();
-            for (auto& world : state.get_worlds())
+            for (auto& world_to : state.get_worlds())
             {
-                if (state.is_one_reachable(agent, world_id, world.get_id())
-                    && !((Formula_Component*)data1)->valuate(world.get_id(), domain, state))
+                if (state.is_one_reachable(agent, world, &world_to)
+                    && !((Formula_Component*)data1)->valuate(&world_to, domain, state))
                 {
                     return false;
                 }

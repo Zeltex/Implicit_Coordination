@@ -12,22 +12,25 @@
 #include "Atoms.hpp"
 
 
-namespace del {
-
-	class World;
-	class State;
+namespace del
+{
+	class Agent;
 	class Atoms;
-	class Action {
+	class State;
+	class World;
+
+	class Action
+	{
 	public:
 		Action();
 		Action(const General_Action& general_action, const Propositions_Lookup& propositions_lookup, const Atoms& arguments, const Agents& agents);
 
 		size_t					get_cost() const;
-		const Action_Events&	get_events() const;
+		const Action_Events& get_events() const;
 		std::string				get_name() const;
-		const Agent*			get_owner() const;
+		const Agent* get_owner() const;
 
-		bool is_condition_fulfilled(Agent_Id agent, Event_Id event_from, Event_Id event_to, const State& state, const World_Id world, const Domain& domain) const;
+		bool is_condition_fulfilled(const Agent* agent, Event_Id event_from, Event_Id event_to, const State& state, const World* world, const Domain& domain) const;
 
 
 		std::string to_string() const;

@@ -16,7 +16,7 @@ namespace del
 		atom_lookup(general_domain->objects),
 		agents(general_domain->agents, atom_lookup),
 		propositions_lookup(general_domain->typed_propositions, atom_lookup, general_domain->state, general_domain->rigid_propositions),
-		converter_problem(propositions_lookup, atom_lookup, agents),
+		converter_problem(&propositions_lookup, &atom_lookup, &agents),
 		states(1, State{ general_domain->state, propositions_lookup, agents, atom_lookup }),
 		rigid_propositions(general_domain->rigid_propositions, &converter_problem),
 		action_library(general_domain->actions, propositions_lookup, atom_lookup, agents, rigid_propositions, states.front(), *this),

@@ -9,6 +9,7 @@
 namespace del
 {
 	class Action_Events;
+	class Agent;
 	class Converter_Base;
 	class Domain;
 	class Propositions_Lookup;
@@ -29,7 +30,7 @@ namespace del
 	public:
 		Agent_Edge_Conditions();
 		Agent_Edge_Conditions(const General_Action& general_action, const Propositions_Lookup& propositions_Lookup, const Action_Events& action_events, const Atoms& arguments, const Agents& agents);
-		const Formula* get_precondition(Agent_Id agent, Event_Id event_from, Event_Id event_to) const;
+		const Formula* get_precondition(const Agent* agent, Event_Id event_from, Event_Id event_to) const;
 	private:
 		std::vector<Edge_Conditions> edge_conditions;
 	};

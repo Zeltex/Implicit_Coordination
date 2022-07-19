@@ -1,10 +1,12 @@
 #include "Action.hpp"
 
+#include "Agents.hpp"
 #include "Domain.hpp"
 #include "Formula_Types.hpp"
 #include "World.hpp"
 
-namespace del {
+namespace del
+{
 
 	Action::Action()
 		:args(),
@@ -17,9 +19,9 @@ namespace del {
 	}
 
 	Action::Action(const General_Action& other, const Propositions_Lookup& propositions_lookup, const Atoms& arguments, const Agents& agents)
-		:args(arguments), 
-		cost(other.get_cost()), 
-		name(other.get_name()), 
+		:args(arguments),
+		cost(other.get_cost()),
+		name(other.get_name()),
 		events(other, arguments, propositions_lookup, agents),
 		edge_conditions(other, propositions_lookup, events, arguments, agents)
 	{
@@ -27,23 +29,26 @@ namespace del {
 		owner = agents.get(owner_atom);
 	}
 
-	bool Action::is_condition_fulfilled(Agent_Id agent, Event_Id event_from, Event_Id event_to, const State& state, const World_Id world, const Domain& domain) const {
+	bool Action::is_condition_fulfilled(const Agent* agent, Event_Id event_from, Event_Id event_to, const State& state, const World* world, const Domain& domain) const
+	{
 		auto condition = edge_conditions.get_precondition(agent, event_from, event_to);
-		if (condition != nullptr) 
+		if (condition != nullptr)
 		{
-			return (*condition).valuate(world.id, domain, state);
-		} 
-		else 
+			return (*condition).valuate(world, domain, state);
+		}
+		else
 		{
 			return false;
 		}
 	}
 
-	std::string Action::to_string() const {
+	std::string Action::to_string() const
+	{
 		return to_string(0);
 	}
 
-	std::string Action::to_string(size_t indentation) const {
+	std::string Action::to_string(size_t indentation) const
+	{
 		return std::string(indentation, '-')
 			+ name
 			+ "("
@@ -51,23 +56,28 @@ namespace del {
 			+ ")";
 	}
 
-	std::string Action::to_compact_string() const {
+	std::string Action::to_compact_string() const
+	{
 		return owner->get_name() + events.to_compact_string();
 	}
 
-	size_t Action::get_cost() const {
+	size_t Action::get_cost() const
+	{
 		return cost;
 	}
 
-	const Action_Events& Action::get_events() const {
+	const Action_Events& Action::get_events() const
+	{
 		return events;
 	}
 
-	const Agent* Action::get_owner() const {
+	const Agent* Action::get_owner() const
+	{
 		return owner;
 	}
 
-	std::string Action::get_name() const {
+	std::string Action::get_name() const
+	{
 		return name;
 	}
 }

@@ -6,57 +6,55 @@
 #include "General_World.hpp"
 #include "Propositions_Lookup.hpp"
 
-namespace del {
+namespace del
+{
 
-
-	World::World(const General_World& other, const Propositions_Lookup& propositions_lookup, const Atom_Lookup& atom_lookup)
+	World::World(const General_World& other, const Converter_Base* converter)
 		: id(other.world_id),
-		true_propositions()
+		true_propositions(other.propositions, converter)
 	{
-		for (const General_Proposition_Instance& proposition_instance : other.propositions)
-		{
-			true_propositions.insert(propositions_lookup.get(proposition_instance, atom_lookup));
-		}
+
 	}
 
 	World::World(const World& other, const Action_Event& action, const World_Id& id)
-		: id(id)
+		: id(id),
+		true_propositions(other.get_true_propositions(), action.get_delete_list(), action.get_add_list())
 	{
-		true_propositions = other.get_true_propositions();
-		true_propositions.remove(action.get_delete_list());
-		true_propositions.insert(action.get_add_list());
+
 	}
 
-	World_Id World::get_id() const {
+	World::World(World_Id id, const Propositions& true_propositions) :
+		id(id), true_propositions(true_propositions)
+	{
+	}
+
+	World_Id World::get_id() const
+	{
 		return id;
 	}
 
-	void World::add_true_propositions(const Propositions& propositions) {
-		true_propositions.insert(propositions);
+	bool World::is_true(const Proposition_Instance* proposition) const
+	{
+		return true_propositions.contains(proposition);
 	}
 
-	void World::remove_true_propositions(const Propositions& propositions) {
-		true_propositions.remove(propositions);
-	}
-
-	const Propositions& World::get_true_propositions() const {
+	const Propositions& World::get_true_propositions() const
+	{
 		return true_propositions;
 	}
 
-	std::string World::to_string() const{
+	std::string World::to_string() const
+	{
 		return "World " + std::to_string(id.id) + ": " + true_propositions.to_string();
 	}
 
-	void World::set_id(World_Id id) {
-		this->id = std::move(id);
-	}
-
-	bool World::operator!=(const World& other) const 
+	bool World::operator!=(const World& other) const
 	{
 		return true_propositions != other.true_propositions;
 	}
 
-	std::string World::to_hash() const {
+	std::string World::to_hash() const
+	{
 		return true_propositions.to_hash();
 	}
 }

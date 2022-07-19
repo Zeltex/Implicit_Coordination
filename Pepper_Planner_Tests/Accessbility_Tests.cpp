@@ -34,26 +34,13 @@ namespace PepperPlannerTests
 
 			const Agent* agent = di->agent("a0");
 
-			state.shift_perspective(agent);
+			state.shift_and_contract(agent);
 
 			auto& designated_worlds = state.get_designated_worlds();
 
 			Assert::AreEqual(designated_worlds.size(), (size_t)3);
 		}
 
-		TEST_METHOD(Test_Perspective_Shift_Exclusive)
-		{
-			prepare_example_2();
-			State state = di->get_current_state();
-
-			const Agent* agent = di->agent("a0");
-
-			state.shift_perspective(agent, true);
-
-			auto& designated_worlds = state.get_designated_worlds();
-
-			Assert::AreEqual(designated_worlds.size(), (size_t)3);
-		}
 	private:
 
 		Test_Preparer* tp;

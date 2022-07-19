@@ -13,8 +13,8 @@
 namespace del
 {
 
-	Converter_Problem::Converter_Problem(const Propositions_Lookup& propositions_lookup, const Atom_Lookup& atom_lookup, const Agents& agents)
-		: propositions_lookup(&propositions_lookup), atom_lookup(&atom_lookup), agents(&agents)
+	Converter_Problem::Converter_Problem(const Propositions_Lookup* propositions_lookup, const Atom_Lookup* atom_lookup, const Agents* agents)
+		: propositions_lookup(propositions_lookup), atom_lookup(atom_lookup), agents(agents)
 	{
 
 	}
