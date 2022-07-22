@@ -8,16 +8,6 @@
 namespace del
 {
 
-	Action::Action()
-		:args(),
-		cost(-1),
-		name("EMPTY"),
-		events(),
-		edge_conditions()
-	{
-
-	}
-
 	Action::Action(const General_Action& other, const Propositions_Lookup& propositions_lookup, const Atoms& arguments, const Agents& agents)
 		:args(arguments),
 		cost(other.get_cost()),

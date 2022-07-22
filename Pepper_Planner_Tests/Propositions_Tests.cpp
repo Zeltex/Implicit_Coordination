@@ -20,13 +20,14 @@ namespace PepperPlannerTests
 			auto prop4 = di->prop("goal", "a0", "c0");
 			auto prop5 = di->prop("free", "x1");
 
-			Propositions props;
-			props.insert(prop0);
-			props.insert(prop1);
-			props.insert(prop2);
-			props.insert(prop3);
-			props.insert(prop4);
-			props.insert(prop5);
+			std::set<const Proposition_Instance*, Propositions::Comparator> props_temp;
+			props_temp.insert(prop0);
+			props_temp.insert(prop1);
+			props_temp.insert(prop2);
+			props_temp.insert(prop3);
+			props_temp.insert(prop4);
+			props_temp.insert(prop5);
+			Propositions props(props_temp);
 
 			std::string expected = ", at(a0, c2), at(a1, c1), free(c0), free(x1), goal(a0, c0), goal(a1, c1)";
 			std::string actual = props.to_string();

@@ -8,15 +8,9 @@
 
 namespace del {
 
-	Action_Library::Action_Library(): 
-		action_counter(0), 
-		announce_enabled(false), 
-		actions() {
-	}
 
 	Action_Library::Action_Library(General_Actions& general_actions_in, const Propositions_Lookup& propositions_lookup, const Atom_Lookup& atom_lookup, const Agents& agents, const Propositions& rigid_propositions, const State& state, const Domain& domain)
 		: action_counter(0), 
-		announce_enabled(false), 
 		actions() 
 	{
 		std::list<Action> actions_to_check;

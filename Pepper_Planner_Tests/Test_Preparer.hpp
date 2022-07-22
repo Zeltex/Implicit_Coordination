@@ -41,6 +41,11 @@ namespace del
 			print(del_interface->get_action_print(action));
 		}
 
+		void print_policy()
+		{
+			print(del_interface->get_policy_print());
+		}
+
 		void execute_until_solved()
 		{
 			print_state();

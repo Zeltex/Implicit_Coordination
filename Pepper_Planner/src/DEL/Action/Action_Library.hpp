@@ -14,21 +14,16 @@ namespace del {
 
 	class Action_Library {
 	public:
-		Action_Library();
 		Action_Library(General_Actions& general_actions, const Propositions_Lookup& propositions_lookup, const Atom_Lookup& atom_lookup, const Agents& agents, const Propositions& rigid_propositions, const State& state, const Domain& domain);
-		const std::vector<Action>& get_actions() const;
-		const General_Action& get_general_action(const std::string& name) const;
-		void add_action(const Action& action);
 
-		void load_actions();
-		bool has_action() const;
-		const Action* get_next_action();
+		const std::vector<Action>&	get_actions() const;
+		const General_Action&		get_general_action(const std::string& name) const;
+		const Action*				get_next_action();
+		bool						has_action() const;
+		void						load_actions();
 	private:
 
 		size_t action_counter;
-
-		bool announce_enabled;
-
 		std::vector<Action> announce_actions;
 		std::vector<Action> actions;
 		std::vector<std::unique_ptr<General_Action>> general_actions;

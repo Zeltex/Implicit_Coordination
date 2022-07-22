@@ -8,12 +8,13 @@
 
 #include <assert.h>
 
-namespace del {
+namespace del
+{
 
 	Action_Event::Action_Event(const std::unique_ptr<General_Action_Event>& other, Event_Id id, const Converter_Base* converter, const Propositions_Lookup& propositions_lookup, const Atoms& arguments) :
 		designated(other->designated),
-		name(other->name), 
-		id(id), 
+		name(other->name),
+		id(id),
 		precondition(other->precondition, converter),
 		proposition_add(other->proposition_add, converter),
 		proposition_delete(other->proposition_delete, converter)
@@ -21,31 +22,37 @@ namespace del {
 
 	}
 
-	Event_Id Action_Event::get_id() const {
+	Event_Id Action_Event::get_id() const
+	{
 		return id;
 	}
 
-	const Propositions& Action_Event::get_add_list() const {
+	const Propositions& Action_Event::get_add_list() const
+	{
 		return proposition_add;
 	}
 
-	const Propositions& Action_Event::get_delete_list() const {
+	const Propositions& Action_Event::get_delete_list() const
+	{
 		return proposition_delete;
 	}
 
-	const Formula& Action_Event::get_preconditions() const {
+	const Formula& Action_Event::get_preconditions() const
+	{
 		return precondition;
 	}
 
-	std::string Action_Event::get_name() const {
+	std::string Action_Event::get_name() const
+	{
 		return name;
 	}
 
-	std::string Action_Event::to_string() const {
-		return "Event " 
-			+ std::to_string(id.id) 
-			+ ": (Preconditions: " 
-			+ precondition.to_string() 
+	std::string Action_Event::to_string() const
+	{
+		return "Event "
+			+ std::to_string(id.id)
+			+ ": (Preconditions: "
+			+ precondition.to_string()
 			+ ") (Add list"
 			+ proposition_add.to_string()
 			+ ") (Delete list, "
@@ -58,21 +65,16 @@ namespace del {
 		return designated;
 	}
 
-	Action_Events::Action_Events()
-	{
-
-	}
-
 	Action_Events::Action_Events(const General_Action& general_action, const Atoms& arguments, const Propositions_Lookup& propositions_lookup, const Agents& agents)
 	{
-		Converter_Action converter{propositions_lookup, general_action.get_inputs(), arguments, agents};
+		Converter_Action converter{ propositions_lookup, general_action.get_inputs(), arguments, agents };
 
 		const General_Action_Events& other = general_action.get_events();
 		events.reserve(general_action.get_events().size());
 
 		for (auto& general_action_event : other.events)
 		{
-			Event_Id id { events.size() };
+			Event_Id id{ events.size() };
 			events.emplace_back(general_action_event, id, &converter, propositions_lookup, arguments);
 		}
 	}
@@ -80,7 +82,8 @@ namespace del {
 	std::string Action_Events::to_compact_string() const
 	{
 		std::string result;
-		for (auto& event : events) {
+		for (auto& event : events)
+		{
 			result += "\n<<" + event.get_preconditions().to_string() + ",X,X>";
 		}
 		return result;
@@ -89,7 +92,8 @@ namespace del {
 	std::string Action_Events::to_string() const
 	{
 		std::string result;
-		for (const Action_Event& event : events) {
+		for (const Action_Event& event : events)
+		{
 			result += "\n" + event.to_string();
 		}
 		return result;

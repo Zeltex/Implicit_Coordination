@@ -20,6 +20,7 @@ namespace del {
 		for (auto& agent : *agents)
 		{ 
 			State temp = state.shift_and_contract(&agent);
+			PRINT(std::string("Looking for action for agent") + agent.get_name() + std::string(": ") + temp.to_string());
 			agent_hashes.emplace_back(temp.to_hash());
 			agent_states.push_back(std::move(temp));
 		}
@@ -48,10 +49,10 @@ namespace del {
 	{
 		State perspective_shifted = state.shift_and_contract(action->get_owner());
 
-		std::vector<State> shifted_states = perspective_shifted.split_into_globals();
-		for (State& shifted_state : shifted_states)
+		std::vector<State> globals = perspective_shifted.split_into_globals();
+		for (const State& global : globals)
 		{
-			shifted_state.shift_and_contract(action->get_owner());
+			auto shifted_state = global.shift_and_contract(action->get_owner());
 			
 			auto hash = shifted_state.to_hash();
 			if (policy.find(hash) == policy.end())

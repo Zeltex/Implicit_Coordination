@@ -34,7 +34,7 @@ namespace PepperPlannerTests
 
 			const Agent* agent = di->agent("a0");
 
-			state.shift_and_contract(agent);
+			state = state.shift_and_contract(agent);
 
 			auto& designated_worlds = state.get_designated_worlds();
 

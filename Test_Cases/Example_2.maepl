@@ -8,16 +8,16 @@ _domain Pepper {
 _problem Example_2 {
 _objects = {
 	agent = [a0]
-	pos = [p0]
+	pos = [p0, p1, p2, p3]
 }
 
 _initial_state = [
 ]
 
 _world w0 [prop(p0)]
-_world w1 [prop(p0)]
-_world w2 [prop(p0)]
-_world w3 [prop(p0)]
+_world w1 [prop(p1)]
+_world w2 [prop(p2)]
+_world w3 [prop(p3)]
 
 _goal = [ TOP ] 
 

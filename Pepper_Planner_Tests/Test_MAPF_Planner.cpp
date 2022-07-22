@@ -38,6 +38,7 @@ namespace PepperPlannerTests
 			di = tp->del_interface;
 			bool result = di->create_policy("a0");
 			Assert::IsTrue(result);
+			tp->print_policy();
 			tp->execute_until_solved();
 		}
 

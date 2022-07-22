@@ -14,7 +14,7 @@ namespace del {
 
     class Propositions
     {
-    private:
+    public:
         struct Comparator
         {
             bool operator()(const Proposition_Instance* lhs, const Proposition_Instance* rhs) const
@@ -22,7 +22,6 @@ namespace del {
                 return lhs->get_id() < rhs->get_id();
             }
         };
-    public:
 
         Propositions(const Propositions& other, const Propositions& delete_list, const Propositions& add_list);
         Propositions(const std::vector<General_Proposition_Instance>& other, const Converter_Base* converter);

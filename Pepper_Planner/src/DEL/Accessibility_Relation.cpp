@@ -235,20 +235,27 @@ namespace del
 					}
 
 					serial_connection_found = true;
+					size_t agent_to_extra_index = get_index(agent, world_to, 0);
+					size_t agent_from_extra_index = get_index(agent, world_from, 0);
 
 					for (size_t world_extra = 0; world_extra < worlds_size; ++world_extra)
 					{
-						if (relations.at(get_index(agent, world_to, world_extra)) && !relations.at(get_index(agent, world_from, world_extra)))
+						assert(agent_to_extra_index == get_index(agent, world_to, world_extra));
+						assert(agent_from_extra_index == get_index(agent, world_from, world_extra));
+
+						if (relations.at(agent_to_extra_index) && !relations.at(agent_from_extra_index))
 						{
 							// Not transitive
 							return false;
 						}
 
-						if (relations.at(get_index(agent, world_from, world_extra)) && !relations.at(get_index(agent, world_to, world_extra)))
+						if (relations.at(agent_from_extra_index) && !relations.at(agent_to_extra_index))
 						{
 							// Not euclidean
 							return false;
 						}
+						++agent_to_extra_index;
+						++agent_from_extra_index;
 					}
 					++index;
 				}

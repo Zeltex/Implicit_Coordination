@@ -62,6 +62,11 @@ namespace del
 		return action->to_string();
 	}
 
+	std::string DEL_Interface::get_policy_print() const
+	{
+		return policy.to_string();
+	}
+
 	const Proposition_Instance* DEL_Interface::prop(const std::string& name, const std::string& arg_0)
 	{
 		return domain.get_propositions_lookup().get(Proposition_Instance{ domain.get_atom_lookup(), name, arg_0 });
